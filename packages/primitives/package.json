@@ -29,7 +29,7 @@
     "abort-controller": "3.0.0",
     "aggregate-error-ponyfill": "1.1.0",
     "esbuild-plugin-alias": "latest",
-    "event-target-shim": "5.0.1",
+    "event-target-shim": "6.0.2",
     "formdata-node": "4.3.3",
     "tsup": "6",
     "undici": "5.5.1",
