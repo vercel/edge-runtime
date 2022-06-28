@@ -1,0 +1,79 @@
+import { Tabs, Tab } from '../../components/tabs'
+
+# Edge Runtime Primitives
+
+The **@edge-runtime/primitives** package contains all the Web Standard APIs (fetch, URLPattern, structuredClone, etc.) you can use inside a [Vercel Edge Functions](https://vercel.com/edge).
+
+## Installation
+
+<Tabs items={['npm', 'yarn', 'pnpm']} storageKey="selected-pkg-manager">
+  <Tab>
+    ```sh
+    npm install @edge-runtime/primitives --save
+    ```
+  </Tab>
+  <Tab>
+    ```sh
+    yarn add @edge-runtime/primitives
+    ```
+  </Tab>
+  <Tab>
+    ```sh
+    pnpm install @edge-runtime/primitives --save
+    ```
+  </Tab>
+</Tabs>
+
+This package includes built-in TypeScript support.
+
+## Usage
+
+The **@edge-runtime/primitives** package exports a context containing all the web primitives:
+
+```js
+import primitives from '@edge-runtime/primitives'
+
+console.log(primitives)
+
+// {
+//   globalThis: [Circular *1],
+//   self: [Circular *1],
+//   AbortController: <ref *2> [class AbortController] {
+//     default: [Circular *2],
+//     AbortController: [Circular *2],
+//     AbortSignal: [class AbortSignal extends EventTarget]
+//   },
+//   AbortSignal: [class AbortSignal extends EventTarget],
+//   AggregateError: [Function: AggregateError],
+//   atob: [Function (anonymous)],
+//   btoa: [Function (anonymous)],
+//   Blob: [class Blob],
+//   crypto: Crypto {
+//     subtle: SubtleCrypto { providers: [ProviderStorage] },
+//     randomUUID: [Function: v4]
+//   }
+// …
+```
+
+Alternative, you can attach primitives to an already declared context:
+
+```js
+import { addPrimitives } from '@edge-runtime/primitives'
+
+const primitives = addPrimitives(global)
+
+console.log(global.atob)
+// [Function (anonymous)]
+```
+
+## API
+
+### default: object
+
+An object contaning all the Web APIs.
+
+#### methods
+
+#### .addPrimitives: (context: object) => object
+
+Attach primitives to the provided object.

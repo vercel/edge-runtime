@@ -1,0 +1,7 @@
+{
+  "runtime": "edge-runtime",
+  "vm": "@edge-runtime/vm",
+  "jest-environment": "@edge-runtime/jest-environment",
+  "primitives": "@edge-runtime/primitives",
+  "types": "@edge-runtime/types"
+}

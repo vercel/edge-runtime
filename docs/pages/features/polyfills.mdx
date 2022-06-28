@@ -1,0 +1,25 @@
+# Polyfills
+
+The **Edge Runtime** is built on top of Web APIs available in Node.js.
+
+If you are using an old Node.js version, then it is likely one of these Web APIs is missing. The Edge Runtime takes care of this by providing polyfills.
+
+Under the hood, the following Web APIs are used by the **Edge Runtime**:
+
+| polyfill                                                             | node12 | node14 | node16 | node18 |
+| -------------------------------------------------------------------- | ------ | ------ | ------ | ------ |
+| [http](/packages/primitives/src/polyfills/http.js)                   | x      |        |        |        |
+| [util.types](/packages/primitives/src/polyfills/util-types.js#L5)    | x      |        |        |        |
+| [buffer](/packages/primitives/src/index.js#L26)                      | x      |        |        |        |
+| [WebCrypto](/packages/primitives/src/index.js#L31)                   | x      | x      |        |        |
+| [AbortController, AbortSignal](/packages/primitives/src/index.js#L9) | x      | x      |        |        |
+| [AggregateError](/packages/primitives/src/index.js#L15)              | x      | x      |        |        |
+| [base64](/packages/primitives/src/index.js#L20)                      | x      | x      |        |        |
+| [fetch, Request, Response](/packages/primitives/src/index.js#L39)    | x      | x      | x      |        |
+| [URLPattern](/packages/primitives/src/index.js#L69)                  | x      | x      | x      | x      |
+| [Cache](/packages/primitives/src/index.js#L49)                    | x      | x      | x      | x      |
+| [WebStreams](/packages/primitives/src/index.js#L56)                  | x      | x      | x      | x      |
+
+The Edge Runtime polyfills missing APIs for backward compatibility with older Node.js versions.
+
+In the future, Node.js will become a superset of the Edge Runtime with built-in support for the [available APIs](/features/available-apis).

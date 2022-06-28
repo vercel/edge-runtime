@@ -1,0 +1,44 @@
+{
+  "name": "@edge-runtime/jest-environment",
+  "description": "A Jest integration to run assertions in Edge Runtime context.",
+  "homepage": "https://edge-runtime.vercel.app/packages/jest-environment",
+  "version": "1.1.0-beta.10",
+  "main": "dist/index.js",
+  "repository": {
+    "directory": "packages/jest-environment",
+    "type": "git",
+    "url": "git+https://github.com/vercel/edge-runtime.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vercel/edge-runtime/issues"
+  },
+  "keywords": [
+    "edge",
+    "functions",
+    "jest",
+    "runtime",
+    "standard",
+    "testing",
+    "web"
+  ],
+  "dependencies": {
+    "@edge-runtime/vm": "^1.1.0-beta.10",
+    "@jest/environment": "28.1.1",
+    "@jest/fake-timers": "28.1.1",
+    "@jest/types": "28.1.1",
+    "jest-mock": "28.1.1",
+    "jest-util": "28.1.1"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --project tsconfig.prod.json",
+    "test": "jest"
+  },
+  "license": "MPLv2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "types": "dist/index.d.ts"
+}

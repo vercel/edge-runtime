@@ -1,0 +1,37 @@
+# npm
+node_modules
+npm-debug.log
+.node_history
+yarn.lock
+
+# tmp
+.tmp
+*.swo
+*.swp
+*.swn
+*.swm
+.DS_Store
+*#
+*~
+.idea
+*sublime*
+nbproject
+
+
+# test
+testApp
+coverage
+.nyc_output
+
+# env
+.env
+.envrc
+
+# build files
+.pnpm-debug.log
+.turbo
+docs/.next
+docs/node_modules
+packages/*/dist
+packages/runtime/src/version.ts
+.vercel

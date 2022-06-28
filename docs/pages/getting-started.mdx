@@ -1,0 +1,112 @@
+---
+title: Getting Started
+description: Learn how to install and run the Edge Runtime as a Node.js package.
+---
+
+import { Tabs, Tab } from '../components/tabs'
+
+# Quick overview
+
+## Installation
+
+The **Edge Runtime** is available as Node.js package. You can install it with your favorite package manager:
+
+<Tabs items={['npm', 'yarn', 'pnpm']} storageKey="selected-pkg-manager">
+  <Tab>
+    ```sh
+    npm install edge-runtime
+    ```
+  </Tab>
+  <Tab>
+    ```sh
+    yarn add edge-runtime
+    ```
+  </Tab>
+  <Tab>
+    ```sh
+    pnpm install edge-runtime
+    ```
+  </Tab>
+</Tabs>
+
+## Usage
+
+Once it's installed, you can evaluate any script into the runtime context:
+
+```js
+import { EdgeRuntime } from 'edge-runtime'
+
+const runtime = new EdgeRuntime()
+const result = await runtime.evaluate("fetch('https://example.com')")
+
+console.log(result)
+```
+
+The runtime provides you with ready to use Web APIs that can be extended if needed:
+
+```js
+import { EdgeRuntime } from 'edge-runtime'
+
+const runtime = new EdgeRuntime({
+  extend: (context) => {
+    const rawFetch = context.fetch.bind(context.fetch)
+    context.fetch = async (input: RequestInfo | URL, init?: RequestInit) =>
+      rawFetch(
+        typeof input === 'string' && !input.startsWith('https://')
+          ? `https://${input}`
+          : String(input),
+        init
+      )
+
+    return context
+  },
+})
+
+const result = await runtime.evaluate("fetch('example.com')")
+
+console.log(result)
+```
+
+You can also load some initial code and interact with it as a regular HTTP server:
+
+```js
+import { EdgeRuntime } from 'edge-runtime'
+
+const initialCode = `
+addEventListener('fetch', event => {
+  const { searchParams } = new URL(event.request.url)
+  const url = searchParams.get('url')
+  return event.respondWith(fetch(url))
+})`
+
+const edgeRuntime = new EdgeRuntime({ initialCode })
+
+const response = await edgeRuntime.dispatchFetch('https://example.com')
+
+// If your code logic performs asynchronous tasks, you should await them.
+// https://developer.mozilla.org/en-US/docs/Web/API/ExtendableEvent/waitUntil
+await response.waitUntil()
+```
+
+To expose the server:
+
+```js
+import { EdgeRuntime, runServer } from 'edge-runtime'
+import exitHook from 'exit-hook'
+import fetch from 'node-fetch'
+
+const initialCode = `
+addEventListener('fetch', event => {
+  const { searchParams } = new URL(event.request.url)
+  const url = searchParams.get('url')
+  return event.respondWith(fetch(url))
+})`
+
+const edgeRuntime = new EdgeRuntime({ initialCode })
+
+const server = await runServer({ runtime: edgeRuntime })
+
+exitHook(server.close)
+
+const response = await fetch(server.url)
+```

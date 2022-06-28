@@ -1,0 +1,148 @@
+import { Tabs, Tab } from '../../components/tabs'
+
+# Edge Runtime
+
+The **edge-runtime** package is the general purpose way to run [Vercel Edge Functions](https://vercel.com/edge) locally, as you would in a production environment.
+
+## Installation
+
+<Tabs items={['npm', 'yarn', 'pnpm']} storageKey='selected-pkg-manager'>
+  <Tab>
+    ```sh
+    npm install edge-runtime --save
+    ```
+  </Tab>
+  <Tab>
+    ```sh
+    yarn add edge-runtime
+    ```
+  </Tab>
+  <Tab>
+    ```sh
+    pnpm install edge-runtime --save
+    ```
+  </Tab>
+</Tabs>
+
+This package includes built-in TypeScript support.
+
+## Usage
+
+### as module
+
+The **edge-runtime** package is on top of [@edge-runtime/vm](/packages/vm), extending it with [EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget) API support for handling fetch events.
+
+```js
+import { EdgeRuntime } from 'edge-runtime'
+
+const initialCode = `
+addEventListener('fetch', event => {
+  const { searchParams } = new URL(event.request.url)
+  const url = searchParams.get('url')
+  return event.respondWith(fetch(url))
+})`
+
+const runtime = new EdgeRuntime({ initialCode })
+
+const response = runtime.dispatchFetch('https://example.com')
+
+// If your code logic performs asynchronous tasks, you should await them.
+// https://developer.mozilla.org/en-US/docs/Web/API/ExtendableEvent/waitUntil
+await response.waitUntil()
+
+// `response` is Web standard, you can use any of it's methods
+console.log(response.status)
+```
+
+### as HTTP server
+
+You can use `runServer` to expose _any_ Edge Runtime instance as regular HTTP server:
+
+```js
+import { runServer } from 'edge-runtime'
+
+const runtime = new EdgeRuntime()
+const server = await runServer({ runtime: edgeRuntime })
+
+console.log(`Listening at ${server.url}`)
+```
+
+## API
+
+### new EdgeRuntime([options])
+
+#### options
+
+Any option provided will be passed against **@edge-runtime/vm**.
+
+Additionally, you can provide:
+
+##### initialCode?: string
+
+Some initial code to be evaluated as the VM for the runtime is created.
+
+#### methods
+
+It inherits from **@edge-runtime/vm**, plus:
+
+##### VercelRuntime: string
+
+Returns the runtime version.
+
+### runServer([options])
+
+It will create an HTTP handler based on the given options and then immediately run a server on the provided port.
+
+#### options
+
+Any option provided will be passed against **.createHandler**, plus:
+
+##### port? :number
+
+The port to start the server. If none is provided it will use a random available port.
+
+#### methods
+
+##### url: string
+
+The server URLs.
+
+##### waitUntil: () => Promise\<any[]>
+
+Waits for all current effects returning their result.
+
+##### close: () => Promise\<void>
+
+Waits for all the current effects and closes the server.
+
+If you call **.close**, it will implicitly call **.waitUntil**.
+
+### createHandler([options])
+
+Creates a Node.js HTTP handler.
+
+#### options
+
+##### runtime: EdgeRuntime
+
+The Edge Runtime instance to be used that should be previously declared.
+
+##### logger?: Logger
+
+The logger to be used. If none is provided there will be no logs.
+
+```ts
+interface LoggerOptions {
+  color?: keyof Colors
+  withHeader?: boolean
+  withBreakline?: boolean
+}
+
+interface Logger {
+  (message: string, opts?: LoggerOptions): void
+  debug(message: string, opts?: LoggerOptions): void
+  error(message: string, opts?: LoggerOptions): void
+  info(message: string, opts?: LoggerOptions): void
+  quotes(str: string): string
+}
+```

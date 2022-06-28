@@ -1,0 +1,19 @@
+# TypeScript support
+
+The **Edge Runtime** includes TypeScript types. In fact, the library is written in TypeScript!
+
+Just in case you need to have these types loaded as part of the global context, you can add them inside [tsconfig.json](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html):
+
+```json
+{
+  "compilerOptions": {
+    "types": ["@edge-runtime/types"]
+  }
+}
+```
+
+Alternatively, you can load them using [triple-slash directive](https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html) as well:
+
+```js
+/// <reference types="@edge-runtime/types" />
+```
