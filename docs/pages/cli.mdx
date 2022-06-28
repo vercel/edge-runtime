@@ -1,0 +1,46 @@
+---
+title: Command-line Interface
+description: Learn how to install and run the Edge Runtime as a CLI.
+---
+
+import { Tabs, Tab } from '../components/tabs'
+
+# Using the CLI
+
+## Installation
+
+The **Edge Runtime** can be also consumed from your terminal when you install it globally in your system:
+
+<Tabs items={['npm', 'yarn', 'pnpm']} storageKey="selected-pkg-manager">
+  <Tab>
+    ```sh
+    npm -g install edge-runtime
+    ```
+  </Tab>
+  <Tab>
+    ```sh
+    yarn -g add edge-runtime
+    ```
+  </Tab>
+  <Tab>
+    ```sh
+    pnpm install -g edge-runtime
+    ```
+  </Tab>
+</Tabs>
+
+## Usage
+
+Providing `--repl` flag will start an interactive session. You can also run any arbitrary script:
+
+```bash
+edge-runtime examples/greetings
+```
+
+If you want to interact with it as an HTTP server, just pass the `--listen` flag:
+
+```bash
+edge-runtime examples/fetch --listen
+```
+
+For help with commands, check `edge-runtime --help`.

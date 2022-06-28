@@ -1,0 +1,118 @@
+{
+  "name": "@edge-runtime/root",
+  "homepage": "https://github.com/vercel/edge-runtime#readme",
+  "version": "0.0.0",
+  "contributors": [
+    {
+      "name": "Kiko Beats",
+      "email": "josefrancisco.verdu@gmail.com"
+    },
+    {
+      "name": "Javi Velasco",
+      "email": "javier.velasco86@gmail.com"
+    },
+    {
+      "name": "Shu Ding",
+      "email": "g@shud.in"
+    },
+    {
+      "name": "Gal Schlezinger",
+      "email": "gal@spitfire.co.il"
+    },
+    {
+      "name": "molebox",
+      "email": "hello@richardhaines.dev"
+    },
+    {
+      "name": "Lee Robinson",
+      "email": "me@leerob.io"
+    },
+    {
+      "name": "Seiya Nuta",
+      "email": "nuta@seiya.me"
+    },
+    {
+      "name": "Jiachi Liu",
+      "email": "inbox@huozhi.im"
+    },
+    {
+      "name": "Bel",
+      "email": "curciobel@gmail.com"
+    },
+    {
+      "name": "Jared Palmer",
+      "email": "jared@jaredpalmer.com"
+    },
+    {
+      "name": "Steven",
+      "email": "steven@ceriously.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vercel/edge-runtime.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vercel/edge-runtime/issues"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "latest",
+    "@commitlint/config-conventional": "latest",
+    "@lerna-lite/cli": "latest",
+    "@types/jest": "latest",
+    "@types/node": "12",
+    "c8": "latest",
+    "finepack": "latest",
+    "git-authors-cli": "latest",
+    "jest": "latest",
+    "nano-staged": "latest",
+    "prettier": "latest",
+    "simple-git-hooks": "latest",
+    "ts-jest": "latest",
+    "ts-node": "latest",
+    "turbo": "latest",
+    "typescript": "latest"
+  },
+  "engines": {
+    "node": ">=12",
+    "pnpm": ">=6"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "clean": "npm run clean:node && npm run clean:build",
+    "clean:build": "pnpm -r exec -- rm -rf dist",
+    "clean:node": "pnpm -r exec -- rm -rf node_modules",
+    "contributors": "(git-authors-cli && finepack && git add package.json && git commit -m 'build: add contributors' --no-verify) || true",
+    "coverage": "c8 report --reporter=text-lcov > coverage/lcov.info",
+    "lockfile": "pnpm install --lockfile && git add pnpm-lock.yaml && git commit -m \"build: regenerate lock\"",
+    "postrelease": "npm run lockfile",
+    "prebuild": "npm run clean:build",
+    "prerelease": "pnpm run clean && pnpm install && pnpm run build && npm run contributors",
+    "release": "lerna publish --yes --sort --conventional-commits -m \"chore(release): %s\" --create-release github",
+    "test": "c8 -x 'packages/primitives/*' turbo run test --concurrency=1",
+    "update": "pnpm -r exec ncu -- --upgrade && ncu -- --upgrade",
+    "update:check": "pnpm -r exec ncu -- --errorLevel 2 && ncu -- --errorLevel 2"
+  },
+  "private": true,
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "nano-staged": {
+    "*.{ts,tsx,md,mdx,js,jsx}": [
+      "prettier --write"
+    ],
+    "package.json": [
+      "finepack"
+    ]
+  },
+  "packageManager": "pnpm@6.29.1",
+  "simple-git-hooks": {
+    "commit-msg": "npx commitlint --edit",
+    "pre-commit": "npx nano-staged"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}

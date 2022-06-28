@@ -1,0 +1,116 @@
+import { Tabs, Tab } from '../../components/tabs'
+
+# Edge Runtime VM
+
+The **@edge-runtime/vm** package is the low level bindings for creating Web Standard isolated VM contexts under the same [Vercel Edge Functions](https://vercel.com/edge) conditions.
+
+## Installation
+
+<Tabs items={['npm', 'yarn', 'pnpm']} storageKey="selected-pkg-manager">
+  <Tab>
+    ```sh
+    npm install @edge-runtime/vm --save
+    ```
+  </Tab>
+  <Tab>
+    ```sh
+    yarn add @edge-runtime/vm
+    ```
+  </Tab>
+  <Tab>
+    ```sh
+    pnpm install @edge-runtime/vm --save
+    ```
+  </Tab>
+</Tabs>
+
+This package includes built-in TypeScript support.
+
+## Usage
+
+You can evaluate arbitrary code isolated inside a VM context, getting output back from the output:
+
+```js
+import { EdgeVM } from '@edge-runtime/vm'
+
+const edgeVM = new EdgeVM()
+const promise = edgeVM.evaluate("fetch('https://edge-ping.vercel.app')")
+const { url, status } = await promise
+
+console.log(`ping to ${url} returned ${status}`)
+```
+
+The **@edge-runtime/vm** has [@edge-runtime/primitives](/packages/primitives) preloaded.
+
+In case you need, you can extend the VM context:
+
+```js
+const edgeVM = new EdgeVM({
+  extend: (context) => {
+    const rawFetch = context.fetch.bind(context.fetch)
+    context.fetch = async (input: RequestInfo | URL, init?: RequestInit) =>
+      rawFetch(
+        typeof input === 'string' && !input.startsWith('https://')
+          ? `https://${input}`
+          : String(input),
+        init
+      )
+
+    return context
+  },
+})
+
+const { url, status } = await edgeVM.evaluate("fetch('edge-ping.vercel.app')")
+console.log(`ping to ${url} returned ${status}`)
+```
+
+## API
+
+### new EdgeVM([options])
+
+#### options
+
+##### codeGeneration?: object
+
+Provides code generation options to [vm.createContext#options](https://nodejs.org/api/vm.html#vmcreatecontextcontextobject-options).
+
+If you don't provide any option, `{ strings: false, wasm: false }` will be used.
+
+##### extend?: (context: VMContext) => ExtendedDictionary\<T>
+
+Allows to extend the VMContext.
+
+```js
+const vm = new EdgeVM({
+  extend: (context) =>
+    Object.assign(context, {
+      process: { env: { NODE_ENV: 'development' } },
+    }),
+})
+```
+
+> Note that it must return a contextified object so ideally it should return the same reference it receives.
+
+##### requireCache?: Map\<string, Dictionary>
+
+Provides an initial map to the require cache, if none is given, it will be initialized to an empty map.
+
+#### methods
+
+##### evaluate: (code: string): () => Promise\<any>
+
+Allows you to run arbitrary code within the VM.
+
+##### require: (filepath: string)
+
+Allows you to require a CommonJS module referenced in the provided file path within the VM context. It will return its exports.
+
+##### requireInContext: (filepath: string)
+
+Same as `require` but it will copy each of the exports in the context of the VM. Exports can then be used inside of the VM with an evaluated script.
+
+##### requireInlineInContext: (code: string)
+
+Same as `requireInContext` but allows you to pass the code instead of a reference to a file.
+
+It will create a temporary file and then load it in the VM Context.

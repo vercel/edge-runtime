@@ -1,0 +1,66 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  FORCE_COLOR: 1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # https://nodejs.org/en/about/releases/
+        # https://pnpm.io/installation#compatibility
+        version:
+          - node: 12.x
+          - node: 14.x
+          - node: 16.x
+          - node: 18.x
+
+    name: Node.js ${{ matrix.version.node }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.pnpm-store
+            node_modules/.cache/turbo
+            node_modules/.pnpm
+          key: ${{ runner.os }}-node${{ matrix.version.node }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-node${{ matrix.version.node }}-
+            ${{ runner.os }}-
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ matrix.version.node == '12.x' && '6' || '7' }}
+          run_install: |
+            - recursive: true
+              args: [--no-frozen-lockfile, --loglevel=error]
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.version.node }}
+
+      - run: pnpm run build
+
+      - run: pnpm run test
+
+      - name: Generate coverage
+        run: npm run coverage
+
+      - name: Upload Coverage
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

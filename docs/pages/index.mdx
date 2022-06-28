@@ -1,0 +1,28 @@
+---
+title: What is Edge Runtime
+description: The Edge Runtime runs Vercel Edge Functions, locally.
+---
+
+import Features from '../components/features'
+
+# The Edge Runtime
+
+The Edge Runtime is a toolkit for developing, testing, and defining the runtime Web APIs for Edge infrastructure.
+
+This library is designed for framework and library authors who want to support Edge environments. With the Edge Runtime, you can emulate the production context of [Edge Functions](https://vercel.com/edge) on your local machine. When your framework is built on the Edge Runtime, it runs everywhere Node.js does.
+
+<Features />
+
+## Developing Edge Functions locally
+
+Edge Functions run on top of the [JavaScript V8 engine](https://v8.dev/), but **not** Node.js, so there is **no access** to Node.js APIs such as [process](https://nodejs.org/api/process.html), [path](https://nodejs.org/api/path.html), or [fs](https://nodejs.org/api/fs.html) inside the Edge Runtime.
+
+Edge Functions can be developed locally using the Edge Runtime, either installed as a [Node.js module](/getting-started), or with the [CLI](/cli). The Edge Runtime uses Node.js to spawn processes and execute code on your local machine. But because Node.js APIs are not available for use in Edge Functions, they are not exposed in the Edge Runtime. Instead, the Edge Runtime exposes the same subset of Web Standard APIs ([fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), [Request](https://developer.mozilla.org/en-US/docs/Web/API/Request), [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response), [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone), for a full list see [Edge Runtime APIs](/features/available-apis)) available in Edge Functions, this allows you to develop and test your functions locally, in a Web Standard isolated context.
+
+Because you can run your functions locally, they can be tested in the terminal, or browser, giving you complete control over your workflow.
+
+Get started using Edge Runtime:
+
+- [Explore the available APIs](features/available-apis)
+- [Add Jest tests targeting the Edge Runtime](/packages/jest-environment)
+- [Try the online REPL](https://edge-runtime-playground.vercel.sh)
