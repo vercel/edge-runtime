@@ -24,7 +24,7 @@
   "dependencies": {
     "@edge-runtime/vm": "^1.1.0-beta.10",
     "@jest/environment": "28.1.1",
-    "@jest/fake-timers": "28.1.1",
+    "@jest/fake-timers": "28.1.2",
     "@jest/types": "28.1.1",
     "jest-mock": "28.1.1",
     "jest-util": "28.1.1"
