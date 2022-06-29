@@ -23,7 +23,7 @@
   "dependencies": {
     "@edge-runtime/format": "^1.0.0",
     "@edge-runtime/vm": "^1.1.0-beta.10",
-    "exit-hook": "2.2.1",
+    "exit-hook": "3.0.0",
     "http-status": "~1.5.0",
     "mri": "1.2.0",
     "picocolors": "1.0.0",
