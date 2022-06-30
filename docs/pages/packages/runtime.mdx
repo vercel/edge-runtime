@@ -59,10 +59,10 @@ console.log(response.status)
 You can use `runServer` to expose _any_ Edge Runtime instance as regular HTTP server:
 
 ```js
-import { runServer } from 'edge-runtime'
+import { runServer, EdgeRuntime } from 'edge-runtime'
 
 const runtime = new EdgeRuntime()
-const server = await runServer({ runtime: edgeRuntime })
+const server = await runServer({ runtime })
 
 console.log(`Listening at ${server.url}`)
 ```
