@@ -18,6 +18,13 @@ Object.getOwnPropertyNames(repl.context).forEach(
 const runtime = new EdgeRuntime()
 Object.assign(repl.context, runtime.context)
 
+Object.defineProperty(repl.context, 'EdgeRuntime', {
+  configurable: false,
+  enumerable: false,
+  writable: false,
+  value: runtime.context.EdgeRuntime,
+})
+
 const nodeMajorVersion = parseInt(process.versions.node.split('.')[0])
 if (nodeMajorVersion < 16) {
   repl.context.util = {
