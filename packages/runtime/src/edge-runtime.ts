@@ -5,7 +5,6 @@ import type {
   EdgeVMOptions,
 } from '@edge-runtime/vm'
 import { EdgeVM } from '@edge-runtime/vm'
-import { VERSION } from './version'
 
 interface Options<T extends Primitives> extends EdgeVMOptions<T> {
   /**
@@ -60,7 +59,7 @@ export class EdgeRuntime<T extends Primitives = any> extends EdgeVM<T> {
       configurable: false,
       enumerable: false,
       writable: false,
-      value: { version: VERSION },
+      value: 'edge-runtime',
     })
 
     this.evaluate<void>(getDefineEventListenersCode())

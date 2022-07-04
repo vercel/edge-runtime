@@ -41,7 +41,6 @@
   "scripts": {
     "build": "tsc --project tsconfig.prod.json",
     "postversion": "pnpm run build",
-    "prebuild": "node -p \"'export const VERSION = ' + JSON.stringify(require('./package.json').version)\" > src/version.ts",
     "test": "jest"
   },
   "license": "MPLv2",
