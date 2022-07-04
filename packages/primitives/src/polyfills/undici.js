@@ -5,6 +5,17 @@
  */
 const abort = require('abort-controller')
 
+/**
+ * @see https://fetch.spec.whatwg.org/#concept-header-value-normalize
+ * @param {string} potentialValue
+ */
+function headerValueNormalize(potentialValue) {
+  //  To normalize a byte sequence potentialValue, remove
+  //  any leading and trailing HTTP whitespace bytes from
+  //  potentialValue.
+  return potentialValue.replace(/^[\r\n\t ]+|[\r\n\t ]+$/g, '')
+}
+
 global.AbortController = abort.AbortController
 global.AbortSignal = abort.AbortSignal
 
@@ -64,11 +75,9 @@ HeadersModule.HeadersList.prototype.append = function (name, value) {
     })
   }
 
-  const _name = HeadersModule.normalizeAndValidateHeaderName(name)
+  const _name = name.toLowerCase()
   if (_name === 'set-cookie') {
-    this[SCookies].push(
-      HeadersModule.normalizeAndValidateHeaderValue(_name, value)
-    )
+    this[SCookies].push(headerValueNormalize(value))
   }
 
   return result
@@ -90,11 +99,9 @@ HeadersModule.HeadersList.prototype.set = function (name, value) {
     })
   }
 
-  const _name = HeadersModule.normalizeAndValidateHeaderName(name)
+  const _name = name.toLowerCase()
   if (_name === 'set-cookie') {
-    this[SCookies] = [
-      HeadersModule.normalizeAndValidateHeaderValue(_name, value),
-    ]
+    this[SCookies] = [headerValueNormalize(value)]
   }
 
   return result
@@ -116,7 +123,7 @@ HeadersModule.HeadersList.prototype.delete = function (name) {
     })
   }
 
-  const _name = HeadersModule.normalizeAndValidateHeaderName(name)
+  const _name = name.toLowerCase()
   if (_name === 'set-cookie') {
     this[SCookies] = []
   }
@@ -128,7 +135,7 @@ HeadersModule.HeadersList.prototype.delete = function (name) {
  * headers.
  */
 HeadersModule.Headers.prototype.getAll = function (name) {
-  const _name = HeadersModule.normalizeAndValidateHeaderName(name)
+  const _name = name.toLowerCase()
   if (_name !== 'set-cookie') {
     throw new Error(`getAll can only be used with 'set-cookie'`)
   }
