@@ -39,7 +39,7 @@ export class VM<T extends Dictionary> {
         name: 'Edge Runtime',
         codeGeneration: options.codeGeneration ?? {
           strings: false,
-          wasm: false,
+          wasm: true,
         },
       }
     ) as ExtendedDictionary<T>
