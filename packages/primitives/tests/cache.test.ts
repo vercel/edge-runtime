@@ -56,7 +56,7 @@ test('caches.match', async () => {
   const cache = await caches.open('my_cache_2')
   await caches.open('my_cache_3')
 
-  const request = new Request('https://example.vercel.app')
+  const request = new Request('https://example.vercel.sh')
   await cache.add(request)
 
   expect(await cache.match(request)).toBeTruthy()
@@ -65,7 +65,7 @@ test('caches.match', async () => {
 
 test('cache.put', async () => {
   const cache = new Cache()
-  const request = new Request('https://example.vercel.app')
+  const request = new Request('https://example.vercel.sh')
   const response = await fetch(request)
   const result = await cache.put(request, response)
 
@@ -77,7 +77,7 @@ test('cache.put throws an error under non GET method', async () => {
 
   try {
     const cache = new Cache()
-    const request = new Request('https://example.vercel.app', {
+    const request = new Request('https://example.vercel.sh', {
       method: 'POST',
     })
     await cache.put(request, new Response())
@@ -109,7 +109,7 @@ test('cache.put throws an error if response status is 206', async () => {
 
   try {
     const cache = new Cache()
-    const request = new Request('https://example.vercel.app')
+    const request = new Request('https://example.vercel.sh')
     const response = new Response(null, { status: 206 })
     await cache.put(request, response)
   } catch (error: any) {
@@ -125,7 +125,7 @@ test('cache.put throws an error if response vary header is *', async () => {
 
   try {
     const cache = new Cache()
-    const request = new Request('https://example.vercel.app')
+    const request = new Request('https://example.vercel.sh')
     const response = new Response(null, { headers: { 'vary': '*' } })
     await cache.put(request, response)
   } catch (error: any) {
@@ -141,7 +141,7 @@ test('cache.put throws an error if response body is used or locked', async () =>
 
   try {
     const cache = new Cache()
-    const request = new Request('https://example.vercel.app')
+    const request = new Request('https://example.vercel.sh')
     const response = new Response('')
     response.text()
     await cache.put(request, response)
@@ -155,7 +155,7 @@ test('cache.put throws an error if response body is used or locked', async () =>
 
 test('cache.add', async () => {
   const cache = new Cache()
-  const request = new Request('https://example.vercel.app')
+  const request = new Request('https://example.vercel.sh')
   const result = await cache.add(request)
 
   expect(result).toBeUndefined()
@@ -180,7 +180,7 @@ test('cache.addAll', async () => {
   const cache = new Cache()
 
   const result = await cache.addAll([
-    'https://example.vercel.app',
+    'https://example.vercel.sh',
     'https://edge-ping.vercel.app',
   ])
 
@@ -189,7 +189,7 @@ test('cache.addAll', async () => {
 
 test('cache.match', async () => {
   const cache = new Cache()
-  const request = new Request('https://example.vercel.app')
+  const request = new Request('https://example.vercel.sh')
   await cache.add(request)
 
   const response = await cache.match(request)
@@ -199,7 +199,7 @@ test('cache.match', async () => {
 
 test('cache.delete', async () => {
   const cache = new Cache()
-  const request = new Request('https://example.vercel.app')
+  const request = new Request('https://example.vercel.sh')
 
   expect(await cache.delete(request)).toBe(false)
 
