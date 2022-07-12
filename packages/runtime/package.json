@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@types/node-fetch": "2.x",
-    "node-fetch": "2"
+    "node-fetch": "3"
   },
   "files": [
     "dist"
