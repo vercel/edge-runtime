@@ -1,12 +1,8 @@
 import type { DispatchFetch, ErrorHandler, RejectionHandler } from './types'
-import type {
-  Primitives,
-  ExtendedDictionary,
-  EdgeVMOptions,
-} from '@edge-runtime/vm'
+import type { EdgeVMOptions, EdgeContext } from '@edge-runtime/vm'
 import { EdgeVM } from '@edge-runtime/vm'
 
-interface Options<T extends Primitives> extends EdgeVMOptions<T> {
+interface Options<T extends EdgeContext> extends EdgeVMOptions<T> {
   /**
    * Code to be evaluated as the VM for the Runtime is created. This is handy
    * to run code directly instead of first creating the runtime and then
@@ -27,14 +23,14 @@ let uncaughtExceptionHandlers: ErrorHandler[]
  * rejections and FetchEvent. It also allows to dispatch fetch events which
  * enables it to work behind a server.
  */
-export class EdgeRuntime<T extends Primitives = any> extends EdgeVM<T> {
+export class EdgeRuntime<T extends EdgeContext = any> extends EdgeVM<T> {
   public readonly dispatchFetch: DispatchFetch
 
   constructor(options?: Options<T>) {
     super({
       ...options,
       extend: (context) => {
-        return options?.extend?.(context) ?? (context as ExtendedDictionary<T>)
+        return options?.extend?.(context) ?? context as EdgeContext & T
       },
     })
 

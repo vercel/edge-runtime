@@ -1,9 +1,9 @@
-import type { Primitives } from '@edge-runtime/vm'
+import type { EdgeContext } from '@edge-runtime/vm'
 import { createHandler, Options } from './create-handler'
 import { once } from 'events'
 import http from 'http'
 
-interface ServerOptions<T extends Primitives> extends Options<T> {
+interface ServerOptions<T extends EdgeContext> extends Options<T> {
   /**
    * The port to start the server. If none is provided it will use a random
    * available port.
@@ -31,7 +31,7 @@ interface EdgeRuntimeServer {
  * immediately run a server on the provided port. If there is no port, the
  * server will use a random one.
  */
-export async function runServer<T extends Primitives>(
+export async function runServer<T extends EdgeContext>(
   options: ServerOptions<T>
 ): Promise<EdgeRuntimeServer> {
   const { handler, waitUntil } = createHandler(options)
