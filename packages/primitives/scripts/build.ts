@@ -32,6 +32,11 @@ async function bundlePackage() {
         http: resolve('src/patches/http.js'),
         'util/types': resolve('src/patches/util-types.js'),
       }),
+      /**
+       * Make sure that depdendencies between primitives are consumed
+       * externally instead of being bundled. Also polyfills stream/web
+       * with the web streams polyfill.
+       */
       {
         name: 'import-path',
         setup: (build) => {
@@ -50,6 +55,48 @@ async function bundlePackage() {
                 path: `./${basename(fullpath)}`,
                 external: true,
               }
+            }
+          })
+        },
+      },
+      /**
+       * Make sure that undici has defined the FinalizationRegistry global
+       * available globally which is missing in older node.js versions.
+       */
+      {
+        name: 'add-finalization-registry',
+        setup: (build) => {
+          build.onLoad(
+            { filter: /undici\/lib\/fetch\/request/ },
+            async (args) => {
+              return {
+                contents: Buffer.concat([
+                  Buffer.from(
+                    `global.FinalizationRegistry = function () { return { register: function () {} } }`
+                  ),
+                  await fs.promises.readFile(args.path),
+                ]),
+              }
+            }
+          )
+        },
+      },
+      /**
+       * Modern Node.js versions include Blob globally which makes the Blob
+       * polyfill fail as if it was running on the browser so we attempt to
+       * remove if from `global` always.
+       */
+      {
+        name: 'hide-builtin-blob',
+        setup: (build) => {
+          build.onLoad({ filter: /blob-polyfill/ }, async (args) => {
+            return {
+              contents: Buffer.concat([
+                Buffer.from(
+                  `(() => { try { global.Blob = undefined; } catch {} })(); `
+                ),
+                await fs.promises.readFile(args.path),
+              ]),
             }
           })
         },

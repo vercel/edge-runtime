@@ -1,8 +1,3 @@
-/**
- * Undici expects some some globals defined at Node.js global level. We must
- * define them as they are missing in older versions. These are defined here
- * because it is just Undici who requires them.
- */
 import { AbortController } from './abort-controller'
 import { AbortSignal } from './abort-controller'
 
@@ -16,11 +11,6 @@ import Agent from 'undici/lib/agent'
 
 global.AbortController = AbortController
 global.AbortSignal = AbortSignal
-global.FinalizationRegistry = function () {
-  return {
-    register: function () {},
-  }
-}
 
 /**
  * A symbol used to store cookies in the headers module.

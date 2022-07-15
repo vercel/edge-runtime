@@ -55,7 +55,9 @@ test('extend a web standard API', async () => {
 })
 
 it('allows to run fetch', async () => {
-  const textp = await (new EdgeVM().evaluate(`fetch('https://example.vercel.sh').then(res => res.text())`))
+  const textp = await new EdgeVM().evaluate(
+    `fetch('https://example.vercel.sh').then(res => res.text())`
+  )
   expect(textp.startsWith('<!doctype html>')).toBe(true)
 })
 
@@ -104,93 +106,122 @@ it('TextDecoder supports a vary of encodings', async () => {
     'windows-1257',
     'windows-1258',
     'x-mac-cyrillic',
-    'x-user-defined'
+    'x-user-defined',
   ]
 
+  const vm = new EdgeVM()
   const supported: string[] = []
   const notSupported: string[] = []
 
-  encodings.forEach(encoding => {
+  encodings.forEach((encoding) => {
     try {
-      new TextDecoder(encoding)
+      vm.evaluate(`new TextDecoder('${encoding}')`)
       supported.push(encoding)
     } catch (error) {
       notSupported.push(encoding)
     }
   })
 
-  expect(supported).toEqual(expect.arrayContaining(
-    [
-      "ascii",
-      "big5",
-      "euc-jp",
-      "euc-kr",
-      "gb18030",
-      "gbk",
-      "ibm866",
-      "iso-2022-jp",
+  expect(supported).toEqual(
+    expect.arrayContaining([
+      'ascii',
+      'big5',
+      'euc-jp',
+      'euc-kr',
+      'gb18030',
+      'gbk',
+      'ibm866',
+      'iso-2022-jp',
       'iso-8859-1',
-      "iso-8859-2",
-      "iso-8859-3",
-      "iso-8859-4",
-      "iso-8859-5",
-      "iso-8859-6",
-      "iso-8859-7",
-      "iso-8859-8",
-      "iso-8859-10",
-      "iso-8859-13",
-      "iso-8859-14",
-      "iso-8859-15",
+      'iso-8859-2',
+      'iso-8859-3',
+      'iso-8859-4',
+      'iso-8859-5',
+      'iso-8859-6',
+      'iso-8859-7',
+      'iso-8859-8',
+      'iso-8859-10',
+      'iso-8859-13',
+      'iso-8859-14',
+      'iso-8859-15',
       // "iso-8859-16",
-      "koi8-r",
-      "koi8-u",
-      "latin1",
-      "macintosh",
-      "shift-jis",
-      "utf-16be",
-      "utf-16le",
-      "utf8",
-      "windows-874",
-      "windows-1250",
-      "windows-1251",
-      "windows-1252",
-      "windows-1253",
-      "windows-1254",
-      "windows-1255",
-      "windows-1256",
-      "windows-1257",
-      "windows-1258",
-      "x-mac-cyrillic",
-    ]
-  ))
+      'koi8-r',
+      'koi8-u',
+      'latin1',
+      'macintosh',
+      'shift-jis',
+      'utf-16be',
+      'utf-16le',
+      'utf8',
+      'windows-874',
+      'windows-1250',
+      'windows-1251',
+      'windows-1252',
+      'windows-1253',
+      'windows-1254',
+      'windows-1255',
+      'windows-1256',
+      'windows-1257',
+      'windows-1258',
+      'x-mac-cyrillic',
+    ])
+  )
 })
 
 it('uses the same builtins in polyfills as in VM', () => {
-  expect(new EdgeVM().evaluate(`(new TextEncoder().encode('abc')) instanceof Uint8Array`)).toBe(true)
-  expect(new EdgeVM().evaluate(`(new TextEncoder().encode('abc')) instanceof Object`)).toBe(true)
-  expect(new EdgeVM().evaluate(`(new Uint8Array()) instanceof Object`)).toBe(true)
-  expect(new EdgeVM().evaluate(`(new AbortController()) instanceof Object`)).toBe(true)
-  expect(new EdgeVM().evaluate(`(new URL('https://vercel.com')) instanceof Object`)).toBe(true)
-  expect(new EdgeVM().evaluate(`(new URLSearchParams()) instanceof Object`)).toBe(true)
-  expect(new EdgeVM().evaluate(`(new URLPattern()) instanceof Object`)).toBe(true)
+  expect(
+    new EdgeVM().evaluate(
+      `(new TextEncoder().encode('abc')) instanceof Uint8Array`
+    )
+  ).toBe(true)
+  expect(
+    new EdgeVM().evaluate(`(new TextEncoder().encode('abc')) instanceof Object`)
+  ).toBe(true)
+  expect(new EdgeVM().evaluate(`(new Uint8Array()) instanceof Object`)).toBe(
+    true
+  )
+  expect(
+    new EdgeVM().evaluate(`(new AbortController()) instanceof Object`)
+  ).toBe(true)
+  expect(
+    new EdgeVM().evaluate(`(new URL('https://vercel.com')) instanceof Object`)
+  ).toBe(true)
+  expect(
+    new EdgeVM().evaluate(`(new URLSearchParams()) instanceof Object`)
+  ).toBe(true)
+  expect(new EdgeVM().evaluate(`(new URLPattern()) instanceof Object`)).toBe(
+    true
+  )
 })
 
 it('does not alter instanceof for literals and objects', async () => {
-  expect(new EdgeVM().evaluate('new Float32Array() instanceof Object')).toBe(true)
-  expect(new EdgeVM().evaluate('new Float32Array() instanceof Float32Array')).toBe(true)
+  expect(new EdgeVM().evaluate('new Float32Array() instanceof Object')).toBe(
+    true
+  )
+  expect(
+    new EdgeVM().evaluate('new Float32Array() instanceof Float32Array')
+  ).toBe(true)
   expect(new EdgeVM().evaluate('[] instanceof Array')).toBe(true)
   expect(new EdgeVM().evaluate('new Array() instanceof Array')).toBe(true)
   expect(new EdgeVM().evaluate('/^hello$/gi instanceof RegExp')).toBe(true)
-  expect(new EdgeVM().evaluate('new RegExp("^hello$", "gi") instanceof RegExp')).toBe(true)
+  expect(
+    new EdgeVM().evaluate('new RegExp("^hello$", "gi") instanceof RegExp')
+  ).toBe(true)
   expect(new EdgeVM().evaluate('({ foo: "bar" }) instanceof Object')).toBe(true)
-  expect(new EdgeVM().evaluate('Object.create({ foo: "bar" }) instanceof Object')).toBe(true)
-  expect(new EdgeVM().evaluate('new Object({ foo: "bar" }) instanceof Object')).toBe(true)
+  expect(
+    new EdgeVM().evaluate('Object.create({ foo: "bar" }) instanceof Object')
+  ).toBe(true)
+  expect(
+    new EdgeVM().evaluate('new Object({ foo: "bar" }) instanceof Object')
+  ).toBe(true)
   expect(new EdgeVM().evaluate('(() => {}) instanceof Function')).toBe(true)
-  expect(new EdgeVM().evaluate('(function () {}) instanceof Function')).toBe(true)
+  expect(new EdgeVM().evaluate('(function () {}) instanceof Function')).toBe(
+    true
+  )
 })
 
 describe('contains all required primitives', () => {
-  let edgeVM: EdgeVM<any>;
+  let edgeVM: EdgeVM<any>
 
   beforeAll(() => {
     edgeVM = new EdgeVM()
@@ -199,7 +230,6 @@ describe('contains all required primitives', () => {
   it.each([
     { api: 'AbortController' },
     { api: 'AbortSignal' },
-    { api: 'AggregateError' },
     { api: 'Array' },
     { api: 'ArrayBuffer' },
     { api: 'atob' },

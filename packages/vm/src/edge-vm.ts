@@ -57,17 +57,17 @@ export type EdgeContext = VMContext & {
   CryptoKey: typeof EdgePrimitives.CryptoKey
   Event: typeof EdgePrimitives.Event
   EventTarget: typeof EdgePrimitives.EventTarget
-  fetch: typeof EdgePrimitives.fetch,
+  fetch: typeof EdgePrimitives.fetch
   FetchEvent: typeof EdgePrimitives.FetchEvent
-  File: typeof EdgePrimitives.File,
-  FormData: typeof EdgePrimitives.FormData,
-  Headers: typeof EdgePrimitives.Headers,
+  File: typeof EdgePrimitives.File
+  FormData: typeof EdgePrimitives.FormData
+  Headers: typeof EdgePrimitives.Headers
   PromiseRejectionEvent: typeof EdgePrimitives.PromiseRejectionEvent
   ReadableStream: typeof EdgePrimitives.ReadableStream
   ReadableStreamBYOBReader: typeof EdgePrimitives.ReadableStreamBYOBReader
   ReadableStreamDefaultReader: typeof EdgePrimitives.ReadableStreamDefaultReader
-  Request: typeof EdgePrimitives.Request,
-  Response: typeof EdgePrimitives.Response,
+  Request: typeof EdgePrimitives.Request
+  Response: typeof EdgePrimitives.Response
   structuredClone: typeof EdgePrimitives.structuredClone
   SubtleCrypto: typeof EdgePrimitives.SubtleCrypto
   TextDecoder: typeof EdgePrimitives.TextDecoder
@@ -168,7 +168,6 @@ function addPrimitives(context: VMContext) {
       ['abort-controller', { exports: abort }],
       ['assert', { exports: require('assert') }],
       ['buffer', { exports: require('buffer') }],
-      ['diagnostics_channel', { exports: require('diagnostics_channel') }],
       ['events', { exports: require('events') }],
       ['http', { exports: require('http') }],
       ['net', { exports: require('net') }],
@@ -186,6 +185,9 @@ function addPrimitives(context: VMContext) {
     path: require.resolve('@edge-runtime/primitives/fetch'),
     scopedContext: {
       Buffer,
+      FinalizationRegistry: function () {
+        return { register: function () {} }
+      },
       global: {},
       process: { env: {}, versions: { node: '12.0.0' } },
       queueMicrotask: queueMicrotask,
