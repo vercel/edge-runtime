@@ -29,6 +29,9 @@
   ],
   "scripts": {
     "build": "tsc --project ./tsconfig.prod.json",
+    "clean": "pnpm run clean:node && pnpm run clean:build",
+    "clean:build": "rm -rf dist",
+    "clean:node": "rm -rf node_modules",
     "test": "jest"
   },
   "license": "MPLv2",

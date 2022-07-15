@@ -92,7 +92,7 @@ test('allows to read a FormData body as text', async () => {
 
     Doe
     ------formdata-unidici-0.1234
-    Content-Disposition: form-data; name=\\"metadata\\"
+    Content-Disposition: form-data; name=\\"metadata\\"; filename=\\"blob\\"
     Content-Type: application/json
 
     {

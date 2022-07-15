@@ -1,5 +1,5 @@
-import type { Context as VMContext, CreateContextOptions } from 'vm'
-import type { Dictionary, ExtendedDictionary } from './types'
+import type { CreateContextOptions } from 'vm'
+import type { Dictionary } from './types'
 import { createContext, runInContext } from 'vm'
 import { createRequire } from './require'
 import { tempFile } from './temp-file'
@@ -14,7 +14,7 @@ export interface VMOptions<T> {
    * Allows to extend the VMContext. Note that it must return a contextified
    * object so ideally it should return the same reference it receives.
    */
-  extend?: (context: VMContext) => ExtendedDictionary<T>
+  extend?: (context: VMContext) =>VMContext & T
   /**
    * Provides an initial map to the require cache.
    * If none is given, it will be initialized to an empty map.
@@ -30,7 +30,7 @@ export interface VMOptions<T> {
 export class VM<T extends Dictionary> {
   private readonly requireFn: (referrer: string, specifier: string) => any
   public readonly requireCache: Map<string, Dictionary>
-  public readonly context: ExtendedDictionary<T>
+  public readonly context: VMContext & T
 
   constructor(options: VMOptions<T> = {}) {
     const context = createContext(
@@ -42,10 +42,10 @@ export class VM<T extends Dictionary> {
           wasm: true,
         },
       }
-    ) as ExtendedDictionary<T>
+    ) as VMContext
 
     this.requireCache = options.requireCache ?? new Map()
-    this.context = options.extend?.(context) ?? context
+    this.context = options.extend?.(context) ?? context as VMContext & T
     this.requireFn = createRequire(this.context, this.requireCache)
   }
 
@@ -86,4 +86,60 @@ export class VM<T extends Dictionary> {
     this.requireInContext(file.path)
     file.remove()
   }
+}
+
+export interface VMContext {
+  Array: typeof Array
+  ArrayBuffer: typeof ArrayBuffer
+  Atomics: typeof Atomics
+  BigInt: typeof BigInt
+  BigInt64Array: typeof BigInt64Array
+  BigUint64Array: typeof BigUint64Array
+  Boolean: typeof Boolean
+  DataView: typeof DataView
+  Date: typeof Date
+  decodeURI: typeof decodeURI
+  decodeURIComponent: typeof decodeURIComponent
+  encodeURI: typeof encodeURI
+  encodeURIComponent: typeof encodeURIComponent
+  Error: typeof Error
+  EvalError: typeof EvalError
+  Float32Array: typeof Float32Array
+  Float64Array: typeof Float64Array
+  Function: typeof Function
+  Infinity: typeof Infinity
+  Int8Array: typeof Int8Array
+  Int16Array: typeof Int16Array
+  Int32Array: typeof Int32Array
+  Intl: typeof Intl
+  isFinite: typeof isFinite
+  isNaN: typeof isNaN
+  JSON: typeof JSON
+  Map: typeof Map
+  Math: typeof Math
+  Number: typeof Number
+  Object: typeof Object
+  parseFloat: typeof parseFloat
+  parseInt: typeof parseInt
+  Promise: typeof Promise
+  Proxy: typeof Proxy
+  RangeError: typeof RangeError
+  ReferenceError: typeof ReferenceError
+  Reflect: typeof Reflect
+  RegExp: typeof RegExp
+  Set: typeof Set
+  SharedArrayBuffer: typeof SharedArrayBuffer
+  String: typeof String
+  Symbol: typeof Symbol
+  SyntaxError: typeof SyntaxError
+  TypeError: typeof TypeError
+  Uint8Array: typeof Uint8Array
+  Uint8ClampedArray: typeof Uint8ClampedArray
+  Uint16Array: typeof Uint16Array
+  Uint32Array: typeof Uint32Array
+  URIError: typeof URIError
+  WeakMap: typeof WeakMap
+  WeakSet: typeof WeakSet
+  WebAssembly: typeof WebAssembly
+  [key: string | number]: any
 }
