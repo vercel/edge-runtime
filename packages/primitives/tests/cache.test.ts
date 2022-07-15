@@ -1,7 +1,7 @@
-import primitives from '../dist'
+import { fetch, Request, Response } from '../fetch'
+import { createCaches } from '../cache'
 
-const { Cache, cacheStorage } = require('../src/polyfills/cache')(primitives)
-const { fetch, Request, Response } = primitives
+const { cacheStorage, Cache } = createCaches()
 
 test('caches.open', async () => {
   const caches = cacheStorage()
@@ -194,7 +194,7 @@ test('cache.match', async () => {
 
   const response = await cache.match(request)
 
-  expect(response.status).toBe(200)
+  expect(response?.status).toBe(200)
 })
 
 test('cache.delete', async () => {

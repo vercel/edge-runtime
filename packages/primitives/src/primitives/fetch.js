@@ -3,49 +3,28 @@
  * define them as they are missing in older versions. These are defined here
  * because it is just Undici who requires them.
  */
-const abort = require('abort-controller')
+import { AbortController } from './abort-controller'
+import { AbortSignal } from './abort-controller'
 
-global.AbortController = abort.AbortController
-global.AbortSignal = abort.AbortSignal
+import * as CoreSymbols from 'undici/lib/core/symbols'
+import * as FetchSymbols from 'undici/lib/fetch/symbols'
+import * as HeadersModule from 'undici/lib/fetch/headers'
+import * as ResponseModule from 'undici/lib/fetch/response'
 
+import fetchImpl from 'undici/lib/fetch'
+import Agent from 'undici/lib/agent'
+
+global.AbortController = AbortController
+global.AbortSignal = AbortSignal
 global.FinalizationRegistry = function () {
   return {
     register: function () {},
   }
 }
 
-const Constants = require('undici/lib/fetch/constants')
-const CoreSymbols = require('undici/lib/core/symbols')
-
 /**
- * We patch this constant to allow for Response to set Cookies. Originally
- * undici does not allow it as per spec, but we need to use the runtime for
- * server code it should be allowed.
+ * A symbol used to store cookies in the headers module.
  */
-Constants.forbiddenResponseHeaderNames = []
-Constants.forbiddenHeaderNames = []
-
-const fetchImpl = require('undici/lib/fetch')
-const Agent = require('undici/lib/agent')
-
-/**
- * A global agent to be used with every fetch request. We also define a
- * couple of globals that we can hide in the runtime for advanced use.
- */
-let globalDispatcher = new Agent()
-
-function getGlobalDispatcher() {
-  return globalDispatcher
-}
-
-function setGlobalDispatcher(agent) {
-  if (!agent || typeof agent.dispatch !== 'function') {
-    throw new InvalidArgumentError('Argument agent must implement Agent')
-  }
-  globalDispatcher = agent
-}
-
-const HeadersModule = require('undici/lib/fetch/headers')
 const SCookies = Symbol('set-cookie')
 
 /**
@@ -137,14 +116,6 @@ HeadersModule.Headers.prototype.getAll = function (name) {
 }
 
 /**
- * Export updated Header Primitive
- */
-module.exports.Headers = HeadersModule.Headers
-
-const ResponseModule = require('undici/lib/fetch/response')
-const FetchSymbols = require('undici/lib/fetch/symbols')
-
-/**
  * We also must patch the error static method since it works just like
  * redirect and we need consistency.
  */
@@ -155,29 +126,38 @@ ResponseModule.Response.error = function (...args) {
   return response
 }
 
-module.exports.Response = ResponseModule.Response
+/**
+ * A global agent to be used with every fetch request. We also define a
+ * couple of globals that we can hide in the runtime for advanced use.
+ */
+let globalDispatcher = new Agent()
+
+export function getGlobalDispatcher() {
+  return globalDispatcher
+}
+
+export function setGlobalDispatcher(agent) {
+  if (!agent || typeof agent.dispatch !== 'function') {
+    throw new InvalidArgumentError('Argument agent must implement Agent')
+  }
+  globalDispatcher = agent
+}
 
 /**
  * Export fetch with an implementation that uses a default global dispatcher.
  * It also re-cretates a new Response object in order to allow mutations on
  * the Response headers.
  */
-module.exports.fetch = async function fetch() {
+export async function fetch() {
   const res = await fetchImpl.apply(getGlobalDispatcher(), arguments)
-  const response = new ResponseModule.Response(res.body, res)
+  const response = new Response(res.body, res)
   Object.defineProperty(response, 'url', { value: res.url })
   return response
 }
 
-/**
- * Assign remaining primitives.
- */
-module.exports.Request = require('undici/lib/fetch/request').Request
-module.exports.FormData = require('undici/lib/fetch/formdata').FormData
-module.exports.File = require('undici/lib/fetch/file').File
+export const Headers = HeadersModule.Headers
+export const Response = ResponseModule.Response
 
-/**
- * Export a getter and setter to be hidden to get and replace the agent.
- */
-module.exports.getGlobalDispatcher = getGlobalDispatcher
-module.exports.setGlobalDispatcher = setGlobalDispatcher
+export { FormData } from 'undici/lib/fetch/formdata'
+export { Request } from 'undici/lib/fetch/request'
+export { File } from 'undici/lib/fetch/file'
