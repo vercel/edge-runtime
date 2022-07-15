@@ -23,6 +23,8 @@ export = class EdgeEnvironment implements JestEnvironment<number> {
         return context
       },
     })
+
+    revealPrimitives(vm)
     this.context = vm.context
 
     const global = (this.global = Object.assign(
@@ -71,4 +73,74 @@ export = class EdgeEnvironment implements JestEnvironment<number> {
   getVmContext(): Context | null {
     return this.context
   }
+}
+
+/**
+ * Jest will access some primitives directly through vm.context so we must
+ * make them available. We do this by redefining the property in the
+ * context object.
+ */
+function revealPrimitives(vm: EdgeVM<any>) {
+  ;([
+    'Array',
+    'ArrayBuffer',
+    'Atomics',
+    'BigInt',
+    'BigInt64Array',
+    'BigUint64Array',
+    'Boolean',
+    'DataView',
+    'Date',
+    'decodeURI',
+    'decodeURIComponent',
+    'encodeURI',
+    'encodeURIComponent',
+    'Error',
+    'EvalError',
+    'Float32Array',
+    'Float64Array',
+    'Function',
+    'Int8Array',
+    'Int16Array',
+    'Int32Array',
+    'Intl',
+    'isFinite',
+    'isNaN',
+    'JSON',
+    'Map',
+    'Math',
+    'Number',
+    'Object',
+    'parseFloat',
+    'parseInt',
+    'Promise',
+    'Proxy',
+    'RangeError',
+    'ReferenceError',
+    'Reflect',
+    'RegExp',
+    'Set',
+    'SharedArrayBuffer',
+    'String',
+    'Symbol',
+    'SyntaxError',
+    'TypeError',
+    'Uint8Array',
+    'Uint8ClampedArray',
+    'Uint16Array',
+    'Uint32Array',
+    'URIError',
+    'WeakMap',
+    'WeakSet',
+    'WebAssembly',
+  ]).forEach(property => {
+    vm.evaluate(`
+      Object.defineProperty(this, '${property}', {
+        configurable: false,
+        enumerable: false,
+        value: ${property},
+        writable: true,
+      })
+    `)
+  });
 }
