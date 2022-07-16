@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { help } from './help'
 import { createLogger } from './logger'
 import { EdgeRuntime } from '../edge-runtime'
 import { promisify } from 'util'
@@ -13,6 +14,7 @@ import path from 'path'
 const { _: input, ...flags } = mri(process.argv.slice(2), {
   default: {
     cwd: process.cwd(),
+    help: false,
     listen: false,
     port: 3000,
     repl: false,
@@ -21,6 +23,13 @@ const { _: input, ...flags } = mri(process.argv.slice(2), {
 
 async function main() {
   const logger = createLogger()
+
+  /**
+   * Display help message when the help flag is given.
+   */
+  if (flags.help) {
+    return help()
+  }
 
   /**
    * If there is no script path to run a server, the CLI will start a REPL.
