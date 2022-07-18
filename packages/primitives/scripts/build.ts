@@ -29,6 +29,7 @@ async function bundlePackage() {
       alias({
         buffer: path.resolve('src/polyfills/buffer.js'),
         http: path.resolve('src/polyfills/http.js'),
+        'util': path.resolve('src/polyfills/util.js'),
         'util/types': path.resolve('src/polyfills/util-types.js'),
         'stream/web': path.resolve('src/polyfills/web-streams.js'),
       }),
