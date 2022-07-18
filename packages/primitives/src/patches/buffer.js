@@ -3,5 +3,5 @@
  * its implementation so instead we add our polyfill. ESBuild will replace the
  * dependency.
  */
-module.exports = Object.assign({}, require('buffer'))
+module.exports = require('buffer')
 module.exports.Blob = require('../primitives/blob').Blob
