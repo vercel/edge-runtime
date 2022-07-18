@@ -74,7 +74,7 @@ console.log(`ping to ${url} returned ${status}`)
 
 Provides code generation options to [vm.createContext#options](https://nodejs.org/api/vm.html#vmcreatecontextcontextobject-options).
 
-If you don't provide any option, `{ strings: false, wasm: false }` will be used.
+If you don't provide any option, `{ strings: false, wasm: true }` will be used.
 
 ##### extend?: (context: VMContext) => ExtendedDictionary\<T>
 
