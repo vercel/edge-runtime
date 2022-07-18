@@ -85,6 +85,7 @@
     "contributors": "(git-authors-cli && finepack && git add package.json && git commit -m 'build: add contributors' --no-verify) || true",
     "coverage": "c8 report --reporter=text-lcov > coverage/lcov.info",
     "lockfile": "pnpm install --lockfile && git add pnpm-lock.yaml && git commit -m \"build: regenerate lock\"",
+    "postinstall": "./node_modules/.bin/simple-git-hooks",
     "postrelease": "npm run lockfile",
     "prebuild": "npm -r run clean:build",
     "prerelease": "pnpm -r run clean && pnpm install && pnpm run build && npm run contributors",
@@ -109,8 +110,8 @@
   },
   "packageManager": "pnpm@6.29.1",
   "simple-git-hooks": {
-    "commit-msg": "npx commitlint --edit",
-    "pre-commit": "npx nano-staged"
+    "commit-msg": "./node_modules/.bin/commitlint --edit",
+    "pre-commit": "./node_modules/.bin/nano-staged"
   },
   "workspaces": [
     "packages/*"
