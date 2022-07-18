@@ -10,6 +10,10 @@ export class Response extends globalThis.Response {
   readonly headers: Headers
 }
 
-export { fetch }
-export { File }
-export { FormData }
+declare const fetchImplementation: typeof fetch
+declare const FileConstructor: typeof File
+declare const FormDataConstructor: typeof FormData
+
+export { fetchImplementation as fetch }
+export { FileConstructor as File }
+export { FormDataConstructor as FormData }

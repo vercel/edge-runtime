@@ -1,12 +1,14 @@
-import type { Event as EventI, EventTarget } from 'event-target-shim'
+import type { EventTarget } from 'event-target-shim'
 
-export class Event implements EventI {}
+declare const EventTargetConstructor: typeof EventTarget
+declare const EventConstructor: typeof Event
+
+export { EventConstructor as Event }
 
 export class FetchEvent {
   awaiting: Set<Promise<void>>
   constructor(request: Request)
 }
 
-export { EventTarget } from 'event-target-shim'
+export { EventTargetConstructor as EventTarget }
 export { EventTarget as PromiseRejectionEvent } from 'event-target-shim'
-
