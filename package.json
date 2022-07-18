@@ -79,15 +79,16 @@
   },
   "scripts": {
     "build": "turbo run build",
-    "clean": "npm run clean:node && npm run clean:build",
-    "clean:build": "pnpm -r exec -- rm -rf dist",
-    "clean:node": "pnpm -r exec -- rm -rf node_modules",
+    "clean": "pnpm -r run clean && rm -rf ./node_modules",
+    "clean:build": "pnpm -r run clean:build",
+    "clean:node": "pnpm -r run clean:node",
     "contributors": "(git-authors-cli && finepack && git add package.json && git commit -m 'build: add contributors' --no-verify) || true",
     "coverage": "c8 report --reporter=text-lcov > coverage/lcov.info",
     "lockfile": "pnpm install --lockfile && git add pnpm-lock.yaml && git commit -m \"build: regenerate lock\"",
+    "postinstall": "./node_modules/.bin/simple-git-hooks",
     "postrelease": "npm run lockfile",
-    "prebuild": "npm run clean:build",
-    "prerelease": "pnpm run clean && pnpm install && pnpm run build && npm run contributors",
+    "prebuild": "npm -r run clean:build",
+    "prerelease": "pnpm -r run clean && pnpm install && pnpm run build && npm run contributors",
     "release": "lerna publish --yes --sort --conventional-commits -m \"chore(release): %s\" --create-release github",
     "test": "c8 -x 'packages/primitives/*' turbo run test --concurrency=1",
     "update": "pnpm -r exec ncu -- --upgrade && ncu -- --upgrade",
@@ -109,8 +110,8 @@
   },
   "packageManager": "pnpm@6.29.1",
   "simple-git-hooks": {
-    "commit-msg": "npx commitlint --edit",
-    "pre-commit": "npx nano-staged"
+    "commit-msg": "./node_modules/.bin/commitlint --edit",
+    "pre-commit": "./node_modules/.bin/nano-staged"
   },
   "workspaces": [
     "packages/*"

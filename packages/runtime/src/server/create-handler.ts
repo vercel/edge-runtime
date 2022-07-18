@@ -1,13 +1,13 @@
 import type { EdgeRuntime } from '../edge-runtime'
 import type { IncomingMessage, ServerResponse } from 'http'
 import type { Logger, NodeHeaders } from '../types'
-import type { Primitives } from '@edge-runtime/vm'
+import type { EdgeContext } from '@edge-runtime/vm'
 import { getClonableBodyStream } from './body-streams'
 import prettyMs from 'pretty-ms'
 import status from 'http-status'
 import timeSpan from 'time-span'
 
-export interface Options<T extends Primitives> {
+export interface Options<T extends EdgeContext> {
   /**
    * A logger interface. If none is provided there will be no logs.
    */
@@ -25,7 +25,7 @@ export interface Options<T extends Primitives> {
  * call for the given `EdgeRuntime`. Then it will transform the response
  * into an HTTP response.
  */
-export function createHandler<T extends Primitives>(options: Options<T>) {
+export function createHandler<T extends EdgeContext>(options: Options<T>) {
   const awaiting: Set<Promise<unknown>> = new Set()
 
   return {

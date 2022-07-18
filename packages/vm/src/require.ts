@@ -27,14 +27,19 @@ export function requireDependencies(params: {
   }
 }
 
-export function createRequire(context: Context, cache: Map<string, any>) {
+export function createRequire(
+  context: Context,
+  cache: Map<string, any>,
+  references?: Set<string>,
+  scopedContext: Record<any, any> = {}
+) {
   return function requireFn(referrer: string, specifier: string) {
     const resolved = require.resolve(specifier, {
       paths: [dirname(referrer)],
     })
 
-    const cached = cache.get(resolved)
-    if (cached !== undefined) {
+    const cached = cache.get(specifier) || cache.get(resolved)
+    if (cached !== undefined && cached !== null) {
       return cached.exports
     }
 
@@ -45,11 +50,11 @@ export function createRequire(context: Context, cache: Map<string, any>) {
     }
 
     cache.set(resolved, module)
+    references?.add(resolved)
     const fn = runInContext(
-      `(function(module,exports,require,__dirname,__filename) {${readFileSync(
-        resolved,
-        'utf-8'
-      )}\n})`,
+      `(function(module,exports,require,__dirname,__filename,${Object.keys(
+        scopedContext
+      ).join(',')}) {${readFileSync(resolved, 'utf-8')}\n})`,
       context
     )
 
@@ -59,12 +64,29 @@ export function createRequire(context: Context, cache: Map<string, any>) {
         module.exports,
         requireFn.bind(null, resolved),
         dirname(resolved),
-        resolved
+        resolved,
+        ...Object.values(scopedContext)
       )
-    } finally {
+    } catch (error) {
       cache.delete(resolved)
+      throw error
     }
     module.loaded = true
     return module.exports
   }
+}
+
+export function requireWithCache(params: {
+  cache?: Map<string, any>
+  context: Context
+  path: string
+  references?: Set<string>
+  scopedContext?: Record<string, any>
+}) {
+  return createRequire(
+    params.context,
+    params.cache ?? new Map(),
+    params.references,
+    params.scopedContext
+  ).call(null, params.path, params.path)
 }

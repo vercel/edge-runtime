@@ -4,8 +4,8 @@
  * transform web/stream into the ponyfill require when bundling in case any
  * dependency uses Node recent web streams.
  */
-const { Crypto: WebCrypto, CryptoKey } = require('@peculiar/webcrypto')
-const { v4: uuid } = require('uuid')
+import { Crypto as WebCrypto, CryptoKey } from '@peculiar/webcrypto'
+import { v4 as uuid } from 'uuid'
 
 class Crypto extends WebCrypto {
   #randomUUID = uuid
@@ -34,6 +34,8 @@ Object.defineProperty(SubtleCrypto, 'toString', {
   writable: true,
 })
 
-module.exports.Crypto = Crypto
-module.exports.CryptoKey = CryptoKey
-module.exports.SubtleCrypto = SubtleCrypto
+export const crypto = new Crypto()
+
+export { Crypto }
+export { CryptoKey }
+export { SubtleCrypto }

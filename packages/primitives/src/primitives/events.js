@@ -1,11 +1,9 @@
-const EventTargetShim = require('event-target-shim')
+import EventTargetShim from 'event-target-shim'
 
-const { EventTarget } = EventTargetShim
+export const EventTarget = EventTargetShim.EventTarget
+export class Event extends EventTargetShim {}
 
-// This is necessary just to have the right constructor name
-class Event extends EventTargetShim {}
-
-class FetchEvent extends Event {
+export class FetchEvent extends Event {
   constructor(request) {
     super('fetch')
     this.request = request
@@ -23,17 +21,10 @@ class FetchEvent extends Event {
   }
 }
 
-class PromiseRejectionEvent extends Event {
+export class PromiseRejectionEvent extends Event {
   constructor(type, init) {
     super(type, { cancelable: true })
     this.promise = init.promise
     this.reason = init.reason
   }
-}
-
-module.exports = {
-  Event,
-  EventTarget,
-  FetchEvent,
-  PromiseRejectionEvent,
 }

@@ -1,12 +1,12 @@
-import primitives from '../dist'
+import { Headers } from '../fetch'
 
 test('sets header calling Headers constructor', async () => {
-  const headers = new primitives.Headers({ cookie: 'hello=world' })
+  const headers = new Headers({ cookie: 'hello=world' })
   expect(headers.get('cookie')).toBe('hello=world')
 })
 
 test('sets header calling Headers constructor', async () => {
-  const headers = new primitives.Headers()
+  const headers = new Headers()
   headers.set('cookie', 'hello=world')
   expect(headers.get('cookie')).toBe('hello=world')
 })

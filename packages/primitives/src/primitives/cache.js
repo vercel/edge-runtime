@@ -1,6 +1,9 @@
-'use strict'
+import { fetch, Request, Response } from './fetch'
 
-module.exports = ({ fetch, Request, Response }) => {
+/**
+ * @type {() => { Cache, cacheStorage: () => CacheStorage }}
+ */
+export function createCaches() {
   const getKey = (request) => new URL(request.url).toString()
 
   /**
@@ -215,7 +218,7 @@ module.exports = ({ fetch, Request, Response }) => {
     }
   }
 
-  return { fetch, Request, Response, Cache, cacheStorage }
+  return { Cache, cacheStorage }
 }
 
 function CacheStorage() {
@@ -241,6 +244,9 @@ Object.defineProperty(CacheStorage, 'toString', {
   writable: true,
 })
 
+/**
+ * @type Cache
+ */
 function Cache() {
   if (!(this instanceof Cache)) return new Cache()
   throw TypeError('Illegal constructor')
@@ -264,5 +270,10 @@ Object.defineProperty(Cache, 'toString', {
   writable: true,
 })
 
-module.exports.CacheStorage = CacheStorage
-module.exports.Cache = Cache
+const cachesStorage = createCaches()
+const CacheFromStorage = cachesStorage.Cache
+
+export const caches = cachesStorage.cacheStorage()
+
+export { CacheStorage }
+export { CacheFromStorage as Cache }

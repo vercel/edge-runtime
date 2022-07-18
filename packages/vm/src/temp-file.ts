@@ -1,9 +1,7 @@
+import { crypto } from '@edge-runtime/primitives/crypto'
+import path from 'path'
 import fs from 'fs'
 import os from 'os'
-import path from 'path'
-import primitives from '@edge-runtime/primitives'
-
-const { crypto } = primitives
 
 /**
  * Creates a temporary file with the provided content and returns the
