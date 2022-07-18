@@ -1,25 +1,25 @@
 ---
 title: What is Edge Runtime
-description: The Edge Runtime runs Vercel Edge Functions, locally.
+description: The Edge Runtime is a toolkit for developing, testing, and defining the runtime Web APIs for Edge infrastructure.
 ---
 
 import Features from '../components/features'
 
 # The Edge Runtime
 
-The Edge Runtime is a toolkit for developing, testing, and defining the runtime Web APIs for Edge infrastructure.
+The Edge Runtime is designed to help framework authors adopt edge computing and provide open-source tooling built on Web standards. It’s designed to be integrated into frameworks (like Next.js) and not for usage in application code. This runtime is purposefully minimal and designed for security and speed.
 
-This library is designed for framework and library authors who want to support Edge environments. With the Edge Runtime, you can emulate the production context of [Edge Functions](https://vercel.com/edge) on your local machine. When your framework is built on the Edge Runtime, it runs everywhere Node.js does.
+When your framework is built on the Edge Runtime, it runs everywhere Node.js does. When deployed to infrastructure like Vercel, frameworks like Next.js can automatically provision the optimal infrastructure for you.
+
+The Edge Runtime is a subset of standard Web APIs, giving you compatibility and interoperability with the highest number of environments. This project is developed as part of [WinterCG](https://wintercg.org) – a community group between Vercel, Cloudflare, Deno, Shopify, and more. The term “Edge” refers to the orientation toward instant serverless compute environments and not a specific set of locations.
 
 <Features />
 
-## Developing Edge Functions locally
+## Using the Edge Runtime Locally
 
-Edge Functions run on top of the [JavaScript V8 engine](https://v8.dev/), but **not** Node.js, so there is **no access** to Node.js APIs such as [process](https://nodejs.org/api/process.html), [path](https://nodejs.org/api/path.html), or [fs](https://nodejs.org/api/fs.html) inside the Edge Runtime.
+When developing and testing locally, the Edge Runtime will polyfill Web APIs and ensure compatibility with the Node.js layer.
 
-Edge Functions can be developed locally using the Edge Runtime, either installed as a [Node.js module](/getting-started), or with the [CLI](/cli). The Edge Runtime uses Node.js to spawn processes and execute code on your local machine. But because Node.js APIs are not available for use in Edge Functions, they are not exposed in the Edge Runtime. Instead, the Edge Runtime exposes the same subset of Web Standard APIs ([fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API), [Request](https://developer.mozilla.org/en-US/docs/Web/API/Request), [Response](https://developer.mozilla.org/en-US/docs/Web/API/Response), [structuredClone](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone), for a full list see [Edge Runtime APIs](/features/available-apis)) available in Edge Functions, this allows you to develop and test your functions locally, in a Web Standard isolated context.
-
-Because you can run your functions locally, they can be tested in the terminal, or browser, giving you complete control over your workflow.
+In production, the Edge Runtime uses the [JavaScript V8 engine](https://v8.dev/), **not** Node.js, so there is **no access** to Node.js APIs.
 
 Get started using Edge Runtime:
 
