@@ -26,6 +26,9 @@ async function bundlePackage() {
     esbuildOptions(opts, _context) {
       opts.legalComments = 'external'
     },
+    define: {
+      process: JSON.stringify({ env: {}, versions: { node: '16.6.0' } }),
+    },
     esbuildPlugins: [
       alias({
         buffer: resolve('src/patches/buffer.js'),

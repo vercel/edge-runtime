@@ -189,7 +189,6 @@ function addPrimitives(context: VMContext) {
         return { register: function () {} }
       },
       global: {},
-      process: { env: {}, versions: { node: '12.0.0' } },
       queueMicrotask: queueMicrotask,
     },
   })
