@@ -1,6 +1,8 @@
+import type { EdgeRuntime as IEdgeRuntime } from '../src/edge-runtime'
+
 const handlerByEvent = new Map<string, Function>()
 
-let EdgeRuntime: any
+let EdgeRuntime: typeof IEdgeRuntime
 
 beforeAll(async () => {
   jest

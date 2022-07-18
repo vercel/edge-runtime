@@ -23,7 +23,7 @@ let uncaughtExceptionHandlers: ErrorHandler[]
  * rejections and FetchEvent. It also allows to dispatch fetch events which
  * enables it to work behind a server.
  */
-export class EdgeRuntime<T extends EdgeContext = any> extends EdgeVM<T> {
+export class EdgeRuntime<T extends EdgeContext = EdgeContext> extends EdgeVM<T> {
   public readonly dispatchFetch: DispatchFetch
 
   constructor(options?: Options<T>) {
