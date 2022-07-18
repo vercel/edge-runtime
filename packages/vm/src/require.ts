@@ -39,7 +39,7 @@ export function createRequire(
     })
 
     const cached = cache.get(specifier) || cache.get(resolved)
-    if (!!cached) {
+    if (cached !== undefined && cached !== null) {
       return cached.exports
     }
 
