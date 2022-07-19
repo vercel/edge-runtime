@@ -8,18 +8,16 @@
     },
     "edge-runtime#build": {
       "dependsOn": ["^build"],
-      "outputs": ["build/**", "src/version.ts"]
+      "outputs": ["src/version.ts"]
     },
     "primitives#build": {
       "dependsOn": ["^build"],
       "outputs": [
         "abort-controller/**",
         "blob/**",
-        "build/**",
         "cache/**",
         "console/**",
         "crypto/**",
-        "dist/**",
         "encoding/**",
         "events/**",
         "fetch/**",
