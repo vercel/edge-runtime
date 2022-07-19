@@ -42,17 +42,18 @@
     "whatwg-url": "11.0.0"
   },
   "files": [
-    "dist",
     "abort-controller",
     "blob",
     "cache",
     "console",
     "crypto",
+    "dist",
     "encoding",
     "events",
     "fetch",
     "streams",
     "structured-clone",
+    "types",
     "url"
   ],
   "scripts": {
