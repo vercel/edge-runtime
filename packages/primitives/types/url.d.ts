@@ -45,6 +45,9 @@ interface URLPatternComponentResult {
   }
 }
 
+declare const URLConstructor: URL
+declare const URLSearchParamsConstructor: URLSearchParams
+
 export { URLPattern }
-export { URL }
-export { URLSearchParams }
+export { URLConstructor as URL }
+export { URLSearchParamsConstructor as URLSearchParams }
