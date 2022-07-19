@@ -36,9 +36,6 @@ jobs:
             node_modules/.cache/turbo
             node_modules/.pnpm
           key: ${{ runner.os }}-node${{ matrix.version.node }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-node${{ matrix.version.node }}-
-            ${{ runner.os }}-
 
       - name: Setup PNPM
         uses: pnpm/action-setup@v2
