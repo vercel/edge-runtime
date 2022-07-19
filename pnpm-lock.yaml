@@ -72,7 +72,7 @@ importers:
 
   packages/jest-environment:
     specifiers:
-      '@edge-runtime/vm': ^1.1.0-beta.12
+      '@edge-runtime/vm': ^1.1.0-beta.14
       '@jest/environment': 28.1.2
       '@jest/fake-timers': 28.1.2
       '@jest/types': 28.1.1
@@ -88,7 +88,7 @@ importers:
 
   packages/primitives:
     specifiers:
-      '@edge-runtime/format': ^1.1.0-beta.12
+      '@edge-runtime/format': ^1.1.0-beta.14
       '@peculiar/webcrypto': 1.4.0
       '@types/uuid': 8.3.4
       '@ungap/structured-clone': 1.0.1
@@ -126,8 +126,8 @@ importers:
 
   packages/runtime:
     specifiers:
-      '@edge-runtime/format': ^1.1.0-beta.12
-      '@edge-runtime/vm': ^1.1.0-beta.12
+      '@edge-runtime/format': ^1.1.0-beta.14
+      '@edge-runtime/vm': ^1.1.0-beta.14
       '@types/node-fetch': 2.x
       exit-hook: 2.2.1
       http-status: ~1.5.0
@@ -153,13 +153,13 @@ importers:
 
   packages/types:
     specifiers:
-      '@edge-runtime/primitives': ^1.1.0-beta.12
+      '@edge-runtime/primitives': ^1.1.0-beta.14
     dependencies:
       '@edge-runtime/primitives': link:../primitives
 
   packages/vm:
     specifiers:
-      '@edge-runtime/primitives': ^1.1.0-beta.12
+      '@edge-runtime/primitives': ^1.1.0-beta.14
     dependencies:
       '@edge-runtime/primitives': link:../primitives
 
