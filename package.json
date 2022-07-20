@@ -64,7 +64,7 @@
     "postinstall": "./node_modules/.bin/simple-git-hooks",
     "postrelease": "npm run lockfile",
     "prebuild": "npm -r run clean:build",
-    "prerelease": "pnpm -r run clean && pnpm install && pnpm run build && npm run contributors",
+    "prerelease": "pnpm -r run clean && pnpm install && pnpm run build --force && npm run contributors",
     "release": "lerna publish --yes --sort --conventional-commits -m \"chore(release): %s\" --create-release github",
     "test": "c8 -x 'packages/primitives/*' turbo run test --concurrency=1",
     "update": "pnpm -r exec ncu -- --upgrade && ncu -- --upgrade",
