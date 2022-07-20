@@ -141,10 +141,7 @@ function addPrimitives(context: VMContext) {
   // URL
   defineProperties(context, {
     exports: requireWithCache({
-      cache: new Map([
-        ['tr46', { exports: require('tr46') }],
-        ['punycode', { exports: require('punycode') }],
-      ]),
+      cache: new Map([['punycode', { exports: require('punycode') }]]),
       context,
       path: require.resolve('@edge-runtime/primitives/url'),
     }),
@@ -228,19 +225,8 @@ function addPrimitives(context: VMContext) {
     exports: requireWithCache({
       context,
       cache: new Map([
-        [
-          '@peculiar/asn1-schema',
-          { exports: require('@peculiar/asn1-schema') },
-        ],
-        [
-          '@peculiar/json-schema',
-          { exports: require('@peculiar/json-schema') },
-        ],
         ['crypto', { exports: require('crypto') }],
         ['process', { exports: require('process') }],
-        ['pvtsutils', { exports: require('pvtsutils') }],
-        ['tslib', { exports: require('tslib') }],
-        ['webcrypto-core', { exports: require('webcrypto-core') }],
       ]),
       path: require.resolve('@edge-runtime/primitives/crypto'),
       scopedContext: { Buffer },
