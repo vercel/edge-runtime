@@ -2,7 +2,7 @@
   "name": "@edge-runtime/types",
   "description": "TypeScript global types for using Edge Runtime.",
   "homepage": "https://edge-runtime.vercel.app/packages/types",
-  "version": "1.1.0-beta.15",
+  "version": "1.1.0-beta.16",
   "repository": {
     "directory": "packages/types",
     "type": "git",
@@ -23,7 +23,7 @@
     "web"
   ],
   "dependencies": {
-    "@edge-runtime/primitives": "^1.1.0-beta.15"
+    "@edge-runtime/primitives": "^1.1.0-beta.16"
   },
   "files": [
     "src"
