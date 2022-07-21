@@ -187,6 +187,7 @@ function addPrimitives(context: VMContext) {
       },
       global: {},
       queueMicrotask: queueMicrotask,
+      setImmediate: setImmediate,
     },
   })
 
