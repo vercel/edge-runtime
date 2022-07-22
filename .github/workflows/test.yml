@@ -50,12 +50,12 @@ jobs:
         with:
           node-version: ${{ matrix.version.node }}
 
-      - run: pnpm run build
+      - run: pnpm build
 
-      - run: pnpm run test
+      - run: pnpm test
 
       - name: Generate coverage
-        run: npm run coverage
+        run: pnpm coverage
 
       - name: Upload Coverage
         uses: codecov/codecov-action@v3
