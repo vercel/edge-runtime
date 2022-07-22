@@ -15,6 +15,50 @@ it('first argument', () => {
   expect(format(function () {})).toBe('[Function]')
   expect(format(Symbol('mysymbol'))).toBe('Symbol(mysymbol)')
   expect(format(BigInt(9007199254740991))).toBe('9007199254740991')
+  expect(format({ [Symbol('a')]: 1 })).toBe('{ [Symbol(a)]: 1 }')
+  expect(
+    format(
+      (() => {
+        const fn = function () {}
+        // @ts-expect-error
+        fn[Symbol.for('a')] = 'foo'
+        return fn
+      })()
+    )
+  ).toBe("[Function: fn] { [Symbol(a)]: 'foo' }")
+
+  expect(
+    format(
+      (() => {
+        const fn = function () {}
+        // @ts-expect-error
+        fn[Symbol.for('a')] = 'foo'
+        // @ts-expect-error
+        fn[Symbol.for('b')] = 'bar'
+        return fn
+      })()
+    )
+  ).toBe("[Function: fn] { [Symbol(a)]: 'foo', [Symbol(b)]: 'bar' }")
+
+  expect(
+    format(
+      (() => {
+        const fn = function () {}
+        // @ts-expect-error
+        fn[Symbol.for('aaaaaaaaaaaa')] = 'foo'
+        // @ts-expect-error
+        fn[Symbol.for('bbbbbbbbbbbbbbb')] = 'bar'
+        return fn
+      })()
+    )
+  ).toBe(`[Function: fn] {
+  [Symbol(aaaaaaaaaaaa)]: 'foo',
+  [Symbol(bbbbbbbbbbbbbbb)]: 'bar'
+}`)
+
+  // expect(format(new Map([['foo', 'bar']]))).toBe("Map(1) { 'foo' => 'bar' }")
+  // expect(format(new Set([['foo', 'bar']]))).toBe("Set(1) { [ 'foo', 'bar' ] }")
+  // expect(format(new Uint8Array([1, 2, 3]))).toBe("Uint8Array(3) [ 1, 2, 3 ]")
 })
 
 it('string (%s)', () => {
