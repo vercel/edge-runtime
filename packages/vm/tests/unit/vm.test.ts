@@ -4,7 +4,7 @@ import { VM } from '../../src'
 test('create an empty context', () => {
   const vm = new VM()
   vm.evaluate('this.foo = "bar"')
-  expect(vm.context).toEqual({ foo: 'bar' })
+  expect(vm.context).toStrictEqual({ foo: 'bar' })
 })
 
 test('extend an empty a context with environment variables', () => {
