@@ -35,6 +35,21 @@ async function bundlePackage() {
         http: resolve('src/patches/http.js'),
         'util/types': resolve('src/patches/util-types.js'),
       }),
+
+      {
+        name: 'alias-undici-core-request',
+        setup: (build) => {
+          build.onResolve({ filter: /^\.\/core\/request$/ }, async (args) => {
+            // validate it's resolved by the expected path
+            if (args.importer.endsWith('node_modules/undici/lib/client.js')) {
+              return {
+                path: resolve('src/patches/undici-core-request.js'),
+              }
+            }
+          })
+        },
+      },
+
       /**
        * Make sure that depdendencies between primitives are consumed
        * externally instead of being bundled. Also polyfills stream/web
