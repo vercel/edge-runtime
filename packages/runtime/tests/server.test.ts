@@ -54,7 +54,7 @@ test('works with json', async () => {
 
   expect(response).toBeTruthy()
   expect(response.statusText).toEqual('OK')
-  expect(content).toEqual({ message: 'hi!' })
+  expect(content).toStrictEqual({ message: 'hi!' })
 })
 
 test('responds with an error when the code fails', async () => {
@@ -105,7 +105,7 @@ test('works with POST HTTP method', async () => {
 
   expect(response).toBeTruthy()
   expect(response.statusText).toEqual('OK')
-  expect(content).toEqual({ body })
+  expect(content).toStrictEqual({ body })
 })
 
 test(`allows to wait for effects created with waitUntil`, async () => {
