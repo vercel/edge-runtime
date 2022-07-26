@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import { createLogger } from './logger'
 import { EdgeRuntime } from '../edge-runtime'
 import { promisify } from 'util'
 import { readFileSync } from 'fs'
@@ -11,16 +10,26 @@ import mri from 'mri'
 import path from 'path'
 
 const { _: input, ...flags } = mri(process.argv.slice(2), {
+  alias: {
+    e: 'eval',
+    l: 'listen',
+    p: 'port',
+  },
   default: {
     cwd: process.cwd(),
     listen: false,
     port: 3000,
     repl: false,
+    eval: false,
   },
 })
 
 async function main() {
-  const logger = createLogger()
+  if (flags.eval) {
+    const { inlineEval } = await import('./eval')
+    console.log(await inlineEval(input[0]))
+    return
+  }
 
   /**
    * If there is no script path to run a server, the CLI will start a REPL.
@@ -41,6 +50,10 @@ async function main() {
   const runtime = new EdgeRuntime({ initialCode })
   if (!flags.listen) return runtime.evaluate('')
 
+  const logger = await import('./logger').then(({ createLogger }) =>
+    createLogger()
+  )
+
   logger.debug(
     `v${String(require('../../package.json').version)} at Node.js ${
       process.version
@@ -60,7 +73,7 @@ async function main() {
   logger(`Waiting incoming requests at ${logger.quotes(server.url)}`)
 }
 
-main().catch((err: unknown) => {
-  console.error(err)
+main().catch((error: any) => {
+  if (!(error instanceof Error)) error = new Error(error)
   process.exit(1)
 })
