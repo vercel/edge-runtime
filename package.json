@@ -81,7 +81,8 @@
       "prettier --write"
     ],
     "package.json": [
-      "finepack"
+      "finepack",
+      "pnpm install --lockfile-only"
     ]
   },
   "packageManager": "pnpm@6.29.1",
