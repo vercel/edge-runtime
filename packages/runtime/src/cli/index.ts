@@ -12,11 +12,13 @@ import path from 'path'
 const { _: input, ...flags } = mri(process.argv.slice(2), {
   alias: {
     e: 'eval',
+    h: 'help',
     l: 'listen',
     p: 'port',
   },
   default: {
     cwd: process.cwd(),
+    help: false,
     listen: false,
     port: 3000,
     repl: false,
@@ -25,6 +27,12 @@ const { _: input, ...flags } = mri(process.argv.slice(2), {
 })
 
 async function main() {
+  if (flags.help) {
+    const { help } = await import('./help')
+    console.log(help())
+    return
+  }
+
   if (flags.eval) {
     const { inlineEval } = await import('./eval')
     console.log(await inlineEval(input[0]))
