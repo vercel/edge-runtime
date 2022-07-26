@@ -29,7 +29,8 @@ const { _: input, ...flags } = mri(process.argv.slice(2), {
 async function main() {
   if (flags.help) {
     const { help } = await import('./help')
-    return help()
+    console.log(help())
+    return
   }
 
   if (flags.eval) {
