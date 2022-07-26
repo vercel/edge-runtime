@@ -221,59 +221,19 @@ export function createCaches() {
   return { Cache, cacheStorage }
 }
 
-function CacheStorage() {
-  if (!(this instanceof CacheStorage)) return new CacheStorage()
-  throw TypeError('Illegal constructor')
-}
-
-function CacheStorageToString() {
-  return 'function CacheStorage() { [native code] }'
-}
-
-Object.defineProperty(CacheStorageToString, 'name', {
-  configurable: true,
-  enumerable: false,
-  value: 'toString() { [native code] }',
-  writable: true,
-})
-
-Object.defineProperty(CacheStorage, 'toString', {
-  configurable: true,
-  enumerable: false,
-  value: CacheStorageToString,
-  writable: true,
-})
-
-/**
- * @type Cache
- */
-function Cache() {
+export function Cache() {
   if (!(this instanceof Cache)) return new Cache()
   throw TypeError('Illegal constructor')
 }
 
-function CacheToString() {
-  return 'function Cache() { [native code] }'
+export function CacheStorage() {
+  if (!(this instanceof CacheStorage)) return new CacheStorage()
+  throw TypeError('Illegal constructor')
 }
 
-Object.defineProperty(CacheToString, 'name', {
-  configurable: true,
-  enumerable: false,
-  value: 'toString() { [native code] }',
-  writable: true,
-})
-
-Object.defineProperty(Cache, 'toString', {
-  configurable: true,
-  enumerable: false,
-  value: CacheToString,
-  writable: true,
-})
-
-const cachesStorage = createCaches()
-const CacheFromStorage = cachesStorage.Cache
-
-export const caches = cachesStorage.cacheStorage()
-
-export { CacheStorage }
-export { CacheFromStorage as Cache }
+export const caches = (() => {
+  const { cacheStorage } = createCaches()
+  const caches = cacheStorage()
+  caches.open('default')
+  return caches
+})()
