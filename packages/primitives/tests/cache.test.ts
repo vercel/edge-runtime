@@ -1,7 +1,38 @@
 import { fetch, Request, Response } from '../fetch'
-import { createCaches } from '../cache'
+import {
+  caches,
+  createCaches,
+  Cache as ICache,
+  CacheStorage as ICacheStorage,
+} from '../cache'
 
 const { cacheStorage, Cache } = createCaches()
+
+test('Cache is an interface', () => {
+  expect.assertions(2)
+
+  try {
+    new ICache()
+  } catch (error: any) {
+    expect(error.name).toBe('TypeError')
+    expect(error.message).toBe('Illegal constructor')
+  }
+})
+
+test('CacheStorage is an interface', () => {
+  expect.assertions(2)
+
+  try {
+    new ICacheStorage()
+  } catch (error: any) {
+    expect(error.name).toBe('TypeError')
+    expect(error.message).toBe('Illegal constructor')
+  }
+})
+
+test('the default caches object has a default namespace', async () => {
+  expect(Array.from(await caches.keys())).toEqual(['default'])
+})
 
 test('caches.open', async () => {
   const caches = cacheStorage()
