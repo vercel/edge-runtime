@@ -94,10 +94,19 @@ export function createFormat(opts: FormatterOptions = {}) {
       return formattedPrimitive
     }
 
+    const symbols = Object.getOwnPropertySymbols(value)
+    if (symbols.length > 0) {
+      symbols.forEach((symbol) => {
+        const obj = value as Record<symbol | string, unknown>
+        const symbolKey = `[${symbol.toString()}]`
+        obj[symbolKey] = obj[symbol]
+        delete obj[symbol]
+      })
+    }
+
     const keys = ctx.showHidden
       ? Object.getOwnPropertyNames(value)
       : Object.keys(value as object)
-
     const visibleKeys = new Set<string>()
     keys.forEach((key) => visibleKeys.add(key))
 
@@ -115,8 +124,11 @@ export function createFormat(opts: FormatterOptions = {}) {
       }
     }
 
+    const isValueFunction = kind(value, 'function')
+    const isValueArray = Array.isArray(value)
     let base = ''
-    if (kind(value, 'function')) {
+
+    if (isValueFunction) {
       base = `[Function${value.name ? ': ' + value.name : ''}]`
     } else if (isRegExp(value)) {
       base = ' ' + RegExp.prototype.toString.call(value)
@@ -128,9 +140,13 @@ export function createFormat(opts: FormatterOptions = {}) {
       base = ' ' + value[ctx.customInspectSymbol]()
     }
 
-    const braces = Array.isArray(value) ? ['[', ']'] : ['{', '}']
+    const braces = isValueArray
+      ? ['[', ']']
+      : isValueFunction
+      ? ['', '']
+      : ['{', '}']
 
-    if (keys.length === 0 && (!Array.isArray(value) || value.length === 0)) {
+    if (keys.length === 0 && (!isValueArray || value.length === 0)) {
       return braces[0] + base + braces[1]
     }
 
@@ -142,7 +158,7 @@ export function createFormat(opts: FormatterOptions = {}) {
 
     ctx.seen.push(value)
 
-    const output = Array.isArray(value)
+    let output = isValueArray
       ? formatArray(ctx, value, recurseTimes, visibleKeys, keys)
       : keys.map((key) =>
           formatProperty(
@@ -157,7 +173,7 @@ export function createFormat(opts: FormatterOptions = {}) {
 
     ctx.seen.pop()
 
-    return reduceToSingleString(output, base, braces)
+    return reduceToSingleString(output, base, braces, isValueFunction)
   }
 
   function inspect(
@@ -174,7 +190,7 @@ export function createFormat(opts: FormatterOptions = {}) {
     recurseTimes: number | null | undefined,
     visibleKeys: Set<string>,
     key: string,
-    array: boolean
+    isArray: boolean
   ) {
     let name: string | undefined
     let str: string | undefined
@@ -203,7 +219,7 @@ export function createFormat(opts: FormatterOptions = {}) {
         )
 
         if (str.indexOf('\n') > -1) {
-          if (array) {
+          if (isArray) {
             str = str
               .split('\n')
               .map((line) => `  ${line}`)
@@ -224,22 +240,12 @@ export function createFormat(opts: FormatterOptions = {}) {
     }
 
     if (name === undefined) {
-      if (array && key.match(/^\d+$/)) {
+      if (isArray && key.match(/^\d+$/)) {
         return str
-      }
-
-      name = JSON.stringify('' + key)
-      if (name.match(/^"([a-zA-Z_][a-zA-Z_0-9]*)"$/)) {
-        name = name.slice(1, -1)
-      } else {
-        name = name
-          .replace(/'/g, "\\'")
-          .replace(/\\"/g, '"')
-          .replace(/(^"|"$)/g, "'")
       }
     }
 
-    return `${name}: ${str}`
+    return `${key}: ${str}`
   }
 
   function formatArray(
@@ -249,7 +255,7 @@ export function createFormat(opts: FormatterOptions = {}) {
     visibleKeys: Set<string>,
     keys: string[]
   ) {
-    const output = []
+    const output: string[] = []
 
     for (let index = 0; index < value.length; ++index) {
       if (Object.prototype.hasOwnProperty.call(value, String(index))) {
@@ -348,24 +354,38 @@ function isError(value: unknown): value is Error {
 function reduceToSingleString(
   output: string[],
   base: string,
-  braces: string[]
+  braces: string[],
+  isValueFunction: boolean
 ) {
   const length = output.reduce((prev, cur) => {
     return prev + cur.replace(/\u001b\[\d\d?m/g, '').length + 1
   }, 0)
 
   if (length > 60) {
+    const prefix = isValueFunction ? ' {' : ''
+    const suffix = isValueFunction ? '\n}' : ' '
+
     return (
       braces[0] +
-      (base === '' ? '' : base + '\n ') +
+      (base === '' ? '' : base + prefix + '\n ') +
       ' ' +
-      output.join(',\n  ') +
-      ' ' +
+      `${output.join(',\n  ')}` +
+      suffix +
       braces[1]
     )
   }
 
-  return braces[0] + base + ' ' + output.join(', ') + ' ' + braces[1]
+  const prefix = isValueFunction ? ' { ' : ' '
+  const suffix = isValueFunction ? ' } ' : ' '
+
+  return (
+    braces[0] +
+    base +
+    prefix +
+    output.join(', ') +
+    suffix +
+    braces[1]
+  ).trim()
 }
 
 function safeStringify(object: unknown) {
@@ -374,6 +394,7 @@ function safeStringify(object: unknown) {
       JSON.parse(JSON.stringify(element, makeCircularReplacer()))
     )
   }
+
   return JSON.stringify(object, makeCircularReplacer())
 }
 
