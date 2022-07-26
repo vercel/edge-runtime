@@ -23,14 +23,16 @@ let uncaughtExceptionHandlers: ErrorHandler[]
  * rejections and FetchEvent. It also allows to dispatch fetch events which
  * enables it to work behind a server.
  */
-export class EdgeRuntime<T extends EdgeContext = EdgeContext> extends EdgeVM<T> {
+export class EdgeRuntime<
+  T extends EdgeContext = EdgeContext
+> extends EdgeVM<T> {
   public readonly dispatchFetch: DispatchFetch
 
   constructor(options?: Options<T>) {
     super({
       ...options,
       extend: (context) => {
-        return options?.extend?.(context) ?? context as EdgeContext & T
+        return options?.extend?.(context) ?? (context as EdgeContext & T)
       },
     })
 
@@ -96,7 +98,7 @@ function getDefineEventListenersCode() {
       writable: true,
     })
 
-    function conditionallyUpdatesHandlerList(eventType) {
+    function __conditionallyUpdatesHandlerList(eventType) {
       if (eventType === 'unhandledrejection') {
         self.__onUnhandledRejectionHandler = self.__listeners[eventType];
       } else if (eventType === 'error') {
@@ -112,7 +114,7 @@ function getDefineEventListenersCode() {
 
       self.__listeners[eventType] = self.__listeners[eventType] || [];
       self.__listeners[eventType].push(handler);
-      conditionallyUpdatesHandlerList(eventType);
+      __conditionallyUpdatesHandlerList(eventType);
     }
 
     function removeEventListener(type, handler) {
@@ -126,7 +128,7 @@ function getDefineEventListenersCode() {
           delete self.__listeners[eventType];
         }
       }
-      conditionallyUpdatesHandlerList(eventType);
+      __conditionallyUpdatesHandlerList(eventType);
     }
   `
 }

@@ -16,7 +16,12 @@ Object.getOwnPropertyNames(repl.context).forEach(
 )
 
 const runtime = new EdgeRuntime()
-Object.assign(repl.context, runtime.context)
+
+Object.getOwnPropertyNames(runtime.context)
+  .filter((key) => !key.startsWith('__'))
+  .forEach((key) =>
+    Object.assign(repl.context, { [key]: runtime.context[key] })
+  )
 
 Object.defineProperty(repl.context, 'EdgeRuntime', {
   configurable: false,
@@ -38,3 +43,5 @@ if (nodeMajorVersion < 16) {
     },
   }
 }
+
+export { repl }

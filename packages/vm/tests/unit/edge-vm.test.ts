@@ -261,10 +261,13 @@ describe('contains all required primitives', () => {
     { api: 'btoa' },
     { api: 'Cache' },
     { api: 'caches' },
+    { api: 'caches' },
     { api: 'CacheStorage' },
     { api: 'clearInterval' },
     { api: 'clearTimeout' },
     { api: 'console' },
+    { api: 'console' },
+    { api: 'crypto' },
     { api: 'crypto' },
     { api: 'Crypto' },
     { api: 'CryptoKey' },
@@ -275,7 +278,12 @@ describe('contains all required primitives', () => {
     { api: 'encodeURI' },
     { api: 'encodeURIComponent' },
     { api: 'Error' },
+    { api: 'Error' },
+    { api: 'escape' },
+    { api: 'eval' },
     { api: 'EvalError' },
+    { api: 'EvalError' },
+    { api: 'Event' },
     { api: 'Event' },
     { api: 'EventTarget' },
     { api: 'fetch' },
@@ -297,6 +305,7 @@ describe('contains all required primitives', () => {
     { api: 'JSON' },
     { api: 'Map' },
     { api: 'Math' },
+    { api: 'NaN' },
     { api: 'Number' },
     { api: 'Object' },
     { api: 'parseFloat' },
@@ -331,6 +340,7 @@ describe('contains all required primitives', () => {
     { api: 'Uint8ClampedArray' },
     { api: 'Uint16Array' },
     { api: 'Uint32Array' },
+    { api: 'unescape' },
     { api: 'URIError' },
     { api: 'URL' },
     { api: 'URLPattern' },
@@ -340,7 +350,7 @@ describe('contains all required primitives', () => {
     { api: 'WebAssembly' },
     { api: 'WritableStream' },
     { api: 'WritableStreamDefaultWriter' },
-  ])('$api is defined in global scope', ({ api }) => {
+  ])('`$api` is defined in global scope', ({ api }) => {
     expect(edgeVM.evaluate(api)).toBeDefined()
   })
 })
