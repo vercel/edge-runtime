@@ -1,15 +1,151 @@
 import { EdgeVM } from '../../src'
 
-test('preload web standard APIs', () => {
-  const edgeVM = new EdgeVM()
-  edgeVM.evaluate('this.headers = new Headers()')
-  edgeVM.evaluate(
-    "this.request = new Request('https://edge-ping.vercel.app', { headers: new Headers({ 'Content-Type': 'text/xml' }) })"
-  )
+describe('preload web standard APIs', () => {
+  describe('TextDecoder', () => {
+    it('with Uint8Array', () => {
+      const edgeVM = new EdgeVM()
+      edgeVM.evaluate(
+        "this.decode = new TextDecoder('utf-8', { ignoreBOM: true }).decode(new Uint8Array([101,100,103,101,45,112,105,110,103,46,118,101,114,99,101,108,46,97,112,112 ]))"
+      )
+      expect(edgeVM.context.decode).toBe('edge-ping.vercel.app')
+    })
 
-  expect(edgeVM.context.headers).toBeTruthy()
-  expect(edgeVM.context.request).toBeTruthy()
-  expect(edgeVM.context.request.headers.get('Content-Type')).toEqual('text/xml')
+    it('supports a vary of encodings', async () => {
+      const encodings = [
+        'ascii',
+        'big5',
+        'euc-jp',
+        'euc-kr',
+        'gb18030',
+        'gbk',
+        'hz-gb-2312',
+        'ibm866',
+        'iso-2022-jp',
+        'iso-2022-kr',
+        'iso-8859-1',
+        'iso-8859-2',
+        'iso-8859-3',
+        'iso-8859-4',
+        'iso-8859-5',
+        'iso-8859-6',
+        'iso-8859-7',
+        'iso-8859-8',
+        'iso-8859-8i',
+        'iso-8859-10',
+        'iso-8859-13',
+        'iso-8859-14',
+        'iso-8859-15',
+        'iso-8859-16',
+        'koi8-r',
+        'koi8-u',
+        'latin1',
+        'macintosh',
+        'shift-jis',
+        'utf-16be',
+        'utf-16le',
+        'utf8',
+        'windows-874',
+        'windows-1250',
+        'windows-1251',
+        'windows-1252',
+        'windows-1253',
+        'windows-1254',
+        'windows-1255',
+        'windows-1256',
+        'windows-1257',
+        'windows-1258',
+        'x-mac-cyrillic',
+        'x-user-defined',
+      ]
+
+      const vm = new EdgeVM()
+      const supported: string[] = []
+      const notSupported: string[] = []
+
+      encodings.forEach((encoding) => {
+        try {
+          vm.evaluate(`new TextDecoder('${encoding}')`)
+          supported.push(encoding)
+        } catch (error) {
+          notSupported.push(encoding)
+        }
+      })
+
+      expect(supported).toEqual(
+        expect.arrayContaining([
+          'ascii',
+          'big5',
+          'euc-jp',
+          'euc-kr',
+          'gb18030',
+          'gbk',
+          'ibm866',
+          'iso-2022-jp',
+          'iso-8859-1',
+          'iso-8859-2',
+          'iso-8859-3',
+          'iso-8859-4',
+          'iso-8859-5',
+          'iso-8859-6',
+          'iso-8859-7',
+          'iso-8859-8',
+          'iso-8859-10',
+          'iso-8859-13',
+          'iso-8859-14',
+          'iso-8859-15',
+          // "iso-8859-16",
+          'koi8-r',
+          'koi8-u',
+          'latin1',
+          'macintosh',
+          'shift-jis',
+          'utf-16be',
+          'utf-16le',
+          'utf8',
+          'windows-874',
+          'windows-1250',
+          'windows-1251',
+          'windows-1252',
+          'windows-1253',
+          'windows-1254',
+          'windows-1255',
+          'windows-1256',
+          'windows-1257',
+          'windows-1258',
+          'x-mac-cyrillic',
+        ])
+      )
+    })
+  })
+
+  it('URL', () => {
+    const edgeVM = new EdgeVM()
+    edgeVM.evaluate("this.url = new URL('https://edge-ping.vercel.app/')")
+    expect(edgeVM.context.url).toBeTruthy()
+  })
+
+  describe('fetch', () => {
+    it('parsing to text', async () => {
+      const html = await new EdgeVM().evaluate(
+        `fetch('https://example.vercel.sh').then(res => res.text())`
+      )
+      expect(html.startsWith('<!doctype html>')).toBe(true)
+    })
+
+    it('with Headers', async () => {
+      const edgeVM = new EdgeVM()
+      edgeVM.evaluate('this.headers = new Headers()')
+      edgeVM.evaluate(
+        "this.request = new Request('https://edge-ping.vercel.app', { headers: new Headers({ 'Content-Type': 'text/xml' }) })"
+      )
+
+      expect(edgeVM.context.headers).toBeTruthy()
+      expect(edgeVM.context.request).toBeTruthy()
+      expect(edgeVM.context.request.headers.get('Content-Type')).toEqual(
+        'text/xml'
+      )
+    })
+  })
 })
 
 test('interact with fetch out of vm', async () => {
@@ -54,139 +190,7 @@ test('extend a web standard API', async () => {
   })
 })
 
-it('allows to run fetch', async () => {
-  const textp = await new EdgeVM().evaluate(
-    `fetch('https://example.vercel.sh').then(res => res.text())`
-  )
-  expect(textp.startsWith('<!doctype html>')).toBe(true)
-})
-
-it('TextDecoder works with Uint8Array', async () => {
-  const buffer = new Uint8Array([
-    123, 34, 110, 97, 109, 101, 34, 58, 34, 74, 111, 104, 110, 34, 44, 34, 105,
-    97, 116, 34, 58, 49, 54, 53, 56, 55, 52, 49, 54, 51, 57, 44, 34, 101, 120,
-    112, 34, 58, 49, 54, 54, 49, 51, 51, 51, 54, 51, 57, 44, 34, 106, 116, 105,
-    34, 58, 34, 99, 99, 53, 98, 48, 99, 55, 100, 45, 99, 49, 48, 99, 45, 52, 57,
-    51, 98, 45, 57, 98, 54, 102, 45, 102, 52, 99, 51, 101, 50, 101, 97, 97, 52,
-    50, 98, 34, 125,
-  ])
-
-  const decoded = new TextDecoder().decode(buffer)
-  expect(JSON.parse(decoded)).toStrictEqual({
-    name: 'John',
-    iat: 1658741639,
-    exp: 1661333639,
-    jti: 'cc5b0c7d-c10c-493b-9b6f-f4c3e2eaa42b',
-  })
-})
-
-it('TextDecoder supports a vary of encodings', async () => {
-  const encodings = [
-    'ascii',
-    'big5',
-    'euc-jp',
-    'euc-kr',
-    'gb18030',
-    'gbk',
-    'hz-gb-2312',
-    'ibm866',
-    'iso-2022-jp',
-    'iso-2022-kr',
-    'iso-8859-1',
-    'iso-8859-2',
-    'iso-8859-3',
-    'iso-8859-4',
-    'iso-8859-5',
-    'iso-8859-6',
-    'iso-8859-7',
-    'iso-8859-8',
-    'iso-8859-8i',
-    'iso-8859-10',
-    'iso-8859-13',
-    'iso-8859-14',
-    'iso-8859-15',
-    'iso-8859-16',
-    'koi8-r',
-    'koi8-u',
-    'latin1',
-    'macintosh',
-    'shift-jis',
-    'utf-16be',
-    'utf-16le',
-    'utf8',
-    'windows-874',
-    'windows-1250',
-    'windows-1251',
-    'windows-1252',
-    'windows-1253',
-    'windows-1254',
-    'windows-1255',
-    'windows-1256',
-    'windows-1257',
-    'windows-1258',
-    'x-mac-cyrillic',
-    'x-user-defined',
-  ]
-
-  const vm = new EdgeVM()
-  const supported: string[] = []
-  const notSupported: string[] = []
-
-  encodings.forEach((encoding) => {
-    try {
-      vm.evaluate(`new TextDecoder('${encoding}')`)
-      supported.push(encoding)
-    } catch (error) {
-      notSupported.push(encoding)
-    }
-  })
-
-  expect(supported).toEqual(
-    expect.arrayContaining([
-      'ascii',
-      'big5',
-      'euc-jp',
-      'euc-kr',
-      'gb18030',
-      'gbk',
-      'ibm866',
-      'iso-2022-jp',
-      'iso-8859-1',
-      'iso-8859-2',
-      'iso-8859-3',
-      'iso-8859-4',
-      'iso-8859-5',
-      'iso-8859-6',
-      'iso-8859-7',
-      'iso-8859-8',
-      'iso-8859-10',
-      'iso-8859-13',
-      'iso-8859-14',
-      'iso-8859-15',
-      // "iso-8859-16",
-      'koi8-r',
-      'koi8-u',
-      'latin1',
-      'macintosh',
-      'shift-jis',
-      'utf-16be',
-      'utf-16le',
-      'utf8',
-      'windows-874',
-      'windows-1250',
-      'windows-1251',
-      'windows-1252',
-      'windows-1253',
-      'windows-1254',
-      'windows-1255',
-      'windows-1256',
-      'windows-1257',
-      'windows-1258',
-      'x-mac-cyrillic',
-    ])
-  )
-})
-
+// TODO: add decoder case
 it('uses the same builtins in polyfills as in VM', () => {
   expect(
     new EdgeVM().evaluate(

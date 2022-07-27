@@ -94,18 +94,20 @@ function addPrimitives(context: VMContext) {
     exports: requireWithCache({
       context,
       path: require.resolve('@edge-runtime/primitives/console'),
-      scopedContext: { console: console },
+      scopedContext: { console },
     }),
     nonenumerable: ['console'],
   })
 
+  const encodings = requireWithCache({
+    context,
+    path: require.resolve('@edge-runtime/primitives/encoding'),
+    scopedContext: { Buffer, global: { ArrayBuffer } },
+  })
+
   // Encoding APIs
   defineProperties(context, {
-    exports: requireWithCache({
-      context,
-      path: require.resolve('@edge-runtime/primitives/encoding'),
-      scopedContext: { Buffer },
-    }),
+    exports: encodings,
     nonenumerable: ['atob', 'btoa', 'TextEncoder', 'TextDecoder'],
   })
 
@@ -144,6 +146,10 @@ function addPrimitives(context: VMContext) {
       cache: new Map([['punycode', { exports: require('punycode') }]]),
       context,
       path: require.resolve('@edge-runtime/primitives/url'),
+      scopedContext: {
+        TextEncoder: encodings.TextEncoder,
+        TextDecoder: encodings.TextDecoder,
+      },
     }),
     nonenumerable: ['URL', 'URLSearchParams', 'URLPattern'],
   })
@@ -186,8 +192,8 @@ function addPrimitives(context: VMContext) {
         return { register: function () {} }
       },
       global: {},
-      queueMicrotask: queueMicrotask,
-      setImmediate: setImmediate,
+      queueMicrotask,
+      setImmediate,
     },
   })
 
