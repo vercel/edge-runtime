@@ -31,16 +31,24 @@ The **Edge Runtime** can be also consumed from your terminal when you install it
 
 ## Usage
 
-Providing `--repl` flag will start an interactive session. You can also run any arbitrary script:
+The CLI provides you different ways to evaluate an script with [Edge Runtime APIs](/features/available-apis) constraints.
+
+You can just start an interactive session with `--repl`:
 
 ```bash
-edge-runtime examples/greetings
+edge-runtime --repl
 ```
 
-If you want to interact with it as an HTTP server, just pass the `--listen` flag:
+Evaluate an inline script with `--eval`:
 
 ```bash
-edge-runtime examples/fetch --listen
+edge-runtime --eval "Object.getOwnPropertyNames(this)"
 ```
 
-For help with commands, check `edge-runtime --help`.
+Run a local HTTP server:
+
+```bash
+edge-runtime --listen examples/fetch
+```
+
+and more. In any case, you can see all this information typing `edge-runtime --help`.
