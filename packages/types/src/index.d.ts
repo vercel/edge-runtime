@@ -17,6 +17,8 @@ declare global {
   const BigInt64Array: typeof BigInt64Array
   const BigUint64Array: typeof BigUint64Array
   const Boolean: typeof Boolean
+  const clearInterval: typeof clearInterval
+  const clearTimeout: typeof clearTimeout
   const DataView: typeof DataView
   const Date: typeof Date
   const decodeURI: typeof decodeURI
@@ -49,6 +51,8 @@ declare global {
   const Reflect: typeof Reflect
   const RegExp: typeof RegExp
   const Set: typeof Set
+  const setInterval: typeof setInterval
+  const setTimeout: typeof setTimeout
   const SharedArrayBuffer: typeof SharedArrayBuffer
   const String: typeof String
   const Symbol: typeof Symbol
