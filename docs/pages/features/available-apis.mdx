@@ -111,6 +111,16 @@ The following APIs are available in the Edge Runtime.
 - [WeakSet](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet)
 - [WebAssembly](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly)
 
+## Addressing the runtime
+
+In addition to the above-mentioned APIs, a `globalThis.EdgeRuntime` property is also available that can be used to address the runtime:
+
+```ts
+if (typeof EdgeRuntime !== 'string') {
+  // dead-code elimination is enabled for the code inside this block
+}
+```
+
 ## Unsupported APIs
 
 The Edge Runtime has some restrictions including:
