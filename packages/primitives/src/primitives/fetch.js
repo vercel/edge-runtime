@@ -12,6 +12,10 @@ import Agent from 'undici/lib/agent'
 global.AbortController = AbortController
 global.AbortSignal = AbortSignal
 
+// undici uses `process.nextTick`,
+// but process APIs doesn't exist in a runtime context.
+process.nextTick = setImmediate
+
 /**
  * A symbol used to store cookies in the headers module.
  */
