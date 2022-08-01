@@ -99,7 +99,7 @@ importers:
       event-target-shim: 5.0.1
       formdata-node: 4.3.3
       text-encoding: 0.7.0
-      tsup: '6'
+      tsup: 6.2.1
       undici: 5.5.1
       urlpattern-polyfill: 5.0.5
       uuid: 8.3.2
@@ -117,7 +117,7 @@ importers:
       event-target-shim: 5.0.1
       formdata-node: 4.3.3
       text-encoding: 0.7.0
-      tsup: 6.0.1
+      tsup: 6.2.1
       undici: 5.5.1
       urlpattern-polyfill: 5.0.5
       uuid: 8.3.2
@@ -2472,7 +2472,7 @@ packages:
       istanbul-reports: 3.1.4
       rimraf: 3.0.2
       test-exclude: 6.0.0
-      v8-to-istanbul: 9.0.0
+      v8-to-istanbul: 9.0.1
       yargs: 16.2.0
       yargs-parser: 20.2.9
     dev: true
@@ -8607,7 +8607,7 @@ packages:
     dev: true
 
   /tr46/1.0.1:
-    resolution: {integrity: sha1-qLE/1r/SSJUZZ0zN5VujaTtwbQk=}
+    resolution: {integrity: sha512-dTpowEjclQ7Kgx5SdBkqRzVhERQXov8/l9Ft9dVM9fmg0W0KQSVaXX9T4i6twCPNtYiZM53lpSSUAwJbFPOHxA==}
     dependencies:
       punycode: 2.1.1
     dev: true
@@ -8746,8 +8746,8 @@ packages:
     deprecated: no longer maintained
     dev: true
 
-  /tsup/6.0.1:
-    resolution: {integrity: sha512-2Pl1YkEEvzfg4aYgwUILaHV0wwZQKO7mNHMQChyzdCNlQqf11eug7gWk86XCb3CvRofCXBX87x73BTGjyS3cOQ==}
+  /tsup/6.2.1:
+    resolution: {integrity: sha512-KhBhCqVA3bHrIWhkcqTUA7R69H05IcBlHEtCVLEu42XDGUzz+bDqCcfu5PwpkKJ8DqK5tpdgM/qmyk4DdUbkZw==}
     engines: {node: '>=14'}
     hasBin: true
     peerDependencies:
@@ -9187,15 +9187,6 @@ packages:
 
   /v8-compile-cache-lib/3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
-    dev: true
-
-  /v8-to-istanbul/9.0.0:
-    resolution: {integrity: sha512-HcvgY/xaRm7isYmyx+lFKA4uQmfUbN0J4M0nNItvzTvH/iQ9kW5j/t4YSR+Ge323/lrgDAWJoF46tzGQHwBHFw==}
-    engines: {node: '>=10.12.0'}
-    dependencies:
-      '@jridgewell/trace-mapping': 0.3.13
-      '@types/istanbul-lib-coverage': 2.0.4
-      convert-source-map: 1.8.0
     dev: true
 
   /v8-to-istanbul/9.0.1:

@@ -18,6 +18,24 @@ async function bundlePackage() {
   await fs.promises.mkdir(outdir).catch(() => {})
 
   await build({
+    bundle: true,
+    dts: {
+      resolve: true,
+    },
+    format: [],
+    target: ['node12.22'],
+    entry: filesExt
+      .map((f) => f.replace(/\.(js|ts)$/, '.d.ts'))
+      .map((f) => join(__dirname, '../type-definitions', f)),
+    outDir: resolve(__dirname, '../types'),
+  })
+
+  for (const file of await fs.promises.readdir(join(__dirname, '../types'))) {
+    const fullPath = join(__dirname, '../types', file)
+    await fs.promises.rename(fullPath, fullPath.replace(/\.d\.d\.ts$/, '.d.ts'))
+  }
+
+  await build({
     ...BUNDLE_OPTIONS,
     entryPoints,
     outDir: outdir,
