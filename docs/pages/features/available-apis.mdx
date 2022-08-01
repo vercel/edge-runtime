@@ -5,7 +5,7 @@ description: A complete list of all APIs available in the Edge Runtime.
 
 # Edge Runtime APIs
 
-In addition to the following APIs, the runtime can be addressed by checking the `globalThis.EdgeRuntime` property. Using `if (typeof EdgeRuntime !== 'string') {...}` will enable dead-code elimination for the code inside the if block.
+The following APIs are available in the Edge Runtime.
 
 ## Network APIs
 
@@ -110,6 +110,17 @@ In addition to the following APIs, the runtime can be addressed by checking the 
 - [WeakMap](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap)
 - [WeakSet](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet)
 - [WebAssembly](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly)
+
+## Addressing the runtime
+
+In addition to the above-mentioned APIs, the runtime can be addressed by checking the `globalThis.EdgeRuntime` property.
+
+Example:
+```ts
+if (typeof EdgeRuntime !== 'string') {
+  // dead-code elimination is enabled for the code inside this block
+}
+```
 
 ## Unsupported APIs
 
