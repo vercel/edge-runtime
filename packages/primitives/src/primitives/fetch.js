@@ -12,6 +12,11 @@ import Agent from 'undici/lib/agent'
 global.AbortController = AbortController
 global.AbortSignal = AbortSignal
 
+// provides a mock to Unidici
+process.nextTick = (callback, ...args) => {
+  setTimeout(callback, 0, ...args)
+}
+
 /**
  * A symbol used to store cookies in the headers module.
  */
