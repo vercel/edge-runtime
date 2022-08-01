@@ -12,10 +12,9 @@ import Agent from 'undici/lib/agent'
 global.AbortController = AbortController
 global.AbortSignal = AbortSignal
 
-// provides a mock to Unidici
-process.nextTick = (callback, ...args) => {
-  setTimeout(callback, 0, ...args)
-}
+// undici uses `process.nextTick`,
+// but process APIs doesn't exist in a runtime context.
+process.nextTick = setImmediate
 
 /**
  * A symbol used to store cookies in the headers module.
