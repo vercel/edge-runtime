@@ -3,6 +3,7 @@ import type { VMContext, VMOptions } from './vm'
 import { Buffer } from 'buffer'
 import { requireWithCache } from './require'
 import { VM } from './vm'
+import { runInContext } from 'vm'
 
 export interface EdgeVMOptions<T> {
   /**
@@ -236,7 +237,26 @@ function addPrimitives(context: VMContext) {
         ['process', { exports: require('process') }],
       ]),
       path: require.resolve('@edge-runtime/primitives/crypto'),
-      scopedContext: { Buffer },
+      scopedContext: {
+        Buffer,
+        Uint8Array: new Proxy(runInContext('Uint8Array', context), {
+          // on every construction (new Uint8Array(...))
+          construct(target, args) {
+            // construct it
+            const value: Uint8Array = new target(...args)
+
+            // if this is not a buffer
+            if (!(args[0] instanceof Buffer)) {
+              // return what we just constructed
+              return value
+            }
+
+            // if it is a buffer, then we spread the binary data into an array,
+            // and build the Uint8Array from that
+            return new target([...value])
+          },
+        }),
+      },
     }),
     enumerable: ['crypto'],
     nonenumerable: ['Crypto', 'CryptoKey', 'SubtleCrypto'],
