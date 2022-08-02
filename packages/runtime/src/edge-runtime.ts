@@ -53,13 +53,6 @@ export class EdgeRuntime<
       getter: () => uncaughtExceptionHandlers,
     })
 
-    Object.defineProperty(this.context, 'EdgeRuntime', {
-      configurable: false,
-      enumerable: false,
-      writable: false,
-      value: 'edge-runtime',
-    })
-
     this.evaluate<void>(getDefineEventListenersCode())
     this.dispatchFetch = this.evaluate<DispatchFetch>(getDispatchFetchCode())
     if (options?.initialCode) {

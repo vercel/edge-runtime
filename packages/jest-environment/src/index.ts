@@ -20,6 +20,9 @@ export = class EdgeEnvironment implements JestEnvironment<number> {
       extend: (context) => {
         context.global = context
         context.Buffer = Buffer
+        Object.defineProperty(context, 'EdgeRuntime', {
+          value: 'edge-runtime',
+        })
         return context
       },
     })
@@ -81,7 +84,7 @@ export = class EdgeEnvironment implements JestEnvironment<number> {
  * context object.
  */
 function revealPrimitives(vm: EdgeVM<any>) {
-  ;([
+  ;[
     'Array',
     'ArrayBuffer',
     'Atomics',
@@ -133,7 +136,7 @@ function revealPrimitives(vm: EdgeVM<any>) {
     'WeakMap',
     'WeakSet',
     'WebAssembly',
-  ]).forEach(property => {
+  ].forEach((property) => {
     vm.evaluate(`
       Object.defineProperty(this, '${property}', {
         configurable: false,
@@ -142,5 +145,5 @@ function revealPrimitives(vm: EdgeVM<any>) {
         writable: true,
       })
     `)
-  });
+  })
 }
