@@ -144,7 +144,7 @@ export function createFormat(opts: FormatterOptions = {}) {
       ? ['[', ']']
       : isValueFunction
       ? ['', '']
-      : ['{', '}']
+      : [`${getConstructorName(value)} {`.trim(), '}']
 
     if (keys.length === 0 && (!isValueArray || value.length === 0)) {
       return braces[0] + base + braces[1]
@@ -407,4 +407,13 @@ function makeCircularReplacer() {
     }
     return value
   }
+}
+
+function getConstructorName(value: unknown): string {
+  if (typeof value !== 'object' || !value) {
+    return ''
+  }
+  const constructor = value.constructor.name
+  if (constructor === 'Object') return ''
+  return constructor
 }

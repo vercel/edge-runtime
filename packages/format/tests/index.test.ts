@@ -2,6 +2,13 @@ import { createFormat } from '../dist'
 
 const format = createFormat()
 
+it('formats class instances', () => {
+  class MyClass {
+    constructor(public runtime: string) {}
+  }
+  expect(format(new MyClass('Edge'))).toBe(`MyClass { runtime: 'Edge' }`)
+})
+
 it('first argument', () => {
   expect(format()).toBe('')
   expect(format('')).toBe('')
@@ -94,7 +101,7 @@ it('string (%s)', () => {
       readonly name = 'CustomError'
     }
     expect(format(new CustomError('bar'))).toBe(
-      "{ [CustomError: bar] name: 'CustomError' }"
+      "CustomError { [CustomError: bar] name: 'CustomError' }"
     )
   })()
 })
@@ -153,7 +160,7 @@ it('object (%o)', () => {
     const error = new Error('mock error')
     delete error.stack
     expect(format('%o', error)).toBe(
-      "{ [Error: mock error] message: 'mock error' }"
+      "Error { [Error: mock error] message: 'mock error' }"
     )
   })()
 
