@@ -44,7 +44,7 @@ addEventListener('fetch', event => {
 
 const runtime = new EdgeRuntime({ initialCode })
 
-const response = runtime.dispatchFetch('https://example.com')
+const response = await runtime.dispatchFetch('http://vercel.com?url=https://example.com')
 
 // If your code logic performs asynchronous tasks, you should await them.
 // https://developer.mozilla.org/en-US/docs/Web/API/ExtendableEvent/waitUntil
