@@ -20,9 +20,6 @@ export = class EdgeEnvironment implements JestEnvironment<number> {
       extend: (context) => {
         context.global = context
         context.Buffer = Buffer
-        Object.defineProperty(context, 'EdgeRuntime', {
-          value: 'edge-runtime',
-        })
         return context
       },
     })
