@@ -24,7 +24,9 @@
         "streams/**",
         "structured-clone/**",
         "types/**",
-        "url/**"
+        "url/**",
+        "dist/**",
+        "types/**"
       ]
     },
     "test": {
