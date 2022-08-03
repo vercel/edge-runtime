@@ -9,25 +9,17 @@ const writer: createRepl.REPLWriter = (output) => {
   return typeof output === 'function' ? output.toString() : format(output)
 }
 
-const repl = createRepl.start({ prompt: 'ƒ => ', writer })
-
-Object.getOwnPropertyNames(repl.context).forEach(
-  (mod) => delete repl.context[mod]
-)
-
 const runtime = new EdgeRuntime()
-
-Object.getOwnPropertyNames(runtime.context)
-  .filter((key) => !key.startsWith('__'))
-  .forEach((key) =>
-    Object.assign(repl.context, { [key]: runtime.context[key] })
-  )
-
-Object.defineProperty(repl.context, 'EdgeRuntime', {
-  configurable: false,
-  enumerable: false,
-  writable: false,
-  value: runtime.context.EdgeRuntime,
+const repl = createRepl.start({
+  prompt: 'ƒ => ',
+  writer,
+  async eval(cmd, _context, _file, cb) {
+    try {
+      cb(null, runtime.evaluate(cmd))
+    } catch (err: any) {
+      cb(err, null)
+    }
+  },
 })
 
 const nodeMajorVersion = parseInt(process.versions.node.split('.')[0])
