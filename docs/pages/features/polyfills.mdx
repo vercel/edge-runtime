@@ -6,19 +6,18 @@ If you are using an old Node.js version, then it is likely one of these Web APIs
 
 Under the hood, the following Web APIs are used by the **Edge Runtime**:
 
-| polyfill                                                             | node12 | node14 | node16 | node18 |
-| -------------------------------------------------------------------- | ------ | ------ | ------ | ------ |
-| [http](/packages/primitives/src/polyfills/http.js)                   | x      |        |        |        |
-| [util.types](/packages/primitives/src/polyfills/util-types.js#L5)    | x      |        |        |        |
-| [buffer](/packages/primitives/src/index.js#L26)                      | x      |        |        |        |
-| [WebCrypto](/packages/primitives/src/index.js#L31)                   | x      | x      |        |        |
-| [AbortController, AbortSignal](/packages/primitives/src/index.js#L9) | x      | x      |        |        |
-| [AggregateError](/packages/primitives/src/index.js#L15)              | x      | x      |        |        |
-| [base64](/packages/primitives/src/index.js#L20)                      | x      | x      |        |        |
-| [fetch, Request, Response](/packages/primitives/src/index.js#L39)    | x      | x      | x      |        |
-| [URLPattern](/packages/primitives/src/index.js#L69)                  | x      | x      | x      | x      |
-| [Cache](/packages/primitives/src/index.js#L49)                    | x      | x      | x      | x      |
-| [WebStreams](/packages/primitives/src/index.js#L56)                  | x      | x      | x      | x      |
+| polyfill                                                                                                                                | node12 | node14 | node16 | node18 |
+| --------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------ | ------ | ------ |
+| [http](https://github.com/vercel/edge-runtime/blob/main/packages/primitives/src/patches/http.js)                                        | x      |        |        |        |
+| [util.types](https://github.com/vercel/edge-runtime/blob/main/packages/primitives/src/patches/util-types.js)                            | x      |        |        |        |
+| [buffer](https://github.com/vercel/edge-runtime/blob/main/packages/primitives/src/patches/buffer.js)                                    | x      |        |        |        |
+| [WebCrypto](https://github.com/vercel/edge-runtime/blob/main/packages/primitives/src/primitives/crypto.js)                              | x      | x      |        |        |
+| [AbortController, AbortSignal](https://github.com/vercel/edge-runtime/blob/main/packages/primitives/src/primitives/abort-controller.js) | x      | x      |        |        |
+| [base64](https://github.com/vercel/edge-runtime/blob/main/packages/primitives/src/primitives/encoding.js)                               | x      | x      |        |        |
+| [fetch, Request, Response](https://github.com/vercel/edge-runtime/blob/main/packages/primitives/src/primitives/fetch.js)                | x      | x      | x      |        |
+| [URLPattern](https://github.com/vercel/edge-runtime/blob/main/packages/primitives/src/primitives/url.js)                                | x      | x      | x      | x      |
+| [Cache](https://github.com/vercel/edge-runtime/blob/main/packages/primitives/src/primitives/cache.js)                                   | x      | x      | x      | x      |
+| [WebStreams](https://github.com/vercel/edge-runtime/blob/main/packages/primitives/src/primitives/streams.js)                            | x      | x      | x      | x      |
 
 The Edge Runtime polyfills missing APIs for backward compatibility with older Node.js versions.
 
