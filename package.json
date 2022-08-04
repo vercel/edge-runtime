@@ -38,6 +38,10 @@
     {
       "name": "Justin Ridgewell",
       "email": "justin@ridgewell.name"
+    },
+    {
+      "name": "Steren",
+      "email": "steren.giannini@gmail.com"
     }
   ],
   "repository": {
@@ -93,12 +97,14 @@
     ]
   },
   "nano-staged": {
+    "*": [
+      "git-authors-cli --no-print"
+    ],
     "*.{ts,tsx,md,mdx,js,jsx}": [
       "prettier --write"
     ],
     "package.json": [
-      "finepack",
-      "pnpm install --lockfile-only"
+      "finepack"
     ]
   },
   "packageManager": "pnpm@6.29.1",
