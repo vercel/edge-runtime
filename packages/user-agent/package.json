@@ -1,0 +1,34 @@
+{
+  "name": "@edge-runtime/user-agent",
+  "version": "0.0.0",
+  "description": "An Edge Runtime compatible user agent parsing utility",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "jest",
+    "build": "tsup"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@edge-runtime/jest-environment": "workspace:1.1.0-beta.26",
+    "@types/ua-parser-js": "0.7.36",
+    "ts-jest": "28.0.3",
+    "tsup": "6",
+    "ua-parser-js": "1.0.2"
+  },
+  "files": ["dist"],
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "diagnostics": true,
+        "isolatedModules": true
+      }
+    },
+    "preset": "ts-jest/presets/default",
+    "testEnvironment": "node",
+    "testTimeout": 30000
+  }
+}
