@@ -1,0 +1,38 @@
+{
+  "name": "@edge-runtime/cookies",
+  "version": "0.0.0",
+  "description": "An Edge Runtime compatible cookie helpers",
+  "sideEffect": false,
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "jest",
+    "build": "tsup"
+  },
+  "keywords": [],
+  "files": [
+    "dist"
+  ],
+  "license": "MPLv2",
+  "devDependencies": {
+    "@edge-runtime/format": "workspace:^1.1.0-beta.27",
+    "@edge-runtime/jest-environment": "workspace:1.1.0-beta.27",
+    "@types/cookie": "0.5.1",
+    "cookie": "0.5.0",
+    "jest": "28.1.3",
+    "ts-jest": "28.0.3",
+    "tsup": "6"
+  },
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "diagnostics": true,
+        "isolatedModules": true
+      }
+    },
+    "preset": "ts-jest/presets/default",
+    "testEnvironment": "node",
+    "testTimeout": 30000
+  }
+}
