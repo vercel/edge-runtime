@@ -1,7 +1,3 @@
-/**
- * @jest-environment @edge-runtime/jest-environment
- */
-
 import { userAgent, userAgentFromString } from '../src'
 
 const emptyParsedUA = {
