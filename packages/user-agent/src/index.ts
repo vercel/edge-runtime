@@ -39,6 +39,6 @@ export function userAgentFromString(input: string | undefined): UserAgent {
 }
 
 type HeaderLike = { get(key: string): string | null | undefined }
-export function userAgent({ headers }: { headers: HeaderLike }): UserAgent {
-  return userAgentFromString(headers.get('user-agent') || undefined)
+export function userAgent(request?: { headers: HeaderLike }): UserAgent {
+  return userAgentFromString(request?.headers?.get('user-agent') || undefined)
 }
