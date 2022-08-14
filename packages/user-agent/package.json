@@ -11,7 +11,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MPLv2",
   "devDependencies": {
     "@edge-runtime/jest-environment": "workspace:1.1.0-beta.26",
     "@types/ua-parser-js": "0.7.36",
