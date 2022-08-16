@@ -56,7 +56,7 @@ export function createHandler<T extends EdgeContext>(options: Options<T>) {
       for (const [key, value] of Object.entries(
         toNodeHeaders(response.headers)
       )) {
-        if (key !== 'content-encoding' && value !== undefined) {
+        if (value !== undefined) {
           res.setHeader(key, value)
         }
       }
