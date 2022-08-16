@@ -190,6 +190,7 @@ function addPrimitives(context: VMContext) {
     ]),
     path: require.resolve('@edge-runtime/primitives/fetch'),
     scopedContext: {
+      Uint8Array: createUint8ArrayForContext(context),
       Buffer,
       FinalizationRegistry: function () {
         return { register: function () {} }
@@ -241,23 +242,7 @@ function addPrimitives(context: VMContext) {
       path: require.resolve('@edge-runtime/primitives/crypto'),
       scopedContext: {
         Buffer,
-        Uint8Array: new Proxy(runInContext('Uint8Array', context), {
-          // on every construction (new Uint8Array(...))
-          construct(target, args) {
-            // construct it
-            const value: Uint8Array = new target(...args)
-
-            // if this is not a buffer
-            if (!(args[0] instanceof Buffer)) {
-              // return what we just constructed
-              return value
-            }
-
-            // if it is a buffer, then we spread the binary data into an array,
-            // and build the Uint8Array from that
-            return new target([...value])
-          },
-        }),
+        Uint8Array: createUint8ArrayForContext(context),
       },
     }),
     enumerable: ['crypto'],
@@ -327,4 +312,24 @@ function defineProperties(
       value: options.exports[property],
     })
   }
+}
+
+function createUint8ArrayForContext(context: VMContext) {
+  return new Proxy(runInContext('Uint8Array', context), {
+    // on every construction (new Uint8Array(...))
+    construct(target, args) {
+      // construct it
+      const value: Uint8Array = new target(...args)
+
+      // if this is not a buffer
+      if (!(args[0] instanceof Buffer)) {
+        // return what we just constructed
+        return value
+      }
+
+      // if it is a buffer, then we spread the binary data into an array,
+      // and build the Uint8Array from that
+      return new target([...value])
+    },
+  })
 }
