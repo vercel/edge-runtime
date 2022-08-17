@@ -1,6 +1,62 @@
-import { InspectOptions } from 'util'
+// Some codes are derived from https://github.com/nodejs/node/blob/v18.7.0/lib/util.js
+
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+import type { InspectOptions } from 'util'
+import isTypedArray from 'is-typed-array'
+import {
+  ArrayIsArray,
+  ArrayPrototypeFilter,
+  ArrayPrototypePush,
+  DatePrototypeGetTime,
+  DatePrototypeToISOString,
+  DatePrototypeToString,
+  NumberIsNaN,
+  ObjectGetOwnPropertyNames,
+  ObjectGetOwnPropertySymbols,
+  ObjectKeys,
+  ObjectPrototypePropertyIsEnumerable,
+  MapPrototypeGetSize,
+  SetPrototypeGetSize,
+  StringPrototypeIncludes,
+  SymbolIterator,
+  SymbolPrototypeToString,
+  TypedArrayPrototypeGetLength,
+} from './primordials'
+import { getOwnNonIndexProperties, isArray, PropertyFilter } from './util'
+
+type TypedArray =
+  | Float32Array
+  | Float64Array
+  | Int8Array
+  | Int16Array
+  | Int32Array
+  | Uint8Array
+  | Uint8ClampedArray
+  | Uint16Array
+  | Uint32Array
 
 interface Context {
+  circular?: Map<unknown, number>
   seen: unknown[]
   showHidden?: boolean
   depth?: number | null | undefined
@@ -83,7 +139,8 @@ export function createFormat(opts: FormatterOptions = {}) {
   function formatValue(
     ctx: Context,
     value: unknown,
-    recurseTimes: number | null | undefined
+    recurseTimes: number | null | undefined,
+    typedArray?: boolean
   ): string {
     if (hasCustomSymbol(value, customInspectSymbol)) {
       return format(value[customInspectSymbol]())
@@ -94,60 +151,141 @@ export function createFormat(opts: FormatterOptions = {}) {
       return formattedPrimitive
     }
 
-    const symbols = Object.getOwnPropertySymbols(value)
-    if (symbols.length > 0) {
-      symbols.forEach((symbol) => {
-        const obj = value as Record<symbol | string, unknown>
-        const symbolKey = `[${symbol.toString()}]`
-        obj[symbolKey] = obj[symbol]
-        delete obj[symbol]
-      })
+    // Using an array here is actually better for the average case than using
+    // a Set. `seen` will only check for the depth and will never grow too large.
+    if (ctx.seen.includes(value)) {
+      let index: number | undefined = 1
+      if (ctx.circular === undefined) {
+        ctx.circular = new Map()
+        ctx.circular.set(value, index)
+      } else {
+        index = ctx.circular.get(value)
+        if (index === undefined) {
+          index = ctx.circular.size + 1
+          ctx.circular.set(value, index)
+        }
+      }
+      return `[Circular *${index}]`
     }
 
-    const keys = ctx.showHidden
-      ? Object.getOwnPropertyNames(value)
-      : Object.keys(value as object)
-    const visibleKeys = new Set<string>()
-    keys.forEach((key) => visibleKeys.add(key))
+    return formatRaw(ctx, value, recurseTimes, typedArray)
+  }
 
-    if (keys.length === 0) {
-      if (kind(value, 'function')) {
-        return `[Function${value.name ? ': ' + value.name : ''}]`
-      } else if (isRegExp(value)) {
-        return RegExp.prototype.toString.call(value)
-      } else if (isDate(value)) {
-        return Date.prototype.toString.call(value)
-      } else if (isError(value)) {
-        return formatError(value)
-      } else if (hasCustomSymbol(value, ctx.customInspectSymbol)) {
-        return format(value[ctx.customInspectSymbol]())
+  function formatRaw(
+    ctx: Context,
+    value: unknown,
+    recurseTimes: number | null | undefined,
+    typedArray?: boolean
+  ): string {
+    let keys: Array<string | symbol> = []
+
+    const constructor = getConstructorName(value as object)
+    let base = ''
+    let formatter: (
+      ctx: Context,
+      value: any,
+      recurseTimes: number | null | undefined,
+      visibleKeys: Set<string | symbol>,
+      keys: Array<string | symbol>
+    ) => string[] = () => []
+    let braces: [string, string] = ['', '']
+    let noIterator = true
+    const filter = ctx.showHidden
+      ? PropertyFilter.ALL_PROPERTIES
+      : PropertyFilter.ONLY_ENUMERABLE
+
+    if (SymbolIterator in (value as object)) {
+      noIterator = false
+
+      if (isArray(value)) {
+        // Only set the constructor for non ordinary ("Array [...]") arrays.
+        const prefix =
+          constructor !== 'Array'
+            ? getPrefix(constructor, `(${value.length})`)
+            : ''
+        keys = getOwnNonIndexProperties(value, filter)
+        braces = [`${prefix}[`, ']']
+        if (value.length === 0 && keys.length === 0) {
+          return `${braces[0]}]`
+        }
+        formatter = formatArray
+      } else if (isSet(value)) {
+        const size = SetPrototypeGetSize.call(value)
+        const prefix = getPrefix(constructor, `(${size})`)
+        keys = getKeys(value, ctx.showHidden)
+        formatter = formatSet
+        if (size === 0 && keys.length === 0) {
+          return `${prefix}{}`
+        }
+        braces = [`${prefix}{`, '}']
+      } else if (isMap(value)) {
+        const size = MapPrototypeGetSize.call(value)
+        const prefix = getPrefix(constructor, `(${size})`)
+        keys = getKeys(value, ctx.showHidden)
+        formatter = formatMap
+        if (size === 0 && keys.length === 0) {
+          return `${prefix}{}`
+        }
+        braces = [`${prefix}{`, '}']
+      } else if (isTypedArray(value)) {
+        keys = getOwnNonIndexProperties(value, filter)
+        const bound = value
+        const fallback = ''
+        const size = TypedArrayPrototypeGetLength.call(value)
+        const prefix = getPrefix(constructor, `(${size})`)
+        braces = [`${prefix}[`, ']']
+        if (value.length === 0 && keys.length === 0) return `${braces[0]}]`
+        formatter = formatTypedArray.bind(null, size)
+      } else {
+        noIterator = true
       }
     }
 
-    const isValueFunction = kind(value, 'function')
-    const isValueArray = Array.isArray(value)
-    let base = ''
+    let isValueFunction = false
 
-    if (isValueFunction) {
-      base = `[Function${value.name ? ': ' + value.name : ''}]`
-    } else if (isRegExp(value)) {
-      base = ' ' + RegExp.prototype.toString.call(value)
-    } else if (isDate(value)) {
-      base = ' ' + Date.prototype.toUTCString.call(value)
-    } else if (isError(value)) {
-      base = ' ' + formatError(value)
-    } else if (hasCustomSymbol(value, ctx.customInspectSymbol)) {
-      base = ' ' + value[ctx.customInspectSymbol]()
-    }
+    if (noIterator) {
+      keys = getKeys(value as object, ctx.showHidden)
+      braces = ['{', '}']
 
-    const braces = isValueArray
-      ? ['[', ']']
-      : isValueFunction
-      ? ['', '']
-      : ['{', '}']
-
-    if (keys.length === 0 && (!isValueArray || value.length === 0)) {
-      return braces[0] + base + braces[1]
+      if (constructor === 'Object') {
+        if (keys.length === 0) {
+          return `{}`
+        }
+      } else if (kind(value, 'function')) {
+        isValueFunction = true
+        base = `[Function${value.name ? ': ' + value.name : ''}]`
+        if (keys.length === 0) {
+          return base
+        }
+      } else if (isRegExp(value)) {
+        base = RegExp.prototype.toString.call(value)
+        if (keys.length === 0) {
+          return base
+        }
+        base = ' ' + base
+      } else if (isDate(value)) {
+        base = NumberIsNaN(DatePrototypeGetTime.call(value))
+          ? DatePrototypeToString.call(value)
+          : DatePrototypeToISOString.call(value)
+        if (keys.length === 0) {
+          return base
+        }
+        base = ' ' + base
+      } else if (isError(value)) {
+        base = formatError(value)
+        if (keys.length === 0) {
+          return base
+        }
+        base = ' ' + base
+      } else if (hasCustomSymbol(value, ctx.customInspectSymbol)) {
+        base = format(value[ctx.customInspectSymbol]())
+        if (keys.length === 0) {
+          return base
+        }
+        base = ' ' + base
+      } else {
+        braces[0] = `${getPrefix(constructor)}{`
+      }
     }
 
     if (recurseTimes && recurseTimes < 0) {
@@ -157,20 +295,30 @@ export function createFormat(opts: FormatterOptions = {}) {
     }
 
     ctx.seen.push(value)
+    const visibleKeys = new Set<string | symbol>(keys)
 
-    let output = isValueArray
-      ? formatArray(ctx, value, recurseTimes, visibleKeys, keys)
-      : keys.map((key) =>
-          formatProperty(
-            ctx,
-            value as object,
-            recurseTimes,
-            visibleKeys,
-            key,
-            false
-          )
+    const output = formatter(ctx, value, recurseTimes, visibleKeys, keys)
+    for (let i = 0; i < keys.length; i++) {
+      output.push(
+        formatProperty(
+          ctx,
+          value as object,
+          recurseTimes,
+          visibleKeys,
+          keys[i],
+          false
         )
+      )
+    }
 
+    if (ctx.circular !== undefined) {
+      const index = ctx.circular.get(value)
+      if (index !== undefined) {
+        const reference = `<ref *${index}>`
+        // Add reference always to the very beginning of the output.
+        base = base === '' ? reference : `${reference} ${base}`
+      }
+    }
     ctx.seen.pop()
 
     return reduceToSingleString(output, base, braces, isValueFunction)
@@ -188,8 +336,8 @@ export function createFormat(opts: FormatterOptions = {}) {
     ctx: Context,
     value: object,
     recurseTimes: number | null | undefined,
-    visibleKeys: Set<string>,
-    key: string,
+    visibleKeys: Set<string | symbol>,
+    key: string | symbol,
     isArray: boolean
   ) {
     let name: string | undefined
@@ -198,62 +346,37 @@ export function createFormat(opts: FormatterOptions = {}) {
     const desc = Object.getOwnPropertyDescriptor(value, key) || {
       value: value[key as keyof typeof value],
     }
-    if (desc.get) {
+    if (desc.value !== undefined) {
+      str = formatValue(ctx, desc.value, recurseTimes)
+    } else if (desc.get) {
       str = desc.set ? '[Getter/Setter]' : '[Getter]'
     } else if (desc.set) {
       str = '[Setter]'
+    } else {
+      str = 'undefined'
     }
 
-    if (!visibleKeys.has(key)) {
+    if (isArray) {
+      return str
+    }
+
+    if (typeof key === 'symbol') {
+      name = `[${SymbolPrototypeToString.call(key)}]`
+    } else if (!visibleKeys.has(key)) {
       name = '[' + key + ']'
+    } else {
+      name = key
     }
 
-    if (!str) {
-      if (ctx.seen.indexOf(desc.value) < 0) {
-        str = formatValue(
-          ctx,
-          desc.value,
-          recurseTimes === null || recurseTimes === undefined
-            ? null
-            : recurseTimes - 1
-        )
-
-        if (str.indexOf('\n') > -1) {
-          if (isArray) {
-            str = str
-              .split('\n')
-              .map((line) => `  ${line}`)
-              .join('\n')
-              .slice(2)
-          } else {
-            str =
-              '\n' +
-              str
-                .split('\n')
-                .map((line) => `   ${line}`)
-                .join('\n')
-          }
-        }
-      } else {
-        str = '[Circular]'
-      }
-    }
-
-    if (name === undefined) {
-      if (isArray && key.match(/^\d+$/)) {
-        return str
-      }
-    }
-
-    return `${key}: ${str}`
+    return `${name}: ${str}`
   }
 
   function formatArray(
     ctx: Context,
     value: unknown[],
     recurseTimes: number | null | undefined,
-    visibleKeys: Set<string>,
-    keys: string[]
+    visibleKeys: Set<string | symbol>,
+    keys: Array<string | symbol>
   ) {
     const output: string[] = []
 
@@ -274,14 +397,69 @@ export function createFormat(opts: FormatterOptions = {}) {
       }
     }
 
-    keys.forEach((key) => {
-      if (!key.match(/^\d+$/)) {
-        output.push(
-          formatProperty(ctx, value, recurseTimes, visibleKeys, key, true)
-        )
-      }
-    })
+    return output
+  }
 
+  function formatTypedArray(
+    length: number,
+    ctx: Context,
+    value:
+      | Int8Array
+      | Uint8Array
+      | Int16Array
+      | Uint16Array
+      | Int32Array
+      | Uint32Array,
+    recurseTimes: number | null | undefined
+  ) {
+    const output = new Array(length)
+    for (let i = 0; i < length; ++i) {
+      output[i] = String(value[i])
+    }
+    if (ctx.showHidden) {
+      // .buffer goes last, it's not a primitive like the others.
+      // All besides `BYTES_PER_ELEMENT` are actually getters.
+      for (const key of [
+        'BYTES_PER_ELEMENT',
+        'length',
+        'byteLength',
+        'byteOffset',
+        'buffer',
+      ] as Array<keyof TypedArray>) {
+        const str = formatValue(ctx, value[key], recurseTimes, true)
+        ArrayPrototypePush.call(output, `[${String(key)}]: ${str}`)
+      }
+    }
+    return output
+  }
+
+  function formatSet(
+    ctx: Context,
+    value: Set<unknown>,
+    recurseTimes: number | null | undefined
+  ) {
+    const output: string[] = []
+    for (const v of value) {
+      ArrayPrototypePush.call(output, formatValue(ctx, v, recurseTimes))
+    }
+    return output
+  }
+
+  function formatMap(
+    ctx: Context,
+    value: Map<unknown, unknown>,
+    recurseTimes: number | null | undefined
+  ) {
+    const output: string[] = []
+    for (const { 0: k, 1: v } of value) {
+      output.push(
+        `${formatValue(ctx, k, recurseTimes)} => ${formatValue(
+          ctx,
+          v,
+          recurseTimes
+        )}`
+      )
+    }
     return output
   }
 
@@ -351,39 +529,70 @@ function isError(value: unknown): value is Error {
   )
 }
 
+function isMap(value: unknown): value is Map<unknown, unknown> {
+  return (
+    kind(value, 'object') &&
+    Object.prototype.toString.call(value) === '[object Map]'
+  )
+}
+
+function isSet(value: unknown): value is Map<unknown, unknown> {
+  return (
+    kind(value, 'object') &&
+    Object.prototype.toString.call(value) === '[object Set]'
+  )
+}
+
+function isBelowBreakLength(
+  output: string[],
+  start: number,
+  base: string
+): boolean {
+  const breakLength = 80
+  // Each entry is separated by at least a comma. Thus, we start with a total
+  // length of at least `output.length`. In addition, some cases have a
+  // whitespace in-between each other that is added to the total as well.
+  // TODO(BridgeAR): Add unicode support. Use the readline getStringWidth
+  // function. Check the performance overhead and make it an opt-in in case it's
+  // significant.
+  let totalLength = output.length + start
+  if (totalLength + output.length > breakLength) {
+    return false
+  }
+  for (let i = 0; i < output.length; i++) {
+    totalLength += output[i].length
+    if (totalLength > breakLength) {
+      return false
+    }
+  }
+  // Do not line up properties on the same line if `base` contains line breaks.
+  return base === '' || !StringPrototypeIncludes.call(base, '\n')
+}
+
 function reduceToSingleString(
   output: string[],
   base: string,
   braces: string[],
   isValueFunction: boolean
 ) {
-  const length = output.reduce((prev, cur) => {
-    return prev + cur.replace(/\u001b\[\d\d?m/g, '').length + 1
-  }, 0)
-
-  if (length > 60) {
-    const prefix = isValueFunction ? ' {' : ''
-    const suffix = isValueFunction ? '\n}' : ' '
-
+  const start = output.length + braces[0].length + base.length + 10
+  if (!isBelowBreakLength(output, start, base)) {
     return (
+      (base ? base + ' ' : '') +
       braces[0] +
-      (base === '' ? '' : base + prefix + '\n ') +
-      ' ' +
-      `${output.join(',\n  ')}` +
-      suffix +
+      '\n  ' +
+      output.join(',\n  ') +
+      '\n' +
       braces[1]
     )
   }
 
-  const prefix = isValueFunction ? ' { ' : ' '
-  const suffix = isValueFunction ? ' } ' : ' '
-
   return (
+    (base ? base + ' ' : '') +
     braces[0] +
-    base +
-    prefix +
+    ' ' +
     output.join(', ') +
-    suffix +
+    ' ' +
     braces[1]
   ).trim()
 }
@@ -407,4 +616,47 @@ function makeCircularReplacer() {
     }
     return value
   }
+}
+
+// Look up the keys of the object.
+function getKeys(
+  value: object,
+  showHidden: boolean = false
+): Array<string | symbol> {
+  let keys: Array<string | symbol>
+
+  const symbols = ObjectGetOwnPropertySymbols(value)
+  if (showHidden) {
+    keys = ObjectGetOwnPropertyNames(value)
+    if (symbols.length !== 0) ArrayPrototypePush.apply(keys, symbols)
+  } else {
+    // This might throw if `value` is a Module Namespace Object from an
+    // unevaluated module, but we don't want to perform the actual type
+    // check because it's expensive.
+    // TODO(devsnek): track https://github.com/tc39/ecma262/issues/1209
+    // and modify this logic as needed.
+    try {
+      keys = ObjectKeys(value)
+    } catch (err: unknown) {
+      keys = ObjectGetOwnPropertyNames(value)
+    }
+    if (symbols.length !== 0) {
+      const filter = (key: symbol) =>
+        ObjectPrototypePropertyIsEnumerable.call(value, key)
+      ArrayPrototypePush.apply(keys, ArrayPrototypeFilter.call(symbols, filter))
+    }
+  }
+  return keys
+}
+
+function getConstructorName(object: object): string {
+  return object.constructor.name
+}
+
+function getPrefix(constructor: string, size = '') {
+  return `${constructor}${size} `
+}
+
+function getIteratorBraces(type: string) {
+  return [`[${type} Iterator] {`, '}']
 }

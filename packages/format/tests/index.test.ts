@@ -1,3 +1,26 @@
+// Some codes are derived from https://github.com/nodejs/node/blob/v18.7.0/test/parallel/test-util-inspect.js
+
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 import { createFormat } from '../dist'
 
 const format = createFormat()
@@ -16,6 +39,7 @@ it('first argument', () => {
   expect(format(Symbol('mysymbol'))).toBe('Symbol(mysymbol)')
   expect(format(BigInt(9007199254740991))).toBe('9007199254740991')
   expect(format({ [Symbol('a')]: 1 })).toBe('{ [Symbol(a)]: 1 }')
+  expect(format(new Date('asdf'))).toBe('Invalid Date')
   expect(
     format(
       (() => {
@@ -56,9 +80,119 @@ it('first argument', () => {
   [Symbol(bbbbbbbbbbbbbbb)]: 'bar'
 }`)
 
-  // expect(format(new Map([['foo', 'bar']]))).toBe("Map(1) { 'foo' => 'bar' }")
-  // expect(format(new Set([['foo', 'bar']]))).toBe("Set(1) { [ 'foo', 'bar' ] }")
-  // expect(format(new Uint8Array([1, 2, 3]))).toBe("Uint8Array(3) [ 1, 2, 3 ]")
+  expect(format(new Map([['foo', 'bar']]))).toBe("Map(1) { 'foo' => 'bar' }")
+  expect(format(new Set([['foo', 'bar']]))).toBe("Set(1) { [ 'foo', 'bar' ] }")
+  expect(format(new Uint8Array([1, 2, 3]))).toBe('Uint8Array(3) [ 1, 2, 3 ]')
+  expect(format(new Uint8Array(0))).toBe('Uint8Array(0) []')
+  ;[
+    Float32Array,
+    Float64Array,
+    Int16Array,
+    Int32Array,
+    Int8Array,
+    Uint16Array,
+    Uint32Array,
+    Uint8Array,
+    Uint8ClampedArray,
+  ].forEach((constructor) => {
+    const length = 2
+    const byteLength = length * constructor.BYTES_PER_ELEMENT
+    const array = new constructor(new ArrayBuffer(byteLength), 0, length)
+    array[0] = 65
+    array[1] = 97
+    expect(format('%o', array)).toBe(
+      `${constructor.name}(${length}) [\n` +
+        '  65,\n' +
+        '  97,\n' +
+        `  [BYTES_PER_ELEMENT]: ${constructor.BYTES_PER_ELEMENT},\n` +
+        `  [length]: ${length},\n` +
+        `  [byteLength]: ${byteLength},\n` +
+        '  [byteOffset]: 0,\n' +
+        `  [buffer]: ArrayBuffer {  }\n]`
+    )
+    expect(format(array)).toBe(`${constructor.name}(${length}) [ 65, 97 ]`)
+  })
+
+  // Dynamic properties.
+  {
+    expect(
+      format({
+        get readonly() {
+          return 1
+        },
+      })
+    ).toBe('{ readonly: [Getter] }')
+    expect(
+      format({
+        get readwrite() {
+          return 1
+        },
+        set readwrite(val) {},
+      })
+    ).toBe('{ readwrite: [Getter/Setter] }')
+    expect(format({ set writeonly(val) {} })).toBe('{ writeonly: [Setter] }')
+
+    const value = {}
+    value.a = value
+    expect(format(value)).toBe('<ref *1> { a: [Circular *1] }')
+  }
+
+  // Test Set.
+  {
+    expect(format(new Set())).toBe('Set(0) {}')
+    expect(format(new Set([1, 2, 3]))).toBe('Set(3) { 1, 2, 3 }')
+  }
+
+  // Test circular Set.
+  {
+    const set = new Set()
+    set.add(set)
+    expect(format(set)).toBe('<ref *1> Set(1) { [Circular *1] }')
+  }
+
+  // Test Map.
+  {
+    expect(format(new Map())).toBe('Map(0) {}')
+    expect(
+      format(
+        new Map([
+          [1, 'a'],
+          [2, 'b'],
+          [3, 'c'],
+        ])
+      )
+    ).toBe("Map(3) { 1 => 'a', 2 => 'b', 3 => 'c' }")
+  }
+
+  // Test circular Map.
+  {
+    const map = new Map()
+    map.set(map, 'map')
+    expect(format(map)).toBe("<ref *1> Map(1) { [Circular *1] => 'map' }")
+    map.set(map, map)
+    expect(format(map)).toBe(
+      '<ref *1> Map(1) { [Circular *1] => [Circular *1] }'
+    )
+    map.delete(map)
+    map.set('map', map)
+    expect(format(map)).toBe("<ref *1> Map(1) { 'map' => [Circular *1] }")
+  }
+
+  // Test multiple circular references.
+  {
+    const obj = {}
+    obj.a = [obj]
+    obj.b = {}
+    obj.b.inner = obj.b
+    obj.b.obj = obj
+
+    expect(format(obj)).toBe(
+      '<ref *1> {\n' +
+        '  a: [ [Circular *1] ],\n' +
+        '  b: <ref *2> { inner: [Circular *2], obj: [Circular *1] }\n' +
+        '}'
+    )
+  }
 })
 
 it('string (%s)', () => {
@@ -74,9 +208,7 @@ it('string (%s)', () => {
   expect(format('%%s', 'foo')).toBe('%s foo')
   expect(format('%%s%s', 'foo')).toBe('%sfoo')
   expect(format('%s:%s', 'foo')).toBe('foo:%s')
-  expect(format(new Date(123))).toBe(
-    'Thu Jan 01 1970 00:00:00 GMT+0000 (Coordinated Universal Time)'
-  )
+  expect(format(new Date(123))).toBe('1970-01-01T00:00:00.123Z')
   expect(format('%%%s%%%%', 'hi')).toBe('%hi%%')
   expect(format('%s', undefined)).toBe('undefined')
   expect(format('%s:%s', 'foo', 'bar')).toBe('foo:bar')
@@ -94,7 +226,15 @@ it('string (%s)', () => {
       readonly name = 'CustomError'
     }
     expect(format(new CustomError('bar'))).toBe(
-      "{ [CustomError: bar] name: 'CustomError' }"
+      "[CustomError: bar] { name: 'CustomError' }"
+    )
+  })()
+  ;(() => {
+    class CustomObject {
+      readonly name = 'CustomObject'
+    }
+    expect(format(new CustomObject())).toBe(
+      "CustomObject { name: 'CustomObject' }"
     )
   })()
 })
@@ -135,7 +275,7 @@ it('object generic (%O)', () => {
     '{ error: [Error: oh no] }'
   )
   expect(format('%O', { date: new Date(123) })).toBe(
-    '{ date: Thu Jan 01 1970 00:00:00 GMT+0000 (Coordinated Universal Time) }'
+    '{ date: 1970-01-01T00:00:00.123Z }'
   )
 })
 
@@ -153,13 +293,11 @@ it('object (%o)', () => {
     const error = new Error('mock error')
     delete error.stack
     expect(format('%o', error)).toBe(
-      "{ [Error: mock error] message: 'mock error' }"
+      "[Error: mock error] { message: 'mock error' }"
     )
   })()
 
-  expect(format('%O', new Date(123))).toBe(
-    'Thu Jan 01 1970 00:00:00 GMT+0000 (Coordinated Universal Time)'
-  )
+  expect(format('%O', new Date(123))).toBe('1970-01-01T00:00:00.123Z')
 })
 
 it('integer (%i)', () => {
