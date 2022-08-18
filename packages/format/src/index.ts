@@ -82,7 +82,7 @@ export function createFormat(opts: FormatterOptions = {}) {
           if (hasCustomSymbol(arg, customInspectSymbol)) {
             return format(arg[customInspectSymbol]())
           } else if (isDate(arg)) {
-            return arg.toISOString()
+            return format(arg)
           } else {
             return String(arg)
           }
