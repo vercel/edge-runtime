@@ -183,11 +183,13 @@ it('string (%s)', () => {
   expect(format('%%s', 'foo')).toBe('%s foo')
   expect(format('%%s%s', 'foo')).toBe('%sfoo')
   expect(format('%s:%s', 'foo')).toBe('foo:%s')
+  expect(format('%s', new Date(123))).toBe('1970-01-01T00:00:00.123Z')
   expect(format('%%%s%%%%', 'hi')).toBe('%hi%%')
   expect(format('%s', undefined)).toBe('undefined')
   expect(format('%s:%s', 'foo', 'bar')).toBe('foo:bar')
   expect(format('foo', 'bar', 'baz')).toBe('foo bar baz')
   expect(format('%s:%s', undefined)).toBe('undefined:%s')
+  expect(format('%s', new Error('oh no'))).toBe('[Error: oh no]')
   expect(format('%s:%s', 'foo', 'bar', 'baz')).toBe('foo:bar baz')
   expect(format('%s', function greetings() {})).toBe('function greetings() { }')
   ;(() => {
