@@ -81,7 +81,7 @@ export function createFormat(opts: FormatterOptions = {}) {
           const arg = args[index++]
           if (hasCustomSymbol(arg, customInspectSymbol)) {
             return format(arg[customInspectSymbol]())
-          } else if (isDate(arg)) {
+          } else if (isDate(arg) || isError(arg)) {
             return format(arg)
           } else {
             return String(arg)
