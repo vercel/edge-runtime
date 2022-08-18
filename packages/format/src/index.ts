@@ -1,5 +1,8 @@
 import type { InspectOptions } from 'util'
 import isTypedArray from 'is-typed-array'
+
+import { getOwnNonIndexProperties, isArray, PropertyFilter } from './util'
+
 import {
   ArrayIsArray,
   ArrayPrototypeFilter,
@@ -19,7 +22,6 @@ import {
   SymbolPrototypeToString,
   TypedArrayPrototypeGetLength,
 } from './primordials'
-import { getOwnNonIndexProperties, isArray, PropertyFilter } from './util'
 
 type TypedArray =
   | Float32Array
@@ -575,7 +577,7 @@ function reduceToSingleString(
 }
 
 function safeStringify(object: unknown) {
-  if (Array.isArray(object)) {
+  if (ArrayIsArray(object)) {
     object = object.map((element) =>
       JSON.parse(JSON.stringify(element, makeCircularReplacer()))
     )
