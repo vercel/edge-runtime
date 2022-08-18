@@ -79,9 +79,13 @@ export function createFormat(opts: FormatterOptions = {}) {
       switch (token) {
         case '%s': {
           const arg = args[index++]
-          return hasCustomSymbol(arg, customInspectSymbol)
-            ? format(arg[customInspectSymbol]())
-            : String(arg)
+          if (hasCustomSymbol(arg, customInspectSymbol)) {
+            return format(arg[customInspectSymbol]())
+          } else if (isDate(arg)) {
+            return arg.toISOString()
+          } else {
+            return String(arg)
+          }
         }
         case '%j':
           return safeStringify(args[index++])
