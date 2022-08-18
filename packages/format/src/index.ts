@@ -1,26 +1,22 @@
 import type { InspectOptions } from 'util'
-import type { TypedArray } from './util'
+import type { TypedArray } from './primordials'
 
 import {
-  getOwnNonIndexProperties,
-  isArray,
-  isTypedArray,
-  PropertyFilter,
-} from './util'
-
-import {
-  ArrayIsArray,
   ArrayPrototypeFilter,
   ArrayPrototypePush,
   DatePrototypeGetTime,
   DatePrototypeToISOString,
-  DatePrototypeToString,
-  NumberIsNaN,
+  getConstructorName,
+  getOwnNonIndexProperties,
+  getPrefix,
+  isTypedArray,
+  kind,
+  MapPrototypeGetSize,
   ObjectGetOwnPropertyNames,
   ObjectGetOwnPropertySymbols,
   ObjectKeys,
   ObjectPrototypePropertyIsEnumerable,
-  MapPrototypeGetSize,
+  PropertyFilter,
   SetPrototypeGetSize,
   StringPrototypeIncludes,
   SymbolIterator,
@@ -157,14 +153,13 @@ export function createFormat(opts: FormatterOptions = {}) {
       return `[Circular *${index}]`
     }
 
-    return formatRaw(ctx, value, recurseTimes, typedArray)
+    return formatRaw(ctx, value, recurseTimes)
   }
 
   function formatRaw(
     ctx: Context,
     value: unknown,
-    recurseTimes: number | null | undefined,
-    typedArray?: boolean
+    recurseTimes: number | null | undefined
   ): string {
     let keys: Array<string | symbol> = []
 
@@ -186,7 +181,7 @@ export function createFormat(opts: FormatterOptions = {}) {
     if (SymbolIterator in (value as object)) {
       noIterator = false
 
-      if (isArray(value)) {
+      if (Array.isArray(value)) {
         // Only set the constructor for non ordinary ("Array [...]") arrays.
         const prefix =
           constructor !== 'Array'
@@ -218,8 +213,6 @@ export function createFormat(opts: FormatterOptions = {}) {
         braces = [`${prefix}{`, '}']
       } else if (isTypedArray(value)) {
         keys = getOwnNonIndexProperties(value, filter)
-        const bound = value
-        const fallback = ''
         const size = TypedArrayPrototypeGetLength.call(value)
         const prefix = getPrefix(constructor, `(${size})`)
         braces = [`${prefix}[`, ']']
@@ -253,8 +246,8 @@ export function createFormat(opts: FormatterOptions = {}) {
         }
         base = ' ' + base
       } else if (isDate(value)) {
-        base = NumberIsNaN(DatePrototypeGetTime.call(value))
-          ? DatePrototypeToString.call(value)
+        base = Number.isNaN(DatePrototypeGetTime.call(value))
+          ? Date.prototype.toString.call(value)
           : DatePrototypeToISOString.call(value)
         if (keys.length === 0) {
           return base
@@ -349,7 +342,7 @@ export function createFormat(opts: FormatterOptions = {}) {
       return str
     }
 
-    if (typeof key === 'symbol') {
+    if (kind(key, 'symbol')) {
       name = `[${SymbolPrototypeToString.call(key)}]`
     } else if (!visibleKeys.has(key)) {
       name = '[' + key + ']'
@@ -398,7 +391,7 @@ export function createFormat(opts: FormatterOptions = {}) {
     const output = new Array(length)
     for (let i = 0; i < length; ++i) {
       output[i] =
-        value.length > 0 && typeof value[0] === 'number'
+        value.length > 0 && kind(value[0], 'number')
           ? String(value[i])
           : formatBigInt(value[i] as any as bigint)
     }
@@ -482,20 +475,6 @@ function hasCustomSymbol<CustomSymbol extends symbol>(
     customInspectSymbol in value &&
     kind(value[customInspectSymbol], 'function')
   )
-}
-
-function kind(value: unknown, type: 'bigint'): value is bigint
-function kind(value: unknown, type: 'boolean'): value is boolean
-function kind(value: unknown, type: 'function'): value is Function
-function kind(value: unknown, type: 'number'): value is number
-function kind(value: unknown, type: 'string'): value is string
-function kind(value: unknown, type: 'symbol'): value is symbol
-function kind(
-  value: unknown,
-  type: 'object'
-): value is Record<string | number | symbol, unknown>
-function kind(value: unknown, type: string): value is unknown {
-  return typeof value === type
 }
 
 function isRegExp(value: unknown): value is RegExp {
@@ -588,14 +567,13 @@ function reduceToSingleString(
   ).trim()
 }
 
-function safeStringify(object: unknown) {
-  if (ArrayIsArray(object)) {
-    object = object.map((element) =>
+function safeStringify(input: unknown) {
+  if (Array.isArray(input)) {
+    input = input.map((element) =>
       JSON.parse(JSON.stringify(element, makeCircularReplacer()))
     )
   }
-
-  return JSON.stringify(object, makeCircularReplacer())
+  return JSON.stringify(input, makeCircularReplacer())
 }
 
 function makeCircularReplacer() {
@@ -638,16 +616,4 @@ function getKeys(
     }
   }
   return keys
-}
-
-function getConstructorName(object: object): string {
-  return object.constructor.name
-}
-
-function getPrefix(constructor: string, size = '') {
-  return `${constructor}${size} `
-}
-
-function getIteratorBraces(type: string) {
-  return [`[${type} Iterator] {`, '}']
 }
