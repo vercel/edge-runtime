@@ -1,7 +1,12 @@
 import type { InspectOptions } from 'util'
-import isTypedArray from 'is-typed-array'
+import type { TypedArray } from './util'
 
-import { getOwnNonIndexProperties, isArray, PropertyFilter } from './util'
+import {
+  getOwnNonIndexProperties,
+  isArray,
+  isTypedArray,
+  PropertyFilter,
+} from './util'
 
 import {
   ArrayIsArray,
@@ -22,17 +27,6 @@ import {
   SymbolPrototypeToString,
   TypedArrayPrototypeGetLength,
 } from './primordials'
-
-type TypedArray =
-  | Float32Array
-  | Float64Array
-  | Int8Array
-  | Int16Array
-  | Int32Array
-  | Uint8Array
-  | Uint8ClampedArray
-  | Uint16Array
-  | Uint32Array
 
 interface Context {
   circular?: Map<unknown, number>
@@ -81,7 +75,7 @@ export function createFormat(opts: FormatterOptions = {}) {
           const arg = args[index++]
           if (hasCustomSymbol(arg, customInspectSymbol)) {
             return format(arg[customInspectSymbol]())
-          } else if (isDate(arg) || isError(arg)) {
+          } else if (isDate(arg) || isError(arg) || kind(arg, 'bigint')) {
             return format(arg)
           } else {
             return String(arg)
@@ -89,8 +83,14 @@ export function createFormat(opts: FormatterOptions = {}) {
         }
         case '%j':
           return safeStringify(args[index++])
-        case '%d':
-          return String(Number(args[index++]))
+        case '%d': {
+          const arg = args[index++]
+          if (kind(arg, 'bigint')) {
+            return format(arg)
+          } else {
+            return String(Number(arg))
+          }
+        }
         case '%O':
           return inspect(args[index++], { customInspectSymbol })
         case '%o':
@@ -99,8 +99,14 @@ export function createFormat(opts: FormatterOptions = {}) {
             showHidden: true,
             depth: 4,
           })
-        case '%i':
-          return String(parseInt(args[index++] as any, 10))
+        case '%i': {
+          const arg = args[index++]
+          if (kind(arg, 'bigint')) {
+            return format(arg)
+          } else {
+            return String(parseInt(arg as any, 10))
+          }
+        }
         case '%f':
           return String(parseFloat(args[index++] as any))
         default:
@@ -386,18 +392,15 @@ export function createFormat(opts: FormatterOptions = {}) {
   function formatTypedArray(
     length: number,
     ctx: Context,
-    value:
-      | Int8Array
-      | Uint8Array
-      | Int16Array
-      | Uint16Array
-      | Int32Array
-      | Uint32Array,
+    value: TypedArray,
     recurseTimes: number | null | undefined
   ) {
     const output = new Array(length)
     for (let i = 0; i < length; ++i) {
-      output[i] = String(value[i])
+      output[i] =
+        value.length > 0 && typeof value[0] === 'number'
+          ? String(value[i])
+          : formatBigInt(value[i] as any as bigint)
     }
     if (ctx.showHidden) {
       // .buffer goes last, it's not a primitive like the others.
@@ -449,6 +452,11 @@ export function createFormat(opts: FormatterOptions = {}) {
   return format
 }
 
+function formatBigInt(bigint: bigint) {
+  const str = String(bigint)
+  return `${str}n`
+}
+
 function formatPrimitive(value: unknown) {
   if (value === null) return 'null'
   if (value === undefined) return 'undefined'
@@ -460,7 +468,7 @@ function formatPrimitive(value: unknown) {
   }
   if (kind(value, 'boolean')) return '' + value
   if (kind(value, 'number')) return '' + value
-  if (kind(value, 'bigint')) return '' + value
+  if (kind(value, 'bigint')) return formatBigInt(value)
   if (kind(value, 'symbol')) return value.toString()
 }
 

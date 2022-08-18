@@ -15,7 +15,7 @@ it('first argument', () => {
   expect(format(function () {})).toBe('[Function]')
   expect(format(function greetings() {})).toBe('[Function: greetings]')
   expect(format(Symbol('mysymbol'))).toBe('Symbol(mysymbol)')
-  expect(format(BigInt(9007199254740991))).toBe('9007199254740991')
+  expect(format(BigInt(9007199254740991))).toBe('9007199254740991n')
   expect(format({ [Symbol('a')]: 1 })).toBe('{ [Symbol(a)]: 1 }')
   expect(format(new Date(123))).toBe('1970-01-01T00:00:00.123Z')
   expect(format(new Date('asdf'))).toBe('Invalid Date')
@@ -59,6 +59,8 @@ it('first argument', () => {
   expect(format(new Set([['foo', 'bar']]))).toBe("Set(1) { [ 'foo', 'bar' ] }")
   expect(format(new Uint8Array([1, 2, 3]))).toBe('Uint8Array(3) [ 1, 2, 3 ]')
   expect(format(new Uint8Array(0))).toBe('Uint8Array(0) []')
+  expect(format(new BigInt64Array([0n]))).toBe('BigInt64Array(1) [ 0n ]')
+  expect(format(new BigUint64Array([0n]))).toBe('BigUint64Array(1) [ 0n ]')
   ;[
     Float32Array,
     Float64Array,
@@ -176,7 +178,7 @@ it('string (%s)', () => {
   expect(format('%s', 42)).toBe('42')
   expect(format('%s', '42')).toBe('42')
   expect(format('%s', Symbol('mysymbol'))).toBe('Symbol(mysymbol)')
-  expect(format('%s', BigInt(9007199254740991))).toBe('9007199254740991')
+  expect(format('%s', BigInt(9007199254740991))).toBe('9007199254740991n')
   expect(format('%s:%s')).toBe('%s:%s')
   expect(format('%s', 'foo')).toBe('foo')
   expect(format('%%%s%%', 'hi')).toBe('%hi%')
@@ -236,12 +238,12 @@ it('digit (%d)', () => {
   expect(format('%d', '42.0')).toBe('42')
   expect(format('%d', 42.0)).toBe('42')
   expect(format('%d', 42)).toBe('42')
-  expect(format('%d', BigInt(9007199254740991))).toBe('9007199254740991')
+  expect(format('%d', BigInt(9007199254740991))).toBe('9007199254740991n')
 })
 
 it('object generic (%O)', () => {
   expect(format('%O')).toBe('%O')
-  expect(format('%O', BigInt(9007199254740991))).toBe('9007199254740991')
+  expect(format('%O', BigInt(9007199254740991))).toBe('9007199254740991n')
   expect(format('%O', Symbol('mysymbol'))).toBe('Symbol(mysymbol)')
   expect(format('%O', 'foo')).toBe("'foo'")
   expect(format('%O', /foo/g)).toBe('/foo/g')
@@ -259,7 +261,7 @@ it('object (%o)', () => {
   expect(format('%o')).toBe('%o')
   expect(format('%o', 'foo')).toBe("'foo'")
   expect(format('%o', [1, 2, 3])).toBe('[ 1, 2, 3, length: 3 ]')
-  expect(format('%o', BigInt(9007199254740991))).toBe('9007199254740991')
+  expect(format('%o', BigInt(9007199254740991))).toBe('9007199254740991n')
   expect(format('%o', Symbol('mysymbol'))).toBe('Symbol(mysymbol)')
   expect(format('%o', { foo: 'bar' })).toBe("{ foo: 'bar' }")
   expect(format('%o', { foo: 'bar', fooz: 'barz' })).toBe(
@@ -280,7 +282,7 @@ it('integer (%i)', () => {
   expect(format('%i')).toBe('%i')
   expect(format('%i', 1000)).toBe('1000')
   expect(format('%i', 10.9)).toBe('10')
-  expect(format('%i', BigInt(9007199254740991))).toBe('9007199254740991')
+  expect(format('%i', BigInt(9007199254740991))).toBe('9007199254740991n')
   expect(format('%i', '1,000.9')).toBe('1')
   expect(format('%i', '011')).toBe('11')
   expect(format('%i', '10c')).toBe('10')

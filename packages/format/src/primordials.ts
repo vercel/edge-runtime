@@ -21,6 +21,7 @@ export const ObjectGetOwnPropertySymbols = Object.getOwnPropertySymbols
 export const ObjectKeys = Object.keys
 export const ObjectPrototypePropertyIsEnumerable =
   Object.prototype.propertyIsEnumerable
+export const ObjectPrototypeToString = Object.prototype.toString
 export const MapPrototypeGetSize = GetOwnGetter(Map.prototype, 'size')!
 export const SetPrototypeGetSize = GetOwnGetter(Set.prototype, 'size')!
 export const StringPrototypeIncludes = String.prototype.includes

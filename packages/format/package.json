@@ -22,7 +22,6 @@
     "standard"
   ],
   "devDependencies": {
-    "is-typed-array": "1.1.9",
     "tsup": "6"
   },
   "files": [
