@@ -13,15 +13,17 @@ it('first argument', () => {
   expect(format('test')).toBe('test')
   expect(format(() => {})).toBe('[Function]')
   expect(format(function () {})).toBe('[Function]')
+  expect(format(function greetings() {})).toBe('[Function: greetings]')
   expect(format(Symbol('mysymbol'))).toBe('Symbol(mysymbol)')
   expect(format(BigInt(9007199254740991))).toBe('9007199254740991')
   expect(format({ [Symbol('a')]: 1 })).toBe('{ [Symbol(a)]: 1 }')
+  expect(format(new Date(123))).toBe('1970-01-01T00:00:00.123Z')
   expect(format(new Date('asdf'))).toBe('Invalid Date')
+  expect(format(new Error('oh no'))).toBe('[Error: oh no]')
   expect(
     format(
       (() => {
         const fn = function () {}
-        // @ts-expect-error
         fn[Symbol.for('a')] = 'foo'
         return fn
       })()
@@ -32,9 +34,7 @@ it('first argument', () => {
     format(
       (() => {
         const fn = function () {}
-        // @ts-expect-error
         fn[Symbol.for('a')] = 'foo'
-        // @ts-expect-error
         fn[Symbol.for('b')] = 'bar'
         return fn
       })()
@@ -45,9 +45,7 @@ it('first argument', () => {
     format(
       (() => {
         const fn = function () {}
-        // @ts-expect-error
         fn[Symbol.for('aaaaaaaaaaaa')] = 'foo'
-        // @ts-expect-error
         fn[Symbol.for('bbbbbbbbbbbbbbb')] = 'bar'
         return fn
       })()
@@ -185,15 +183,13 @@ it('string (%s)', () => {
   expect(format('%%s', 'foo')).toBe('%s foo')
   expect(format('%%s%s', 'foo')).toBe('%sfoo')
   expect(format('%s:%s', 'foo')).toBe('foo:%s')
-  expect(format(new Date(123))).toBe('1970-01-01T00:00:00.123Z')
   expect(format('%%%s%%%%', 'hi')).toBe('%hi%%')
   expect(format('%s', undefined)).toBe('undefined')
   expect(format('%s:%s', 'foo', 'bar')).toBe('foo:bar')
   expect(format('foo', 'bar', 'baz')).toBe('foo bar baz')
   expect(format('%s:%s', undefined)).toBe('undefined:%s')
-  expect(format(new Error('oh no'))).toBe('[Error: oh no]')
   expect(format('%s:%s', 'foo', 'bar', 'baz')).toBe('foo:bar baz')
-  expect(format(function greetings() {})).toBe('[Function: greetings]')
+  expect(format('%s', function greetings() {})).toBe('function greetings() { }')
   ;(() => {
     const greetings = () => {}
     expect(format(greetings)).toBe('[Function: greetings]')
