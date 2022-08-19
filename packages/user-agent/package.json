@@ -1,6 +1,6 @@
 {
   "name": "@edge-runtime/user-agent",
-  "version": "0.0.0",
+  "version": "1.1.0-beta.27",
   "description": "An Edge Runtime compatible user agent parsing utility",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -13,7 +13,7 @@
   "author": "",
   "license": "MPLv2",
   "devDependencies": {
-    "@edge-runtime/jest-environment": "workspace:1.1.0-beta.26",
+    "@edge-runtime/jest-environment": "workspace:1.1.0-beta.27",
     "@types/ua-parser-js": "0.7.36",
     "ts-jest": "28.0.3",
     "tsup": "6",
