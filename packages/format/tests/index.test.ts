@@ -13,14 +13,17 @@ it('first argument', () => {
   expect(format('test')).toBe('test')
   expect(format(() => {})).toBe('[Function]')
   expect(format(function () {})).toBe('[Function]')
+  expect(format(function greetings() {})).toBe('[Function: greetings]')
   expect(format(Symbol('mysymbol'))).toBe('Symbol(mysymbol)')
-  expect(format(BigInt(9007199254740991))).toBe('9007199254740991')
+  expect(format(BigInt(9007199254740991))).toBe('9007199254740991n')
   expect(format({ [Symbol('a')]: 1 })).toBe('{ [Symbol(a)]: 1 }')
+  expect(format(new Date(123))).toBe('1970-01-01T00:00:00.123Z')
+  expect(format(new Date('asdf'))).toBe('Invalid Date')
+  expect(format(new Error('oh no'))).toBe('[Error: oh no]')
   expect(
     format(
       (() => {
         const fn = function () {}
-        // @ts-expect-error
         fn[Symbol.for('a')] = 'foo'
         return fn
       })()
@@ -31,9 +34,7 @@ it('first argument', () => {
     format(
       (() => {
         const fn = function () {}
-        // @ts-expect-error
         fn[Symbol.for('a')] = 'foo'
-        // @ts-expect-error
         fn[Symbol.for('b')] = 'bar'
         return fn
       })()
@@ -44,9 +45,7 @@ it('first argument', () => {
     format(
       (() => {
         const fn = function () {}
-        // @ts-expect-error
         fn[Symbol.for('aaaaaaaaaaaa')] = 'foo'
-        // @ts-expect-error
         fn[Symbol.for('bbbbbbbbbbbbbbb')] = 'bar'
         return fn
       })()
@@ -56,9 +55,121 @@ it('first argument', () => {
   [Symbol(bbbbbbbbbbbbbbb)]: 'bar'
 }`)
 
-  // expect(format(new Map([['foo', 'bar']]))).toBe("Map(1) { 'foo' => 'bar' }")
-  // expect(format(new Set([['foo', 'bar']]))).toBe("Set(1) { [ 'foo', 'bar' ] }")
-  // expect(format(new Uint8Array([1, 2, 3]))).toBe("Uint8Array(3) [ 1, 2, 3 ]")
+  expect(format(new Map([['foo', 'bar']]))).toBe("Map(1) { 'foo' => 'bar' }")
+  expect(format(new Set([['foo', 'bar']]))).toBe("Set(1) { [ 'foo', 'bar' ] }")
+  expect(format(new Uint8Array([1, 2, 3]))).toBe('Uint8Array(3) [ 1, 2, 3 ]')
+  expect(format(new Uint8Array(0))).toBe('Uint8Array(0) []')
+  expect(format(new BigInt64Array([0n]))).toBe('BigInt64Array(1) [ 0n ]')
+  expect(format(new BigUint64Array([0n]))).toBe('BigUint64Array(1) [ 0n ]')
+  ;[
+    Float32Array,
+    Float64Array,
+    Int16Array,
+    Int32Array,
+    Int8Array,
+    Uint16Array,
+    Uint32Array,
+    Uint8Array,
+    Uint8ClampedArray,
+  ].forEach((constructor) => {
+    const length = 2
+    const byteLength = length * constructor.BYTES_PER_ELEMENT
+    const array = new constructor(new ArrayBuffer(byteLength), 0, length)
+    array[0] = 65
+    array[1] = 97
+    expect(format('%o', array)).toBe(
+      `${constructor.name}(${length}) [\n` +
+        '  65,\n' +
+        '  97,\n' +
+        `  [BYTES_PER_ELEMENT]: ${constructor.BYTES_PER_ELEMENT},\n` +
+        `  [length]: ${length},\n` +
+        `  [byteLength]: ${byteLength},\n` +
+        '  [byteOffset]: 0,\n' +
+        `  [buffer]: ArrayBuffer {  }\n]`
+    )
+    expect(format(array)).toBe(`${constructor.name}(${length}) [ 65, 97 ]`)
+  })
+
+  // Dynamic properties.
+  {
+    expect(
+      format({
+        get readonly() {
+          return 1
+        },
+      })
+    ).toBe('{ readonly: [Getter] }')
+    expect(
+      format({
+        get readwrite() {
+          return 1
+        },
+        set readwrite(val) {},
+      })
+    ).toBe('{ readwrite: [Getter/Setter] }')
+    expect(format({ set writeonly(val) {} })).toBe('{ writeonly: [Setter] }')
+
+    const value = {}
+    value.a = value
+    expect(format(value)).toBe('<ref *1> { a: [Circular *1] }')
+  }
+
+  // Test Set.
+  {
+    expect(format(new Set())).toBe('Set(0) {}')
+    expect(format(new Set([1, 2, 3]))).toBe('Set(3) { 1, 2, 3 }')
+  }
+
+  // Test circular Set.
+  {
+    const set = new Set()
+    set.add(set)
+    expect(format(set)).toBe('<ref *1> Set(1) { [Circular *1] }')
+  }
+
+  // Test Map.
+  {
+    expect(format(new Map())).toBe('Map(0) {}')
+    expect(
+      format(
+        new Map([
+          [1, 'a'],
+          [2, 'b'],
+          [3, 'c'],
+        ])
+      )
+    ).toBe("Map(3) { 1 => 'a', 2 => 'b', 3 => 'c' }")
+  }
+
+  // Test circular Map.
+  {
+    const map = new Map()
+    map.set(map, 'map')
+    expect(format(map)).toBe("<ref *1> Map(1) { [Circular *1] => 'map' }")
+    map.set(map, map)
+    expect(format(map)).toBe(
+      '<ref *1> Map(1) { [Circular *1] => [Circular *1] }'
+    )
+    map.delete(map)
+    map.set('map', map)
+    expect(format(map)).toBe("<ref *1> Map(1) { 'map' => [Circular *1] }")
+  }
+
+  // Test multiple circular references.
+  {
+    const obj = {}
+    obj.a = [obj]
+    obj.b = {}
+    obj.b.inner = obj.b
+    obj.b.obj = obj
+
+    expect(format(obj)).toBe(
+      '<ref *1> {\n' +
+        '  a: [ [Circular *1] ],\n' +
+        '  b: <ref *2> { inner: [Circular *2], obj: [Circular *1] }\n' +
+        '}'
+    )
+  }
 })
 
 it('string (%s)', () => {
@@ -67,24 +178,23 @@ it('string (%s)', () => {
   expect(format('%s', 42)).toBe('42')
   expect(format('%s', '42')).toBe('42')
   expect(format('%s', Symbol('mysymbol'))).toBe('Symbol(mysymbol)')
-  expect(format('%s', BigInt(9007199254740991))).toBe('9007199254740991')
+  expect(format('%s', BigInt(9007199254740991))).toBe('9007199254740991n')
   expect(format('%s:%s')).toBe('%s:%s')
   expect(format('%s', 'foo')).toBe('foo')
   expect(format('%%%s%%', 'hi')).toBe('%hi%')
   expect(format('%%s', 'foo')).toBe('%s foo')
   expect(format('%%s%s', 'foo')).toBe('%sfoo')
   expect(format('%s:%s', 'foo')).toBe('foo:%s')
-  expect(format(new Date(123))).toBe(
-    'Thu Jan 01 1970 00:00:00 GMT+0000 (Coordinated Universal Time)'
-  )
+  expect(format('%s', new Date(123))).toBe('1970-01-01T00:00:00.123Z')
+  expect(format('%s', new Date('invalid'))).toBe('Invalid Date')
   expect(format('%%%s%%%%', 'hi')).toBe('%hi%%')
   expect(format('%s', undefined)).toBe('undefined')
   expect(format('%s:%s', 'foo', 'bar')).toBe('foo:bar')
   expect(format('foo', 'bar', 'baz')).toBe('foo bar baz')
   expect(format('%s:%s', undefined)).toBe('undefined:%s')
-  expect(format(new Error('oh no'))).toBe('[Error: oh no]')
+  expect(format('%s', new Error('oh no'))).toBe('[Error: oh no]')
   expect(format('%s:%s', 'foo', 'bar', 'baz')).toBe('foo:bar baz')
-  expect(format(function greetings() {})).toBe('[Function: greetings]')
+  expect(format('%s', function greetings() {})).toBe('function greetings() { }')
   ;(() => {
     const greetings = () => {}
     expect(format(greetings)).toBe('[Function: greetings]')
@@ -94,7 +204,15 @@ it('string (%s)', () => {
       readonly name = 'CustomError'
     }
     expect(format(new CustomError('bar'))).toBe(
-      "{ [CustomError: bar] name: 'CustomError' }"
+      "[CustomError: bar] { name: 'CustomError' }"
+    )
+  })()
+  ;(() => {
+    class CustomObject {
+      readonly name = 'CustomObject'
+    }
+    expect(format(new CustomObject())).toBe(
+      "CustomObject { name: 'CustomObject' }"
     )
   })()
 })
@@ -120,12 +238,12 @@ it('digit (%d)', () => {
   expect(format('%d', '42.0')).toBe('42')
   expect(format('%d', 42.0)).toBe('42')
   expect(format('%d', 42)).toBe('42')
-  expect(format('%d', BigInt(9007199254740991))).toBe('9007199254740991')
+  expect(format('%d', BigInt(9007199254740991))).toBe('9007199254740991n')
 })
 
 it('object generic (%O)', () => {
   expect(format('%O')).toBe('%O')
-  expect(format('%O', BigInt(9007199254740991))).toBe('9007199254740991')
+  expect(format('%O', BigInt(9007199254740991))).toBe('9007199254740991n')
   expect(format('%O', Symbol('mysymbol'))).toBe('Symbol(mysymbol)')
   expect(format('%O', 'foo')).toBe("'foo'")
   expect(format('%O', /foo/g)).toBe('/foo/g')
@@ -135,7 +253,7 @@ it('object generic (%O)', () => {
     '{ error: [Error: oh no] }'
   )
   expect(format('%O', { date: new Date(123) })).toBe(
-    '{ date: Thu Jan 01 1970 00:00:00 GMT+0000 (Coordinated Universal Time) }'
+    '{ date: 1970-01-01T00:00:00.123Z }'
   )
 })
 
@@ -143,7 +261,7 @@ it('object (%o)', () => {
   expect(format('%o')).toBe('%o')
   expect(format('%o', 'foo')).toBe("'foo'")
   expect(format('%o', [1, 2, 3])).toBe('[ 1, 2, 3, length: 3 ]')
-  expect(format('%o', BigInt(9007199254740991))).toBe('9007199254740991')
+  expect(format('%o', BigInt(9007199254740991))).toBe('9007199254740991n')
   expect(format('%o', Symbol('mysymbol'))).toBe('Symbol(mysymbol)')
   expect(format('%o', { foo: 'bar' })).toBe("{ foo: 'bar' }")
   expect(format('%o', { foo: 'bar', fooz: 'barz' })).toBe(
@@ -153,20 +271,18 @@ it('object (%o)', () => {
     const error = new Error('mock error')
     delete error.stack
     expect(format('%o', error)).toBe(
-      "{ [Error: mock error] message: 'mock error' }"
+      "[Error: mock error] { message: 'mock error' }"
     )
   })()
 
-  expect(format('%O', new Date(123))).toBe(
-    'Thu Jan 01 1970 00:00:00 GMT+0000 (Coordinated Universal Time)'
-  )
+  expect(format('%O', new Date(123))).toBe('1970-01-01T00:00:00.123Z')
 })
 
 it('integer (%i)', () => {
   expect(format('%i')).toBe('%i')
   expect(format('%i', 1000)).toBe('1000')
   expect(format('%i', 10.9)).toBe('10')
-  expect(format('%i', BigInt(9007199254740991))).toBe('9007199254740991')
+  expect(format('%i', BigInt(9007199254740991))).toBe('9007199254740991n')
   expect(format('%i', '1,000.9')).toBe('1')
   expect(format('%i', '011')).toBe('11')
   expect(format('%i', '10c')).toBe('10')

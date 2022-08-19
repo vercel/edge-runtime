@@ -21,11 +21,14 @@
     "runtime",
     "standard"
   ],
+  "devDependencies": {
+    "tsup": "6"
+  },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsc --project ./tsconfig.prod.json",
+    "build": "tsup",
     "clean": "pnpm run clean:node && pnpm run clean:build",
     "clean:node": "rm -rf node_modules",
     "clean:build": "rm -rf dist",
