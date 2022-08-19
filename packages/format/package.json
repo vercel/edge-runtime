@@ -45,7 +45,10 @@
     },
     "preset": "ts-jest/presets/default",
     "testEnvironment": "node",
-    "testTimeout": 30000
+    "watchPlugins": [
+      "jest-watch-typeahead/filename",
+      "jest-watch-typeahead/testname"
+    ]
   },
   "publishConfig": {
     "access": "public"

@@ -44,7 +44,11 @@
       }
     },
     "preset": "ts-jest/presets/default",
-    "testEnvironment": "@edge-runtime/jest-environment"
+    "testEnvironment": "@edge-runtime/jest-environment",
+    "watchPlugins": [
+      "jest-watch-typeahead/filename",
+      "jest-watch-typeahead/testname"
+    ]
   },
   "publishConfig": {
     "access": "public"
