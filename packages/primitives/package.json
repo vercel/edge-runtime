@@ -57,9 +57,9 @@
   ],
   "scripts": {
     "build": "ts-node scripts/build.ts",
-    "clean": "pnpm run clean:node && pnpm run clean:build",
     "clean:build": "rm -rf dist abort-controller blob cache console crypto encoding events fetch streams structured-clone url",
     "clean:node": "rm -rf node_modules",
+    "prebuild": "pnpm run clean:build",
     "test": "jest"
   },
   "license": "MPLv2",
