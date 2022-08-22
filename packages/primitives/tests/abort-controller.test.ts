@@ -1,4 +1,4 @@
-import { AbortController, AbortSignal } from '../abort-controller'
+import { AbortController, AbortSignal, DOMException } from '../abort-controller'
 import { fetch } from '../fetch'
 
 describe('AbortController', () => {
@@ -23,11 +23,7 @@ describe('AbortController', () => {
     },
     {
       title: 'with no reason',
-      reason: (() => {
-        const reason = new Error('The operation was aborted.')
-        reason.name = 'AbortError'
-        return reason
-      })(),
+      reason: new DOMException('The operation was aborted.', 'AbortError'),
     },
   ])('aborts $title', async ({ reason }) => {
     const controller = new AbortController()
@@ -53,9 +49,11 @@ describe('AbortController', () => {
 describe('AbortSignal', () => {
   describe('timeout()', () => {
     it('automatically aborts after some time', async () => {
-      const reason = new Error('The operation timed out.')
-      reason.name = 'TimeoutError'
-      const signal = AbortSignal.timeout(5)
+      const reason = new DOMException(
+        'The operation timed out.',
+        'TimeoutError'
+      )
+      const signal = AbortSignal.timeout(100)
       const promise = runAbortedProcess({ signal })
       expect(signal.aborted).toBe(false)
       await expect(promise).rejects.toThrow(reason)
@@ -73,8 +71,10 @@ describe('AbortSignal', () => {
     })
 
     it('creates signal with no reason', async () => {
-      const reason = new Error('The operation was aborted.')
-      reason.name = 'AbortError'
+      const reason = new DOMException(
+        'The operation was aborted.',
+        'AbortError'
+      )
       const signal = AbortSignal.abort()
       expect(signal.aborted).toBe(true)
       expect(signal.reason).toEqual(reason)
@@ -113,6 +113,6 @@ function runAbortedProcess({ signal }: { signal: AbortSignal }) {
     signal.addEventListener('abort', () => {
       setTimeout(() => reject(signal.reason), 0)
     })
-    setTimeout(resolve, 10)
+    setTimeout(resolve, 500)
   })
 }

@@ -1,8 +1,20 @@
-import EventTarget from 'event-target-shim'
+import { EventTarget } from './events'
 
 const kSignal = Symbol('kSignal')
 const kAborted = Symbol('kAborted')
 const kReason = Symbol('kReason')
+const kName = Symbol('kName')
+
+export class DOMException extends Error {
+  constructor(message, name) {
+    super(message)
+    this[kName] = name
+  }
+
+  get name() {
+    return this[kName]
+  }
+}
 
 function createAbortSignal() {
   const signal = new EventTarget('abort')
@@ -14,8 +26,7 @@ function createAbortSignal() {
 
 function abortSignalAbort(signal, reason) {
   if (typeof reason === 'undefined') {
-    reason = new Error('The operation was aborted.') // TODO: should be a DOMException
-    reason.name = 'AbortError'
+    reason = new DOMException('The operation was aborted.', 'AbortError')
   }
   if (signal.aborted) {
     return
@@ -68,9 +79,10 @@ export class AbortSignal extends EventTarget('abort') {
   static timeout(milliseconds) {
     const signal = createAbortSignal()
     setTimeout(() => {
-      const reason = new Error('The operation timed out.') // TODO: should be a DOMException
-      reason.name = 'TimeoutError'
-      abortSignalAbort(signal, reason)
+      abortSignalAbort(
+        signal,
+        new DOMException('The operation timed out.', 'TimeoutError')
+      )
     }, milliseconds)
     return signal
   }
