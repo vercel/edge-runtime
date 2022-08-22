@@ -69,6 +69,7 @@
     "finepack": "latest",
     "git-authors-cli": "latest",
     "jest": "latest",
+    "jest-watch-typeahead": "2.0.0",
     "nano-staged": "latest",
     "prettier": "latest",
     "simple-git-hooks": "latest",

@@ -23,10 +23,10 @@
   ],
   "devDependencies": {
     "@edge-runtime/format": "workspace:1.1.0-beta.27",
+    "@flemist/abort-controller": "0.0.6",
     "@peculiar/webcrypto": "1.4.0",
     "@types/uuid": "8.3.4",
     "@ungap/structured-clone": "1.0.1",
-    "abort-controller": "3.0.0",
     "aggregate-error-ponyfill": "1.1.0",
     "blob-polyfill": "7.0.20220408",
     "esbuild-plugin-alias": "latest",
@@ -72,7 +72,11 @@
     },
     "preset": "ts-jest/presets/default",
     "testEnvironment": "node",
-    "testTimeout": 30000
+    "testTimeout": 30000,
+    "watchPlugins": [
+      "jest-watch-typeahead/filename",
+      "jest-watch-typeahead/testname"
+    ]
   },
   "publishConfig": {
     "access": "public"
