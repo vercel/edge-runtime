@@ -1,17 +1,7 @@
-import { AbortController, AbortSignal, DOMException } from '../abort-controller'
+import { AbortController, AbortSignal } from '../abort-controller'
 import { fetch } from '../fetch'
 
-describe('Abort Controller', () => {
-  function process({ signal }: { signal: AbortSignal }) {
-    return new Promise((resolve, reject) => {
-      signal.throwIfAborted?.()
-      signal.addEventListener('abort', () => {
-        setTimeout(() => reject(signal.reason), 0)
-      })
-      setTimeout(resolve, 10)
-    })
-  }
-
+describe('AbortController', () => {
   it('allows to abort fetch', async () => {
     expect.assertions(1)
     const controller = new AbortController()
@@ -26,11 +16,6 @@ describe('Abort Controller', () => {
     }
   })
 
-  // whatwg compliance tests: https://dom.spec.whatwg.org/#interface-abortcontroller
-  it('has signal properties', () => {
-    expect(new AbortController().signal).toBeInstanceOf(AbortSignal)
-  })
-
   it.each([
     {
       title: 'with a reason',
@@ -38,15 +23,16 @@ describe('Abort Controller', () => {
     },
     {
       title: 'with no reason',
-      reason: new DOMException(
-        'This operation was aborted', // spec message is different https://webidl.spec.whatwg.org/#aborterror
-        'AbortError'
-      ),
+      reason: (() => {
+        const reason = new Error('The operation was aborted.')
+        reason.name = 'AbortError'
+        return reason
+      })(),
     },
   ])('aborts $title', async ({ reason }) => {
     const controller = new AbortController()
     const { signal } = controller
-    const promise = process({ signal })
+    const promise = runAbortedProcess({ signal })
     expect(signal.aborted).toBe(false)
     controller.abort(reason)
     await expect(promise).rejects.toThrow(reason)
@@ -54,13 +40,79 @@ describe('Abort Controller', () => {
     expect(signal.reason).toBe(reason)
   })
 
-  it('aborts on timeout', async () => {
-    const reason = new DOMException('The operation timed out.', 'TimeoutError')
-    const signal = AbortSignal.timeout(5)
-    const promise = process({ signal })
-    expect(signal.aborted).toBe(false)
-    await expect(promise).rejects.toThrow(reason)
-    expect(signal.aborted).toBe(true)
-    expect(signal.reason).toEqual(reason)
+  // whatwg compliance tests: https://dom.spec.whatwg.org/#interface-abortcontroller
+  it('has signal read-only property', () => {
+    const controller = new AbortController()
+    expect(controller.signal).toBeInstanceOf(AbortSignal)
+    expect(() => (controller.signal = 'not-supported')).toThrow(
+      'Cannot set property signal of #<AbortController> which has only a getter'
+    )
   })
 })
+
+describe('AbortSignal', () => {
+  describe('timeout()', () => {
+    it('automatically aborts after some time', async () => {
+      const reason = new Error('The operation timed out.')
+      reason.name = 'TimeoutError'
+      const signal = AbortSignal.timeout(5)
+      const promise = runAbortedProcess({ signal })
+      expect(signal.aborted).toBe(false)
+      await expect(promise).rejects.toThrow(reason)
+      expect(signal.aborted).toBe(true)
+      expect(signal.reason).toEqual(reason)
+    })
+  })
+
+  describe('abort()', () => {
+    it('creates aborted signal with a reason', async () => {
+      const reason = 'some reason'
+      const signal = AbortSignal.abort(reason)
+      expect(signal.aborted).toBe(true)
+      expect(signal.reason).toBe(reason)
+    })
+
+    it('creates signal with no reason', async () => {
+      const reason = new Error('The operation was aborted.')
+      reason.name = 'AbortError'
+      const signal = AbortSignal.abort()
+      expect(signal.aborted).toBe(true)
+      expect(signal.reason).toEqual(reason)
+    })
+  })
+
+  // whatwg compliance tests: https://dom.spec.whatwg.org/#abortsignal
+  it('has reason read-only property', () => {
+    const reason = 'some reason'
+    const signal = AbortSignal.abort(reason)
+    expect(signal.reason).toBe(reason)
+    expect(() => (signal.reason = 'not-supported')).toThrow(
+      'Cannot set property reason of #<AbortSignal> which has only a getter'
+    )
+  })
+
+  it('has aborted read-only property', () => {
+    const aborted = true
+    const signal = AbortSignal.abort()
+    expect(signal.aborted).toBe(aborted)
+    expect(() => (signal.aborted = true)).toThrow(
+      'Cannot set property aborted of #<AbortSignal> which has only a getter'
+    )
+  })
+
+  it('can not be created with constructor', () => {
+    expect(() => new AbortSignal()).toThrow(
+      new TypeError('Illegal constructor.')
+    )
+  })
+})
+
+function runAbortedProcess({ signal }: { signal: AbortSignal }) {
+  return new Promise((resolve, reject) => {
+    signal.throwIfAborted?.()
+    signal.addEventListener('abort', () => {
+      setTimeout(() => reject(signal.reason), 0)
+    })
+    setTimeout(resolve, 10)
+  })
+}

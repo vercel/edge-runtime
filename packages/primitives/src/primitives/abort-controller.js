@@ -1,21 +1,77 @@
-import { AbortControllerImpl as AbortController } from '@flemist/abort-controller'
-import { DOMException } from '@flemist/abort-controller/dist/lib/DOMException.mjs'
-import {
-  AbortSignalImpl as AbortSignal,
-  abortSignalAbort,
-  createAbortSignal,
-} from '@flemist/abort-controller/dist/lib/AbortSignalImpl.mjs'
+import EventTarget from 'event-target-shim'
 
-AbortSignal.timeout = function (milliseconds) {
-  const signal = createAbortSignal()
-  setTimeout(
-    () =>
-      abortSignalAbort(
-        signal,
-        new DOMException('The operation timed out.', 'TimeoutError')
-      ),
-    milliseconds
-  )
+const kSignal = Symbol('kSignal')
+const kAborted = Symbol('kAborted')
+const kReason = Symbol('kReason')
+
+function createAbortSignal() {
+  const signal = new EventTarget('abort')
+  Object.setPrototypeOf(signal, AbortSignal.prototype)
+  signal[kAborted] = false
+  signal[kReason] = undefined
   return signal
 }
-export { AbortController, AbortSignal, DOMException }
+
+function abortSignalAbort(signal, reason) {
+  if (typeof reason === 'undefined') {
+    reason = new Error('The operation was aborted.') // TODO: should be a DOMException
+    reason.name = 'AbortError'
+  }
+  if (signal.aborted) {
+    return
+  }
+
+  signal[kReason] = reason
+  signal[kAborted] = true
+  signal.dispatchEvent({ type: 'abort' }) // TODO: why can't we use `new Event('abort')` ??
+}
+
+export class AbortController {
+  constructor() {
+    this[kSignal] = createAbortSignal()
+  }
+
+  get signal() {
+    return this[kSignal]
+  }
+
+  abort(reason) {
+    abortSignalAbort(this.signal, reason)
+  }
+}
+
+export class AbortSignal extends EventTarget('abort') {
+  constructor() {
+    throw new TypeError('Illegal constructor.')
+  }
+
+  get aborted() {
+    return this[kAborted]
+  }
+
+  get reason() {
+    return this[kReason]
+  }
+
+  throwIfAborted() {
+    if (this[kAborted]) {
+      throw this[kReason]
+    }
+  }
+
+  static abort(reason) {
+    const signal = createAbortSignal()
+    abortSignalAbort(signal, reason)
+    return signal
+  }
+
+  static timeout(milliseconds) {
+    const signal = createAbortSignal()
+    setTimeout(() => {
+      const reason = new Error('The operation timed out.') // TODO: should be a DOMException
+      reason.name = 'TimeoutError'
+      abortSignalAbort(signal, reason)
+    }, milliseconds)
+    return signal
+  }
+}
