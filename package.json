@@ -105,9 +105,6 @@
     ]
   },
   "nano-staged": {
-    "*": [
-      "git-authors-cli --no-print"
-    ],
     "*.{ts,tsx,md,mdx,js,jsx}": [
       "prettier --write"
     ],
