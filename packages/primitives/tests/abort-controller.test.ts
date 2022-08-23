@@ -87,7 +87,7 @@ describe('AbortSignal', () => {
     const signal = AbortSignal.abort(reason)
     expect(signal.reason).toBe(reason)
     expect(() => (signal.reason = 'not-supported')).toThrow(
-      'Cannot set property reason of #<AbortSignal> which has only a getter'
+      'Cannot set property reason of [object EventTarget] which has only a getter'
     )
   })
 
@@ -96,13 +96,29 @@ describe('AbortSignal', () => {
     const signal = AbortSignal.abort()
     expect(signal.aborted).toBe(aborted)
     expect(() => (signal.aborted = true)).toThrow(
-      'Cannot set property aborted of #<AbortSignal> which has only a getter'
+      'Cannot set property aborted of [object EventTarget] which has only a getter'
     )
   })
 
   it('can not be created with constructor', () => {
     expect(() => new AbortSignal()).toThrow(
       new TypeError('Illegal constructor.')
+    )
+  })
+
+  it('can use onabort to listen to event', async () => {
+    const onabort = jest.fn()
+    const signal = AbortSignal.timeout(100)
+    signal.onabort = onabort
+    expect(signal.onabort).toBe(onabort)
+    await new Promise((resolve) => setTimeout(resolve, 200))
+    expect(signal.aborted).toBe(true)
+    expect(signal.reason).toEqual(
+      new DOMException('The operation timed out.', 'TimeoutError')
+    )
+    expect(onabort).toHaveBeenCalledTimes(1)
+    expect(onabort).toHaveBeenCalledWith(
+      expect.objectContaining({ type: 'abort' })
     )
   })
 })

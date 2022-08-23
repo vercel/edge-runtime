@@ -102,14 +102,13 @@ importers:
   packages/primitives:
     specifiers:
       '@edge-runtime/format': workspace:1.1.0-beta.27
-      '@flemist/abort-controller': 0.0.6
       '@peculiar/webcrypto': 1.4.0
       '@types/uuid': 8.3.4
       '@ungap/structured-clone': 1.0.1
       aggregate-error-ponyfill: 1.1.0
       blob-polyfill: 7.0.20220408
       esbuild-plugin-alias: latest
-      event-target-shim: 5.0.1
+      event-target-shim: 6.0.2
       formdata-node: 4.4.1
       text-encoding: 0.7.0
       tsup: '6'
@@ -120,14 +119,13 @@ importers:
       whatwg-url: 11.0.0
     devDependencies:
       '@edge-runtime/format': link:../format
-      '@flemist/abort-controller': 0.0.6
       '@peculiar/webcrypto': 1.4.0
       '@types/uuid': 8.3.4
       '@ungap/structured-clone': 1.0.1
       aggregate-error-ponyfill: 1.1.0
       blob-polyfill: 7.0.20220408
       esbuild-plugin-alias: 0.2.1
-      event-target-shim: 5.0.1
+      event-target-shim: 6.0.2
       formdata-node: 4.4.1
       text-encoding: 0.7.0
       tsup: 6.0.1
@@ -684,13 +682,6 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
-    dev: true
-
-  /@flemist/abort-controller/0.0.6:
-    resolution: {integrity: sha512-n74QormMp0/6fIXpne+/ixDYI/KjBtHIV7L9IEmLxVSPsTkdcTbY4SmiNGAjOvsiiokQ8z0xdjnkrp/UGY6xgw==}
-    engines: {node: '>=15'}
-    dependencies:
-      tslib: 2.4.0
     dev: true
 
   /@gar/promisify/1.1.3:
@@ -3559,9 +3550,9 @@ packages:
     resolution: {integrity: sha512-woY0RUD87WzMBUiZLx8NsYr23N5BKsOMZHhu2hoNRVh6NXGfoiT1KOL8G3UHlJAnEDGmfa5ubNA/AacfG+Kb0g==}
     dev: false
 
-  /event-target-shim/5.0.1:
-    resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
-    engines: {node: '>=6'}
+  /event-target-shim/6.0.2:
+    resolution: {integrity: sha512-8q3LsZjRezbFZ2PN+uP+Q7pnHUMmAOziU2vA2OwoFaKIXxlxl38IylhSSgUorWu/rf4er67w0ikBqjBFk/pomA==}
+    engines: {node: '>=10.13.0'}
     dev: true
 
   /eventemitter3/4.0.7:

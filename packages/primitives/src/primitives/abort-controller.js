@@ -1,10 +1,13 @@
-import { EventTarget } from './events'
+import { EventTarget, Event } from './events'
 
 const kSignal = Symbol('kSignal')
 const kAborted = Symbol('kAborted')
 const kReason = Symbol('kReason')
 const kName = Symbol('kName')
+const kOnabort = Symbol('kOnabort')
 
+// this polyfill is heavily inspired from @flemist/abort-controller
+// @see https://github.com/NikolayMakhonin/abort-controller/tree/master/src/original
 export class DOMException extends Error {
   constructor(message, name) {
     super(message)
@@ -17,10 +20,11 @@ export class DOMException extends Error {
 }
 
 function createAbortSignal() {
-  const signal = new EventTarget('abort')
+  const signal = new EventTarget()
   Object.setPrototypeOf(signal, AbortSignal.prototype)
   signal[kAborted] = false
   signal[kReason] = undefined
+  signal[kOnabort] = undefined
   return signal
 }
 
@@ -34,7 +38,7 @@ function abortSignalAbort(signal, reason) {
 
   signal[kReason] = reason
   signal[kAborted] = true
-  signal.dispatchEvent({ type: 'abort' }) // TODO: why can't we use `new Event('abort')` ??
+  signal.dispatchEvent(new Event('abort'))
 }
 
 export class AbortController {
@@ -51,7 +55,7 @@ export class AbortController {
   }
 }
 
-export class AbortSignal extends EventTarget('abort') {
+export class AbortSignal extends EventTarget {
   constructor() {
     throw new TypeError('Illegal constructor.')
   }
@@ -62,6 +66,20 @@ export class AbortSignal extends EventTarget('abort') {
 
   get reason() {
     return this[kReason]
+  }
+
+  get onabort() {
+    return this[kOnabort]
+  }
+
+  set onabort(value) {
+    if (this[kOnabort]) {
+      this.removeEventListener('abort', this[kOnabort])
+    }
+    if (value) {
+      this[kOnabort] = value
+      this.addEventListener('abort', this[kOnabort])
+    }
   }
 
   throwIfAborted() {
