@@ -28,6 +28,7 @@
     "dist"
   ],
   "scripts": {
+    "prebuild": "pnpm run clean:build",
     "build": "tsup",
     "clean": "pnpm run clean:node && pnpm run clean:build",
     "clean:node": "rm -rf node_modules",
