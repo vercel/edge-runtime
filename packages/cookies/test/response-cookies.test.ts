@@ -1,7 +1,3 @@
-/**
- * @jest-environment @edge-runtime/jest-environment
- */
-
 import { ResponseCookies } from '../src/response-cookies'
 
 it('reflect .set into `set-cookie`', async () => {

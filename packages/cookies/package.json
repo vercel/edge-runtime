@@ -32,7 +32,6 @@
       }
     },
     "preset": "ts-jest/presets/default",
-    "testEnvironment": "node",
-    "testTimeout": 30000
+    "testEnvironment": "@edge-runtime/jest-environment"
   }
 }

@@ -1,7 +1,3 @@
-/**
- * @jest-environment @edge-runtime/jest-environment
- */
-
 import { RequestCookies } from '../src/request-cookies'
 
 describe('input parsing', () => {
