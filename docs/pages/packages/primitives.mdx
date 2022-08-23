@@ -10,22 +10,10 @@ See full list is availabe at [Edge Runtime APIs](/features/available-apis).
 
 ## Installation
 
-<Tabs items={['npm', 'yarn', 'pnpm']} storageKey="selected-pkg-manager">
-  <Tab>
-    ```sh
-    npm install @edge-runtime/primitives --save
-    ```
-  </Tab>
-  <Tab>
-    ```sh
-    yarn add @edge-runtime/primitives
-    ```
-  </Tab>
-  <Tab>
-    ```sh
-    pnpm install @edge-runtime/primitives --save
-    ```
-  </Tab>
+<Tabs items={['npm', 'yarn', 'pnpm']} storageKey='selected-pkg-manager'>
+  <Tab>```sh npm install @edge-runtime/primitives --save ```</Tab>
+  <Tab>```sh yarn add @edge-runtime/primitives ```</Tab>
+  <Tab>```sh pnpm install @edge-runtime/primitives --save ```</Tab>
 </Tabs>
 
 This package includes built-in TypeScript support.
@@ -40,44 +28,20 @@ import primitives from '@edge-runtime/primitives'
 console.log(primitives)
 
 // {
-//   globalThis: [Circular *1],
-//   self: [Circular *1],
-//   AbortController: <ref *2> [class AbortController] {
-//     default: [Circular *2],
-//     AbortController: [Circular *2],
-//     AbortSignal: [class AbortSignal extends EventTarget]
-//   },
-//   AbortSignal: [class AbortSignal extends EventTarget],
-//   AggregateError: [Function: AggregateError],
-//   atob: [Function (anonymous)],
-//   btoa: [Function (anonymous)],
-//   Blob: [class Blob],
-//   crypto: Crypto {
-//     subtle: SubtleCrypto { providers: [ProviderStorage] },
-//     randomUUID: [Function: v4]
-//   }
-// …
+//   AbortController: [Getter],
+//   AbortSignal: [Getter],
+//   Blob: [Getter],
+//   Cache: [Getter],
+//   CacheStorage: [Getter],
+//   caches: [Getter],
+//   createCaches: [Getter],
+//   console: [Getter],
+//   Crypto: [Getter],
+//   CryptoKey: [Getter],
+//   SubtleCrypto: [Getter],
+//   crypto: [Getter],
+//   TextDecoder: [Getter],
+//   TextEncoder: [Getter],
+//   …
+// }
 ```
-
-Alternative, you can attach primitives to an already declared context:
-
-```js
-import { addPrimitives } from '@edge-runtime/primitives'
-
-const primitives = addPrimitives(global)
-
-console.log(global.atob)
-// [Function (anonymous)]
-```
-
-## API
-
-### default: object
-
-An object contaning all the Web APIs.
-
-#### methods
-
-#### .addPrimitives: (context: object) => object
-
-Attach primitives to the provided object.
