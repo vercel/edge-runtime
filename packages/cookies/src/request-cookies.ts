@@ -1,5 +1,4 @@
-import { serialize } from 'cookie'
-import { parseCookieString } from './serialize'
+import { parseCookieString, serialize } from './serialize'
 import { cached } from './cached'
 import { format } from './format'
 
@@ -61,7 +60,7 @@ export class RequestCookies {
     map.set(name, value)
     this.headers.set(
       'cookie',
-      [...map].map(([key, value]) => serialize(key, value)).join('; ')
+      [...map].map(([key, value]) => serialize(key, value, {})).join('; ')
     )
     return this
   }
@@ -75,7 +74,7 @@ export class RequestCookies {
       : names.map((name) => map.delete(name))
     this.headers.set(
       'cookie',
-      [...map].map(([key, value]) => serialize(key, value)).join('; ')
+      [...map].map(([key, value]) => serialize(key, value, {})).join('; ')
     )
     return result
   }
