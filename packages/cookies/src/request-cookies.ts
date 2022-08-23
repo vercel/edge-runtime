@@ -9,10 +9,32 @@ export class RequestCookies {
     this.headers = request.headers
   }
 
-  *[Symbol.iterator]() {
-    for (const [key, value] of this.parsed()) {
-      yield [key, value]
-    }
+  clear(): void {
+    this.delete([...this.keys()])
+  }
+
+  get size(): number {
+    return this.parsed().size
+  }
+
+  entries(): IterableIterator<[string, string]> {
+    return this.parsed().entries()
+  }
+
+  keys(): IterableIterator<string> {
+    return this.parsed().keys()
+  }
+
+  values(): IterableIterator<string> {
+    return this.parsed().values()
+  }
+
+  get [Symbol.toStringTag](): string {
+    return 'RequestCookies'
+  }
+
+  [Symbol.iterator]() {
+    return this.parsed()[Symbol.iterator]()
   }
 
   private cache = cached((header: string | null) => {
@@ -43,13 +65,17 @@ export class RequestCookies {
     return this
   }
 
-  delete(name: string): this {
+  delete(names: string[]): boolean[]
+  delete(name: string): boolean
+  delete(names: string | string[]): boolean | boolean[] {
     const map = this.parsed()
-    map.delete(name)
+    const result = !Array.isArray(names)
+      ? map.delete(names)
+      : names.map((name) => map.delete(name))
     this.headers.set(
       'cookie',
       [...map].map(([key, value]) => serialize(key, value)).join('; ')
     )
-    return this
+    return result
   }
 }

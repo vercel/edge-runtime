@@ -21,18 +21,24 @@ export function serialize(
   return `${name}=${encodeURIComponent(value)}; ${attrs.join('; ')}`
 }
 
+/**
+ * Parse a `Cookie` header value
+ */
 export function parseCookieString(cookie: string): Map<string, string> {
   const map = new Map<string, string>()
 
   for (const pair of cookie.split(/; */)) {
     if (!pair) continue
     const [key, value] = pair.split('=', 2)
-    map.set(key, encodeURIComponent(value ?? 'true'))
+    map.set(key, decodeURIComponent(value ?? 'true'))
   }
 
   return map
 }
 
+/**
+ * Parse a `Set-Cookie` header value
+ */
 export function parseSetCookieString(
   setCookie: string
 ): undefined | { name: string; value: string; attributes: Options } {
@@ -55,7 +61,11 @@ export function parseSetCookieString(
     ...(secure && { secure: true }),
   }
 
-  return { name, value, attributes: compact(options) }
+  return {
+    name,
+    value: decodeURIComponent(value),
+    attributes: compact(options),
+  }
 }
 
 function compact<T>(t: T): T {
