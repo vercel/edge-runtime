@@ -33,6 +33,7 @@
     "src"
   ],
   "scripts": {
+    "clean": "rm -rf node_modules",
     "test": "pnpm test:edge && pnpm test:node",
     "test:edge": "EDGE_RUNTIME_EXISTS=true jest --env=@edge-runtime/jest-environment",
     "test:node": "jest --env=node"
