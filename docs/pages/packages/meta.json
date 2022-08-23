@@ -2,6 +2,7 @@
   "runtime": "edge-runtime",
   "vm": "@edge-runtime/vm",
   "jest-environment": "@edge-runtime/jest-environment",
+  "ponyfill": "@edge-runtime/ponyfill",
   "primitives": "@edge-runtime/primitives",
   "types": "@edge-runtime/types"
 }
