@@ -2,11 +2,11 @@
  * @jest-environment @edge-runtime/jest-environment
  */
 
-import { HeaderMutatingCookies } from '../src/response-cookies'
+import { ResponseCookies } from '../src/response-cookies'
 
 it('reflect .set into `set-cookie`', async () => {
   const response = new Response()
-  const cookies = new HeaderMutatingCookies(response)
+  const cookies = new ResponseCookies(response)
 
   expect(cookies.get('foo')).toBe(undefined)
   expect(cookies.getWithOptions('foo')).toEqual({
@@ -17,27 +17,37 @@ it('reflect .set into `set-cookie`', async () => {
   cookies
     .set('foo', 'bar', { path: '/test' })
     .set('fooz', 'barz', { path: '/test2' })
+    .set('fooHttpOnly', 'barHttpOnly', { httpOnly: true })
 
   expect(cookies.get('foo')).toBe('bar')
   expect(cookies.get('fooz')).toBe('barz')
+  expect(cookies.get('fooHttpOnly')).toBe('barHttpOnly')
 
-  expect(cookies.getWithOptions('foo')).toEqual({
+  const opt1 = cookies.getWithOptions('foo')
+  expect(opt1).toEqual<typeof opt1>({
     value: 'bar',
-    options: { Path: '/test' },
+    options: { path: '/test' },
   })
   expect(cookies.getWithOptions('fooz')).toEqual({
     value: 'barz',
-    options: { Path: '/test2' },
+    options: { path: '/test2' },
+  })
+  expect(cookies.getWithOptions('fooHttpOnly')).toEqual({
+    value: 'barHttpOnly',
+    options: {
+      path: '/',
+      httpOnly: true,
+    },
   })
 
   expect(Object.fromEntries(response.headers.entries())['set-cookie']).toBe(
-    'foo=bar; Path=/test, fooz=barz; Path=/test2'
+    'foo=bar; Path=/test, fooz=barz; Path=/test2, fooHttpOnly=barHttpOnly; Path=/; HttpOnly'
   )
 })
 
 it('reflect .delete into `set-cookie`', async () => {
   const response = new Response()
-  const cookies = new HeaderMutatingCookies(response)
+  const cookies = new ResponseCookies(response)
 
   cookies.set('foo', 'bar')
   expect(Object.fromEntries(response.headers.entries())['set-cookie']).toBe(
@@ -47,7 +57,7 @@ it('reflect .delete into `set-cookie`', async () => {
   expect(cookies.get('foo')).toBe('bar')
   expect(cookies.getWithOptions('foo')).toEqual({
     value: 'bar',
-    options: { Path: '/' },
+    options: { path: '/' },
   })
 
   cookies.set('fooz', 'barz')
@@ -58,65 +68,31 @@ it('reflect .delete into `set-cookie`', async () => {
   expect(cookies.get('fooz')).toBe('barz')
   expect(cookies.getWithOptions('fooz')).toEqual({
     value: 'barz',
-    options: { Path: '/' },
+    options: { path: '/' },
   })
 
-  const firstDelete = cookies.delete('foo')
-  expect(firstDelete).toBe(true)
+  cookies.delete('foo')
   expect(Object.fromEntries(response.headers.entries())['set-cookie']).toBe(
     'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooz=barz; Path=/'
   )
 
-  expect(cookies.get('foo')).toBe(undefined)
+  expect(cookies.get('foo')).toBe('')
   expect(cookies.getWithOptions('foo')).toEqual({
-    value: undefined,
-    options: {},
+    value: '',
+    options: { expires: new Date(0), path: '/' },
   })
 
-  const secondDelete = cookies.delete('fooz')
-  expect(secondDelete).toBe(true)
+  cookies.delete('fooz')
 
-  expect(Object.fromEntries(response.headers.entries())['set-cookie']).toBe(
-    'fooz=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
-  )
-
-  expect(cookies.get('fooz')).toBe(undefined)
-  expect(cookies.getWithOptions('fooz')).toEqual({
-    value: undefined,
-    options: {},
-  })
-  expect(cookies.size).toBe(0)
-})
-
-it('reflect .clear into `set-cookie`', async () => {
-  const response = new Response()
-  const cookies = new HeaderMutatingCookies(response)
-
-  cookies.clear()
-  expect(Object.fromEntries(response.headers.entries())['set-cookie']).toBe(
-    undefined
-  )
-
-  cookies.set('foo', 'bar')
-  expect(Object.fromEntries(response.headers.entries())['set-cookie']).toBe(
-    'foo=bar; Path=/'
-  )
-
-  expect(cookies.get('foo')).toBe('bar')
-  expect(cookies.getWithOptions('foo')).toEqual({
-    value: 'bar',
-    options: { Path: '/' },
-  })
-
-  cookies.set('fooz', 'barz')
-  expect(Object.fromEntries(response.headers.entries())['set-cookie']).toBe(
-    'foo=bar; Path=/, fooz=barz; Path=/'
-  )
-
-  cookies.clear()
   expect(Object.fromEntries(response.headers.entries())['set-cookie']).toBe(
     'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooz=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
   )
+
+  expect(cookies.get('fooz')).toBe('')
+  expect(cookies.getWithOptions('fooz')).toEqual({
+    value: '',
+    options: { expires: new Date(0), path: '/' },
+  })
 })
 
 it('options are not modified', async () => {
@@ -124,7 +100,7 @@ it('options are not modified', async () => {
   const response = new Response(null, {
     headers: { 'content-type': 'application/json' },
   })
-  const cookies = new HeaderMutatingCookies(response)
+  const cookies = new ResponseCookies(response)
   cookies.set('cookieName', 'cookieValue', options)
   expect(options).toEqual({ maxAge: 10000 })
 })

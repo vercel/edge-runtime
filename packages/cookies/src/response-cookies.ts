@@ -1,110 +1,82 @@
-import { Cookies } from './cookies'
-import type { CookieSerializeOptions } from 'cookie'
-import * as cookie from 'cookie'
+import { cached } from './cached'
+import { type Options, parseSetCookieString, serialize } from './serialize'
 
-type HasHeaders = { headers: Headers }
+type ParsedCookie = { value: string; options: Options }
+export type CookieBag = Map<string, ParsedCookie>
 
-const deserializeCookie = (input: HasHeaders): string[] => {
-  const value = input.headers.get('set-cookie')
-  return value !== undefined && value !== null ? value.split(', ') : []
-}
+export class ResponseCookies {
+  private readonly headers: Headers
 
-const serializeCookie = (input: string[]) => input.join(', ')
+  constructor(response: Response) {
+    this.headers = response.headers
+  }
 
-type GetWithOptionsOutput = {
-  value: string | undefined
-  options: { [key: string]: string }
-}
+  private cache = cached((_key: string | null) => {
+    // @ts-ignore
+    const headers = this.headers.getAll('set-cookie')
+    const map = new Map<string, ParsedCookie>()
 
-const serializeExpiredCookie = (
-  key: string,
-  options: CookieSerializeOptions = {}
-) =>
-  cookie.serialize(key, '', {
-    expires: new Date(0),
-    path: '/',
-    ...options,
+    for (const header of headers) {
+      const parsed = parseSetCookieString(header)
+      if (parsed) {
+        map.set(parsed.name, {
+          value: parsed.value,
+          options: parsed?.attributes,
+        })
+      }
+    }
+
+    return map
   })
 
-/**
- * This is an implementation of {@link Cookies} that mutates the headers of
- * the given request or response with `Set-Cookie` headers.
- */
-export class HeaderMutatingCookies extends Cookies {
-  response: HasHeaders
-
-  constructor(response: HasHeaders) {
-    super(response.headers.get('cookie'))
-    this.response = response
+  private cached() {
+    const allCookies = this.headers.get('set-cookie')
+    return this.cache(allCookies)
   }
-  get = (...args: Parameters<Cookies['get']>) => {
-    return this.getWithOptions(...args).value
-  }
-  getWithOptions = (
-    ...args: Parameters<Cookies['get']>
-  ): GetWithOptionsOutput => {
-    const raw = super.get(...args)
-    if (typeof raw !== 'string') return { value: raw, options: {} }
-    const { [args[0]]: value, ...options } = cookie.parse(raw)
-    return { value, options }
-  }
-  set = (...args: Parameters<Cookies['set']>) => {
-    const isAlreadyAdded = super.has(args[0])
 
-    super.set(...args)
-    const currentCookie = super.get(args[0])
-
-    if (typeof currentCookie !== 'string') {
-      throw new Error(
-        `Invariant: failed to generate cookie for ${JSON.stringify(args)}`
-      )
-    }
-
-    if (isAlreadyAdded) {
-      const setCookie = serializeCookie(
-        deserializeCookie(this.response).filter(
-          (value) => !value.startsWith(`${args[0]}=`)
-        )
-      )
-
-      if (setCookie) {
-        this.response.headers.set(
-          'set-cookie',
-          [currentCookie, setCookie].join(', ')
-        )
-      } else {
-        this.response.headers.set('set-cookie', currentCookie)
-      }
-    } else {
-      this.response.headers.append('set-cookie', currentCookie)
-    }
+  set(key: string, value: string, options?: Options): this {
+    const map = this.cached()
+    map.set(key, { value, options: normalizeCookieOptions(options || {}) })
+    replace(map, this.headers)
 
     return this
   }
-  delete = (key: string, options: CookieSerializeOptions = {}) => {
-    const isDeleted = super.delete(key)
 
-    if (isDeleted) {
-      const setCookie = serializeCookie(
-        deserializeCookie(this.response).filter(
-          (value) => !value.startsWith(`${key}=`)
-        )
-      )
-      const expiredCookie = serializeExpiredCookie(key, options)
-      this.response.headers.set(
-        'set-cookie',
-        [expiredCookie, setCookie].join(', ')
-      )
-    }
-
-    return isDeleted
+  delete(key: string): this {
+    return this.set(key, '', { expires: new Date(0) })
   }
-  clear = (options: CookieSerializeOptions = {}) => {
-    const expiredCookies = Array.from(super.keys())
-      .map((key) => serializeExpiredCookie(key, options))
-      .join(', ')
 
-    if (expiredCookies) this.response.headers.set('set-cookie', expiredCookies)
-    return super.clear()
+  get(key: string): string | undefined {
+    return this.getWithOptions(key)?.value
   }
+
+  getWithOptions(key: string): {
+    value: string | undefined
+    options: Options
+  } {
+    const element = this.cached().get(key)
+    return { value: element?.value, options: element?.options ?? {} }
+  }
+}
+
+function replace(bag: CookieBag, headers: Headers) {
+  headers.delete('set-cookie')
+  for (const [key, { value, options }] of bag) {
+    const serialized = serialize(key, value, options)
+    headers.append('set-cookie', serialized)
+  }
+}
+
+const normalizeCookieOptions = (options: Options) => {
+  options = Object.assign({}, options)
+
+  if (options.maxAge) {
+    options.expires = new Date(Date.now() + options.maxAge * 1000)
+  }
+
+  if (options.path === null || options.path === undefined) {
+    options.path = '/'
+  }
+
+  return options
 }
