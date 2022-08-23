@@ -124,8 +124,7 @@ export function createFormat(opts: FormatterOptions = {}) {
   function formatValue(
     ctx: Context,
     value: unknown,
-    recurseTimes: number | null | undefined,
-    typedArray?: boolean
+    recurseTimes: number | null | undefined
   ): string {
     if (hasCustomSymbol(value, customInspectSymbol)) {
       return format(value[customInspectSymbol]())
@@ -223,8 +222,6 @@ export function createFormat(opts: FormatterOptions = {}) {
       }
     }
 
-    let isValueFunction = false
-
     if (noIterator) {
       keys = getKeys(value as object, ctx.showHidden)
       braces = ['{', '}']
@@ -234,7 +231,6 @@ export function createFormat(opts: FormatterOptions = {}) {
           return `{}`
         }
       } else if (kind(value, 'function')) {
-        isValueFunction = true
         base = `[Function${value.name ? ': ' + value.name : ''}]`
         if (keys.length === 0) {
           return base
@@ -303,7 +299,7 @@ export function createFormat(opts: FormatterOptions = {}) {
     }
     ctx.seen.pop()
 
-    return reduceToSingleString(output, base, braces, isValueFunction)
+    return reduceToSingleString(output, base, braces)
   }
 
   function inspect(
@@ -357,8 +353,7 @@ export function createFormat(opts: FormatterOptions = {}) {
     ctx: Context,
     value: unknown[],
     recurseTimes: number | null | undefined,
-    visibleKeys: Set<string | symbol>,
-    keys: Array<string | symbol>
+    visibleKeys: Set<string | symbol>
   ) {
     const output: string[] = []
 
@@ -405,7 +400,7 @@ export function createFormat(opts: FormatterOptions = {}) {
         'byteOffset',
         'buffer',
       ] as Array<keyof TypedArray>) {
-        const str = formatValue(ctx, value[key], recurseTimes, true)
+        const str = formatValue(ctx, value[key], recurseTimes)
         ArrayPrototypePush.call(output, `[${String(key)}]: ${str}`)
       }
     }
@@ -445,10 +440,7 @@ export function createFormat(opts: FormatterOptions = {}) {
   return format
 }
 
-function formatBigInt(bigint: bigint) {
-  const str = String(bigint)
-  return `${str}n`
-}
+const formatBigInt = (bigint: bigint) => `${bigint}n`
 
 function formatPrimitive(value: unknown) {
   if (value === null) return 'null'
@@ -542,8 +534,7 @@ function isBelowBreakLength(
 function reduceToSingleString(
   output: string[],
   base: string,
-  braces: string[],
-  isValueFunction: boolean
+  braces: string[]
 ) {
   const start = output.length + braces[0].length + base.length + 10
   if (!isBelowBreakLength(output, start, base)) {
