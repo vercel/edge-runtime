@@ -49,5 +49,5 @@
     },
     "preset": "ts-jest/presets/default"
   },
-  "types": "index.d.ts"
+  "types": "src/index.d.ts"
 }
