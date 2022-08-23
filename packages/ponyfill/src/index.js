@@ -1,4 +1,2 @@
-const primitives =
+module.exports =
   typeof EdgeRuntime === 'string' ? self : require('@edge-runtime/primitives')
-
-module.exports = primitives
