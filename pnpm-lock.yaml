@@ -89,6 +89,14 @@ importers:
       jest-mock: 28.1.3
       jest-util: 28.1.3
 
+  packages/ponyfill:
+    specifiers:
+      '@edge-runtime/jest-environment': workspace:1.1.0-beta.27
+      '@edge-runtime/primitives': workspace:1.1.0-beta.27
+    devDependencies:
+      '@edge-runtime/jest-environment': link:../jest-environment
+      '@edge-runtime/primitives': link:../primitives
+
   packages/primitives:
     specifiers:
       '@edge-runtime/format': workspace:1.1.0-beta.27
