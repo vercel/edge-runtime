@@ -2,7 +2,9 @@ import { Tabs, Tab } from '../../components/tabs'
 
 # Edge Runtime Jest Environment
 
-The **@edge-runtime/jest-environment** enables you to run [Jest](https://jestjs.io) tests against the Edge Runtime environment. This enables you to ensure Edge compatibility with your library or framework.
+The **@edge-runtime/jest-environment** enables you to run [Jest](https://jestjs.io) tests against the Edge Runtime environment.
+
+It helps you to write tests assertion without being worried about the environment setup.
 
 ## Installation
 
@@ -34,9 +36,9 @@ For example, the following test would **pass**:
 // jest --env node
 // ✅ Pass
 it('should return the correct value', () => {
-  let val = eval('2 + 2');
-  expect(val).toBe(4);
-});
+  let val = eval('2 + 2')
+  expect(val).toBe(4)
+})
 ```
 
 The following test would **fail** when using the Edge Runtime:
@@ -47,7 +49,7 @@ The following test would **fail** when using the Edge Runtime:
 // Error name:    "EvalError"
 // Error message: "Code generation from strings disallowed for this context"
 it('should return the correct value', () => {
-  let val = eval('2 + 2');
-  expect(val).toBe(4);
-});
+  let val = eval('2 + 2')
+  expect(val).toBe(4)
+})
 ```

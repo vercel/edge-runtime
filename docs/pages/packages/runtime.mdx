@@ -2,26 +2,18 @@ import { Tabs, Tab } from '../../components/tabs'
 
 # Edge Runtime
 
-The **edge-runtime** package is the general purpose way to run [Vercel Edge Functions](https://vercel.com/edge) locally, as you would in a production environment.
+The **edge-runtime** package is a high-level, ready to use, general purpose way to run [Vercel Edge Functions](https://vercel.com/edge).
+
+It runs under the same condition than production environment, but locally in your machine.
+
+Under the hood, this package is orchestrating the use of the rest of the packages.
 
 ## Installation
 
 <Tabs items={['npm', 'yarn', 'pnpm']} storageKey='selected-pkg-manager'>
-  <Tab>
-    ```sh
-    npm install edge-runtime --save
-    ```
-  </Tab>
-  <Tab>
-    ```sh
-    yarn add edge-runtime
-    ```
-  </Tab>
-  <Tab>
-    ```sh
-    pnpm install edge-runtime --save
-    ```
-  </Tab>
+  <Tab>```sh npm install edge-runtime --save ```</Tab>
+  <Tab>```sh yarn add edge-runtime ```</Tab>
+  <Tab>```sh pnpm install edge-runtime --save ```</Tab>
 </Tabs>
 
 This package includes built-in TypeScript support.
@@ -44,7 +36,9 @@ addEventListener('fetch', event => {
 
 const runtime = new EdgeRuntime({ initialCode })
 
-const response = await runtime.dispatchFetch('http://vercel.com?url=https://example.com')
+const response = await runtime.dispatchFetch(
+  'http://vercel.com?url=https://example.com'
+)
 
 // If your code logic performs asynchronous tasks, you should await them.
 // https://developer.mozilla.org/en-US/docs/Web/API/ExtendableEvent/waitUntil
@@ -70,6 +64,8 @@ console.log(`Listening at ${server.url}`)
 ## API
 
 ### new EdgeRuntime([options])
+
+It creates a new Edge Runtime instance.
 
 #### options
 

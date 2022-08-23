@@ -1,0 +1,104 @@
+import { Tabs, Tab } from '../../components/tabs'
+
+# Edge Runtime Format
+
+The **@edge-runtime/format** receives any JavaScript primitive or Object as input, returning the beauty string represetantion as output.
+
+It follows the [formatter spec](https://console.spec.whatwg.org/#formatter) and can be used as drop-in replacement for [util.inspect](https://nodejs.org/api/util.html#utilinspectobject-options).
+
+## Installation
+
+<Tabs items={['npm', 'yarn', 'pnpm']} storageKey='selected-pkg-manager'>
+  <Tab>```sh npm install @edge-runtime/format --save ```</Tab>
+  <Tab>
+    ```sh yarn add @edge-runtime/format ```
+    <Tab></Tab>
+    ```sh pnpm install @edge-runtime/format --save ```
+  </Tab>
+</Tabs>
+
+This package includes built-in TypeScript support.
+
+## Usage
+
+First, call `createFormat` method for initialize your formatter:
+
+```js
+import { createFormat } from '@edge-runtime/format'
+const format = createFormat()
+```
+
+After that, you can interact with your formatter:
+
+```js
+const obj = { [Symbol.for('foo')]: 'bar' }
+
+format(obj)
+
+// => '{ [Symbol(foo)]: 'bar' }'
+```
+
+You can output multiple objects by listing them:
+
+```js
+format('Rhe PI number is', Math.PI, '(more or less)')
+
+// => 'The PI number is 3.141592653589793 (more or less)'
+```
+
+The string substitutions (printf style) is supported, and can be combined:
+
+```js
+format('The PI number is %i', Math.PI, '(rounded)')
+
+// => 'The PI number is 3 (rounded)'
+```
+
+In case you need to hide implementation details or want to customize how something should be printed, you can use the `customInspectSymbol` option for that:
+
+```js
+const customInspectSymbol = Symbol.for('edge-runtime.inspect.custom')
+
+class Password {
+  constructor(value) {
+    Object.defineProperty(this, 'password', {
+      value,
+      enumerable: false,
+    })
+  }
+
+  toString() {
+    return 'xxx'
+  }
+
+  [customInspectSymbol]() {
+    return {
+      password: `<${this.toString()}>`,
+    }
+  }
+}
+
+format(new Password('r0sebud'))
+
+// => { password: '<xxx>' }
+```
+
+## API
+
+### createFormat([options])
+
+It returns a formatter method.
+
+#### options
+
+##### formatError?: (error: Error) => string
+
+It customizes how errors should be printed.
+
+The default behavior is `error.toString()`.
+
+##### customInspectSymbol?: symbol
+
+It sets the symbold to be used for priting custom behavior.
+
+The default value is `edge-runtime.inspect.custom`.
