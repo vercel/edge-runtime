@@ -23,7 +23,7 @@
   "dependencies": {
     "@edge-runtime/format": "^1.1.0-beta.27",
     "@edge-runtime/vm": "^1.1.0-beta.27",
-    "exit-hook": "2.2.1",
+    "exit-hook": "3.1.0",
     "http-status": "1.5.2",
     "mri": "1.2.0",
     "picocolors": "1.0.0",
@@ -40,10 +40,11 @@
   ],
   "scripts": {
     "build": "tsc --project tsconfig.prod.json",
+    "clean": "pnpm run clean:node && pnpm run clean:build",
     "clean:build": "rm -rf dist",
     "clean:node": "rm -rf node_modules",
-    "clean": "pnpm run clean:node && pnpm run clean:build",
     "postversion": "pnpm run build",
+    "prebuild": "pnpm run clean:build",
     "test": "jest"
   },
   "license": "MPLv2",
