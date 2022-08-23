@@ -48,21 +48,6 @@
     "test": "jest"
   },
   "license": "MPLv2",
-  "jest": {
-    "globals": {
-      "ts-jest": {
-        "diagnostics": true,
-        "isolatedModules": true
-      }
-    },
-    "preset": "ts-jest/presets/default",
-    "testEnvironment": "node",
-    "testTimeout": 30000,
-    "watchPlugins": [
-      "jest-watch-typeahead/filename",
-      "jest-watch-typeahead/testname"
-    ]
-  },
   "publishConfig": {
     "access": "public"
   },

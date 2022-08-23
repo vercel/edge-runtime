@@ -39,14 +39,5 @@
     "test:node": "jest --env=node"
   },
   "license": "MPLv2",
-  "jest": {
-    "globals": {
-      "ts-jest": {
-        "diagnostics": true,
-        "isolatedModules": true
-      }
-    },
-    "preset": "ts-jest/presets/default"
-  },
   "types": "src/index.d.ts"
 }
