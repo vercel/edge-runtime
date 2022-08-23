@@ -110,10 +110,7 @@ test('formatting with @edge-runtime/format', () => {
 
   const format = createFormat()
   const result = format(cookies)
-  expect(result).toMatchInlineSnapshot(`
-    "ResponseCookies {
-      a: { value: '1', options: { httpOnly: true, path: '/' } },
-      b: { value: '2', options: { path: '/', sameSite: 'lax' } }
-    }"
-  `)
+  expect(result).toMatchInlineSnapshot(
+    `"ResponseCookies {\\"a\\":{\\"value\\":\\"1\\",\\"options\\":{\\"httpOnly\\":true,\\"path\\":\\"/\\"}},\\"b\\":{\\"value\\":\\"2\\",\\"options\\":{\\"path\\":\\"/\\",\\"sameSite\\":\\"lax\\"}}}"`
+  )
 })

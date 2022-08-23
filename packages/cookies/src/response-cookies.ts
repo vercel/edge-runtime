@@ -1,5 +1,4 @@
 import { cached } from './cached'
-import { format } from './format'
 import { type Options, parseSetCookieString, serialize } from './serialize'
 
 type ParsedCookie = { value: string; options: Options }
@@ -30,13 +29,13 @@ export class ResponseCookies {
     return map
   })
 
-  private cached() {
+  private parsed() {
     const allCookies = this.headers.get('set-cookie')
     return this.cache(allCookies)
   }
 
   set(key: string, value: string, options?: Options): this {
-    const map = this.cached()
+    const map = this.parsed()
     map.set(key, { value, options: normalizeCookieOptions(options || {}) })
     replace(map, this.headers)
 
@@ -55,12 +54,14 @@ export class ResponseCookies {
     value: string | undefined
     options: Options
   } {
-    const element = this.cached().get(key)
+    const element = this.parsed().get(key)
     return { value: element?.value, options: element?.options ?? {} }
   }
 
   [Symbol.for('edge-runtime.inspect.custom')]() {
-    return format(this.cached(), this.constructor.name)
+    return `ResponseCookies ${JSON.stringify(
+      Object.fromEntries(this.parsed())
+    )}`
   }
 }
 

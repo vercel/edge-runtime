@@ -59,7 +59,9 @@ test('formatting with @edge-runtime/format', () => {
 
   const format = createFormat()
   const result = format(cookies)
-  expect(result).toMatchInlineSnapshot(`"RequestCookies { a: '1', b: '2' }"`)
+  expect(result).toMatchInlineSnapshot(
+    `"RequestCookies {\\"a\\":\\"1\\",\\"b\\":\\"2\\"}"`
+  )
 })
 
 function requestWithCookies(cookies: string) {

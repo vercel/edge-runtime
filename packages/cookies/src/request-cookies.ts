@@ -1,6 +1,5 @@
 import { parseCookieString, serialize } from './serialize'
 import { cached } from './cached'
-import { format } from './format'
 
 /**
  * A class for manipulating {@link Request} cookies.
@@ -23,7 +22,7 @@ export class RequestCookies {
    * Format the cookies in the request as a string for logging
    */
   [Symbol.for('edge-runtime.inspect.custom')]() {
-    return format(this.parsed(), this.constructor.name)
+    return `RequestCookies ${JSON.stringify(Object.fromEntries(this.parsed()))}`
   }
 
   /**
