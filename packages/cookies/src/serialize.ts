@@ -1,6 +1,6 @@
 import type { CookieSerializeOptions } from 'cookie'
 
-export type Options = CookieSerializeOptions
+export interface Options extends CookieSerializeOptions {}
 
 export function serialize(
   name: string,
