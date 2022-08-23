@@ -41,7 +41,7 @@ describe('AbortController', () => {
     const controller = new AbortController()
     expect(controller.signal).toBeInstanceOf(AbortSignal)
     expect(() => (controller.signal = 'not-supported')).toThrow(
-      'Cannot set property signal of #<AbortController> which has only a getter'
+      /Cannot set property signal of .* which has only a getter/
     )
   })
 })
@@ -87,7 +87,7 @@ describe('AbortSignal', () => {
     const signal = AbortSignal.abort(reason)
     expect(signal.reason).toBe(reason)
     expect(() => (signal.reason = 'not-supported')).toThrow(
-      'Cannot set property reason of [object EventTarget] which has only a getter'
+      /Cannot set property reason of .* which has only a getter/
     )
   })
 
@@ -96,7 +96,7 @@ describe('AbortSignal', () => {
     const signal = AbortSignal.abort()
     expect(signal.aborted).toBe(aborted)
     expect(() => (signal.aborted = true)).toThrow(
-      'Cannot set property aborted of [object EventTarget] which has only a getter'
+      /Cannot set property aborted of .* which has only a getter/
     )
   })
 
