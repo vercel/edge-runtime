@@ -1,3 +1,4 @@
+import { createFormat } from '@edge-runtime/format'
 import { ResponseCookies } from '../src/response-cookies'
 
 it('reflect .set into `set-cookie`', async () => {
@@ -99,4 +100,20 @@ it('options are not modified', async () => {
   const cookies = new ResponseCookies(response)
   cookies.set('cookieName', 'cookieValue', options)
   expect(options).toEqual({ maxAge: 10000 })
+})
+
+test('formatting with @edge-runtime/format', () => {
+  const response = new Response(null)
+  const cookies = new ResponseCookies(response)
+  cookies.set('a', '1', { httpOnly: true })
+  cookies.set('b', '2', { sameSite: 'lax' })
+
+  const format = createFormat()
+  const result = format(cookies)
+  expect(result).toMatchInlineSnapshot(`
+    "ResponseCookies {
+      a: { value: '1', options: { httpOnly: true, path: '/' } },
+      b: { value: '2', options: { path: '/', sameSite: 'lax' } }
+    }"
+  `)
 })

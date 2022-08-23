@@ -1,7 +1,11 @@
 import { serialize } from 'cookie'
 import { parseCookieString } from './serialize'
 import { cached } from './cached'
+import { format } from './format'
 
+/**
+ * A class for manipulating {@link Request} cookies.
+ */
 export class RequestCookies {
   private readonly headers: Headers
 
@@ -9,28 +13,25 @@ export class RequestCookies {
     this.headers = request.headers
   }
 
+  /**
+   * Delete all the cookies in the cookies in the request
+   */
   clear(): void {
-    this.delete([...this.keys()])
+    this.delete([...this.parsed().keys()])
   }
 
+  /**
+   * Format the cookies in the request as a string for logging
+   */
+  [Symbol.for('edge-runtime.inspect.custom')]() {
+    return format(this.parsed(), this.constructor.name)
+  }
+
+  /**
+   * The amount of cookies received from the client
+   */
   get size(): number {
     return this.parsed().size
-  }
-
-  entries(): IterableIterator<[string, string]> {
-    return this.parsed().entries()
-  }
-
-  keys(): IterableIterator<string> {
-    return this.parsed().keys()
-  }
-
-  values(): IterableIterator<string> {
-    return this.parsed().values()
-  }
-
-  get [Symbol.toStringTag](): string {
-    return 'RequestCookies'
   }
 
   [Symbol.iterator]() {

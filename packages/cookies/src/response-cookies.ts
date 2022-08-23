@@ -1,4 +1,5 @@
 import { cached } from './cached'
+import { format } from './format'
 import { type Options, parseSetCookieString, serialize } from './serialize'
 
 type ParsedCookie = { value: string; options: Options }
@@ -56,6 +57,10 @@ export class ResponseCookies {
   } {
     const element = this.cached().get(key)
     return { value: element?.value, options: element?.options ?? {} }
+  }
+
+  [Symbol.for('edge-runtime.inspect.custom')]() {
+    return format(this.cached(), this.constructor.name)
   }
 }
 

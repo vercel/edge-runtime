@@ -1,4 +1,5 @@
 import { RequestCookies } from '../src/request-cookies'
+import { createFormat } from '@edge-runtime/format'
 
 describe('input parsing', () => {
   test('single element', () => {
@@ -50,6 +51,15 @@ test('adding a cookie', () => {
     ['b', '2'],
     ['c', '3'],
   ])
+})
+
+test('formatting with @edge-runtime/format', () => {
+  const request = requestWithCookies('a=1; b=2')
+  const cookies = new RequestCookies(request)
+
+  const format = createFormat()
+  const result = format(cookies)
+  expect(result).toMatchInlineSnapshot(`"RequestCookies { a: '1', b: '2' }"`)
 })
 
 function requestWithCookies(cookies: string) {
