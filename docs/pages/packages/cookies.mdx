@@ -1,0 +1,92 @@
+import { Tabs, Tab } from '../../components/tabs'
+
+# Edge Runtime Cookies
+
+The **@edge-runtime/cookies** package provides a high-level HTTP Cookie
+abstractions for Edge-compatible environments, such as Edge Runtime or Vercel
+Edge Functions and Edge Middleware.
+
+## Installation
+
+<Tabs items={['npm', 'yarn', 'pnpm']} storageKey='selected-pkg-manager'>
+  <Tab>
+
+```
+npm install @edge-runtime/cookies --save
+```
+
+  </Tab>
+  <Tab>
+
+```bash
+yarn add @edge-runtime/cookies
+```
+
+  </Tab>
+  <Tab>
+
+```sh
+pnpm install @edge-runtime/cookies --save
+```
+
+  </Tab>
+</Tabs>
+
+## Usage
+
+### Request Cookie Handling
+
+In order to read request cookie handling, use the exported `RequestCookies`
+constructor:
+
+```ts
+import { RequestCookies } from '@edge-runtime/cookies'
+
+function handleRequest(req: Request) {
+  const cookies = new RequestCookies(req)
+  cookies.get('cookie-name') // undefined | string
+  cookies.has('cookie-name') // boolean
+  // do something...
+}
+```
+
+Notes:
+
+- `cookies.get()` returns the value of the cookie. The cookie configuration
+  (`Max-Age`, `Path` etc) is not being passed by the HTTP client, therefore it's
+  not possible to determine the cookie expiration date.
+
+- All mutations are performed in-place and will update the `cookie` header in
+  the provided `Request` object.
+
+- When mutating the request cookies, the client won't be able to read the
+  updated/deleted cookies. Please use `ResponseCookies` for that.
+
+### Response Cookie Handling
+
+In order to manipulate response cookies that will persist in the HTTP client,
+use the exported `ResponseCookies` constructor:
+
+```ts
+import { ResponseCookies } from '@edge-runtime/cookies'
+
+function handleRequest(req: Request) {
+  // do something
+  const response = new Response('Hello, world.')
+  const cookies = new ResponseCookies(response)
+  cookies.set('cookie-name', 'cookie-value', { maxAge: 1000 }) // make cookie persistent for 1000 seconds
+  cookies.delete('old-cookie')
+  return response
+}
+```
+
+Notes:
+
+- `cookies.set()` sets a cookie with the provided name and value. The cookie
+  configuration (`Max-Age`, `Path` etc) is passed as an optional argument.
+
+- `cookies.delete()` deletes a cookie with the provided name by setting an empty
+  value with an expiration date in the past.
+
+- All mutations are performed in-place and will update the `Set-Cookie` headers
+  in the provided `Response` object.
