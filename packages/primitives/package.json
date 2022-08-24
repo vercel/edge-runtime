@@ -26,11 +26,10 @@
     "@peculiar/webcrypto": "1.4.0",
     "@types/uuid": "8.3.4",
     "@ungap/structured-clone": "1.0.1",
-    "abort-controller": "3.0.0",
     "aggregate-error-ponyfill": "1.1.0",
     "blob-polyfill": "7.0.20220408",
     "esbuild-plugin-alias": "latest",
-    "event-target-shim": "5.0.1",
+    "event-target-shim": "6.0.2",
     "formdata-node": "4.4.1",
     "text-encoding": "0.7.0",
     "tsup": "6",
@@ -63,17 +62,6 @@
     "test": "jest"
   },
   "license": "MPLv2",
-  "jest": {
-    "globals": {
-      "ts-jest": {
-        "diagnostics": true,
-        "isolatedModules": true
-      }
-    },
-    "preset": "ts-jest/presets/default",
-    "testEnvironment": "node",
-    "testTimeout": 30000
-  },
   "publishConfig": {
     "access": "public"
   },

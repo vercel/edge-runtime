@@ -36,16 +36,6 @@
     "test": "jest"
   },
   "license": "MPLv2",
-  "jest": {
-    "globals": {
-      "ts-jest": {
-        "diagnostics": true,
-        "isolatedModules": true
-      }
-    },
-    "preset": "ts-jest/presets/default",
-    "testEnvironment": "@edge-runtime/jest-environment"
-  },
   "publishConfig": {
     "access": "public"
   },
