@@ -5,5 +5,6 @@
   "jest-environment": "@edge-runtime/jest-environment",
   "ponyfill": "@edge-runtime/ponyfill",
   "primitives": "@edge-runtime/primitives",
-  "types": "@edge-runtime/types"
+  "types": "@edge-runtime/types",
+  "cookies": "@edge-runtime/cookies"
 }
