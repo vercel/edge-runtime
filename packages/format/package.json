@@ -2,7 +2,7 @@
   "name": "@edge-runtime/format",
   "description": "A printf-like string formatter for Edge Runtime",
   "homepage": "https://github.com/vercel/edge-runtime#readme",
-  "version": "1.1.0-beta.27",
+  "version": "1.1.0-beta.29",
   "main": "dist/index.js",
   "repository": {
     "directory": "packages/format",
@@ -28,6 +28,7 @@
     "dist"
   ],
   "scripts": {
+    "prebuild": "pnpm run clean:build",
     "build": "tsup",
     "clean": "pnpm run clean:node && pnpm run clean:build",
     "clean:node": "rm -rf node_modules",
@@ -35,17 +36,6 @@
     "test": "TZ=UTC jest"
   },
   "license": "MPLv2",
-  "jest": {
-    "globals": {
-      "ts-jest": {
-        "diagnostics": true,
-        "isolatedModules": true
-      }
-    },
-    "preset": "ts-jest/presets/default",
-    "testEnvironment": "node",
-    "testTimeout": 30000
-  },
   "publishConfig": {
     "access": "public"
   },

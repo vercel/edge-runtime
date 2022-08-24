@@ -2,26 +2,16 @@ import { Tabs, Tab } from '../../components/tabs'
 
 # Edge Runtime VM
 
-The **@edge-runtime/vm** package is the low level bindings for creating Web Standard isolated VM contexts under the same [Vercel Edge Functions](https://vercel.com/edge) conditions.
+The **@edge-runtime/vm** is the low level bindings for creating Web Standard isolated VM contexts under the same [Vercel Edge Functions](https://vercel.com/edge) conditions.
+
+It has been designed to simulate Edge conditions locally in your machine.
 
 ## Installation
 
-<Tabs items={['npm', 'yarn', 'pnpm']} storageKey="selected-pkg-manager">
-  <Tab>
-    ```sh
-    npm install @edge-runtime/vm --save
-    ```
-  </Tab>
-  <Tab>
-    ```sh
-    yarn add @edge-runtime/vm
-    ```
-  </Tab>
-  <Tab>
-    ```sh
-    pnpm install @edge-runtime/vm --save
-    ```
-  </Tab>
+<Tabs items={['npm', 'yarn', 'pnpm']} storageKey='selected-pkg-manager'>
+  <Tab>```sh npm install @edge-runtime/vm --save ```</Tab>
+  <Tab>```sh yarn add @edge-runtime/vm ```</Tab>
+  <Tab>```sh pnpm install @edge-runtime/vm --save ```</Tab>
 </Tabs>
 
 This package includes built-in TypeScript support.
@@ -61,12 +51,15 @@ const edgeVM = new EdgeVM({
 })
 
 const { url, status } = await edgeVM.evaluate("fetch('edge-ping.vercel.app')")
+
 console.log(`ping to ${url} returned ${status}`)
 ```
 
 ## API
 
 ### new EdgeVM([options])
+
+It creates a new EdgeVM instance.
 
 #### options
 

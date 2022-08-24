@@ -16,8 +16,8 @@
   ],
   "license": "MPLv2",
   "devDependencies": {
-    "@edge-runtime/format": "workspace:1.1.0-beta.27",
-    "@edge-runtime/jest-environment": "workspace:1.1.0-beta.27",
+    "@edge-runtime/format": "workspace:1.1.0-beta.29",
+    "@edge-runtime/jest-environment": "workspace:1.1.0-beta.29",
     "@types/cookie": "0.5.1",
     "jest": "28.1.3",
     "ts-jest": "28.0.3",

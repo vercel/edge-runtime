@@ -1,7 +1,6 @@
-import EventTargetShim from 'event-target-shim'
+import { EventTarget, Event } from 'event-target-shim'
 
-export const EventTarget = EventTargetShim.EventTarget
-export class Event extends EventTargetShim {}
+export { EventTarget, Event }
 
 export class FetchEvent extends Event {
   constructor(request) {
