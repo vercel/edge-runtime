@@ -2,7 +2,7 @@
   "name": "@edge-runtime/ponyfill",
   "description": "A ponyfill (doesn't overwrite the native methods) to use Edge Runtime APIs in any environment.",
   "homepage": "https://edge-runtime.vercel.app/packages/ponyfill",
-  "version": "1.1.0-beta.27",
+  "version": "1.1.0-beta.28",
   "main": "src/index.js",
   "module": "dist/index.mjs",
   "repository": {
@@ -26,8 +26,8 @@
     "web"
   ],
   "devDependencies": {
-    "@edge-runtime/jest-environment": "workspace:1.1.0-beta.27",
-    "@edge-runtime/primitives": "workspace:1.1.0-beta.27"
+    "@edge-runtime/jest-environment": "workspace:1.1.0-beta.28",
+    "@edge-runtime/primitives": "workspace:1.1.0-beta.28"
   },
   "files": [
     "src"
