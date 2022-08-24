@@ -8,33 +8,27 @@ Edge Functions and Edge Middleware.
 
 ## Installation
 
-<Tabs items={['npm', 'yarn', 'pnpm']} storageKey='selected-pkg-manager'>
+<Tabs items={['npm', 'yarn', 'pnpm']} storageKey="selected-pkg-manager">
   <Tab>
-
-```
-npm install @edge-runtime/cookies --save
-```
-
+    ```sh
+    npm install @edge-runtime/cookies --save
+    ```
   </Tab>
   <Tab>
-
-```bash
-yarn add @edge-runtime/cookies
-```
-
+    ```sh
+    yarn add @edge-runtime/cookies
+    ```
   </Tab>
   <Tab>
-
-```sh
-pnpm install @edge-runtime/cookies --save
-```
-
+    ```sh
+    pnpm install @edge-runtime/cookies --save
+    ```
   </Tab>
 </Tabs>
 
 ## Usage
 
-### Request Cookie Handling
+### for Request
 
 In order to read request cookie handling, use the exported `RequestCookies`
 constructor:
@@ -62,7 +56,7 @@ Notes:
 - When mutating the request cookies, the client won't be able to read the
   updated/deleted cookies. Please use `ResponseCookies` for that.
 
-### Response Cookie Handling
+### for Response
 
 In order to manipulate response cookies that will persist in the HTTP client,
 use the exported `ResponseCookies` constructor:
