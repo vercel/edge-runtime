@@ -39,5 +39,8 @@
     "test:node": "jest --env=node"
   },
   "license": "MPLv2",
+  "publishConfig": {
+    "access": "public"
+  },
   "types": "src/index.d.ts"
 }
