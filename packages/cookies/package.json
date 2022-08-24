@@ -1,36 +1,42 @@
 {
   "name": "@edge-runtime/cookies",
-  "version": "0.0.0",
   "description": "An Edge Runtime compatible cookie helpers",
-  "sideEffect": false,
+  "homepage": "https://edge-runtime.vercel.app/packages/cookies",
+  "version": "1.1.0-beta.29",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "test": "jest",
-    "build": "tsup"
+  "repository": {
+    "directory": "packages/cookies",
+    "type": "git",
+    "url": "git+https://github.com/vercel/edge-runtime.git"
   },
-  "keywords": [],
-  "files": [
-    "dist"
+  "bugs": {
+    "url": "https://github.com/vercel/edge-runtime/issues"
+  },
+  "keywords": [
+    "cookie",
+    "cookies",
+    "set-cookie"
   ],
-  "license": "MPLv2",
   "devDependencies": {
     "@edge-runtime/format": "workspace:1.1.0-beta.29",
     "@edge-runtime/jest-environment": "workspace:1.1.0-beta.29",
     "@types/cookie": "0.5.1",
-    "jest": "28.1.3",
-    "ts-jest": "28.0.3",
     "tsup": "6"
   },
-  "jest": {
-    "globals": {
-      "ts-jest": {
-        "diagnostics": true,
-        "isolatedModules": true
-      }
-    },
-    "preset": "ts-jest/presets/default",
-    "testEnvironment": "@edge-runtime/jest-environment"
-  }
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "clean:build": "rm -rf dist",
+    "clean:node": "rm -rf node_modules",
+    "prebuild": "pnpm run clean:build",
+    "test": "jest"
+  },
+  "license": "MPLv2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "types": "dist/index.d.ts"
 }
