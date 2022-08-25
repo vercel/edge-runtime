@@ -87,6 +87,7 @@
     "clean": "pnpm -r run clean && rm -rf ./node_modules",
     "clean:build": "pnpm -r run clean:build",
     "clean:node": "pnpm -r run clean:node",
+    "contributors": "git-authors-cli && finepack",
     "coverage": "c8 report --reporter=text-lcov > coverage/lcov.info",
     "lockfile": "pnpm install --lockfile && git add pnpm-lock.yaml && git commit -m \"build: regenerate lock\"",
     "postinstall": "./node_modules/.bin/simple-git-hooks",
@@ -94,7 +95,7 @@
     "test": "c8 -x 'packages/primitives/*' turbo run test --concurrency=1",
     "update": "pnpm -r exec ncu -- --upgrade && ncu -- --upgrade",
     "update:check": "pnpm -r exec ncu -- --errorLevel 2 && ncu -- --errorLevel 2",
-    "version:prepare": "changeset version && pnpm install --no-frozen-lockfile && git-authors-cli && finepack",
+    "version:prepare": "changeset version && pnpm install --no-frozen-lockfile",
     "version:publish": "changeset publish"
   },
   "private": true,
