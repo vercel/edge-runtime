@@ -21,10 +21,6 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
 
-      - uses: ./.github/actions/install-deps
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
       - name: Setup Cache
         uses: actions/cache@v3
         with:
