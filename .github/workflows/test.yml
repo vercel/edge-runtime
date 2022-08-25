@@ -43,7 +43,7 @@ jobs:
           version: ${{ matrix.version.node == '12.x' && '6' || '7' }}
           run_install: |
             - recursive: true
-              args: [--no-frozen-lockfile, --loglevel=error]
+              args: [--loglevel=error]
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
