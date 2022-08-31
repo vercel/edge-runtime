@@ -27,7 +27,11 @@
   ],
   "devDependencies": {
     "@edge-runtime/jest-environment": "workspace:1.1.0-beta.32",
-    "@edge-runtime/primitives": "workspace:1.1.0-beta.32"
+    "@edge-runtime/primitives": "workspace:1.1.0-beta.32",
+    "@edge-runtime/vm": "workspace:^1.1.0-beta.32",
+    "acorn": "8.8.0",
+    "acorn-loose": "8.3.0",
+    "acorn-walk": "8.2.0"
   },
   "files": [
     "src"
@@ -35,7 +39,7 @@
   "scripts": {
     "clean": "rm -rf node_modules",
     "test": "pnpm test:edge && pnpm test:node",
-    "test:edge": "EDGE_RUNTIME_EXISTS=true jest --env=@edge-runtime/jest-environment",
+    "test:edge": "EDGE_RUNTIME_EXISTS=true jest --env=@edge-runtime/jest-environment --testPathIgnorePatterns='.node.test.ts$'",
     "test:node": "jest --env=node"
   },
   "license": "MPLv2",
