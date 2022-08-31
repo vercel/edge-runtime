@@ -1,8 +1,10 @@
-export function createCaches(): {
-  cacheStorage: () => CacheStorage
-  Cache: typeof Cache
-  CacheStorage: typeof CacheStorage
-}
+export function createCaches():
+  | undefined
+  | {
+      cacheStorage: () => CacheStorage
+      Cache: typeof Cache
+      CacheStorage: typeof CacheStorage
+    }
 
 export const caches: CacheStorage
 
