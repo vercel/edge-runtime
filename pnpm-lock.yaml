@@ -133,7 +133,7 @@ importers:
       text-encoding: 0.7.0
       tsup: '6'
       undici: 5.5.1
-      urlpattern-polyfill: 5.0.6
+      urlpattern-polyfill: 5.0.9
       uuid: 9.0.0
       web-streams-polyfill: 4.0.0-beta.3
       whatwg-url: 11.0.0
@@ -150,7 +150,7 @@ importers:
       text-encoding: 0.7.0
       tsup: 6.2.2
       undici: 5.5.1
-      urlpattern-polyfill: 5.0.6
+      urlpattern-polyfill: 5.0.9
       uuid: 9.0.0
       web-streams-polyfill: 4.0.0-beta.3
       whatwg-url: 11.0.0
@@ -7323,8 +7323,8 @@ packages:
       prepend-http: 2.0.0
     dev: true
 
-  /urlpattern-polyfill/5.0.6:
-    resolution: {integrity: sha512-Jh5uMYAPoBlB3xgLZXI9O9e2tXZ0qrFShCimat9nFIFb02PjBAF/lPZSY/cOjbR5CmcDrxSq6v8sA5RjwuJB5w==}
+  /urlpattern-polyfill/5.0.9:
+    resolution: {integrity: sha512-7MM/vXEZhbWtSBKPTWFb431QUxn9IKBN3HutHN+2JrO9UAusttvvCjEVB+7MZkAowduXCs2v0D/puv6sE9oyFA==}
     dev: true
 
   /use-sync-external-store/1.2.0_react@18.2.0:
