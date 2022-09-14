@@ -6,7 +6,6 @@ import * as FetchSymbols from 'undici/lib/fetch/symbols'
 import * as HeadersModule from 'undici/lib/fetch/headers'
 import * as ResponseModule from 'undici/lib/fetch/response'
 import * as UtilModule from 'undici/lib/fetch/util'
-// Import WebIDLModule to generate corresponding spec defined errors
 import * as WebIDLModule from 'undici/lib/fetch/webidl'
 
 import fetchImpl from 'undici/lib/fetch'
@@ -169,6 +168,7 @@ function normalizeAndValidateHeaderValue(potentialValue, errorPrefix) {
 }
 
 /**
+>>>>>>> Stashed changes
  * A global agent to be used with every fetch request. We also define a
  * couple of globals that we can hide in the runtime for advanced use.
  */
