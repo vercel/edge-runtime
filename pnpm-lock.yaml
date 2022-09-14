@@ -132,7 +132,7 @@ importers:
       formdata-node: 4.4.1
       text-encoding: 0.7.0
       tsup: '6'
-      undici: 5.5.1
+      undici: 5.10.0
       urlpattern-polyfill: 5.0.9
       uuid: 9.0.0
       web-streams-polyfill: 4.0.0-beta.3
@@ -149,7 +149,7 @@ importers:
       formdata-node: 4.4.1
       text-encoding: 0.7.0
       tsup: 6.2.2
-      undici: 5.5.1
+      undici: 5.10.0
       urlpattern-polyfill: 5.0.9
       uuid: 9.0.0
       web-streams-polyfill: 4.0.0-beta.3
@@ -7202,8 +7202,8 @@ packages:
     resolution: {integrity: sha512-z4o1fvKUojIWh9XuaVLUDdf86RQiq13AC1dmHbTpoyuu+bquHms76v16CjycCbec87J7z0k//SiQVk0sMdFmpQ==}
     dev: true
 
-  /undici/5.5.1:
-    resolution: {integrity: sha512-MEvryPLf18HvlCbLSzCW0U00IMftKGI5udnjrQbC5D4P0Hodwffhv+iGfWuJwg16Y/TK11ZFK8i+BPVW2z/eAw==}
+  /undici/5.10.0:
+    resolution: {integrity: sha512-c8HsD3IbwmjjbLvoZuRI26TZic+TSEe8FPMLLOkN1AfYRhdjnKBU6yL+IwcSCbdZiX4e5t0lfMDLDCqj4Sq70g==}
     engines: {node: '>=12.18'}
     dev: true
 
