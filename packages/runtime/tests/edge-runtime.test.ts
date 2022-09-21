@@ -190,15 +190,15 @@ test('gets a server error when responding with no response', async () => {
   expect(res.status).toEqual(500)
 })
 
-test('gets the runtime version in a hidden propety', async () => {
+test('gets the runtime version in a hidden property', async () => {
   const runtime = new EdgeRuntime()
   {
     const meta = runtime.evaluate(`(globalThis.EdgeRuntime)`)
-    expect(meta).toEqual('edge-runtime')
+    expect(meta).toEqual('vercel')
   }
   {
     const meta = runtime.evaluate(`(EdgeRuntime)`)
-    expect(meta).toEqual('edge-runtime')
+    expect(meta).toEqual('vercel')
   }
   const keys = runtime.evaluate<string[]>(`(Object.keys(globalThis))`)
   expect(keys).not.toHaveLength(0)
