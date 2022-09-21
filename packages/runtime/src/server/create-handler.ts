@@ -34,7 +34,11 @@ export function createHandler<T extends EdgeContext>(options: Options<T>) {
 
       const body =
         req.method !== 'GET' && req.method !== 'HEAD'
-          ? getClonableBodyStream(req, options.runtime.context.TransformStream)
+          ? getClonableBodyStream(
+              req,
+              options.runtime.evaluate('Uint8Array'),
+              options.runtime.context.TransformStream
+            )
           : undefined
 
       const response = await options.runtime.dispatchFetch(
