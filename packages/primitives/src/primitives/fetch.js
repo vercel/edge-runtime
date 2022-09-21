@@ -168,7 +168,6 @@ function normalizeAndValidateHeaderValue(potentialValue, errorPrefix) {
 }
 
 /**
->>>>>>> Stashed changes
  * A global agent to be used with every fetch request. We also define a
  * couple of globals that we can hide in the runtime for advanced use.
  */
