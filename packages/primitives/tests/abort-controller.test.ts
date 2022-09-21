@@ -40,6 +40,7 @@ describe('AbortController', () => {
   it('has signal read-only property', () => {
     const controller = new AbortController()
     expect(controller.signal).toBeInstanceOf(AbortSignal)
+    // @ts-expect-error
     expect(() => (controller.signal = 'not-supported')).toThrow(
       /Cannot set property signal of .* which has only a getter/
     )
@@ -86,6 +87,7 @@ describe('AbortSignal', () => {
     const reason = 'some reason'
     const signal = AbortSignal.abort(reason)
     expect(signal.reason).toBe(reason)
+    // @ts-expect-error
     expect(() => (signal.reason = 'not-supported')).toThrow(
       /Cannot set property reason of .* which has only a getter/
     )
@@ -95,6 +97,7 @@ describe('AbortSignal', () => {
     const aborted = true
     const signal = AbortSignal.abort()
     expect(signal.aborted).toBe(aborted)
+    // @ts-expect-error
     expect(() => (signal.aborted = true)).toThrow(
       /Cannot set property aborted of .* which has only a getter/
     )
