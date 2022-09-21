@@ -17,5 +17,5 @@ test('allows to run crypto', async () => {
 })
 
 test('has EdgeRuntime global', () => {
-  expect(EdgeRuntime).toEqual('edge-runtime')
+  expect(EdgeRuntime).toEqual('vercel')
 })

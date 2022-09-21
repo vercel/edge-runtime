@@ -90,7 +90,7 @@ function addPrimitives(context: VMContext) {
   defineProperty(context, 'clearTimeout', { value: clearTimeout })
   defineProperty(context, 'setInterval', { value: setInterval })
   defineProperty(context, 'setTimeout', { value: setTimeout })
-  defineProperty(context, 'EdgeRuntime', { value: 'edge-runtime' })
+  defineProperty(context, 'EdgeRuntime', { value: 'vercel' })
 
   // Console
   defineProperties(context, {
