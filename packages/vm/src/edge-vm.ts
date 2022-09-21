@@ -192,9 +192,6 @@ function addPrimitives(context: VMContext) {
     scopedContext: {
       Uint8Array: createUint8ArrayForContext(context),
       Buffer,
-      FinalizationRegistry: function () {
-        return { register: function () {} }
-      },
       global: {},
       queueMicrotask,
       setImmediate,
