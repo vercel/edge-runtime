@@ -33,7 +33,7 @@
     "formdata-node": "4.4.1",
     "text-encoding": "0.7.0",
     "tsup": "6",
-    "undici": "5.5.1",
+    "undici": "5.10.0",
     "urlpattern-polyfill": "5.0.9",
     "uuid": "9.0.0",
     "web-streams-polyfill": "4.0.0-beta.3",

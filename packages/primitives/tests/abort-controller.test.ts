@@ -12,7 +12,7 @@ describe('AbortController', () => {
         signal: controller.signal,
       })
     } catch (error: any) {
-      expect(error.message).toEqual('The operation was aborted')
+      expect(error.message).toEqual('The operation was aborted.')
     }
   })
 

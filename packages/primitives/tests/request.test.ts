@@ -14,3 +14,14 @@ test('combine with Headers', async () => {
   })
   expect(request.headers.get('cookie')).toBe('hello=world')
 })
+
+test('serialize body into JSON', async () => {
+  const obj = { hello: 'world' }
+  const request = new Request('https://example.vercel.sh', {
+    method: 'POST',
+    body: JSON.stringify(obj),
+  })
+
+  const data = await request.json()
+  expect(data).toEqual(obj)
+})

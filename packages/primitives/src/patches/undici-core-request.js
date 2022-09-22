@@ -1,4 +1,4 @@
-// Copied from https://github.com/nodejs/undici/blob/v5.5.1/lib/core/request.js
+// Copied from https://github.com/nodejs/undici/blob/v5.10.0/lib/core/request.js
 // modified to allow any headers
 
 'use strict'

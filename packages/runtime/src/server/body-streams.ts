@@ -9,6 +9,7 @@ type BodyStream = ReadableStream<Uint8Array>
  */
 export function getClonableBodyStream<T extends IncomingMessage>(
   incomingMessage: T,
+  KUint8Array: typeof Uint8Array,
   KTransformStream: typeof TransformStream
 ) {
   let bufferedBodyStream: BodyStream | null = null
@@ -34,7 +35,7 @@ export function getClonableBodyStream<T extends IncomingMessage>(
     cloneBodyStream(): BodyStream {
       const originalStream =
         bufferedBodyStream ??
-        requestToBodyStream(incomingMessage, KTransformStream)
+        requestToBodyStream(incomingMessage, KUint8Array, KTransformStream)
       const [stream1, stream2] = originalStream.tee()
       bufferedBodyStream = stream1
       return stream2
@@ -47,11 +48,14 @@ export function getClonableBodyStream<T extends IncomingMessage>(
  */
 function requestToBodyStream(
   request: IncomingMessage,
+  KUint8Array: typeof Uint8Array,
   KTransformStream: typeof TransformStream
 ): BodyStream {
   const transform = new KTransformStream<Uint8Array, Uint8Array>({
     start(controller) {
-      request.on('data', (chunk) => controller.enqueue(chunk))
+      request.on('data', (chunk) =>
+        controller.enqueue(new KUint8Array([...new Uint8Array(chunk)]))
+      )
       request.on('end', () => controller.terminate())
       request.on('error', (err) => controller.error(err))
     },
