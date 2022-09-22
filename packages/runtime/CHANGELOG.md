@@ -1,5 +1,14 @@
 # edge-runtime
 
+## 1.1.0-beta.34
+
+### Patch Changes
+
+- Add DOMException primitive ([#143](https://github.com/vercel/edge-runtime/pull/143))
+
+- Updated dependencies [[`83883c2`](https://github.com/vercel/edge-runtime/commit/83883c24d8caaa78a5165e60f5e5718047bee2ae)]:
+  - @edge-runtime/vm@1.1.0-beta.34
+
 ## 1.1.0-beta.33
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @edge-runtime/types
 
+## 1.1.0-beta.34
+
+### Patch Changes
+
+- Add DOMException primitive ([#143](https://github.com/vercel/edge-runtime/pull/143))
+
 ## 1.1.0-beta.33
 
 ### Patch Changes

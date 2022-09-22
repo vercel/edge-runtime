@@ -107,7 +107,7 @@ importers:
     specifiers:
       '@edge-runtime/jest-environment': workspace:1.1.0-beta.33
       '@edge-runtime/primitives': workspace:1.1.0-beta.34
-      '@edge-runtime/vm': workspace:^1.1.0-beta.33
+      '@edge-runtime/vm': workspace:^1.1.0-beta.34
       acorn: 8.8.0
       acorn-loose: 8.3.0
       acorn-walk: 8.2.0
@@ -158,7 +158,7 @@ importers:
   packages/runtime:
     specifiers:
       '@edge-runtime/format': ^1.1.0-beta.33
-      '@edge-runtime/vm': ^1.1.0-beta.33
+      '@edge-runtime/vm': ^1.1.0-beta.34
       '@types/node-fetch': 2.x
       exit-hook: 2.2.1
       http-status: 1.5.3
