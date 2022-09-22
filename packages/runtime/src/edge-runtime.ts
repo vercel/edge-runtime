@@ -141,7 +141,7 @@ function getDispatchFetchCode() {
 
     const getResponse = ({ response, error }) => {
      if (error || !response || !(response instanceof Response)) {
-        console.error(error ? error : 'The event listener did not respond')
+        console.error(error ? error.toString() : 'The event listener did not respond')
         response = new Response(null, {
           statusText: 'Internal Server Error',
           status: 500

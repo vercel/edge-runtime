@@ -83,6 +83,7 @@ declare global {
   const crypto: typeof Edge.crypto
   const Crypto: typeof Edge.Crypto
   const CryptoKey: typeof Edge.CryptoKey
+  const DOMException: typeof Edge.DOMException
   const Event: typeof Edge.Event
   const EventTarget: typeof Edge.EventTarget
   const fetch: typeof Edge.fetch
