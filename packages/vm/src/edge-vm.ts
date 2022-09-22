@@ -140,7 +140,7 @@ function addPrimitives(context: VMContext) {
   // AbortController
   defineProperties(context, {
     exports: abort,
-    nonenumerable: ['AbortController', 'AbortSignal'],
+    nonenumerable: ['AbortController', 'AbortSignal', 'DOMException'],
   })
 
   // URL

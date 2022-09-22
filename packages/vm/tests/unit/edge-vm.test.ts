@@ -145,6 +145,18 @@ describe('preload web standard APIs', () => {
         'text/xml'
       )
     })
+
+    it('works with abort controller', async () => {
+      const promise = new EdgeVM().evaluate(`
+      const controller = new AbortController();
+      controller.abort();
+      fetch('https://example.vercel.sh', {
+        signal: controller.signal,
+      });
+      `)
+
+      await expect(promise).rejects.toThrowError('The operation was aborted.')
+    })
   })
 })
 
@@ -279,6 +291,7 @@ describe('contains all required primitives', () => {
     { api: 'Date' },
     { api: 'decodeURI' },
     { api: 'decodeURIComponent' },
+    { api: 'DOMException' },
     { api: 'encodeURI' },
     { api: 'encodeURIComponent' },
     { api: 'Error' },
