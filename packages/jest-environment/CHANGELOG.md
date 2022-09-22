@@ -1,5 +1,14 @@
 # @edge-runtime/jest-environment
 
+## 1.1.0-beta.33
+
+### Patch Changes
+
+- upgrading undici ([`3207fa2`](https://github.com/vercel/edge-runtime/commit/3207fa224783fecc70ac63aef4cd49a8404ecbc0))
+
+- Updated dependencies [[`3207fa2`](https://github.com/vercel/edge-runtime/commit/3207fa224783fecc70ac63aef4cd49a8404ecbc0)]:
+  - @edge-runtime/vm@1.1.0-beta.33
+
 ## 1.1.0-beta.32
 
 ### Patch Changes
