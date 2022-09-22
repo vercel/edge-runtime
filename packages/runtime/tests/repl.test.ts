@@ -56,6 +56,7 @@ describe('contains all required primitives', () => {
     { api: 'Date' },
     { api: 'decodeURI' },
     { api: 'decodeURIComponent' },
+    { api: 'DOMException' },
     { api: 'encodeURI' },
     { api: 'encodeURIComponent' },
     { api: 'Error' },

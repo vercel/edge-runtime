@@ -56,6 +56,7 @@ export type EdgeContext = VMContext & {
   crypto: typeof EdgePrimitives.crypto
   Crypto: typeof EdgePrimitives.Crypto
   CryptoKey: typeof EdgePrimitives.CryptoKey
+  DOMException: typeof EdgePrimitives.DOMException
   Event: typeof EdgePrimitives.Event
   EventTarget: typeof EdgePrimitives.EventTarget
   fetch: typeof EdgePrimitives.fetch
@@ -140,7 +141,7 @@ function addPrimitives(context: VMContext) {
   // AbortController
   defineProperties(context, {
     exports: abort,
-    nonenumerable: ['AbortController', 'AbortSignal'],
+    nonenumerable: ['AbortController', 'AbortSignal', 'DOMException'],
   })
 
   // URL
