@@ -132,3 +132,31 @@ test(`allows to wait for effects created with waitUntil`, async () => {
   expect(response.status).toEqual(200)
   expect(resolved).toContain('done')
 })
+
+test(`fails when writing to the response socket throws`, async () => {
+  const runtime = new EdgeRuntime()
+  runtime.evaluate(`
+    addEventListener('fetch', event => {
+      const readable = new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('hi there'));
+          controller.enqueue(1);
+          controller.close();
+        }
+      });
+
+      return event.respondWith(
+        new Response(readable, {
+          headers: { 'x-foo': 'bar' },
+          status: 200,
+        })
+      )
+    })
+  `)
+
+  server = await runServer({ runtime })
+  const response = await fetch(server.url)
+  expect(response.status).toEqual(200)
+  const text = await response.text()
+  expect(text).toEqual('hi there')
+})

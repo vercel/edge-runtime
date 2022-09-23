@@ -30,57 +30,62 @@ export function createHandler<T extends EdgeContext>(options: Options<T>) {
 
   return {
     handler: async (req: IncomingMessage, res: ServerResponse) => {
-      const start = timeSpan()
+      try {
+        const start = timeSpan()
 
-      const body =
-        req.method !== 'GET' && req.method !== 'HEAD'
-          ? getClonableBodyStream(
-              req,
-              options.runtime.evaluate('Uint8Array'),
-              options.runtime.context.TransformStream
-            )
-          : undefined
+        const body =
+          req.method !== 'GET' && req.method !== 'HEAD'
+            ? getClonableBodyStream(
+                req,
+                options.runtime.evaluate('Uint8Array'),
+                options.runtime.context.TransformStream
+              )
+            : undefined
 
-      const response = await options.runtime.dispatchFetch(
-        String(getURL(req)),
-        {
-          headers: toRequestInitHeaders(req),
-          method: req.method,
-          body: body?.cloneBodyStream(),
+        const response = await options.runtime.dispatchFetch(
+          String(getURL(req)),
+          {
+            headers: toRequestInitHeaders(req),
+            method: req.method,
+            body: body?.cloneBodyStream(),
+          }
+        )
+
+        const waitUntil = response.waitUntil()
+        awaiting.add(waitUntil)
+        waitUntil.finally(() => awaiting.delete(waitUntil))
+
+        res.statusCode = response.status
+        res.statusMessage = response.statusText
+
+        for (const [key, value] of Object.entries(
+          toNodeHeaders(response.headers)
+        )) {
+          if (value !== undefined) {
+            res.setHeader(key, value)
+          }
         }
-      )
 
-      const waitUntil = response.waitUntil()
-      awaiting.add(waitUntil)
-      waitUntil.finally(() => awaiting.delete(waitUntil))
-
-      res.statusCode = response.status
-      res.statusMessage = response.statusText
-
-      for (const [key, value] of Object.entries(
-        toNodeHeaders(response.headers)
-      )) {
-        if (value !== undefined) {
-          res.setHeader(key, value)
+        if (response.body) {
+          for await (const chunk of response.body as any) {
+            res.write(chunk)
+          }
         }
+
+        const subject = `${req.socket.remoteAddress} ${req.method} ${req.url}`
+        const time = `${prettyMs(start())
+          .match(/[a-zA-Z]+|[0-9]+/g)
+          ?.join(' ')}`
+
+        const code = `${res.statusCode} ${status[res.statusCode]}`
+        options.logger?.debug(`${subject} → ${code} in ${time}`)
+        res.end()
+      } catch (error) {
+        console.error(error)
+      } finally {
+        res.end()
       }
-
-      if (response.body) {
-        for await (const chunk of response.body as any) {
-          res.write(chunk)
-        }
-      }
-
-      const subject = `${req.socket.remoteAddress} ${req.method} ${req.url}`
-      const time = `${prettyMs(start())
-        .match(/[a-zA-Z]+|[0-9]+/g)
-        ?.join(' ')}`
-
-      const code = `${res.statusCode} ${status[res.statusCode]}`
-      options.logger?.debug(`${subject} → ${code} in ${time}`)
-      res.end()
     },
-
     waitUntil: () => Promise.all(awaiting),
   }
 }
