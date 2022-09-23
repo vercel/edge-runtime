@@ -68,7 +68,30 @@ export function createHandler<T extends EdgeContext>(options: Options<T>) {
 
         if (response.body) {
           for await (const chunk of response.body as any) {
-            res.write(chunk)
+            // no better idea than use name
+            if (chunk.constructor.name === 'Uint8Array') {
+              await new Promise<void>((resolve, reject) => {
+                res.write(chunk, (err) => {
+                  if (err) {
+                    reject(err)
+                  } else {
+                    resolve()
+                  }
+                })
+              })
+            } else {
+              await new Promise<void>((resolve) => {
+                res.end(() => {
+                  resolve()
+                  // make it unbound
+                  new Promise(() => {
+                    throw new TypeError(
+                      'This ReadableStream did not return bytes.'
+                    )
+                  })
+                })
+              })
+            }
           }
         }
 
@@ -79,11 +102,8 @@ export function createHandler<T extends EdgeContext>(options: Options<T>) {
 
         const code = `${res.statusCode} ${status[res.statusCode]}`
         options.logger?.debug(`${subject} → ${code} in ${time}`)
-        res.end()
-      } catch (error) {
-        console.error(error)
       } finally {
-        res.end()
+        res.finished || res.end()
       }
     },
     waitUntil: () => Promise.all(awaiting),

@@ -45,7 +45,8 @@
     "clean:node": "rm -rf node_modules",
     "postversion": "pnpm run build",
     "prebuild": "pnpm run clean:build",
-    "test": "jest"
+    "test": "jest; pnpm run test:seq",
+    "test:seq": "node jest-boot-strap.js --testMatch '**/?(*.)+(seqtest).ts'"
   },
   "license": "MPLv2",
   "publishConfig": {
