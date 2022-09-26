@@ -1,0 +1,32 @@
+---
+title: Package Definition
+description: Documentation for creating and using package dependencies
+---
+
+# Package Definition
+
+To indicate if a package supports Edge Runtime, use the `"edge"` key in the `"engines"` and `"exports"` fields of **package.json**.
+
+For example, to indicate that a package supports a specific or range of Edge Runtime versions, use the `"engines"` field:
+
+```json
+{
+  "engines": {
+    "edge": ">=1.0.0"
+  }
+}
+```
+
+> For more examples on how to use the `"engines"` field see the [npm](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#engines) or [webpack](https://webpack.js.org/guides/package-exports/#target-environment) documentation.
+
+If the package has multiple exports (such as to support other runtimes or browser environments), then use the `"exports"` field:
+
+```json
+{
+  "exports": {
+    "edge": "./dist/edge/index.js"
+  }
+}
+```
+
+> For more examples on how to use the `"exports"` field see the [Node.js](https://nodejs.org/dist/latest/docs/api/packages.html#conditional-exports) and [webpack](https://webpack.js.org/guides/package-exports/) documentation.

@@ -1,5 +1,6 @@
 {
   "available-apis": "Edge Runtime APIs",
   "polyfills": "Polyfills",
-  "typescript-support": "TypeScript support"
+  "typescript-support": "TypeScript support",
+  "package-definition": "Package definition"
 }
