@@ -1,2 +1,7 @@
-export { createHandler, runServer } from './server'
+export {
+  consumeUint8ArrayReadableStream,
+  createHandler,
+  runServer,
+} from './server'
+
 export { EdgeRuntime } from './edge-runtime'
