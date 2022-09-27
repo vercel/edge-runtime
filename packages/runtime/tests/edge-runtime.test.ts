@@ -9,6 +9,7 @@ beforeAll(async () => {
     .spyOn(process, 'on')
     .mockImplementation((event: string, handler: Function) => {
       handlerByEvent.set(event, handler)
+      return process
     })
   ;({ EdgeRuntime } = await import('../src/edge-runtime'))
 })
@@ -60,13 +61,13 @@ test('invokes context rejection handler', async () => {
   const runtime = new EdgeRuntime()
 
   const handleRejection = jest.fn()
-  const error = new Error('Boom!!!')
+  const reason = new Error('Boom!!!')
   const promise = Promise.resolve()
   runtime.context.addEventListener('unhandledrejection', handleRejection)
 
   expect(handlerByEvent.get('unhandledRejection')).toBeDefined()
-  handlerByEvent.get('unhandledRejection')!(error, promise)
-  expect(handleRejection).toHaveBeenCalledWith(error, promise)
+  handlerByEvent.get('unhandledRejection')!(reason, promise)
+  expect(handleRejection).toHaveBeenCalledWith({ reason, promise })
   expect(handleRejection).toHaveBeenCalledTimes(1)
 })
 

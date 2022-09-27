@@ -68,7 +68,9 @@ export class EdgeRuntime<
 process.on(
   'unhandledRejection',
   function invokeRejectionHandlers(reason, promise) {
-    unhandledRejectionHandlers?.forEach((handler) => handler(reason, promise))
+    unhandledRejectionHandlers?.forEach((handler) =>
+      handler({ reason, promise })
+    )
   }
 )
 process.on('uncaughtException', function invokeErrorHandlers(error) {
