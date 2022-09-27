@@ -2,6 +2,7 @@ import type { EdgeRuntime } from '../edge-runtime'
 import type { IncomingMessage, ServerResponse } from 'http'
 import type { Logger, NodeHeaders } from '../types'
 import type { EdgeContext } from '@edge-runtime/vm'
+import { consumeUint8ArrayReadableStream } from './body-streams'
 import { getClonableBodyStream } from './body-streams'
 import prettyMs from 'pretty-ms'
 import status from 'http-status'
@@ -66,7 +67,9 @@ export function createHandler<T extends EdgeContext>(options: Options<T>) {
       }
 
       if (response.body) {
-        for await (const chunk of response.body as any) {
+        for await (const chunk of consumeUint8ArrayReadableStream(
+          response.body
+        )) {
           res.write(chunk)
         }
       }
