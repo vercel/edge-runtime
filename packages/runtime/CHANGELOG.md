@@ -1,5 +1,13 @@
 # edge-runtime
 
+## 1.1.0-beta.35
+
+### Patch Changes
+
+- Add an util to validate chunks from `response.body` ([#149](https://github.com/vercel/edge-runtime/pull/149))
+
+- Fix `unhandledrejection` handler parameters ([#151](https://github.com/vercel/edge-runtime/pull/151))
+
 ## 1.1.0-beta.34
 
 ### Patch Changes
