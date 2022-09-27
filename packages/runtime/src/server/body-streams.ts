@@ -93,3 +93,26 @@ function replaceRequestBody<T extends IncomingMessage>(
 
   return base
 }
+
+/**
+ * Creates an async iterator from a ReadableStream that ensures that every
+ * emitted chunk is a `Uint8Array`. If there is some invalid chunk it will
+ * throw.
+ */
+export async function* consumeUint8ArrayReadableStream(body?: ReadableStream) {
+  const reader = body?.getReader()
+  if (reader) {
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) {
+        return
+      }
+
+      if (value?.constructor?.name !== 'Uint8Array') {
+        throw new TypeError('This ReadableStream did not return bytes.')
+      }
+
+      yield value as Uint8Array
+    }
+  }
+}
