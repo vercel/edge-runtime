@@ -1,5 +1,7 @@
-import { EdgeRuntime } from '../src'
+import { EdgeRuntime, runServer } from '../src'
 import assert from 'assert'
+import fetch from 'node-fetch'
+import util from 'util'
 
 async function main() {
   const runtime = new EdgeRuntime()
@@ -10,9 +12,19 @@ async function main() {
   })
 
   runtime.evaluate(`
-    addEventListener('fetch', (event) => {
-      new Promise((resolve, reject) => reject(new TypeError('This is not controlled')))
-      event.respondWith(new Response('hello'));
+    addEventListener('fetch', event => {
+      const stream = new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('hi there'));
+          controller.enqueue('wrong chunk');
+          controller.close();
+        }
+      });
+      return event.respondWith(
+        new Response(stream, {
+          status: 200,
+        })
+      )
     })
 
     addEventListener('unhandledrejection', (event) => {
@@ -20,11 +32,24 @@ async function main() {
     })
   `)
 
-  const response = await runtime.dispatchFetch('https://example.com')
-  const event = await deferred
+  const server = await runServer({ runtime })
 
-  assert.strictEqual(response.status, 200)
-  assert.strictEqual(event.reason.message, 'This is not controlled')
+  try {
+    const url = new URL(server.url)
+    const response = await fetch(String(url))
+    assert.strictEqual(response.status, 200)
+    assert.strictEqual(await response.text(), 'hi there')
+    const event = await deferred
+    assert.strictEqual(
+      event.reason.message,
+      'This ReadableStream did not return bytes.'
+    )
+  } catch (error) {
+    return util.inspect(error)
+  } finally {
+    await server.close()
+  }
+
   return 'TEST PASSED!'
 }
 
