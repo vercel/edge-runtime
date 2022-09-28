@@ -1,5 +1,11 @@
 # edge-runtime
 
+## 1.1.0-beta.36
+
+### Patch Changes
+
+- Fix: always finish the response when there is a bad chunk enqueued ([#152](https://github.com/vercel/edge-runtime/pull/152))
+
 ## 1.1.0-beta.35
 
 ### Patch Changes
