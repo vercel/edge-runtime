@@ -1,0 +1,15 @@
+# Upgrading in Next.js
+
+[Next.js](https://github.com/vercel/next.js/) is using [Edge Runtime](https://edge-runtime.vercel.app/) and the dependency is updated very often to get the latest changes.
+
+If you want to upgrade the Edge Runtime version there, follow the steps:
+
+- Find for `"edge-runtime"` and `"@edge-runtime"` versions inside `"package.json"` files.
+- Upgrade the version numbers to the latest version available (You can find [npm semver calculator](https://semver.npmjs.com/) helpful to determine what's the latest version).
+- Perform a `pnpm install` on the root folder to install them but also update `'pnpm-lock.yaml'` properly.
+- Once the new version has been installed, you should to precompile them, entering to `packages/next` and executing `npm run ncc-compiled`.
+- Commit all the thing as a single commit, and that's it!
+
+Since Next.js has a lot of tests, the best way for testing your changes is to make a Next.js draft pull request.
+
+Then, if a test failed, you can reproduce it locally to find the gap.
