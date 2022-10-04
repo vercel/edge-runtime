@@ -34,7 +34,7 @@
     "text-encoding": "0.7.0",
     "tsup": "6",
     "undici": "5.10.0",
-    "urlpattern-polyfill": "5.0.9",
+    "urlpattern-polyfill": "6.0.1",
     "uuid": "9.0.0",
     "web-streams-polyfill": "4.0.0-beta.3",
     "whatwg-url": "11.0.0"
