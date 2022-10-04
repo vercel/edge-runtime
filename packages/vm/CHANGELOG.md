@@ -1,5 +1,14 @@
 # @edge-runtime/vm
 
+## 1.1.0-beta.35
+
+### Patch Changes
+
+- build(deps-dev): bump undici from 5.10.0 to 5.11.0 ([#156](https://github.com/vercel/edge-runtime/pull/156))
+
+- Updated dependencies [[`37e7901`](https://github.com/vercel/edge-runtime/commit/37e790188ae27375bdd3a1d2795babd2432038a0)]:
+  - @edge-runtime/primitives@1.1.0-beta.36
+
 ## 1.1.0-beta.34
 
 ### Patch Changes

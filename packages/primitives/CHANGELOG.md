@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 1.1.0-beta.36
+
+### Patch Changes
+
+- build(deps-dev): bump undici from 5.10.0 to 5.11.0 ([#156](https://github.com/vercel/edge-runtime/pull/156))
+
 ## 1.1.0-beta.35
 
 ### Patch Changes
