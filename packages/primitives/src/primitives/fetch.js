@@ -8,7 +8,7 @@ import * as ResponseModule from 'undici/lib/fetch/response'
 import * as UtilModule from 'undici/lib/fetch/util'
 import * as WebIDLModule from 'undici/lib/fetch/webidl'
 
-import fetchImpl from 'undici/lib/fetch'
+import { fetch as fetchImpl } from 'undici/lib/fetch'
 import Agent from 'undici/lib/agent'
 
 global.AbortController = AbortController
