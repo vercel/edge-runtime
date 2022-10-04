@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 1.1.0-beta.35
+
+### Patch Changes
+
+- build(deps-dev): bump urlpattern-polyfill from 5.0.9 to 6.0.1 ([#154](https://github.com/vercel/edge-runtime/pull/154))
+
 ## 1.1.0-beta.34
 
 ### Patch Changes
