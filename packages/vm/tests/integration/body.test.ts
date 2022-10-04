@@ -42,7 +42,7 @@ it('throws when the body was directly consumed', async () => {
   const error = await response.text().catch((err) => err)
 
   expect(error).toBeInstanceOf(TypeError)
-  expect(error.message).toEqual('locked')
+  expect(error.message).toEqual('The stream is locked.')
 })
 
 test('throws when the body was indirectly consumed', async () => {
@@ -64,7 +64,7 @@ test('throws when the body was indirectly consumed', async () => {
   const error = await response.text().catch((err) => err)
 
   expect(error).toBeInstanceOf(TypeError)
-  expect(error.message).toEqual('disturbed')
+  expect(error.message).toEqual('The body has already been consumed.')
 })
 
 test('allows to read a FormData body as text', async () => {

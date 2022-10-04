@@ -178,9 +178,7 @@ test('cache.put throws an error if response body is used or locked', async () =>
     await cache.put(request, response)
   } catch (error: any) {
     expect(error instanceof Error).toBe(true)
-    expect(error.message).toBe(
-      "Failed to execute 'put' on 'Cache': Response body is already used"
-    )
+    expect(error.message).toBe('The body has already been consumed.')
   }
 })
 

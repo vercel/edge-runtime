@@ -179,6 +179,7 @@ function addPrimitives(context: VMContext) {
       ['http', { exports: require('http') }],
       ['net', { exports: require('net') }],
       ['perf_hooks', { exports: require('perf_hooks') }],
+      ['querystring', { exports: require('querystring') }],
       ['stream', { exports: require('stream') }],
       ['tls', { exports: require('tls') }],
       ['util', { exports: require('util') }],
