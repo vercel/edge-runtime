@@ -7,7 +7,7 @@ importers:
       '@changesets/cli': latest
       '@jest/types': 28.1.3
       '@svitejs/changesets-changelog-github-compact': latest
-      '@types/jest': latest
+      '@types/jest': 28.1.3
       '@types/node': '12'
       c8: latest
       finepack: latest
@@ -25,7 +25,7 @@ importers:
       '@changesets/cli': 2.25.0
       '@jest/types': 28.1.3
       '@svitejs/changesets-changelog-github-compact': 0.1.1
-      '@types/jest': 29.0.3
+      '@types/jest': 28.1.3
       '@types/node': 12.20.55
       c8: 7.12.0
       finepack: 2.10.15
@@ -866,13 +866,6 @@ packages:
       jest-get-type: 28.0.2
     dev: true
 
-  /@jest/expect-utils/29.0.3:
-    resolution: {integrity: sha512-i1xUkau7K/63MpdwiRqaxgZOjxYs4f0WMTGJnYwUKubsNRZSeQbLorS7+I4uXVF9KQ5r61BUPAUMZ7Lf66l64Q==}
-    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
-    dependencies:
-      jest-get-type: 29.0.0
-    dev: true
-
   /@jest/expect/28.1.3:
     resolution: {integrity: sha512-lzc8CpUbSoE4dqT0U+g1qODQjBRHPpCPXissXD4mS9+sWQdmmpeJ9zSH1rS1HEkrsMN0fb7nKrJ9giAR1d3wBw==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
@@ -1590,11 +1583,11 @@ packages:
     dependencies:
       '@types/istanbul-lib-report': 3.0.0
 
-  /@types/jest/29.0.3:
-    resolution: {integrity: sha512-F6ukyCTwbfsEX5F2YmVYmM5TcTHy1q9P5rWlRbrk56KyMh3v9xRGUO3aa8+SkvMi0SHXtASJv1283enXimC0Og==}
+  /@types/jest/28.1.3:
+    resolution: {integrity: sha512-Tsbjk8Y2hkBaY/gJsataeb4q9Mubw9EOz7+4RjPkzD5KjTvHHs7cpws22InaoXxAVAhF5HfFbzJjo6oKWqSZLw==}
     dependencies:
-      expect: 29.0.3
-      pretty-format: 29.0.3
+      jest-matcher-utils: 28.1.3
+      pretty-format: 28.1.3
     dev: true
 
   /@types/keyv/3.1.4:
@@ -2624,11 +2617,6 @@ packages:
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     dev: true
 
-  /diff-sequences/29.0.0:
-    resolution: {integrity: sha512-7Qe/zd1wxSDL4D/X/FPjOMB+ZMDt71W94KYaq05I2l0oQqgXgs7s4ftYYmV38gBSrPz2vcygxfs1xn0FT+rKNA==}
-    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
-    dev: true
-
   /diff/4.0.2:
     resolution: {integrity: sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==}
     engines: {node: '>=0.3.1'}
@@ -3098,17 +3086,6 @@ packages:
       jest-matcher-utils: 28.1.3
       jest-message-util: 28.1.3
       jest-util: 28.1.3
-    dev: true
-
-  /expect/29.0.3:
-    resolution: {integrity: sha512-t8l5DTws3212VbmPL+tBFXhjRHLmctHB0oQbL8eUc6S7NzZtYUhycrFO9mkxA0ZUC6FAWdNi7JchJSkODtcu1Q==}
-    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
-    dependencies:
-      '@jest/expect-utils': 29.0.3
-      jest-get-type: 29.0.0
-      jest-matcher-utils: 29.0.3
-      jest-message-util: 29.0.3
-      jest-util: 29.0.3
     dev: true
 
   /extend-shallow/2.0.1:
@@ -4152,16 +4129,6 @@ packages:
       pretty-format: 28.1.3
     dev: true
 
-  /jest-diff/29.0.3:
-    resolution: {integrity: sha512-+X/AIF5G/vX9fWK+Db9bi9BQas7M9oBME7egU7psbn4jlszLFCu0dW63UgeE6cs/GANq4fLaT+8sGHQQ0eCUfg==}
-    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
-    dependencies:
-      chalk: 4.1.2
-      diff-sequences: 29.0.0
-      jest-get-type: 29.0.0
-      pretty-format: 29.0.3
-    dev: true
-
   /jest-docblock/28.1.1:
     resolution: {integrity: sha512-3wayBVNiOYx0cwAbl9rwm5kKFP8yHH3d/fkEaL02NPTkDojPtheGB7HZSFY4wzX+DxyrvhXz0KSCVksmCknCuA==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
@@ -4195,11 +4162,6 @@ packages:
   /jest-get-type/28.0.2:
     resolution: {integrity: sha512-ioj2w9/DxSYHfOm5lJKCdcAmPJzQXmbM/Url3rhlghrPvT3tt+7a/+oXc9azkKmLvoiXjtV83bEWqi+vs5nlPA==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
-    dev: true
-
-  /jest-get-type/29.0.0:
-    resolution: {integrity: sha512-83X19z/HuLKYXYHskZlBAShO7UfLFXu/vWajw9ZNJASN32li8yHMaVGAQqxFW1RCFOkB7cubaL6FaJVQqqJLSw==}
-    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dev: true
 
   /jest-haste-map/28.1.3:
@@ -4237,16 +4199,6 @@ packages:
       jest-diff: 28.1.3
       jest-get-type: 28.0.2
       pretty-format: 28.1.3
-    dev: true
-
-  /jest-matcher-utils/29.0.3:
-    resolution: {integrity: sha512-RsR1+cZ6p1hDV4GSCQTg+9qjeotQCgkaleIKLK7dm+U4V/H2bWedU3RAtLm8+mANzZ7eDV33dMar4pejd7047w==}
-    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
-    dependencies:
-      chalk: 4.1.2
-      jest-diff: 29.0.3
-      jest-get-type: 29.0.0
-      pretty-format: 29.0.3
     dev: true
 
   /jest-message-util/28.1.3:
