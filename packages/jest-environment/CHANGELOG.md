@@ -1,5 +1,14 @@
 # @edge-runtime/jest-environment
 
+## 1.1.0-beta.34
+
+### Patch Changes
+
+- update edge dependencies ([#160](https://github.com/vercel/edge-runtime/pull/160))
+
+- Updated dependencies [[`8664c75`](https://github.com/vercel/edge-runtime/commit/8664c757be0e78257e33a724e786f7aabccbf052)]:
+  - @edge-runtime/vm@1.1.0-beta.36
+
 ## 1.1.0-beta.33
 
 ### Patch Changes

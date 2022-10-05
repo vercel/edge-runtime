@@ -1,5 +1,11 @@
 # @edge-runtime/types
 
+## 1.1.0-beta.35
+
+### Patch Changes
+
+- update edge dependencies ([#160](https://github.com/vercel/edge-runtime/pull/160))
+
 ## 1.1.0-beta.34
 
 ### Patch Changes
