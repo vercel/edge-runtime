@@ -21,8 +21,8 @@
     "runtime"
   ],
   "dependencies": {
-    "@edge-runtime/format": "^1.1.0-beta.33",
-    "@edge-runtime/vm": "^1.1.0-beta.34",
+    "@edge-runtime/format": "workspace:1.1.0-beta.33",
+    "@edge-runtime/vm": "workspace:1.1.0-beta.35",
     "exit-hook": "2.2.1",
     "http-status": "1.5.3",
     "mri": "1.2.0",
