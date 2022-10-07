@@ -19,3 +19,15 @@ test('allows to run crypto', async () => {
 test('has EdgeRuntime global', () => {
   expect(EdgeRuntime).toEqual('edge-runtime')
 })
+
+test('`expect.toHaveStatus` available', () => {
+  const okResponse = new Response('OK')
+
+  expect(okResponse).toHaveStatus(200)
+  expect(okResponse).toHaveStatus('Successful')
+  expect(okResponse).not.toHaveStatus(201)
+
+  expect(new Response('Internal Server Error', { status: 500 })).toHaveStatus(
+    'Server Error'
+  )
+})
