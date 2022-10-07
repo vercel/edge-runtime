@@ -84,7 +84,7 @@ export type JSONType =
 /** `toHaveJSONBody` parameters */
 export type JSONBodyParams = [body: JSONType]
 
-export interface ResponseMatcher<R> {
+export interface ResponseMatchers<R = unknown> {
   /**
    * @description
    * Assert whether a response has a specific status code or status type.
@@ -101,6 +101,10 @@ export interface ResponseMatcher<R> {
   toHaveJSONBody(...args: JSONBodyParams): R
 }
 
-declare module 'jest' {
-  interface Matchers<R> extends ResponseMatcher<R> {}
+declare global {
+  namespace jest {
+    interface Expect extends ResponseMatchers {}
+    interface Matchers<R> extends ResponseMatchers<R> {}
+    interface InverseAsymmetricMatchers extends ResponseMatchers {}
+  }
 }
