@@ -101,6 +101,6 @@ export interface ResponseMatcher<R> {
   toHaveJSONBody(...args: JSONBodyParams): R
 }
 
-declare module 'expect' {
+declare module 'jest' {
   interface Matchers<R> extends ResponseMatcher<R> {}
 }
