@@ -15,10 +15,21 @@ expect.extend({
     assertResponse(actual)
     const [body] = args
     const contentType = actual.headers.get('Content-Type')
-    if (contentType !== 'application/json') {
-      throw new Error(`Invalid Content-Type (${contentType}) for JSON response`)
+
+    if (!contentType?.includes('application/json')) {
+      return {
+        message: () =>
+          [
+            `${this.utils.matcherHint('toHaveJSONBody')}\n`,
+            `Expected response to have "Content-Type": ${this.utils.printExpected(
+              'application/json'
+            )}`,
+            `Received: ${this.utils.printReceived(contentType)}`,
+          ].join('\n'),
+        pass: false,
+      }
     }
-    const json = await actual.json()
+    const json = await actual.clone().json()
     const pass = this.equals(json, body)
     if (pass) {
       return {
