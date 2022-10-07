@@ -1,5 +1,11 @@
 # @edge-runtime/jest-environment
 
+## 1.1.0-beta.35
+
+### Minor Changes
+
+- make `EdgeVM` options overrideable via `testEnvironmentOptions` ([#162](https://github.com/vercel/edge-runtime/pull/162))
+
 ## 1.1.0-beta.34
 
 ### Patch Changes
