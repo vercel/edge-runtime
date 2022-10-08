@@ -7,6 +7,16 @@ it('first argument', () => {
   expect(format('')).toBe('')
   expect(format([])).toBe('[]')
   expect(format({})).toBe('{}')
+  expect(format(Object.create(null))).toBe('{}')
+  expect(
+    format(
+      (() => {
+        const o = Object.create(null)
+        o.name = 'name'
+        return o
+      })()
+    )
+  ).toBe(`{ name: 'name' }`)
   expect(format(null)).toBe('null')
   expect(format(true)).toBe('true')
   expect(format(false)).toBe('false')

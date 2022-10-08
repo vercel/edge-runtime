@@ -226,7 +226,7 @@ export function createFormat(opts: FormatterOptions = {}) {
       keys = getKeys(value as object, ctx.showHidden)
       braces = ['{', '}']
 
-      if (constructor === 'Object') {
+      if (constructor === 'Object' || constructor === undefined) {
         if (keys.length === 0) {
           return `{}`
         }
