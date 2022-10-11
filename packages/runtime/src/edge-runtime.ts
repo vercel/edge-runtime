@@ -152,9 +152,11 @@ function getDispatchFetchCode() {
 
       response.waitUntil = () => Promise.all(event.awaiting);
 
-      response.headers.delete('content-encoding');
-      response.headers.delete('transform-encoding');
-      response.headers.delete('content-length');
+      if (response.status < 300 || response.status >= 400 ) {
+        response.headers.delete('content-encoding');
+        response.headers.delete('transform-encoding');
+        response.headers.delete('content-length');
+      }
 
       return response;
     }

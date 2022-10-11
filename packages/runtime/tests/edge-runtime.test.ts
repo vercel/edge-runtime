@@ -14,6 +14,46 @@ beforeAll(async () => {
   ;({ EdgeRuntime } = await import('../src/edge-runtime'))
 })
 
+test("don't expose servers headers", async () => {
+  const runtime = new EdgeRuntime()
+
+  runtime.evaluate(`
+    addEventListener("fetch", (event) => {
+      event.respondWith(new Response('success', {
+        headers: {
+          'content-encoding': 'gzip',
+          'transform-encoding': 'compress',
+          'content-length': 7
+        }
+      }))
+    })
+  `)
+
+  const res = await runtime.dispatchFetch('https://localhost.com')
+  expect(res.status).toBe(200)
+  expect(await res.text()).toBe('success')
+  expect(Array.from(res.headers)).toEqual([
+    ['content-type', 'text/plain;charset=UTF-8'],
+  ])
+})
+
+test("don't expose servers headers in a redirect", async () => {
+  const runtime = new EdgeRuntime()
+
+  runtime.evaluate(`
+    addEventListener("fetch", (event) => {
+      event.respondWith(Response.redirect(new URL('https://example.vercel.sh')));
+    })
+  `)
+
+  const res = await runtime.dispatchFetch('https://localhost.com')
+
+  expect(Array.from(res.headers)).toEqual([
+    ['location', 'https://example.vercel.sh/'],
+  ])
+  expect(res.status).toBe(302)
+})
+
 test('allows to add FetchEvent handlers', async () => {
   const runtime = new EdgeRuntime()
 
