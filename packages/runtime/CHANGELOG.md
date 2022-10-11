@@ -1,5 +1,11 @@
 # edge-runtime
 
+## 1.1.0-beta.38
+
+### Patch Changes
+
+- fix: don't delete headers in a redirect ([#170](https://github.com/vercel/edge-runtime/pull/170))
+
 ## 1.1.0-beta.37
 
 ### Patch Changes
