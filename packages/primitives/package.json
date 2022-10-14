@@ -22,7 +22,7 @@
     "web"
   ],
   "devDependencies": {
-    "@edge-runtime/format": "workspace:1.1.0-beta.33",
+    "@edge-runtime/format": "workspace:1.1.0-beta.34",
     "@peculiar/webcrypto": "1.4.0",
     "@types/uuid": "8.3.4",
     "@ungap/structured-clone": "1.0.1",

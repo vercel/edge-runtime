@@ -1,5 +1,12 @@
 # edge-runtime
 
+## 1.1.0-beta.39
+
+### Patch Changes
+
+- Updated dependencies [[`bf759ab`](https://github.com/vercel/edge-runtime/commit/bf759abafebf8cc75e2b1283a5cce2394e226ee8)]:
+  - @edge-runtime/format@1.1.0-beta.34
+
 ## 1.1.0-beta.38
 
 ### Patch Changes

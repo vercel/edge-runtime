@@ -1,5 +1,11 @@
 # @edge-runtime/format
 
+## 1.1.0-beta.34
+
+### Patch Changes
+
+- fix: handle objects with null prototype ([#172](https://github.com/vercel/edge-runtime/pull/172))
+
 ## 1.1.0-beta.33
 
 ### Patch Changes
