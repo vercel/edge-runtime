@@ -7,7 +7,7 @@ it('first argument', () => {
   expect(format('')).toBe('')
   expect(format([])).toBe('[]')
   expect(format({})).toBe('{}')
-  expect(format(Object.create(null))).toBe('{}')
+  expect(format(Object.create(null))).toBe('[Object: null prototype] {}')
   expect(
     format(
       (() => {

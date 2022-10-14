@@ -104,5 +104,6 @@ export function kind(value: unknown, type: string): value is unknown {
 
 export const getConstructorName = (object: object): string | undefined =>
   object.constructor?.name
-export const getPrefix = (constructor: string | undefined, size = '') =>
-  `${constructor ?? ''}${size} `
+
+export const getPrefix = (constructor: string = '', size = '') =>
+  `${constructor}${size} `
