@@ -102,6 +102,8 @@ export function kind(value: unknown, type: string): value is unknown {
   return typeof value === type
 }
 
-export const getConstructorName = (object: object) => object.constructor.name
-export const getPrefix = (constructor: string, size = '') =>
+export const getConstructorName = (object: object): string | undefined =>
+  object.constructor?.name
+
+export const getPrefix = (constructor: string = '', size = '') =>
   `${constructor}${size} `
