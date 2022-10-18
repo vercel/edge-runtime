@@ -34,7 +34,7 @@ importers:
       jest-watch-typeahead: 2.2.0_jest@28.1.3
       nano-staged: 0.8.0
       prettier: 2.7.1
-      simple-git-hooks: 2.8.0
+      simple-git-hooks: 2.8.1
       ts-jest: 28.0.8_4esyfkp2qzonkb2ytxtegnki3u
       ts-node: 10.9.1_sr2pz56bp3b65zhkgg3zdvf4ny
       turbo: 1.5.6
@@ -72,7 +72,7 @@ importers:
   packages/cookies:
     specifiers:
       '@edge-runtime/format': workspace:1.1.0-beta.34
-      '@edge-runtime/jest-environment': workspace:1.1.0-beta.35
+      '@edge-runtime/jest-environment': workspace:1.1.0-beta.36
       '@types/cookie': 0.5.1
       tsup: '6'
     devDependencies:
@@ -89,7 +89,7 @@ importers:
 
   packages/jest-environment:
     specifiers:
-      '@edge-runtime/vm': workspace:1.1.0-beta.36
+      '@edge-runtime/vm': workspace:1.1.0-beta.37
       '@jest/environment': 28.1.3
       '@jest/fake-timers': 28.1.3
       '@jest/types': 28.1.3
@@ -105,9 +105,9 @@ importers:
 
   packages/ponyfill:
     specifiers:
-      '@edge-runtime/jest-environment': workspace:1.1.0-beta.35
-      '@edge-runtime/primitives': workspace:1.1.0-beta.36
-      '@edge-runtime/vm': workspace:1.1.0-beta.36
+      '@edge-runtime/jest-environment': workspace:1.1.0-beta.36
+      '@edge-runtime/primitives': workspace:1.1.0-beta.37
+      '@edge-runtime/vm': workspace:1.1.0-beta.37
       acorn: 8.8.0
       acorn-loose: 8.3.0
       acorn-walk: 8.2.0
@@ -158,7 +158,7 @@ importers:
   packages/runtime:
     specifiers:
       '@edge-runtime/format': workspace:1.1.0-beta.34
-      '@edge-runtime/vm': workspace:1.1.0-beta.36
+      '@edge-runtime/vm': workspace:1.1.0-beta.37
       '@types/node-fetch': 2.x
       exit-hook: 2.2.1
       http-status: 1.5.3
@@ -184,13 +184,13 @@ importers:
 
   packages/types:
     specifiers:
-      '@edge-runtime/primitives': workspace:1.1.0-beta.36
+      '@edge-runtime/primitives': workspace:1.1.0-beta.37
     dependencies:
       '@edge-runtime/primitives': link:../primitives
 
   packages/user-agent:
     specifiers:
-      '@edge-runtime/jest-environment': workspace:1.1.0-beta.35
+      '@edge-runtime/jest-environment': workspace:1.1.0-beta.36
       '@types/ua-parser-js': 0.7.36
       tsup: '6'
       ua-parser-js: 1.0.2
@@ -202,7 +202,7 @@ importers:
 
   packages/vm:
     specifiers:
-      '@edge-runtime/primitives': workspace:1.1.0-beta.36
+      '@edge-runtime/primitives': workspace:1.1.0-beta.37
     dependencies:
       '@edge-runtime/primitives': link:../primitives
 
@@ -6482,8 +6482,8 @@ packages:
   /signal-exit/3.0.7:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
 
-  /simple-git-hooks/2.8.0:
-    resolution: {integrity: sha512-ocmZQORwa6x9mxg+gVIAp5o4wXiWOHGXyrDBA0+UxGKIEKOyFtL4LWNKkP/2ornQPdlnlDGDteVeYP5FjhIoWA==}
+  /simple-git-hooks/2.8.1:
+    resolution: {integrity: sha512-DYpcVR1AGtSfFUNzlBdHrQGPsOhuuEJ/FkmPOOlFysP60AHd3nsEpkGq/QEOdtUyT1Qhk7w9oLmFoMG+75BDog==}
     hasBin: true
     requiresBuild: true
     dev: true

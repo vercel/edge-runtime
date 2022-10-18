@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 1.1.0-beta.37
+
+### Patch Changes
+
+- fix(primitives): expose console.debug method ([#174](https://github.com/vercel/edge-runtime/pull/174))
+
 ## 1.1.0-beta.36
 
 ### Patch Changes
