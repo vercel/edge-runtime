@@ -5,36 +5,34 @@ it('reflect .set into `set-cookie`', async () => {
   const response = new Response()
   const cookies = new ResponseCookies(response)
 
-  expect(cookies.get('foo')).toBe(undefined)
-  expect(cookies.getWithOptions('foo')).toEqual({
-    value: undefined,
-    options: {},
-  })
+  expect(cookies.getValue('foo')).toBe(undefined)
+  expect(cookies.get('foo')).toEqual(undefined)
 
   cookies
     .set('foo', 'bar', { path: '/test' })
     .set('fooz', 'barz', { path: '/test2' })
     .set('fooHttpOnly', 'barHttpOnly', { httpOnly: true })
 
-  expect(cookies.get('foo')).toBe('bar')
-  expect(cookies.get('fooz')).toBe('barz')
-  expect(cookies.get('fooHttpOnly')).toBe('barHttpOnly')
+  expect(cookies.getValue('foo')).toBe('bar')
+  expect(cookies.getValue('fooz')).toBe('barz')
+  expect(cookies.getValue('fooHttpOnly')).toBe('barHttpOnly')
 
-  const opt1 = cookies.getWithOptions('foo')
+  const opt1 = cookies.get('foo')
   expect(opt1).toEqual<typeof opt1>({
+    name: 'foo',
     value: 'bar',
-    options: { path: '/test' },
+    path: '/test',
   })
-  expect(cookies.getWithOptions('fooz')).toEqual({
+  expect(cookies.get('fooz')).toEqual({
+    name: 'fooz',
     value: 'barz',
-    options: { path: '/test2' },
+    path: '/test2',
   })
-  expect(cookies.getWithOptions('fooHttpOnly')).toEqual({
+  expect(cookies.get('fooHttpOnly')).toEqual({
+    name: 'fooHttpOnly',
     value: 'barHttpOnly',
-    options: {
-      path: '/',
-      httpOnly: true,
-    },
+    path: '/',
+    httpOnly: true,
   })
 
   expect(Object.fromEntries(response.headers.entries())['set-cookie']).toBe(
@@ -51,10 +49,11 @@ it('reflect .delete into `set-cookie`', async () => {
     'foo=bar; Path=/'
   )
 
-  expect(cookies.get('foo')).toBe('bar')
-  expect(cookies.getWithOptions('foo')).toEqual({
+  expect(cookies.getValue('foo')).toBe('bar')
+  expect(cookies.get('foo')).toEqual({
+    name: 'foo',
     value: 'bar',
-    options: { path: '/' },
+    path: '/',
   })
 
   cookies.set('fooz', 'barz')
@@ -62,10 +61,11 @@ it('reflect .delete into `set-cookie`', async () => {
     'foo=bar; Path=/, fooz=barz; Path=/'
   )
 
-  expect(cookies.get('fooz')).toBe('barz')
-  expect(cookies.getWithOptions('fooz')).toEqual({
+  expect(cookies.getValue('fooz')).toBe('barz')
+  expect(cookies.get('fooz')).toEqual({
+    name: 'fooz',
     value: 'barz',
-    options: { path: '/' },
+    path: '/',
   })
 
   cookies.delete('foo')
@@ -73,10 +73,11 @@ it('reflect .delete into `set-cookie`', async () => {
     'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooz=barz; Path=/'
   )
 
-  expect(cookies.get('foo')).toBe('')
-  expect(cookies.getWithOptions('foo')).toEqual({
-    value: '',
-    options: { expires: new Date(0), path: '/' },
+  expect(cookies.getValue('foo')).toBe(undefined)
+  expect(cookies.get('foo')).toEqual({
+    name: 'foo',
+    path: '/',
+    expires: new Date(0),
   })
 
   cookies.delete('fooz')
@@ -85,10 +86,11 @@ it('reflect .delete into `set-cookie`', async () => {
     'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooz=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
   )
 
-  expect(cookies.get('fooz')).toBe('')
-  expect(cookies.getWithOptions('fooz')).toEqual({
-    value: '',
-    options: { expires: new Date(0), path: '/' },
+  expect(cookies.getValue('fooz')).toBe(undefined)
+  expect(cookies.get('fooz')).toEqual({
+    name: 'fooz',
+    expires: new Date(0),
+    path: '/',
   })
 })
 
@@ -111,6 +113,6 @@ test('formatting with @edge-runtime/format', () => {
   const format = createFormat()
   const result = format(cookies)
   expect(result).toMatchInlineSnapshot(
-    `"ResponseCookies {\\"a\\":{\\"value\\":\\"1\\",\\"options\\":{\\"httpOnly\\":true,\\"path\\":\\"/\\"}},\\"b\\":{\\"value\\":\\"2\\",\\"options\\":{\\"path\\":\\"/\\",\\"sameSite\\":\\"lax\\"}}}"`
+    `"ResponseCookies {\\"a\\":{\\"name\\":\\"a\\",\\"value\\":\\"1\\",\\"httpOnly\\":true,\\"path\\":\\"/\\"},\\"b\\":{\\"name\\":\\"b\\",\\"value\\":\\"2\\",\\"path\\":\\"/\\",\\"sameSite\\":\\"lax\\"}}"`
   )
 })

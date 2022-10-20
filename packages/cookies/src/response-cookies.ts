@@ -1,88 +1,126 @@
 import { cached } from './cached'
-import { type Options, parseSetCookieString, serialize } from './serialize'
+import { type Cookie, parseSetCookieString, serialize } from './serialize'
 
-type ParsedCookie = { value: string; options: Options }
-export type CookieBag = Map<string, ParsedCookie>
+export type CookieBag = Map<string, Cookie>
 
+/**
+ * Loose implementation of the experimental [Cookie Store API](https://wicg.github.io/cookie-store/#dictdef-cookie)
+ * The main difference is `ResponseCookies` methods do not return a Promise.
+ */
 export class ResponseCookies {
-  private readonly headers: Headers
+  readonly #headers: Headers
 
   constructor(response: Response) {
-    this.headers = response.headers
+    this.#headers = response.headers
   }
 
-  private cache = cached((_key: string | null) => {
-    // @ts-ignore
-    const headers = this.headers.getAll('set-cookie')
-    const map = new Map<string, ParsedCookie>()
+  #cache = cached(() => {
+    // @ts-expect-error See https://github.com/whatwg/fetch/issues/973
+    const headers = this.#headers.getAll('set-cookie')
+    const map = new Map<string, Cookie>()
 
     for (const header of headers) {
       const parsed = parseSetCookieString(header)
       if (parsed) {
-        map.set(parsed.name, {
-          value: parsed.value,
-          options: parsed?.attributes,
-        })
+        map.set(parsed.name, parsed)
       }
     }
 
     return map
   })
 
-  private parsed() {
-    const allCookies = this.headers.get('set-cookie')
-    return this.cache(allCookies)
+  #parsed() {
+    const allCookies = this.#headers.get('set-cookie')
+    return this.#cache(allCookies)
   }
 
-  set(key: string, value: string, options?: Options): this {
-    const map = this.parsed()
-    map.set(key, { value, options: normalizeCookieOptions(options || {}) })
-    replace(map, this.headers)
+  /**
+   * {@link https://wicg.github.io/cookie-store/#CookieStore-get CookieStore#get} without the Promise.
+   */
+  get(...args: [key: string] | [options: Cookie]): Cookie | undefined {
+    const key = typeof args[0] === 'string' ? args[0] : args[0].name
+    return this.#parsed().get(key)
+  }
+  /**
+   * {@link https://wicg.github.io/cookie-store/#CookieStore-getAll CookieStore#getAll} without the Promise.
+   */
+  getAll(...args: [key: string] | [options: Cookie] | [undefined]): Cookie[] {
+    const all = Array.from(this.#parsed().values())
+    if (!args.length) {
+      return all
+    }
+
+    const key = typeof args[0] === 'string' ? args[0] : args[0]?.name
+    return all.filter((c) => c.name === key)
+  }
+
+  /**
+   * {@link https://wicg.github.io/cookie-store/#CookieStore-set CookieStore#set} without the Promise.
+   */
+  set(
+    ...args:
+      | [key: string, value: string, cookie?: Partial<Cookie>]
+      | [options: Cookie]
+  ): this {
+    const [name, value, cookie] =
+      args.length === 1 ? [args[0].name, args[0].value, args[0]] : args
+    const map = this.#parsed()
+    map.set(name, normalizeCookie({ name, value, ...cookie }))
+    replace(map, this.#headers)
 
     return this
   }
 
-  delete(key: string): this {
-    return this.set(key, '', { expires: new Date(0) })
+  /**
+   * {@link https://wicg.github.io/cookie-store/#CookieStore-delete CookieStore#delete} without the Promise.
+   */
+  delete(...args: [key: string] | [options: Cookie]): this {
+    const name = typeof args[0] === 'string' ? args[0] : args[0].name
+    return this.set({ name, value: '', expires: new Date(0) })
   }
 
-  get(key: string): string | undefined {
-    return this.getWithOptions(key)?.value
+  // Non-spec
+
+  /**
+   * Uses {@link ResponseCookies.get} to return only the cookie value.
+   */
+  getValue(...args: [key: string] | [options: Cookie]): string | undefined {
+    return this.get(...args)?.value
   }
 
-  getWithOptions(key: string): {
-    value: string | undefined
-    options: Options
-  } {
-    const element = this.parsed().get(key)
-    return { value: element?.value, options: element?.options ?? {} }
+  /**
+   * Uses {@link ResponseCookies.delete} to invalidate all cookies matching the given name.
+   * If no name is provided, all cookies are invalidated.
+   */
+  clear(...args: [key: string] | [options: Cookie] | [undefined]): this {
+    const key = typeof args[0] === 'string' ? args[0] : args[0]?.name
+    this.getAll(key).forEach((c) => this.delete(c))
+    return this
   }
 
   [Symbol.for('edge-runtime.inspect.custom')]() {
     return `ResponseCookies ${JSON.stringify(
-      Object.fromEntries(this.parsed())
+      Object.fromEntries(this.#parsed())
     )}`
   }
 }
 
 function replace(bag: CookieBag, headers: Headers) {
   headers.delete('set-cookie')
-  for (const [key, { value, options }] of bag) {
-    const serialized = serialize(key, value, options)
+  for (const [, value] of bag) {
+    const serialized = serialize(value)
     headers.append('set-cookie', serialized)
   }
 }
 
-const normalizeCookieOptions = (options: Options) => {
-  options = Object.assign({}, options)
-
-  if (options.maxAge) {
-    options.expires = new Date(Date.now() + options.maxAge * 1000)
+function normalizeCookie(cookie: Cookie = { name: '', value: '' }) {
+  if (cookie.maxAge) {
+    cookie.expires = new Date(Date.now() + cookie.maxAge * 1000)
   }
 
-  if (options.path === null || options.path === undefined) {
-    options.path = '/'
+  if (cookie.path === null || cookie.path === undefined) {
+    cookie.path = '/'
   }
 
-  return options
+  return cookie
 }
