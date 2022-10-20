@@ -14,7 +14,7 @@ it('reflect .set into `set-cookie`', async () => {
     .set('fooHttpOnly', 'barHttpOnly', { httpOnly: true })
 
   expect(cookies.getValue('foo')).toBe('bar')
-  expect(cookies.getValue('fooz')).toBe('barz')
+  expect(cookies.get('fooz')?.value).toBe('barz')
   expect(cookies.getValue('fooHttpOnly')).toBe('barHttpOnly')
 
   const opt1 = cookies.get('foo')
