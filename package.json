@@ -119,7 +119,7 @@
       "finepack"
     ]
   },
-  "packageManager": "pnpm@6.29.1",
+  "packageManager": "pnpm@7.13.5",
   "simple-git-hooks": {
     "pre-commit": "./node_modules/.bin/nano-staged"
   }
