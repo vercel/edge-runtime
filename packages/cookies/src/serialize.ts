@@ -20,18 +20,20 @@ export interface CookieListItem
 export type Cookie = CookieListItem &
   Pick<CookieSerializeOptions, 'httpOnly' | 'maxAge' | 'priority'>
 
-export function serialize(c: Cookie): string {
+export function serialize(cookie: Cookie): string {
   const attrs = [
-    c.path ? `Path=${c.path}` : '',
-    c.expires ? `Expires=${c.expires.toUTCString()}` : '',
-    c.maxAge ? `Max-Age=${c.maxAge}` : '',
-    c.domain ? `Domain=${c.domain}` : '',
-    c.secure ? 'Secure' : '',
-    c.httpOnly ? 'HttpOnly' : '',
-    c.sameSite ? `SameSite=${c.sameSite}` : '',
+    cookie.path ? `Path=${cookie.path}` : '',
+    cookie.expires ? `Expires=${cookie.expires.toUTCString()}` : '',
+    cookie.maxAge ? `Max-Age=${cookie.maxAge}` : '',
+    cookie.domain ? `Domain=${cookie.domain}` : '',
+    cookie.secure ? 'Secure' : '',
+    cookie.httpOnly ? 'HttpOnly' : '',
+    cookie.sameSite ? `SameSite=${cookie.sameSite}` : '',
   ].filter(Boolean)
 
-  return `${c.name}=${encodeURIComponent(c.value ?? '')}; ${attrs.join('; ')}`
+  return `${cookie.name}=${encodeURIComponent(
+    cookie.value ?? ''
+  )}; ${attrs.join('; ')}`
 }
 
 /**
