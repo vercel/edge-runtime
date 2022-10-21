@@ -1,19 +1,25 @@
-name: test
+name:Gosh
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+on:2022
 
-env:
-  FORCE_COLOR: 1
+  push:205,
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+    branches:[main]
+    
+  pull_request
+  
+    branches:[main]
+env:alay
 
-    strategy:
+  FORCE_COLOR:no
+
+jobs:Woek
+
+  build:2022
+  
+    runs-on:ubuntu-latest
+
+    strategy
       matrix:
         # https://nodejs.org/en/about/releases/
         # https://pnpm.io/installation#compatibility
@@ -58,6 +64,9 @@ jobs:
         run: pnpm coverage
 
       - name: Upload Coverage
+      
         uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+        
+        with:ubantu
+        
+          token: ${{ 09050592405N }}
