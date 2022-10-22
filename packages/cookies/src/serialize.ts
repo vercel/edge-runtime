@@ -1,24 +1,4 @@
-import type { CookieSerializeOptions } from 'cookie'
-
-/**
- * {@link https://wicg.github.io/cookie-store/#dictdef-cookielistitem CookieListItem} as specified by W3C.
- */
-export interface CookieListItem
-  extends Pick<
-    CookieSerializeOptions,
-    'domain' | 'path' | 'expires' | 'secure' | 'sameSite'
-  > {
-  /** A string with the name of a cookie. */
-  name: string
-  /** A string containing the value of the cookie. */
-  value: string
-}
-
-/**
- * Extends {@link CookieListItem} with the `httpOnly`, `maxAge` and `priority` properties.
- */
-export type Cookie = CookieListItem &
-  Pick<CookieSerializeOptions, 'httpOnly' | 'maxAge' | 'priority'>
+import type { Cookie } from './cookie-store'
 
 export function serialize(cookie: Cookie): string {
   const attrs = [

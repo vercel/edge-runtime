@@ -1,4 +1,5 @@
-import { type Cookie, parseCookieString, serialize } from './serialize'
+import type { Cookie } from './cookie-store'
+import { parseCookieString, serialize } from './serialize'
 import { cached } from './cached'
 
 /**

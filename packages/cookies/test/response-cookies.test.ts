@@ -5,7 +5,7 @@ it('reflect .set into `set-cookie`', async () => {
   const response = new Response()
   const cookies = new ResponseCookies(response)
 
-  expect(cookies.getValue('foo')).toBe(undefined)
+  expect(cookies.get('foo')?.value).toBe(undefined)
   expect(cookies.get('foo')).toEqual(undefined)
 
   cookies
@@ -13,9 +13,9 @@ it('reflect .set into `set-cookie`', async () => {
     .set('fooz', 'barz', { path: '/test2' })
     .set('fooHttpOnly', 'barHttpOnly', { httpOnly: true })
 
-  expect(cookies.getValue('foo')).toBe('bar')
+  expect(cookies.get('foo')?.value).toBe('bar')
   expect(cookies.get('fooz')?.value).toBe('barz')
-  expect(cookies.getValue('fooHttpOnly')).toBe('barHttpOnly')
+  expect(cookies.get('fooHttpOnly')?.value).toBe('barHttpOnly')
 
   const opt1 = cookies.get('foo')
   expect(opt1).toEqual<typeof opt1>({
@@ -49,7 +49,7 @@ it('reflect .delete into `set-cookie`', async () => {
     'foo=bar; Path=/'
   )
 
-  expect(cookies.getValue('foo')).toBe('bar')
+  expect(cookies.get('foo')?.value).toBe('bar')
   expect(cookies.get('foo')).toEqual({
     name: 'foo',
     value: 'bar',
@@ -61,7 +61,7 @@ it('reflect .delete into `set-cookie`', async () => {
     'foo=bar; Path=/, fooz=barz; Path=/'
   )
 
-  expect(cookies.getValue('fooz')).toBe('barz')
+  expect(cookies.get('fooz')?.value).toBe('barz')
   expect(cookies.get('fooz')).toEqual({
     name: 'fooz',
     value: 'barz',
@@ -73,7 +73,7 @@ it('reflect .delete into `set-cookie`', async () => {
     'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooz=barz; Path=/'
   )
 
-  expect(cookies.getValue('foo')).toBe(undefined)
+  expect(cookies.get('foo')?.value).toBe(undefined)
   expect(cookies.get('foo')).toEqual({
     name: 'foo',
     path: '/',
@@ -86,7 +86,7 @@ it('reflect .delete into `set-cookie`', async () => {
     'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooz=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
   )
 
-  expect(cookies.getValue('fooz')).toBe(undefined)
+  expect(cookies.get('fooz')?.value).toBe(undefined)
   expect(cookies.get('fooz')).toEqual({
     name: 'fooz',
     expires: new Date(0),
@@ -113,6 +113,6 @@ test('formatting with @edge-runtime/format', () => {
   const format = createFormat()
   const result = format(cookies)
   expect(result).toMatchInlineSnapshot(
-    `"ResponseCookies {\\"a\\":{\\"name\\":\\"a\\",\\"value\\":\\"1\\",\\"httpOnly\\":true,\\"path\\":\\"/\\"},\\"b\\":{\\"name\\":\\"b\\",\\"value\\":\\"2\\",\\"path\\":\\"/\\",\\"sameSite\\":\\"lax\\"}}"`
+    `"CookieStore {\\"a\\":{\\"name\\":\\"a\\",\\"value\\":\\"1\\",\\"httpOnly\\":true,\\"path\\":\\"/\\"},\\"b\\":{\\"name\\":\\"b\\",\\"value\\":\\"2\\",\\"path\\":\\"/\\",\\"sameSite\\":\\"lax\\"}}"`
   )
 })
