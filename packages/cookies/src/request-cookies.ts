@@ -1,14 +1,15 @@
-import { type Cookie, parseCookieString, serialize } from './serialize'
+import type { RequestCookie } from './types'
+import { parseCookieString, serialize } from './serialize'
 import { cached } from './cached'
 
 /**
- * A class for manipulating {@link Request} cookies.
+ * A class for manipulating {@link Request} cookies (`Cookie` header).
  */
 export class RequestCookies {
   readonly #headers: Headers
 
-  constructor(request: Request) {
-    this.#headers = request.headers
+  constructor(requestHeaders: Headers) {
+    this.#headers = requestHeaders
   }
 
   #cache = cached((header: string | null) => {
@@ -32,12 +33,12 @@ export class RequestCookies {
     return this.#parsed().size
   }
 
-  get(...args: [name: string] | [Cookie]) {
+  get(...args: [name: string] | [RequestCookie]) {
     const name = typeof args[0] === 'string' ? args[0] : args[0].name
     return this.#parsed().get(name)
   }
 
-  getAll(...args: [name: string] | [Cookie] | [undefined]) {
+  getAll(...args: [name: string] | [RequestCookie] | []) {
     const all = Array.from(this.#parsed())
     if (!args.length) {
       return all
@@ -51,12 +52,12 @@ export class RequestCookies {
     return this.#parsed().has(name)
   }
 
-  set(...args: [key: string, value: string] | [options: Cookie]): this {
-    const [key, value] =
-      args.length === 1 ? [args[0].name, args[0].value, args[0]] : args
+  set(...args: [key: string, value: string] | [options: RequestCookie]): this {
+    const [name, value] =
+      args.length === 1 ? [args[0].name, args[0].value] : args
 
     const map = this.#parsed()
-    map.set(key, value)
+    map.set(name, value)
 
     this.#headers.set(
       'cookie',

@@ -1,43 +1,21 @@
-import type { CookieSerializeOptions } from 'cookie'
+import type { RequestCookie, ResponseCookie } from './types'
 
-/**
- * {@link https://wicg.github.io/cookie-store/#dictdef-cookielistitem CookieListItem} as specified by W3C.
- */
-export interface CookieListItem
-  extends Pick<
-    CookieSerializeOptions,
-    'domain' | 'path' | 'expires' | 'secure' | 'sameSite'
-  > {
-  /** A string with the name of a cookie. */
-  name: string
-  /** A string containing the value of the cookie. */
-  value: string
-}
-
-/**
- * Extends {@link CookieListItem} with the `httpOnly`, `maxAge` and `priority` properties.
- */
-export type Cookie = CookieListItem &
-  Pick<CookieSerializeOptions, 'httpOnly' | 'maxAge' | 'priority'>
-
-export function serialize(cookie: Cookie): string {
+export function serialize(c: ResponseCookie | RequestCookie): string {
   const attrs = [
-    cookie.path ? `Path=${cookie.path}` : '',
-    cookie.expires ? `Expires=${cookie.expires.toUTCString()}` : '',
-    cookie.maxAge ? `Max-Age=${cookie.maxAge}` : '',
-    cookie.domain ? `Domain=${cookie.domain}` : '',
-    cookie.secure ? 'Secure' : '',
-    cookie.httpOnly ? 'HttpOnly' : '',
-    cookie.sameSite ? `SameSite=${cookie.sameSite}` : '',
+    'path' in c && c.path && `Path=${c.path}`,
+    'expires' in c && c.expires && `Expires=${c.expires.toUTCString()}`,
+    'maxAge' in c && c.maxAge && `Max-Age=${c.maxAge}`,
+    'domain' in c && c.domain && `Domain=${c.domain}`,
+    'secure' in c && c.secure && 'Secure',
+    'httpOnly' in c && c.httpOnly && 'HttpOnly',
+    'sameSite' in c && c.sameSite && `SameSite=${c.sameSite}`,
   ].filter(Boolean)
 
-  return `${cookie.name}=${encodeURIComponent(
-    cookie.value ?? ''
-  )}; ${attrs.join('; ')}`
+  return `${c.name}=${encodeURIComponent(c.value ?? '')}; ${attrs.join('; ')}`
 }
 
 /**
- * Parse a `Cookie` header value
+ * Parse a `Cookie` or `Set-Cookie header value
  */
 export function parseCookieString(cookie: string): Map<string, string> {
   const map = new Map<string, string>()
@@ -54,7 +32,9 @@ export function parseCookieString(cookie: string): Map<string, string> {
 /**
  * Parse a `Set-Cookie` header value
  */
-export function parseSetCookieString(setCookie: string): undefined | Cookie {
+export function parseSetCookieString(
+  setCookie: string
+): undefined | ResponseCookie {
   if (!setCookie) {
     return undefined
   }
@@ -64,7 +44,7 @@ export function parseSetCookieString(setCookie: string): undefined | Cookie {
     Object.fromEntries(
       attributes.map(([key, value]) => [key.toLowerCase(), value])
     )
-  const cookie: Cookie = {
+  const cookie: ResponseCookie = {
     name,
     value: decodeURIComponent(value),
     domain,
@@ -89,9 +69,10 @@ function compact<T>(t: T): T {
   return newT as T
 }
 
-const SAME_SITE: Cookie['sameSite'][] = ['strict', 'lax', 'none']
-function parseSameSite(string: string): Cookie['sameSite'] {
+const SAME_SITE: ResponseCookie['sameSite'][] = ['strict', 'lax', 'none']
+function parseSameSite(string: string): ResponseCookie['sameSite'] {
+  string = string.toLowerCase()
   return SAME_SITE.includes(string as any)
-    ? (string as Cookie['sameSite'])
+    ? (string as ResponseCookie['sameSite'])
     : undefined
 }
