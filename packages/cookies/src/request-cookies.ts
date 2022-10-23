@@ -8,8 +8,8 @@ import { cached } from './cached'
 export class RequestCookies {
   readonly #headers: Headers
 
-  constructor(request: Request) {
-    this.#headers = request.headers
+  constructor(requestHeaders: Headers) {
+    this.#headers = requestHeaders
   }
 
   #cache = cached((header: string | null) => {

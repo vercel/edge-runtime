@@ -10,8 +10,8 @@ import { parseSetCookieString, serialize } from './serialize'
 export class ResponseCookies {
   readonly #headers: Headers
 
-  constructor(response: Response) {
-    this.#headers = response.headers
+  constructor(responseHeaders: Headers) {
+    this.#headers = responseHeaders
   }
 
   #cache = cached(() => {
