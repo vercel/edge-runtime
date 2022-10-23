@@ -86,13 +86,6 @@ export class ResponseCookies {
   // Non-spec
 
   /**
-   * Uses {@link ResponseCookies.get} to return only the cookie value.
-   */
-  getValue(...args: [key: string] | [options: Cookie]): string | undefined {
-    return this.get(...args)?.value
-  }
-
-  /**
    * Uses {@link ResponseCookies.delete} to invalidate all cookies matching the given name.
    * If no name is provided, all cookies are invalidated.
    */
