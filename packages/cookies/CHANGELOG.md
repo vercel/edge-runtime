@@ -1,5 +1,11 @@
 # @edge-runtime/cookies
 
+## 2.0.0-beta.35
+
+### Major Changes
+
+- Align `RequestCookies` and `ResponseCookies` APIs as much as possible with [CookieStore](https://developer.mozilla.org/en-US/docs/Web/API/CookieStore) ([#181](https://github.com/vercel/edge-runtime/pull/181))
+
 ## 2.0.0-beta.34
 
 ### Major Changes
