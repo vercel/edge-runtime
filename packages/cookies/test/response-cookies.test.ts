@@ -94,6 +94,37 @@ it('reflect .delete into `set-cookie`', async () => {
   })
 })
 
+it('refelect .clear() into "set-cookie"', async () => {
+  const headers = new Headers()
+  const cookies = new ResponseCookies(headers)
+
+  cookies.set('foo', 'bar')
+  cookies.set('fooz', 'barz')
+
+  expect(Object.fromEntries(headers.entries())['set-cookie']).toBe(
+    'foo=bar; Path=/, fooz=barz; Path=/'
+  )
+
+  cookies.clear()
+
+  expect(Object.fromEntries(headers.entries())['set-cookie']).toBe(
+    'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooz=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
+  )
+
+  cookies.set('foo', 'bar')
+  cookies.set('fooz', 'barz')
+
+  expect(Object.fromEntries(headers.entries())['set-cookie']).toBe(
+    'foo=bar; Path=/, fooz=barz; Path=/'
+  )
+
+  cookies.clear('foo')
+
+  expect(Object.fromEntries(headers.entries())['set-cookie']).toBe(
+    'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooz=barz; Path=/'
+  )
+})
+
 it('options are not modified', async () => {
   const options = { maxAge: 10000 }
   const headers = new Headers({ 'content-type': 'application/json' })

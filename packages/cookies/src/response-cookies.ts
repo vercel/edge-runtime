@@ -92,6 +92,7 @@ export class ResponseCookies {
   clear(...args: [key: string] | [options: ResponseCookie] | []): this {
     const key = typeof args[0] === 'string' ? args[0] : args[0]?.name
     if (key) this.getAll(key).forEach((c) => this.delete(c))
+    else Array.from(this.#parsed().keys()).forEach((c) => this.delete(c))
     return this
   }
 
