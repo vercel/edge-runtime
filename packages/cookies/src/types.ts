@@ -24,6 +24,6 @@ export type ResponseCookie = CookieListItem &
 
 /**
  * Subset of {@link CookieListItem}, only containing `name` and `value`
- * since other cookie attributes aren't be availeble on a `Request`.
+ * since other cookie attributes aren't be available on a `Request`.
  */
 export type RequestCookie = Pick<CookieListItem, 'name' | 'value'>
