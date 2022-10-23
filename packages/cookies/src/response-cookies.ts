@@ -83,19 +83,6 @@ export class ResponseCookies {
     return this.set({ name, value: '', expires: new Date(0) })
   }
 
-  // Non-spec
-
-  /**
-   * Uses {@link ResponseCookies.delete} to invalidate all cookies matching the given name.
-   * If no name is provided, all cookies are invalidated.
-   */
-  clear(...args: [key: string] | [options: ResponseCookie] | []): this {
-    const key = typeof args[0] === 'string' ? args[0] : args[0]?.name
-    if (key) this.getAll(key).forEach((c) => this.delete(c))
-    else Array.from(this.#parsed().keys()).forEach((c) => this.delete(c))
-    return this
-  }
-
   [Symbol.for('edge-runtime.inspect.custom')]() {
     return `ResponseCookies ${JSON.stringify(
       Object.fromEntries(this.#parsed())
