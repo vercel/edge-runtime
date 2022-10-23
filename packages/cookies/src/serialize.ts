@@ -71,6 +71,7 @@ function compact<T>(t: T): T {
 
 const SAME_SITE: ResponseCookie['sameSite'][] = ['strict', 'lax', 'none']
 function parseSameSite(string: string): ResponseCookie['sameSite'] {
+  string = string.toLowerCase()
   return SAME_SITE.includes(string as any)
     ? (string as ResponseCookie['sameSite'])
     : undefined
