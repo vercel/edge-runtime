@@ -5,22 +5,24 @@ describe('input parsing', () => {
   test('single element', () => {
     const headers = requestHeadersWithCookies('a=1')
     const cookies = new RequestCookies(headers)
-    expect([...cookies]).toEqual([['a', '1']])
+    expect(cookies.get('a')).toEqual({ name: 'a', value: '1' })
+    expect(cookies.getAll()).toEqual([{ name: 'a', value: '1' }])
   })
   test('multiple elements', () => {
     const headers = requestHeadersWithCookies('a=1; b=2')
     const cookies = new RequestCookies(headers)
-    expect([...cookies]).toEqual([
-      ['a', '1'],
-      ['b', '2'],
+    expect(cookies.getAll('a')).toEqual([{ name: 'a', value: '1' }])
+    expect(cookies.getAll()).toEqual([
+      { name: 'a', value: '1' },
+      { name: 'b', value: '2' },
     ])
   })
   test('multiple elements followed by a semicolon', () => {
     const headers = requestHeadersWithCookies('a=1; b=2;')
     const cookies = new RequestCookies(headers)
-    expect([...cookies]).toEqual([
-      ['a', '1'],
-      ['b', '2'],
+    expect(cookies.getAll()).toEqual([
+      { name: 'a', value: '1' },
+      { name: 'b', value: '2' },
     ])
   })
 })
@@ -30,9 +32,9 @@ test('updating a cookie', () => {
 
   const cookies = new RequestCookies(headers)
   cookies.set('b', 'hello!')
-  expect([...cookies]).toEqual([
-    ['a', '1'],
-    ['b', 'hello!'],
+  expect(cookies.getAll()).toEqual([
+    { name: 'a', value: '1' },
+    { name: 'b', value: 'hello!' },
   ])
 })
 
@@ -40,17 +42,17 @@ test('deleting a cookie', () => {
   const headers = requestHeadersWithCookies('a=1; b=2')
   const cookies = new RequestCookies(headers)
   cookies.delete('b')
-  expect([...cookies]).toEqual([['a', '1']])
+  expect(cookies.getAll()).toEqual([{ name: 'a', value: '1' }])
 })
 
 test('adding a cookie', () => {
   const headers = requestHeadersWithCookies('a=1; b=2')
   const cookies = new RequestCookies(headers)
   cookies.set('c', '3')
-  expect([...cookies]).toEqual([
-    ['a', '1'],
-    ['b', '2'],
-    ['c', '3'],
+  expect(cookies.getAll()).toEqual([
+    { name: 'a', value: '1' },
+    { name: 'b', value: '2' },
+    { name: 'c', value: '3' },
   ])
 })
 
@@ -61,7 +63,7 @@ test('formatting with @edge-runtime/format', () => {
   const format = createFormat()
   const result = format(cookies)
   expect(result).toMatchInlineSnapshot(
-    `"RequestCookies {\\"a\\":\\"1\\",\\"b\\":\\"2\\"}"`
+    `"RequestCookies {\\"a\\":{\\"name\\":\\"a\\",\\"value\\":\\"1\\"},\\"b\\":{\\"name\\":\\"b\\",\\"value\\":\\"2\\"}}"`
   )
 })
 
