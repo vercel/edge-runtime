@@ -2,9 +2,12 @@ import { Tabs, Tab } from '../../components/tabs'
 
 # Edge Runtime Cookies
 
-The **@edge-runtime/cookies** package provides a high-level HTTP Cookie
+The **@edge-runtime/cookies** package provides high-level HTTP Cookie
 abstractions for Edge-compatible environments, such as Edge Runtime or Vercel
 Edge Functions and Edge Middleware.
+
+The available methods are based on the [`CookieStore API`](https://wicg.github.io/cookie-store/#CookieStore).
+The main difference is that the methods are not asynchronous so they do not return a `Promise`.
 
 ## Installation
 
@@ -30,15 +33,14 @@ Edge Functions and Edge Middleware.
 
 ### for Request
 
-In order to read request cookie handling, use the exported `RequestCookies`
-constructor:
+To access and manipulate request cookies, use the exported `RequestCookies` constructor:
 
 ```ts
 import { RequestCookies } from '@edge-runtime/cookies'
 
 function handleRequest(req: Request) {
-  const cookies = new RequestCookies(req)
-  cookies.get('cookie-name') // undefined | string
+  const cookies = new RequestCookies(req.headers)
+  cookies.get('cookie-name')?.value // undefined | string
   cookies.has('cookie-name') // boolean
   // do something...
 }
@@ -46,19 +48,21 @@ function handleRequest(req: Request) {
 
 Notes:
 
-- `cookies.get()` returns the value of the cookie. The cookie configuration
-  (`Max-Age`, `Path` etc) is not being passed by the HTTP client, therefore it's
-  not possible to determine the cookie expiration date.
-
-- All mutations are performed in-place and will update the `cookie` header in
+- All mutations are performed in place and will update the `Cookie` header in
   the provided `Request` object.
 
 - When mutating the request cookies, the client won't be able to read the
   updated/deleted cookies. Please use `ResponseCookies` for that.
 
+#### Available methods
+
+- `cookies.get()` returns the value of the cookie. The cookie configuration
+  (`Max-Age`, `Path` etc) is not being passed by the HTTP client, therefore it's
+  not possible to determine the cookie expiration date.
+
 ### for Response
 
-In order to manipulate response cookies that will persist in the HTTP client,
+To access and manipulate response cookies that will persist in the HTTP client,
 use the exported `ResponseCookies` constructor:
 
 ```ts
@@ -66,8 +70,7 @@ import { ResponseCookies } from '@edge-runtime/cookies'
 
 function handleRequest(req: Request) {
   // do something
-  const response = new Response('Hello, world.')
-  const cookies = new ResponseCookies(response)
+  const cookies = new ResponseCookies(new Headers())
   cookies.set('cookie-name', 'cookie-value', { maxAge: 1000 }) // make cookie persistent for 1000 seconds
   cookies.delete('old-cookie')
   return response
@@ -76,11 +79,13 @@ function handleRequest(req: Request) {
 
 Notes:
 
+- All mutations are performed in-place and will update the `Set-Cookie` headers
+  in the provided `Response` object.
+
+#### Available methods
+
 - `cookies.set()` sets a cookie with the provided name and value. The cookie
   configuration (`Max-Age`, `Path` etc) is passed as an optional argument.
 
 - `cookies.delete()` deletes a cookie with the provided name by setting an empty
   value with an expiration date in the past.
-
-- All mutations are performed in-place and will update the `Set-Cookie` headers
-  in the provided `Response` object.
