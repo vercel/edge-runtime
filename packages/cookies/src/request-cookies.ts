@@ -12,12 +12,16 @@ export class RequestCookies {
     this.#headers = requestHeaders
   }
 
-  #cache = cached((header: string | null) => {
+  #cache = cached((header: string | null): Map<string, RequestCookie> => {
     const parsed = header ? parseCookieString(header) : new Map()
-    return parsed
+    const cached = new Map()
+    for (const [name, value] of parsed) {
+      cached.set(name, { name, value })
+    }
+    return cached
   })
 
-  #parsed(): Map<string, string> {
+  #parsed(): Map<string, RequestCookie> {
     const header = this.#headers.get('cookie')
     return this.#cache(header)
   }
@@ -41,11 +45,11 @@ export class RequestCookies {
   getAll(...args: [name: string] | [RequestCookie] | []) {
     const all = Array.from(this.#parsed())
     if (!args.length) {
-      return all
+      return all.map(([_, value]) => value)
     }
 
     const name = typeof args[0] === 'string' ? args[0] : args[0]?.name
-    return all.filter(([n]) => n === name)
+    return all.filter(([n]) => n === name).map(([_, value]) => value)
   }
 
   has(name: string) {
@@ -57,12 +61,12 @@ export class RequestCookies {
       args.length === 1 ? [args[0].name, args[0].value] : args
 
     const map = this.#parsed()
-    map.set(name, value)
+    map.set(name, { name, value })
 
     this.#headers.set(
       'cookie',
       Array.from(map)
-        .map(([name, value]) => serialize({ name, value }))
+        .map(([_, value]) => serialize(value))
         .join('; ')
     )
     return this
@@ -82,7 +86,7 @@ export class RequestCookies {
     this.#headers.set(
       'cookie',
       Array.from(map)
-        .map(([name, value]) => serialize({ name, value }))
+        .map(([_, value]) => serialize(value))
         .join('; ')
     )
     return result
