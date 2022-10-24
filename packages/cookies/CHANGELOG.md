@@ -1,5 +1,11 @@
 # @edge-runtime/cookies
 
+## 2.0.1
+
+### Patch Changes
+
+- Align `RequestCookies` API with `ResponseCookies` ([#187](https://github.com/vercel/edge-runtime/pull/187))
+
 ## 2.0.0
 
 ### Major Changes
