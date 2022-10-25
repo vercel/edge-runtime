@@ -1,5 +1,11 @@
 # @edge-runtime/cookies
 
+## 2.0.2
+
+### Patch Changes
+
+- remove #cached in favor of doing computation in the constructor ([#188](https://github.com/vercel/edge-runtime/pull/188))
+
 ## 2.0.1
 
 ### Patch Changes
