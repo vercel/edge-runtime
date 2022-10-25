@@ -1,5 +1,4 @@
 import type { ResponseCookie } from './types'
-import { cached } from './cached'
 import { parseSetCookieString, serialize } from './serialize'
 
 /**
@@ -9,29 +8,19 @@ import { parseSetCookieString, serialize } from './serialize'
  */
 export class ResponseCookies {
   readonly #headers: Headers
+  #parsed: Map<string, ResponseCookie> = new Map()
 
   constructor(responseHeaders: Headers) {
     this.#headers = responseHeaders
-  }
-
-  #cache = cached(() => {
     // @ts-expect-error See https://github.com/whatwg/fetch/issues/973
     const headers = this.#headers.getAll('set-cookie')
-    const map = new Map<string, ResponseCookie>()
 
     for (const header of headers) {
       const parsed = parseSetCookieString(header)
       if (parsed) {
-        map.set(parsed.name, parsed)
+        this.#parsed.set(parsed.name, parsed)
       }
     }
-
-    return map
-  })
-
-  #parsed() {
-    const allCookies = this.#headers.get('set-cookie')
-    return this.#cache(allCookies)
   }
 
   /**
@@ -41,7 +30,7 @@ export class ResponseCookies {
     ...args: [key: string] | [options: ResponseCookie]
   ): ResponseCookie | undefined {
     const key = typeof args[0] === 'string' ? args[0] : args[0].name
-    return this.#parsed().get(key)
+    return this.#parsed.get(key)
   }
   /**
    * {@link https://wicg.github.io/cookie-store/#CookieStore-getAll CookieStore#getAll} without the Promise.
@@ -49,7 +38,7 @@ export class ResponseCookies {
   getAll(
     ...args: [key: string] | [options: ResponseCookie] | []
   ): ResponseCookie[] {
-    const all = Array.from(this.#parsed().values())
+    const all = Array.from(this.#parsed.values())
     if (!args.length) {
       return all
     }
@@ -68,7 +57,7 @@ export class ResponseCookies {
   ): this {
     const [name, value, cookie] =
       args.length === 1 ? [args[0].name, args[0].value, args[0]] : args
-    const map = this.#parsed()
+    const map = this.#parsed
     map.set(name, normalizeCookie({ name, value, ...cookie }))
     replace(map, this.#headers)
 
@@ -84,9 +73,7 @@ export class ResponseCookies {
   }
 
   [Symbol.for('edge-runtime.inspect.custom')]() {
-    return `ResponseCookies ${JSON.stringify(
-      Object.fromEntries(this.#parsed())
-    )}`
+    return `ResponseCookies ${JSON.stringify(Object.fromEntries(this.#parsed))}`
   }
 }
 
