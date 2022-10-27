@@ -1,4 +1,6 @@
 ---
+'edge-runtime': major
+'@edge-runtime/types': major
 '@edge-runtime/cookies': major
 '@edge-runtime/jest-environment': major
 '@edge-runtime/ponyfill': major
