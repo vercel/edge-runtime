@@ -1,10 +1,8 @@
 import type { Config } from '@jest/types'
-import path from 'path'
 
 export default (rootDir: string): Config.InitialOptions => {
   return {
     rootDir,
-    setupFilesAfterEnv: [path.join(__dirname, 'jest.setup.js')],
     transform: {
       '^.+\\.tsx?$': [
         'ts-jest',
