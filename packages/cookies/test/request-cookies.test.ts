@@ -69,7 +69,7 @@ test('formatting with @edge-runtime/format', () => {
   const format = createFormat()
   const result = format(cookies)
   expect(result).toMatchInlineSnapshot(
-    `"RequestCookies {\\"a\\":{\\"name\\":\\"a\\",\\"value\\":\\"1\\"},\\"b\\":{\\"name\\":\\"b\\",\\"value\\":\\"2\\"}}"`
+    `"RequestCookies {"a":{"name":"a","value":"1"},"b":{"name":"b","value":"2"}}"`
   )
 })
 
