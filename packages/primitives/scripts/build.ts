@@ -2,6 +2,8 @@ import { basename, join, parse, resolve } from 'path'
 import { Options, build } from 'tsup'
 import fs from 'fs'
 
+const TARGET = ['node14.6']
+
 const BUNDLE_OPTIONS: Options = {
   bundle: true,
   keepNames: true,
@@ -22,7 +24,7 @@ async function bundlePackage() {
       resolve: true,
     },
     format: [],
-    target: ['node14.6'],
+    target: TARGET,
     entry: filesExt
       .map((f) => f.replace(/\.(js|ts)$/, '.d.ts'))
       .map((f) => join(__dirname, '../type-definitions', f)),
@@ -39,7 +41,7 @@ async function bundlePackage() {
     entryPoints,
     outDir: outdir,
     minify: false,
-    target: ['node14.6'],
+    target: TARGET,
     esbuildOptions(opts, _context) {
       opts.legalComments = 'external'
     },
