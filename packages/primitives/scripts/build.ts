@@ -1,4 +1,5 @@
 import { basename, join, parse, resolve } from 'path'
+import alias from 'esbuild-plugin-alias'
 import { Options, build } from 'tsup'
 import fs from 'fs'
 
@@ -49,6 +50,9 @@ async function bundlePackage() {
       process: JSON.stringify({ env: {}, versions: { node: '16.6.0' } }),
     },
     esbuildPlugins: [
+      alias({
+        'util/types': resolve('src/patches/util-types.js'),
+      }),
       {
         name: 'alias-undici-core-request',
         setup: (build) => {
