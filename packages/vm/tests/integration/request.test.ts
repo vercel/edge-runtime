@@ -22,12 +22,12 @@ test('throws when the URL is malformed', async () => {
 })
 
 test('Request.referrer is `about:client` by default', async () => {
-  const request = new Request('https://vercel.com')
+  const request = new Request('https://example.vercel.sh')
   expect(request.referrer).toEqual('about:client')
 })
 
 test('Request.referrer can be customized', async () => {
-  const request = new Request('https://vercel.com', {
+  const request = new Request('https://example.vercel.sh', {
     referrer: 'https://vercel.com/home',
   })
   expect(request.referrer).toEqual('https://vercel.com/home')
