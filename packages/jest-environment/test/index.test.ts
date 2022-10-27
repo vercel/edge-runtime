@@ -7,7 +7,7 @@ test('TextEncoder references the same global Uint8Array constructor', () => {
 })
 
 test('allows to run fetch', async () => {
-  const response = await fetch('https://vercel.com')
+  const response = await fetch('https://example.vercel.sh')
   expect(response.status).toEqual(200)
 })
 
