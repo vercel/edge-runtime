@@ -18,7 +18,6 @@ jobs:
         # https://nodejs.org/en/about/releases/
         # https://pnpm.io/installation#compatibility
         version:
-          - node: 12.x
           - node: 14.x
           - node: 16.x
           - node: 18.x
@@ -40,7 +39,6 @@ jobs:
       - name: Setup PNPM
         uses: pnpm/action-setup@v2
         with:
-          version: ${{ matrix.version.node == '12.x' && '6' || '7' }}
           run_install: |
             - recursive: true
               args: [--loglevel=error]
