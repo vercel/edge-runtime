@@ -183,7 +183,6 @@ function addPrimitives(context: VMContext) {
       ['stream', { exports: require('stream') }],
       ['tls', { exports: require('tls') }],
       ['util', { exports: require('util') }],
-      ['util/types', { exports: require('util/types') }],
       ['zlib', { exports: require('zlib') }],
       [
         require.resolve('@edge-runtime/primitives/streams'),
