@@ -3,6 +3,8 @@
 name: Dependabot
 on: pull_request_target
 permissions: read-all
+env:
+  NODE_VERSION: '18'
 jobs:
   update-lockfile:
     runs-on: ubuntu-latest
@@ -16,7 +18,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
       - uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: ${{ env.NODE_VERSION }}
       - run: corepack enable && pnpm --version
       - run: pnpm i --lockfile-only
       - run: |

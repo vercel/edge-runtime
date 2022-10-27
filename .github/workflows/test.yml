@@ -18,11 +18,13 @@ jobs:
         # https://nodejs.org/en/about/releases/
         # https://pnpm.io/installation#compatibility
         version:
-          - node: 14.x
-          - node: 16.x
-          - node: 18.x
+          - node: 14
+          - node: 16
+          - node: 18
 
     name: Node.js ${{ matrix.version.node }}
+    env:
+      NODE_VERSION: ${{ matrix.version.node }}
 
     steps:
       - uses: actions/checkout@v3
