@@ -11,12 +11,13 @@ jobs:
       pull-requests: write
       contents: write
     steps:
-      - uses: pnpm/action-setup@v2
-        with:
-          version: '7'
       - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.ref }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: corepack enable && pnpm --version
       - run: pnpm i --lockfile-only
       - run: |
           git config --global user.name github-actions[bot]

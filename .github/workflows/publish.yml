@@ -30,20 +30,16 @@ jobs:
             node_modules/.pnpm
           key: ${{ runner.os }}-node${{ env.NODE_VERSION }}-${{ hashFiles('**/pnpm-lock.yaml') }}
 
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v2
-        with:
-          version: '7'
-          run_install: |
-            - recursive: true
-              args: [--no-frozen-lockfile, --loglevel=error]
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - run: pnpm run build
+      - run: corepack enable && pnpm --version
+
+      - run: pnpm install --recursive --no-frozen-lockfile --loglevel=error
+
+      - run: pnpm build
 
       - name: Create Release Pull Request
         uses: changesets/action@v1

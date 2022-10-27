@@ -36,17 +36,14 @@ jobs:
             node_modules/.pnpm
           key: ${{ runner.os }}-node${{ matrix.version.node }}-${{ hashFiles('**/pnpm-lock.yaml') }}
 
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v2
-        with:
-          run_install: |
-            - recursive: true
-              args: [--loglevel=error]
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.version.node }}
+
+      - run: corepack enable && pnpm --version
+
+      - run: pnpm install --recursive --loglevel=error
 
       - run: pnpm build
 
