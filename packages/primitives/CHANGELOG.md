@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 2.0.1
+
+### Patch Changes
+
+- build(primitives): update peculiar/webcrypto ([#197](https://github.com/vercel/edge-runtime/pull/197))
+
 ## 2.0.0
 
 ### Major Changes
