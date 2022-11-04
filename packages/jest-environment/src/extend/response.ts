@@ -5,7 +5,7 @@ export * from './types'
 
 function assertResponse(actual: unknown): asserts actual is Response {
   if (actual instanceof Response) return
-  throw new Error('Expected a Response object')
+  throw new Error('Expected a Response instance')
 }
 
 // Matchers
@@ -42,6 +42,21 @@ expect.extend({
         `expected JSON body '${JSON.stringify(json)}' to be '${JSON.stringify(
           body
         )}'`,
+      pass: false,
+    }
+  },
+  async toHaveTextBody(actual, body: string) {
+    assertResponse(actual)
+    const text = await actual.clone().text()
+    const pass = this.equals(text, body)
+    if (pass) {
+      return {
+        message: () => `expected ${text} not to be ${body}`,
+        pass: true,
+      }
+    }
+    return {
+      message: () => `expected text body '${text}' to be '${body}'`,
       pass: false,
     }
   },
