@@ -7,7 +7,7 @@ test('allows to run fetch', async () => {
   expect(response.status).toEqual(200)
 })
 
-test('allows to run crypto', async () => {
+test('allows to run crypto', () => {
   const array = new Uint32Array(10)
   expect(crypto.getRandomValues(array)).toHaveLength(array.length)
 })
@@ -30,8 +30,8 @@ describe('Custom matchers', () => {
       ).toHaveStatus('Server Error')
     })
 
-    test('`expect.toHaveJSONBody` available', async () => {
-      await expect(
+    test('`expect.toHaveJSONBody` available', () => {
+      expect(
         expect(new Response('Without Content-Type')).toHaveJSONBody(null)
       ).rejects.toThrowErrorMatchingInlineSnapshot(`
         "[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveJSONBody[2m([22m[32mexpected[39m[2m)[22m
@@ -44,8 +44,8 @@ describe('Custom matchers', () => {
       // @ts-expect-error See https://developer.mozilla.org/en-US/docs/Web/API/Response/json
       const response = Response.json(json)
 
-      await expect(response).toHaveJSONBody(json)
-      await expect(response).not.toHaveJSONBody({ foo: 'baz' })
+      expect(response).toHaveJSONBody(json)
+      expect(response).not.toHaveJSONBody({ foo: 'baz' })
     })
   })
 })
