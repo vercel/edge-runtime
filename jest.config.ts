@@ -5,11 +5,14 @@ export default (rootDir: string): Config.InitialOptions => {
   return {
     rootDir,
     setupFilesAfterEnv: [path.join(__dirname, 'jest.setup.js')],
-    globals: {
-      'ts-jest': {
-        'diagnostics': true,
-        'isolatedModules': true,
-      },
+    transform: {
+      '^.+\\.tsx?$': [
+        'ts-jest',
+        {
+          'diagnostics': true,
+          'isolatedModules': true,
+        },
+      ],
     },
     preset: 'ts-jest/presets/default',
     testEnvironment: 'node',

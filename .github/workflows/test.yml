@@ -18,12 +18,13 @@ jobs:
         # https://nodejs.org/en/about/releases/
         # https://pnpm.io/installation#compatibility
         version:
-          - node: 12.x
-          - node: 14.x
-          - node: 16.x
-          - node: 18.x
+          - node: 14
+          - node: 16
+          - node: 18
 
     name: Node.js ${{ matrix.version.node }}
+    env:
+      NODE_VERSION: ${{ matrix.version.node }}
 
     steps:
       - uses: actions/checkout@v3
@@ -37,18 +38,14 @@ jobs:
             node_modules/.pnpm
           key: ${{ runner.os }}-node${{ matrix.version.node }}-${{ hashFiles('**/pnpm-lock.yaml') }}
 
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v2
-        with:
-          version: ${{ matrix.version.node == '12.x' && '6' || '7' }}
-          run_install: |
-            - recursive: true
-              args: [--loglevel=error]
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.version.node }}
+
+      - run: corepack enable && pnpm --version
+
+      - run: pnpm install --recursive --loglevel=error
 
       - run: pnpm build
 

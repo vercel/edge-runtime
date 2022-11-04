@@ -73,10 +73,10 @@ it('reflect .delete into `set-cookie`', async () => {
     'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooz=barz; Path=/'
   )
 
-  expect(cookies.get('foo')?.value).toBe(undefined)
   expect(cookies.get('foo')).toEqual({
     name: 'foo',
     path: '/',
+    value: '',
     expires: new Date(0),
   })
 
@@ -86,10 +86,10 @@ it('reflect .delete into `set-cookie`', async () => {
     'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooz=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
   )
 
-  expect(cookies.get('fooz')?.value).toBe(undefined)
   expect(cookies.get('fooz')).toEqual({
     name: 'fooz',
     expires: new Date(0),
+    value: '',
     path: '/',
   })
 })
@@ -111,6 +111,6 @@ test('formatting with @edge-runtime/format', () => {
   const format = createFormat()
   const result = format(cookies)
   expect(result).toMatchInlineSnapshot(
-    `"ResponseCookies {\\"a\\":{\\"name\\":\\"a\\",\\"value\\":\\"1\\",\\"httpOnly\\":true,\\"path\\":\\"/\\"},\\"b\\":{\\"name\\":\\"b\\",\\"value\\":\\"2\\",\\"path\\":\\"/\\",\\"sameSite\\":\\"lax\\"}}"`
+    `"ResponseCookies {"a":{"name":"a","value":"1","httpOnly":true,"path":"/"},"b":{"name":"b","value":"2","sameSite":"lax","path":"/"}}"`
   )
 })

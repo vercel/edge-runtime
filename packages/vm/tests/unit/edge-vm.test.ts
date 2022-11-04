@@ -219,7 +219,9 @@ it('uses the same builtins in polyfills as in VM', () => {
     new EdgeVM().evaluate(`(new AbortController()) instanceof Object`)
   ).toBe(true)
   expect(
-    new EdgeVM().evaluate(`(new URL('https://vercel.com')) instanceof Object`)
+    new EdgeVM().evaluate(
+      `(new URL('https://example.vercel.sh')) instanceof Object`
+    )
   ).toBe(true)
   expect(
     new EdgeVM().evaluate(`(new URLSearchParams()) instanceof Object`)

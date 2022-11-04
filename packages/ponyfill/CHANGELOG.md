@@ -1,5 +1,11 @@
 # @edge-runtime/ponyfill
 
+## 2.0.0
+
+### Major Changes
+
+- BREAKING CHANGE: Drop Node.js 12 ([#191](https://github.com/vercel/edge-runtime/pull/191))
+
 ## 1.1.0
 
 ### Patch Changes

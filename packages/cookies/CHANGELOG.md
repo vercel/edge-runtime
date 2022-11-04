@@ -1,5 +1,17 @@
 # @edge-runtime/cookies
 
+## 3.0.0
+
+### Major Changes
+
+- BREAKING CHANGE: Drop Node.js 12 ([#191](https://github.com/vercel/edge-runtime/pull/191))
+
+## 2.0.2
+
+### Patch Changes
+
+- remove #cached in favor of doing computation in the constructor ([#188](https://github.com/vercel/edge-runtime/pull/188))
+
 ## 2.0.1
 
 ### Patch Changes

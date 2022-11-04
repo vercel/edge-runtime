@@ -54,12 +54,11 @@ test('sets header calling Headers constructor', async () => {
 })
 
 test('sets headers unsupported in undici', async () => {
-  const url = new URL('/', 'https://example.com')
+  const url = new URL('/', 'https://example.vercel.sh')
   const response = await fetch(url, {
     headers: {
       Connection: 'keep-alive',
       'Keep-Alive': 'timeout=5, max=1000',
-      'Transfer-Encoding': 'gzip',
     },
   })
   expect(response.status).toBe(200)

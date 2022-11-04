@@ -84,19 +84,19 @@ test('allows to read a FormData body as text', async () => {
   expect(text.replace(/formdata-undici-0\.\d+/g, 'formdata-unidici-0.1234'))
     .toMatchInlineSnapshot(`
     "------formdata-unidici-0.1234
-    Content-Disposition: form-data; name=\\"name\\"
+    Content-Disposition: form-data; name="name"
 
     John
     ------formdata-unidici-0.1234
-    Content-Disposition: form-data; name=\\"lastname\\"
+    Content-Disposition: form-data; name="lastname"
 
     Doe
     ------formdata-unidici-0.1234
-    Content-Disposition: form-data; name=\\"metadata\\"; filename=\\"blob\\"
+    Content-Disposition: form-data; name="metadata"; filename="blob"
     Content-Type: application/json
 
     {
-      \\"hello\\": \\"world\\"
+      "hello": "world"
     }
     ------formdata-unidici-0.1234--"
   `)
