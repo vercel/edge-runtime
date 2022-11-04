@@ -22,7 +22,7 @@ export = class EdgeEnvironment implements JestEnvironment<number> {
         context.Buffer = Buffer
         return context
       },
-      ...((config as any).projectConfig ?? config)?.testEnvironmentOptions,
+      ...((config as any).projectConfig ?? config)?.testEnvironmentOptions
     })
 
     revealPrimitives(vm)
