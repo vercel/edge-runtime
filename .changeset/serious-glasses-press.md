@@ -2,4 +2,4 @@
 '@edge-runtime/jest-expect': minor
 ---
 
-init
+initial release
