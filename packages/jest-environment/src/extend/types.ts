@@ -84,7 +84,20 @@ export type JSONType =
 /** `toHaveJSONBody` parameters */
 export type JSONBodyParams = [body: JSONType]
 
-export interface ResponseMatchers<R = unknown> {
+interface SharedMatchers<R = unknown> {
+  /**
+   * @see
+   * [@edge-runtime/jest-environment#toHaveJSONBody](https://edge-runtime.vercel.app/packages/jest-environment#tohavejsonbody)
+   */
+  toHaveJSONBody(...args: JSONBodyParams): R
+  /**
+   * @see
+   * [@edge-runtime/jest-environment#toHaveTextBody](https://edge-runtime.vercel.app/packages/jest-environment#tohavetextbody)
+   */
+  toHaveTextBody(body: string): R
+}
+
+export interface ResponseMatchers<R = unknown> extends SharedMatchers<R> {
   /**
    * @description
    * Assert whether a response has a specific status code or status type.
@@ -98,13 +111,16 @@ export interface ResponseMatchers<R = unknown> {
    * [@edge-runtime/jest-environment#toHaveStatus](https://edge-runtime.vercel.app/packages/jest-environment#tohavestatus)
    */
   toHaveStatus(...args: StatusParams): R
-  toHaveJSONBody(...args: JSONBodyParams): R
 }
+
+export interface RequestMatchers<R = unknown> extends SharedMatchers<R> {}
 
 declare global {
   namespace jest {
-    interface Expect extends ResponseMatchers {}
-    interface Matchers<R> extends ResponseMatchers<R> {}
-    interface InverseAsymmetricMatchers extends ResponseMatchers {}
+    interface Expect extends RequestMatchers, ResponseMatchers {}
+    interface Matchers<R> extends RequestMatchers<R>, ResponseMatchers<R> {}
+    interface InverseAsymmetricMatchers
+      extends RequestMatchers,
+        ResponseMatchers {}
   }
 }
