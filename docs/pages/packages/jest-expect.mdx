@@ -58,7 +58,7 @@ expect(response).not.toHaveStatus(201)
 
 #### .toHaveJSONBody
 
-It checks HTTP response body is a JSON:
+It checks if an HTTP request/response body is a JSON:
 
 ```js
 const response = Response.json({ hello: 'world' })
@@ -69,11 +69,14 @@ expect(response).not.toHaveJSONBody({ foo: 'baz' })
 
 #### .toHaveTextBody
 
-It checks HTTP response body is a text:
+It checks if an HTTP request/response body is a text:
 
 ```js
-const response = Response('hello world')
+const request = new Request('http://example.com', {
+  method: 'POST',
+  body: 'Hello World',
+})
 
-expect(response).toHaveTextBody('hello world')
-expect(response).not.toHaveTextBody('foo bar')
+expect(request).toHaveTextBody('hello world')
+expect(request).not.toHaveTextBody('foo bar')
 ```
