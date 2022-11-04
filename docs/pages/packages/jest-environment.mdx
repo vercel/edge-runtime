@@ -8,10 +8,22 @@ It helps you to write tests assertion without being worried about the environmen
 
 ## Installation
 
-<Tabs items={['npm', 'yarn', 'pnpm']} storageKey='selected-pkg-manager'>
-  <Tab>```sh npm install @edge-runtime/jest-environment --save ```</Tab>
-  <Tab>```sh yarn add @edge-runtime/jest-environment ```</Tab>
-  <Tab>```sh pnpm install @edge-runtime/jest-environment --save ```</Tab>
+<Tabs items={['npm', 'yarn', 'pnpm']} storageKey="selected-pkg-manager">
+  <Tab>
+    ```sh
+    npm install @edge-runtime/jest-environment --save
+    ```
+  </Tab>
+  <Tab>
+    ```sh
+    yarn add @edge-runtime/jest-environment
+    ```
+  </Tab>
+  <Tab>
+    ```sh
+    pnpm install @edge-runtime/jest-environment --save
+    ```
+  </Tab>
 </Tabs>
 
 ## Usage
@@ -44,7 +56,7 @@ it('should return the correct value', () => {
 
 ## Extend expect
 
-The **@edge-runtime/jest-environment** package comes with a sub-module that contains useful [Jest matchers](https://jestjs.io/docs/expect#expectextendmatchers) to test `Request` and `Response`
+The **@edge-runtime/jest-environment** package comes with a sub-module that contains useful [Jest matchers](https://jestjs.io/docs/expect#expectextendmatchers) to test `Request` and `Response`.
 
 ### Usage
 
@@ -53,7 +65,6 @@ Add the following in your `jest.config.js` file:
 ```js
 // See https://jestjs.io/docs/configuration#setupfilesafterenv-array
 setupFilesAfterEnv: ['@edge-runtime/jest-environment/extend'],
-
 ```
 
 To include the TypeScript types, add the following in your `tsconfig.json` file:
@@ -68,7 +79,6 @@ To include the TypeScript types, add the following in your `tsconfig.json` file:
 ### API
 
 #### toHaveJSONBody
-
 #### toHaveTextBody
 
 #### toHaveStatus
