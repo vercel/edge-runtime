@@ -1,80 +1,111 @@
+import type { RequestCookie } from './types'
 import { parseCookieString, serialize } from './serialize'
 import { cached } from './cached'
 
 /**
- * A class for manipulating {@link Request} cookies.
+ * A class for manipulating {@link Request} cookies (`Cookie` header).
  */
 export class RequestCookies {
-  private readonly headers: Headers
+  readonly #headers: Headers
 
-  constructor(request: Request) {
-    this.headers = request.headers
+  constructor(requestHeaders: Headers) {
+    this.#headers = requestHeaders
   }
 
-  /**
-   * Delete all the cookies in the cookies in the request
-   */
-  clear(): void {
-    this.delete([...this.parsed().keys()])
+  #cache = cached((header: string | null): Map<string, RequestCookie> => {
+    const parsed = header ? parseCookieString(header) : new Map()
+    const cached = new Map()
+    for (const [name, value] of parsed) {
+      cached.set(name, { name, value })
+    }
+    return cached
+  })
+
+  #parsed(): Map<string, RequestCookie> {
+    const header = this.#headers.get('cookie')
+    return this.#cache(header)
   }
 
-  /**
-   * Format the cookies in the request as a string for logging
-   */
-  [Symbol.for('edge-runtime.inspect.custom')]() {
-    return `RequestCookies ${JSON.stringify(Object.fromEntries(this.parsed()))}`
+  [Symbol.iterator]() {
+    return this.#parsed()[Symbol.iterator]()
   }
 
   /**
    * The amount of cookies received from the client
    */
   get size(): number {
-    return this.parsed().size
+    return this.#parsed().size
   }
 
-  [Symbol.iterator]() {
-    return this.parsed()[Symbol.iterator]()
+  get(...args: [name: string] | [RequestCookie]) {
+    const name = typeof args[0] === 'string' ? args[0] : args[0].name
+    return this.#parsed().get(name)
   }
 
-  private cache = cached((header: string | null) => {
-    const parsed = header ? parseCookieString(header) : new Map()
-    return parsed
-  })
+  getAll(...args: [name: string] | [RequestCookie] | []) {
+    const all = Array.from(this.#parsed())
+    if (!args.length) {
+      return all.map(([_, value]) => value)
+    }
 
-  private parsed(): Map<string, string> {
-    const header = this.headers.get('cookie')
-    return this.cache(header)
-  }
-
-  get(name: string) {
-    return this.parsed().get(name)
+    const name = typeof args[0] === 'string' ? args[0] : args[0]?.name
+    return all.filter(([n]) => n === name).map(([_, value]) => value)
   }
 
   has(name: string) {
-    return this.parsed().has(name)
+    return this.#parsed().has(name)
   }
 
-  set(name: string, value: string): this {
-    const map = this.parsed()
-    map.set(name, value)
-    this.headers.set(
+  set(...args: [key: string, value: string] | [options: RequestCookie]): this {
+    const [name, value] =
+      args.length === 1 ? [args[0].name, args[0].value] : args
+
+    const map = this.#parsed()
+    map.set(name, { name, value })
+
+    this.#headers.set(
       'cookie',
-      [...map].map(([key, value]) => serialize(key, value, {})).join('; ')
+      Array.from(map)
+        .map(([_, value]) => serialize(value))
+        .join('; ')
     )
     return this
   }
 
-  delete(names: string[]): boolean[]
-  delete(name: string): boolean
-  delete(names: string | string[]): boolean | boolean[] {
-    const map = this.parsed()
+  /**
+   * Delete the cookies matching the passed name or names in the request.
+   */
+  delete(
+    /** Name or names of the cookies to be deleted  */
+    names: string | string[]
+  ): boolean | boolean[] {
+    const map = this.#parsed()
     const result = !Array.isArray(names)
       ? map.delete(names)
       : names.map((name) => map.delete(name))
-    this.headers.set(
+    this.#headers.set(
       'cookie',
-      [...map].map(([key, value]) => serialize(key, value, {})).join('; ')
+      Array.from(map)
+        .map(([_, value]) => serialize(value))
+        .join('; ')
     )
     return result
+  }
+
+  /**
+   * Delete all the cookies in the cookies in the request.
+   */
+  clear(): this {
+    this.delete(Array.from(this.#parsed().keys()))
+    return this
+  }
+
+  /**
+   * Format the cookies in the request as a string for logging
+   */
+  [Symbol.for('edge-runtime.inspect.custom')]() {
+    return `RequestCookies ${JSON.stringify(
+      Object.fromEntries(this.#parsed())
+    )}`
   }
 }

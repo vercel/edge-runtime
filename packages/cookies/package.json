@@ -2,7 +2,7 @@
   "name": "@edge-runtime/cookies",
   "description": "An Edge Runtime compatible cookie helpers",
   "homepage": "https://edge-runtime.vercel.app/packages/cookies",
-  "version": "1.1.0-beta.33",
+  "version": "2.0.1",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "repository": {
@@ -19,8 +19,8 @@
     "set-cookie"
   ],
   "devDependencies": {
-    "@edge-runtime/format": "workspace:1.1.0-beta.33",
-    "@edge-runtime/jest-environment": "workspace:1.1.0-beta.35",
+    "@edge-runtime/format": "workspace:1.1.0",
+    "@edge-runtime/jest-environment": "workspace:1.1.0",
     "@types/cookie": "0.5.1",
     "tsup": "6"
   },

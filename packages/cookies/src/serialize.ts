@@ -1,28 +1,21 @@
-import type { CookieSerializeOptions } from 'cookie'
+import type { RequestCookie, ResponseCookie } from './types'
 
-export interface Options extends CookieSerializeOptions {}
-
-export function serialize(
-  name: string,
-  value: string,
-  options: Options
-): string {
-  const { expires, maxAge, domain, path, secure, httpOnly, sameSite } = options
+export function serialize(c: ResponseCookie | RequestCookie): string {
   const attrs = [
-    path ? `Path=${path}` : '',
-    expires ? `Expires=${expires.toUTCString()}` : '',
-    maxAge ? `Max-Age=${maxAge}` : '',
-    domain ? `Domain=${domain}` : '',
-    secure ? 'Secure' : '',
-    httpOnly ? 'HttpOnly' : '',
-    sameSite ? `SameSite=${sameSite}` : '',
+    'path' in c && c.path && `Path=${c.path}`,
+    'expires' in c && c.expires && `Expires=${c.expires.toUTCString()}`,
+    'maxAge' in c && c.maxAge && `Max-Age=${c.maxAge}`,
+    'domain' in c && c.domain && `Domain=${c.domain}`,
+    'secure' in c && c.secure && 'Secure',
+    'httpOnly' in c && c.httpOnly && 'HttpOnly',
+    'sameSite' in c && c.sameSite && `SameSite=${c.sameSite}`,
   ].filter(Boolean)
 
-  return `${name}=${encodeURIComponent(value)}; ${attrs.join('; ')}`
+  return `${c.name}=${encodeURIComponent(c.value ?? '')}; ${attrs.join('; ')}`
 }
 
 /**
- * Parse a `Cookie` header value
+ * Parse a `Cookie` or `Set-Cookie header value
  */
 export function parseCookieString(cookie: string): Map<string, string> {
   const map = new Map<string, string>()
@@ -41,7 +34,7 @@ export function parseCookieString(cookie: string): Map<string, string> {
  */
 export function parseSetCookieString(
   setCookie: string
-): undefined | { name: string; value: string; attributes: Options } {
+): undefined | ResponseCookie {
   if (!setCookie) {
     return undefined
   }
@@ -51,7 +44,9 @@ export function parseSetCookieString(
     Object.fromEntries(
       attributes.map(([key, value]) => [key.toLowerCase(), value])
     )
-  const options: Options = {
+  const cookie: ResponseCookie = {
+    name,
+    value: decodeURIComponent(value),
     domain,
     ...(expires && { expires: new Date(expires) }),
     ...(httponly && { httpOnly: true }),
@@ -61,11 +56,7 @@ export function parseSetCookieString(
     ...(secure && { secure: true }),
   }
 
-  return {
-    name,
-    value: decodeURIComponent(value),
-    attributes: compact(options),
-  }
+  return compact(cookie)
 }
 
 function compact<T>(t: T): T {
@@ -78,9 +69,10 @@ function compact<T>(t: T): T {
   return newT as T
 }
 
-const SAME_SITE: Options['sameSite'][] = ['strict', 'lax', 'none']
-function parseSameSite(string: string): Options['sameSite'] {
+const SAME_SITE: ResponseCookie['sameSite'][] = ['strict', 'lax', 'none']
+function parseSameSite(string: string): ResponseCookie['sameSite'] {
+  string = string.toLowerCase()
   return SAME_SITE.includes(string as any)
-    ? (string as Options['sameSite'])
+    ? (string as ResponseCookie['sameSite'])
     : undefined
 }

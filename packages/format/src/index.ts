@@ -226,7 +226,11 @@ export function createFormat(opts: FormatterOptions = {}) {
       keys = getKeys(value as object, ctx.showHidden)
       braces = ['{', '}']
 
-      if (constructor === 'Object') {
+      if (constructor === undefined) {
+        if (keys.length === 0) {
+          return `[Object: null prototype] {}`
+        }
+      } else if (constructor === 'Object') {
         if (keys.length === 0) {
           return `{}`
         }
