@@ -32,7 +32,9 @@
     "jest-util": "28.1.3"
   },
   "files": [
-    "dist"
+    "dist",
+    "extend.d.ts",
+    "extend.js"
   ],
   "scripts": {
     "build": "tsc --project tsconfig.prod.json",
