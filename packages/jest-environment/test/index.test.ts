@@ -7,7 +7,7 @@ test('allows to run fetch', async () => {
   expect(response.status).toEqual(200)
 })
 
-test('allows to run crypto', async () => {
+test('allows to run crypto', () => {
   const array = new Uint32Array(10)
   expect(crypto.getRandomValues(array)).toHaveLength(array.length)
 })

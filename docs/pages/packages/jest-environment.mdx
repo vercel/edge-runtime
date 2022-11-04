@@ -44,7 +44,7 @@ it('should return the correct value', () => {
 
 ## Extend expect
 
-The **@edge-runtime/jest-environment** package comes with a sub-module that contains useful [Jest matchers](https://jestjs.io/docs/expect#expectextendmatchers) to test `Request` and `Response`
+The **@edge-runtime/jest-environment** package comes with a sub-module that contains useful [Jest matchers](https://jestjs.io/docs/expect#expectextendmatchers) to test `Request` and `Response`.
 
 ### Usage
 
@@ -53,7 +53,6 @@ Add the following in your `jest.config.js` file:
 ```js
 // See https://jestjs.io/docs/configuration#setupfilesafterenv-array
 setupFilesAfterEnv: ['@edge-runtime/jest-environment/extend'],
-
 ```
 
 To include the TypeScript types, add the following in your `tsconfig.json` file:
@@ -67,8 +66,36 @@ To include the TypeScript types, add the following in your `tsconfig.json` file:
 
 ### API
 
-#### toHaveJSONBody
+#### .toHaveStatus
 
-#### toHaveTextBody
+It checks for HTTP status code or message correctness:
 
-#### toHaveStatus
+```js
+const response = new Response('OK')
+
+expect(response).toHaveStatus(200)
+expect(response).toHaveStatus('Successful')
+expect(response).not.toHaveStatus(201)
+```
+
+#### .toHaveJSONBody
+
+It checks HTTP response body is a JSON:
+
+```js
+const response = Response.json({ hello: 'world' })
+
+expect(response).toHaveJSONBody({ hello: 'world' })
+expect(response).not.toHaveJSONBody({ foo: 'baz' })
+```
+
+#### .toHaveTextBody
+
+It checks HTTP response body is a text:
+
+```js
+const response = Response('hello world')
+
+expect(response).toHaveTextBody('hello world')
+expect(response).not.toHaveTextBody('foo bar')
+```
