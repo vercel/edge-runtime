@@ -6,22 +6,10 @@ The **@edge-runtime/jest-expect** package comes with useful [Jest matchers](http
 
 ## Installation
 
-<Tabs items={['npm', 'yarn', 'pnpm']} storageKey="selected-pkg-manager">
-  <Tab>
-    ```sh
-    npm install @edge-runtime/jest-expect --save
-    ```
-  </Tab>
-  <Tab>
-    ```sh
-    yarn add @edge-runtime/jest-expect
-    ```
-  </Tab>
-  <Tab>
-    ```sh
-    pnpm install @edge-runtime/jest-expect --save
-    ```
-  </Tab>
+<Tabs items={['npm', 'yarn', 'pnpm']} storageKey='selected-pkg-manager'>
+  <Tab>```sh npm install @edge-runtime/jest-expect --save ```</Tab>
+  <Tab>```sh yarn add @edge-runtime/jest-expect ```</Tab>
+  <Tab>```sh pnpm install @edge-runtime/jest-expect --save ```</Tab>
 </Tabs>
 
 ### Usage
@@ -30,7 +18,7 @@ Add the following in your `jest.config.js` file:
 
 ```js
 // See https://jestjs.io/docs/configuration#setupfilesafterenv-array
-setupFilesAfterEnv: ['@edge-runtime/jest-environment/extend'],
+setupFilesAfterEnv: ['@edge-runtime/jest-expect'],
 ```
 
 To include the TypeScript types, add the following in your `tsconfig.json` file:
@@ -38,7 +26,7 @@ To include the TypeScript types, add the following in your `tsconfig.json` file:
 ```json
 // See https://www.typescriptlang.org/tsconfig#include
 "include": [
-  "node_modules/@edge-runtime/jest-environment/extend.d.ts"
+  "node_modules/@edge-runtime/jest-expect/index.d.ts"
 ]
 ```
 
