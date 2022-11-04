@@ -89,15 +89,17 @@ importers:
 
   packages/jest-environment:
     specifiers:
-      '@edge-runtime/vm': workspace:*
+      '@edge-runtime/vm': workspace:2.0.1
       '@jest/environment': 28.1.3
       '@jest/fake-timers': 28.1.3
+      '@jest/types': 28.1.3
       jest-mock: 28.1.3
       jest-util: 28.1.3
     dependencies:
       '@edge-runtime/vm': link:../vm
       '@jest/environment': 28.1.3
       '@jest/fake-timers': 28.1.3
+      '@jest/types': 28.1.3
       jest-mock: 28.1.3
       jest-util: 28.1.3
 
