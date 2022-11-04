@@ -31,9 +31,8 @@ describe('Custom matchers', () => {
     })
 
     test('`expect.toHaveJSONBody` available', () => {
-      expect(
-        expect(new Response('Without Content-Type')).toHaveJSONBody(null)
-      ).rejects.toThrowErrorMatchingInlineSnapshot(`
+      expect(expect(new Response('Without Content-Type')).toHaveJSONBody(null))
+        .rejects.toThrowErrorMatchingInlineSnapshot(`
         "[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveJSONBody[2m([22m[32mexpected[39m[2m)[22m
 
         Expected response to have "Content-Type": [32m"application/json"[39m
@@ -46,6 +45,19 @@ describe('Custom matchers', () => {
 
       expect(response).toHaveJSONBody(json)
       expect(response).not.toHaveJSONBody({ foo: 'baz' })
+    })
+
+    test('`expect.toHaveTextBody` available', () => {
+      expect(
+        expect(new Response()).toHaveTextBody('something')
+      ).rejects.toThrowErrorMatchingInlineSnapshot(
+        `"expected text body '' to be 'something'"`
+      )
+
+      const response = new Response('hello world')
+
+      expect(response).toHaveTextBody('hello world')
+      expect(response).not.toHaveTextBody('foo bar')
     })
   })
 })
