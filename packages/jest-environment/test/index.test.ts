@@ -36,8 +36,8 @@ describe('Custom matchers', () => {
       ).rejects.toThrowErrorMatchingInlineSnapshot(`
         "[2mexpect([22m[31mreceived[39m[2m).[22mtoHaveJSONBody[2m([22m[32mexpected[39m[2m)[22m
 
-        Expected response to have \\"Content-Type\\": [32m\\"application/json\\"[39m
-        Received: [31m\\"text/plain;charset=UTF-8\\"[39m"
+        Expected response to have "Content-Type": [32m"application/json"[39m
+        Received: [31m"text/plain;charset=UTF-8"[39m"
       `)
 
       const json = { foo: 'bar' }
