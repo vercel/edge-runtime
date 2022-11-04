@@ -2,28 +2,16 @@ import { Tabs, Tab } from '../../components/tabs'
 
 # Edge Runtime Jest Environment
 
-The **@edge-runtime/jest-environment** enables you to run [Jest](https://jestjs.io) tests against the Edge Runtime environment.
+The **@edge-runtime/jest-environment** package enables you to run [Jest](https://jestjs.io) tests against the Edge Runtime environment.
 
 It helps you to write tests assertion without being worried about the environment setup.
 
 ## Installation
 
-<Tabs items={['npm', 'yarn', 'pnpm']} storageKey="selected-pkg-manager">
-  <Tab>
-    ```sh
-    npm install @edge-runtime/jest-environment --save
-    ```
-  </Tab>
-  <Tab>
-    ```sh
-    yarn add @edge-runtime/jest-environment
-    ```
-  </Tab>
-  <Tab>
-    ```sh
-    pnpm install @edge-runtime/jest-environment --save
-    ```
-  </Tab>
+<Tabs items={['npm', 'yarn', 'pnpm']} storageKey='selected-pkg-manager'>
+  <Tab>```sh npm install @edge-runtime/jest-environment --save ```</Tab>
+  <Tab>```sh yarn add @edge-runtime/jest-environment ```</Tab>
+  <Tab>```sh pnpm install @edge-runtime/jest-environment --save ```</Tab>
 </Tabs>
 
 ## Usage
@@ -53,3 +41,34 @@ it('should return the correct value', () => {
   expect(val).toBe(4)
 })
 ```
+
+## Extend expect
+
+The **@edge-runtime/jest-environment** package comes with a sub-module that contains useful [Jest matchers](https://jestjs.io/docs/expect#expectextendmatchers) to test `Request` and `Response`
+
+### Usage
+
+Add the following in your `jest.config.js` file:
+
+```js
+// See https://jestjs.io/docs/configuration#setupfilesafterenv-array
+setupFilesAfterEnv: ['@edge-runtime/jest-environment/extend'],
+
+```
+
+To include the TypeScript types, add the following in your `tsconfig.json` file:
+
+```json
+// See https://www.typescriptlang.org/tsconfig#include
+"include": [
+  "node_modules/@edge-runtime/jest-environment/extend.d.ts"
+]
+```
+
+### API
+
+#### toHaveJSONBody
+
+#### toHaveTextBody
+
+#### toHaveStatus
