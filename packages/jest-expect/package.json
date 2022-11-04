@@ -31,7 +31,9 @@
     "expect": "28.1.3"
   },
   "files": [
-    "dist"
+    "dist",
+    "index.js",
+    "index.d.ts"
   ],
   "scripts": {
     "build": "tsc --project tsconfig.prod.json",
