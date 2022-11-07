@@ -1,7 +1,5 @@
 import type { StatusParams } from './types'
 
-// Utils
-
 function assertResponse(actual: unknown): asserts actual is Response {
   if (actual instanceof Response) return
   throw new Error('Expected a Response instance')
@@ -16,8 +14,6 @@ const HTTP_STATUS_CODE_RANGES = {
 }
 
 type HttpStatusCodeRange = keyof typeof HTTP_STATUS_CODE_RANGES
-
-// Matchers
 
 expect.extend({
   toHaveStatus(actual, ...args: StatusParams) {
