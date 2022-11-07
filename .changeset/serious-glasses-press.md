@@ -1,5 +1,5 @@
 ---
-'@edge-runtime/jest-expect': minor
+'@edge-runtime/jest-expect': major
 ---
 
 initial release
