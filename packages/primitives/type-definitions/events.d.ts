@@ -5,7 +5,7 @@ declare const EventConstructor: typeof Event
 
 export { EventConstructor as Event }
 
-export class FetchEvent {
+export declare class FetchEvent {
   request: Request
   response: Response | null
   awaiting: Set<Promise<void>>
@@ -14,5 +14,8 @@ export class FetchEvent {
   waitUntil(promise: Promise<void>): void
 }
 
-export { EventTargetConstructor as EventTarget }
-export { EventTarget as PromiseRejectionEvent } from 'event-target-shim'
+export {
+  EventConstructor as Event,
+  EventTargetConstructor as EventTarget,
+  EventTarget as PromiseRejectionEvent
+}
