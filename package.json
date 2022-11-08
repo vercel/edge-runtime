@@ -80,7 +80,7 @@
     "c8": "latest",
     "finepack": "latest",
     "git-authors-cli": "latest",
-    "jest": "29.2.2",
+    "jest": "29.3.0",
     "jest-watch-typeahead": "2.2.0",
     "nano-staged": "latest",
     "prettier": "latest",
