@@ -1,5 +1,14 @@
 # @edge-runtime/types
 
+## 2.0.2
+
+### Patch Changes
+
+- fix: addEvenlistener type ([#201](https://github.com/vercel/edge-runtime/pull/201))
+
+- Updated dependencies [[`f43e787`](https://github.com/vercel/edge-runtime/commit/f43e787d2136c03b52832c8c0566e1223c42aff4)]:
+  - @edge-runtime/primitives@2.0.2
+
 ## 2.0.1
 
 ### Patch Changes
