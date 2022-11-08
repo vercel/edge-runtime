@@ -1,13 +1,7 @@
-export class Headers extends globalThis.Headers {
+import { Headers as HeadersBase } from 'undici'
+
+export class Headers extends HeadersBase {
   getAll(key: 'set-cookie'): string[]
-}
-
-export class Request extends globalThis.Request {
-  readonly headers: Headers
-}
-
-export class Response extends globalThis.Response {
-  readonly headers: Headers
 }
 
 declare const fetchImplementation: typeof fetch
@@ -17,3 +11,20 @@ declare const FormDataConstructor: typeof FormData
 export { fetchImplementation as fetch }
 export { FileConstructor as File }
 export { FormDataConstructor as FormData }
+
+export {
+  BodyInit,
+  HeadersInit,
+  ReferrerPolicy,
+  Request,
+  RequestCache,
+  RequestCredentials,
+  RequestDestination,
+  RequestInfo,
+  RequestInit,
+  RequestMode,
+  RequestRedirect,
+  Response,
+  ResponseRedirectStatus,
+  ResponseType,
+} from 'undici'
