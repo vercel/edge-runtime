@@ -111,4 +111,10 @@ export class RequestCookies {
       Object.fromEntries(this._parsed())
     )}`
   }
+
+  toString() {
+    return [...this._parsed().values()]
+      .map((v) => `${v.name}=${encodeURIComponent(v.value)}`)
+      .join('; ')
+  }
 }

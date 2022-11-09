@@ -91,6 +91,10 @@ export class ResponseCookies {
       Object.fromEntries(this._parsed())
     )}`
   }
+
+  toString() {
+    return [...this._parsed().values()].map(serialize).join('; ')
+  }
 }
 
 function replace(bag: Map<string, ResponseCookie>, headers: Headers) {
