@@ -62,6 +62,13 @@ test('adding a cookie', () => {
   ])
 })
 
+test('cookies.toString()', () => {
+  const headers = requestHeadersWithCookies('a=1; b=2')
+  const cookies = new RequestCookies(headers)
+  cookies.set('c', '3')
+  expect(cookies.toString()).toMatch('a=1; b=2; c=3')
+})
+
 test('formatting with @edge-runtime/format', () => {
   const headers = requestHeadersWithCookies('a=1; b=2')
   const cookies = new RequestCookies(headers)

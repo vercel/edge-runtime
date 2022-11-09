@@ -11,6 +11,10 @@
     "sourceMap": true,
     "strict": true,
     "target": "ES2019",
-    "types": ["node", "jest"],
+    "types": [
+      "node",
+      "jest"
+    ],
+    "stripInternal": true
   }
 }
