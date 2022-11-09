@@ -9,31 +9,20 @@ import { parseSetCookieString, serialize } from './serialize'
 export class ResponseCookies {
   /** @internal */
   readonly _headers: Headers
+  /** @internal */
+  _parsed: Map<string, ResponseCookie> = new Map()
 
   constructor(responseHeaders: Headers) {
     this._headers = responseHeaders
-  }
-
-  /** @internal */
-  _cache = cached(() => {
     // @ts-expect-error See https://github.com/whatwg/fetch/issues/973
     const headers = this._headers.getAll('set-cookie')
-    const map = new Map<string, ResponseCookie>()
 
     for (const header of headers) {
       const parsed = parseSetCookieString(header)
       if (parsed) {
-        this.#parsed.set(parsed.name, parsed)
+        this._parsed.set(parsed.name, parsed)
       }
     }
-
-    return map
-  })
-
-  /** @internal */
-  _parsed() {
-    const allCookies = this._headers.get('set-cookie')
-    return this._cache(allCookies)
   }
 
   /**
@@ -43,7 +32,7 @@ export class ResponseCookies {
     ...args: [key: string] | [options: ResponseCookie]
   ): ResponseCookie | undefined {
     const key = typeof args[0] === 'string' ? args[0] : args[0].name
-    return this._parsed().get(key)
+    return this._parsed.get(key)
   }
   /**
    * {@link https://wicg.github.io/cookie-store/#CookieStore-getAll CookieStore#getAll} without the Promise.
@@ -51,7 +40,7 @@ export class ResponseCookies {
   getAll(
     ...args: [key: string] | [options: ResponseCookie] | []
   ): ResponseCookie[] {
-    const all = Array.from(this._parsed().values())
+    const all = Array.from(this._parsed.values())
     if (!args.length) {
       return all
     }
@@ -70,7 +59,7 @@ export class ResponseCookies {
   ): this {
     const [name, value, cookie] =
       args.length === 1 ? [args[0].name, args[0].value, args[0]] : args
-    const map = this._parsed()
+    const map = this._parsed
     map.set(name, normalizeCookie({ name, value, ...cookie }))
     replace(map, this._headers)
 
@@ -86,13 +75,11 @@ export class ResponseCookies {
   }
 
   [Symbol.for('edge-runtime.inspect.custom')]() {
-    return `ResponseCookies ${JSON.stringify(
-      Object.fromEntries(this._parsed())
-    )}`
+    return `ResponseCookies ${JSON.stringify(Object.fromEntries(this._parsed))}`
   }
 
   toString() {
-    return [...this._parsed().values()].map(serialize).join('; ')
+    return [...this._parsed.values()].map(serialize).join('; ')
   }
 }
 
