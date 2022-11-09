@@ -1,0 +1,82 @@
+import { Tabs, Tab } from '../../components/tabs'
+
+# Edge Runtime Jest Expect
+
+The **@edge-runtime/jest-expect** package comes with useful [Jest matchers](https://jestjs.io/docs/expect#expectextendmatchers) to help testing `Request` and `Response` instances.
+
+## Installation
+
+<Tabs items={['npm', 'yarn', 'pnpm']} storageKey="selected-pkg-manager">
+  <Tab>
+    ```sh
+    npm install @edge-runtime/jest-expect --save
+    ```
+  </Tab>
+  <Tab>
+    ```sh
+    yarn add @edge-runtime/jest-expect
+    ```
+  </Tab>
+  <Tab>
+    ```sh
+    pnpm install @edge-runtime/jest-expect --save
+    ```
+  </Tab>
+</Tabs>
+
+### Usage
+
+Add the following in your `jest.config.js` file:
+
+```js
+// See https://jestjs.io/docs/configuration#setupfilesafterenv-array
+setupFilesAfterEnv: ['@edge-runtime/jest-expect'],
+```
+
+To include the TypeScript types, add the following in your `tsconfig.json` file:
+
+```json
+// See https://www.typescriptlang.org/tsconfig#include
+"include": [
+  "node_modules/@edge-runtime/jest-expect"
+]
+```
+
+### API
+
+#### .toHaveStatus
+
+It checks for HTTP status code or message correctness:
+
+```js
+const response = new Response('OK')
+
+expect(response).toHaveStatus(200)
+expect(response).toHaveStatus('Successful')
+expect(response).not.toHaveStatus(201)
+```
+
+#### .toHaveJSONBody
+
+It checks if an HTTP request/response body is a JSON:
+
+```js
+const response = Response.json({ hello: 'world' })
+
+expect(response).toHaveJSONBody({ hello: 'world' })
+expect(response).not.toHaveJSONBody({ foo: 'baz' })
+```
+
+#### .toHaveTextBody
+
+It checks if an HTTP request/response body is a text:
+
+```js
+const request = new Request('http://example.com', {
+  method: 'POST',
+  body: 'Hello World',
+})
+
+expect(request).toHaveTextBody('hello world')
+expect(request).not.toHaveTextBody('foo bar')
+```

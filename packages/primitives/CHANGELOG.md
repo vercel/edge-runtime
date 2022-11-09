@@ -1,5 +1,23 @@
 # @edge-runtime/primitives
 
+## 2.0.2
+
+### Patch Changes
+
+- fix: addEvenlistener type ([#201](https://github.com/vercel/edge-runtime/pull/201))
+
+## 2.0.1
+
+### Patch Changes
+
+- build(primitives): update peculiar/webcrypto ([#197](https://github.com/vercel/edge-runtime/pull/197))
+
+## 2.0.0
+
+### Major Changes
+
+- BREAKING CHANGE: Drop Node.js 12 ([#191](https://github.com/vercel/edge-runtime/pull/191))
+
 ## 1.1.0
 
 ### Patch Changes

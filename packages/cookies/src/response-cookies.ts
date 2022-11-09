@@ -1,5 +1,4 @@
 import type { ResponseCookie } from './types'
-import { cached } from './cached'
 import { parseSetCookieString, serialize } from './serialize'
 
 /**
@@ -24,7 +23,7 @@ export class ResponseCookies {
     for (const header of headers) {
       const parsed = parseSetCookieString(header)
       if (parsed) {
-        map.set(parsed.name, parsed)
+        this.#parsed.set(parsed.name, parsed)
       }
     }
 

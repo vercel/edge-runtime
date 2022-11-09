@@ -1,5 +1,30 @@
 # @edge-runtime/jest-environment
 
+## 2.0.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @edge-runtime/vm@2.0.2
+
+## 2.0.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @edge-runtime/vm@2.0.1
+
+## 2.0.0
+
+### Major Changes
+
+- BREAKING CHANGE: Drop Node.js 12 ([#191](https://github.com/vercel/edge-runtime/pull/191))
+
+### Patch Changes
+
+- Updated dependencies [[`dfa837e`](https://github.com/vercel/edge-runtime/commit/dfa837ee6e41a9951c4f17bd4a638c9d1882d1e2)]:
+  - @edge-runtime/vm@2.0.0
+
 ## 1.1.0
 
 ### Minor Changes

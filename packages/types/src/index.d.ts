@@ -6,9 +6,12 @@
 import * as Edge from '@edge-runtime/primitives'
 
 declare global {
+  function addEventListener(
+    type: 'fetch',
+    listener: (event: Edge.FetchEvent) => void
+  ): void
   // addressable runtime
   const EdgeRuntime: Record<never, never>
-
   // base primitives
   const Array: typeof Array
   const ArrayBuffer: typeof ArrayBuffer

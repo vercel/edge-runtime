@@ -1,7 +1,9 @@
 import { basename, join, parse, resolve } from 'path'
-import { Options, build } from 'tsup'
 import alias from 'esbuild-plugin-alias'
+import { Options, build } from 'tsup'
 import fs from 'fs'
+
+const TARGET = ['node14.6']
 
 const BUNDLE_OPTIONS: Options = {
   bundle: true,
@@ -23,7 +25,7 @@ async function bundlePackage() {
       resolve: true,
     },
     format: [],
-    target: ['node12.22'],
+    target: TARGET,
     entry: filesExt
       .map((f) => f.replace(/\.(js|ts)$/, '.d.ts'))
       .map((f) => join(__dirname, '../type-definitions', f)),
@@ -40,7 +42,7 @@ async function bundlePackage() {
     entryPoints,
     outDir: outdir,
     minify: false,
-    target: ['node12.22'],
+    target: TARGET,
     esbuildOptions(opts, _context) {
       opts.legalComments = 'external'
     },
@@ -49,11 +51,8 @@ async function bundlePackage() {
     },
     esbuildPlugins: [
       alias({
-        buffer: resolve('src/patches/buffer.js'),
-        http: resolve('src/patches/http.js'),
         'util/types': resolve('src/patches/util-types.js'),
       }),
-
       {
         name: 'alias-undici-core-request',
         setup: (build) => {

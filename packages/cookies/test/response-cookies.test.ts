@@ -73,10 +73,10 @@ test('reflect .delete into `set-cookie`', async () => {
     'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooz=barz; Path=/'
   )
 
-  expect(cookies.get('foo')?.value).toBe(undefined)
   expect(cookies.get('foo')).toEqual({
     name: 'foo',
     path: '/',
+    value: '',
     expires: new Date(0),
   })
 
@@ -86,10 +86,10 @@ test('reflect .delete into `set-cookie`', async () => {
     'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooz=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
   )
 
-  expect(cookies.get('fooz')?.value).toBe(undefined)
   expect(cookies.get('fooz')).toEqual({
     name: 'fooz',
     expires: new Date(0),
+    value: '',
     path: '/',
   })
 })

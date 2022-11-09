@@ -2,6 +2,12 @@ import { RequestCookies } from '../src/request-cookies'
 import { createFormat } from '@edge-runtime/format'
 
 describe('input parsing', () => {
+  test('empty cookie header element', () => {
+    const cookies = new RequestCookies(new Headers())
+    expect(cookies.get('a')).toEqual(undefined)
+    expect(cookies.getAll()).toEqual([])
+    expect([...cookies]).toEqual([])
+  })
   test('single element', () => {
     const headers = requestHeadersWithCookies('a=1')
     const cookies = new RequestCookies(headers)

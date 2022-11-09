@@ -1,6 +1,5 @@
 import type { RequestCookie } from './types'
 import { parseCookieString, serialize } from './serialize'
-import { cached } from './cached'
 
 /**
  * A class for manipulating {@link Request} cookies (`Cookie` header).

@@ -1,10 +1,10 @@
 import { crypto, TextEncoder } from '..'
 
-test('randomUUID', async () => {
+test('crypto.randomUUID', async () => {
   expect(crypto.randomUUID()).toEqual(expect.stringMatching(/^[a-f0-9-]+$/))
 })
 
-test('crypto.subtle digest', async () => {
+test('crypto.subtle.digest', async () => {
   const digest = await crypto.subtle.digest(
     'SHA-256',
     new TextEncoder().encode('Hello, world')
