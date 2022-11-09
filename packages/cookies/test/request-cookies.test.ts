@@ -56,6 +56,13 @@ test('adding a cookie', () => {
   ])
 })
 
+test('cookies.toString()', () => {
+  const headers = requestHeadersWithCookies('a=1; b=2')
+  const cookies = new RequestCookies(headers)
+  cookies.set('c', '3')
+  expect(cookies.toString()).toMatch('a=1; b=2; c=3')
+})
+
 test('formatting with @edge-runtime/format', () => {
   const headers = requestHeadersWithCookies('a=1; b=2')
   const cookies = new RequestCookies(headers)
@@ -63,7 +70,7 @@ test('formatting with @edge-runtime/format', () => {
   const format = createFormat()
   const result = format(cookies)
   expect(result).toMatchInlineSnapshot(
-    `"RequestCookies {\\"a\\":{\\"name\\":\\"a\\",\\"value\\":\\"1\\"},\\"b\\":{\\"name\\":\\"b\\",\\"value\\":\\"2\\"}}"`
+    `"RequestCookies {"a":{"name":"a","value":"1"},"b":{"name":"b","value":"2"}}"`
   )
 })
 

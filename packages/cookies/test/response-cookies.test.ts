@@ -1,7 +1,7 @@
 import { createFormat } from '@edge-runtime/format'
 import { ResponseCookies } from '../src/response-cookies'
 
-it('reflect .set into `set-cookie`', async () => {
+test('reflect .set into `set-cookie`', async () => {
   const headers = new Headers()
   const cookies = new ResponseCookies(headers)
 
@@ -40,7 +40,7 @@ it('reflect .set into `set-cookie`', async () => {
   )
 })
 
-it('reflect .delete into `set-cookie`', async () => {
+test('reflect .delete into `set-cookie`', async () => {
   const headers = new Headers()
   const cookies = new ResponseCookies(headers)
 
@@ -94,12 +94,23 @@ it('reflect .delete into `set-cookie`', async () => {
   })
 })
 
-it('options are not modified', async () => {
+test('options are not modified', async () => {
   const options = { maxAge: 10000 }
   const headers = new Headers({ 'content-type': 'application/json' })
   const cookies = new ResponseCookies(headers)
   cookies.set('cookieName', 'cookieValue', options)
   expect(options).toEqual({ maxAge: 10000 })
+})
+
+test('cookies.toString()', () => {
+  const cookies = new ResponseCookies(new Headers())
+  cookies.set({
+    name: 'foo',
+    value: 'bar',
+    path: '/test',
+  })
+  cookies.set('fooz', 'barz')
+  expect(cookies.toString()).toMatch('foo=bar; Path=/test; fooz=barz; Path=/')
 })
 
 test('formatting with @edge-runtime/format', () => {
@@ -111,6 +122,6 @@ test('formatting with @edge-runtime/format', () => {
   const format = createFormat()
   const result = format(cookies)
   expect(result).toMatchInlineSnapshot(
-    `"ResponseCookies {\\"a\\":{\\"name\\":\\"a\\",\\"value\\":\\"1\\",\\"httpOnly\\":true,\\"path\\":\\"/\\"},\\"b\\":{\\"name\\":\\"b\\",\\"value\\":\\"2\\",\\"path\\":\\"/\\",\\"sameSite\\":\\"lax\\"}}"`
+    `"ResponseCookies {"a":{"name":"a","value":"1","httpOnly":true,"path":"/"},"b":{"name":"b","value":"2","path":"/","sameSite":"lax"}}"`
   )
 })
