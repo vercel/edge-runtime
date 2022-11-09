@@ -1,5 +1,11 @@
 # @edge-runtime/cookies
 
+## 3.0.1
+
+### Patch Changes
+
+- Add `.toString()`, use `_` + `@internal` JSDoc comment instead of `#` private properties elsewhere ([#210](https://github.com/vercel/edge-runtime/pull/210))
+
 ## 3.0.0
 
 ### Major Changes
