@@ -14,8 +14,11 @@ export class ResponseCookies {
 
   constructor(responseHeaders: Headers) {
     this._headers = responseHeaders
-    // @ts-expect-error See https://github.com/whatwg/fetch/issues/973
-    const headers = this._headers.getAll('set-cookie')
+    const headers =
+      // @ts-expect-error See https://github.com/whatwg/fetch/issues/973
+      this._headers.getAll?.('set-cookie') ??
+      this._headers.get('set-cookie')?.split(', ') ??
+      []
 
     for (const header of headers) {
       const parsed = parseSetCookieString(header)
