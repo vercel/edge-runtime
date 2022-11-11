@@ -119,6 +119,10 @@ test('use headers.get when .getAll is unavailable', () => {
   // @ts-expect-error
   delete Headers.prototype.getAll
   const headers = new Headers()
+
+  // @ts-expect-error
+  expect(headers.getAll).toBe(undefined)
+
   headers.append('set-cookie', 'foo=bar; Path=/')
   headers.append('set-cookie', 'fooz=barz; Path=/')
   const cookies = new ResponseCookies(headers)
@@ -127,6 +131,8 @@ test('use headers.get when .getAll is unavailable', () => {
 
   // @ts-expect-error
   Headers.prototype.getAll = orgGetAll
+  // @ts-expect-error
+  expect(typeof new Headers().getAll).toBe('function')
 })
 
 test('formatting with @edge-runtime/format', () => {
