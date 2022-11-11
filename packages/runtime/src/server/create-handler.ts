@@ -127,8 +127,10 @@ function toNodeHeaders(headers?: Headers): NodeHeaders {
     for (const [key, value] of headers.entries()) {
       result[key] =
         key.toLowerCase() === 'set-cookie'
-          ? // @ts-ignore getAll is hidden in Headers but exists.
-            headers.getAll('set-cookie')
+          ? // @ts-expect-error getAll is hidden in Headers but exists.
+            headers.getAll?.('set-cookie') ??
+            headers.get('set-cookie')?.split(', ') ??
+            []
           : value
     }
   }
