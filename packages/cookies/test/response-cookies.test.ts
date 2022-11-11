@@ -113,6 +113,22 @@ test('cookies.toString()', () => {
   expect(cookies.toString()).toMatch('foo=bar; Path=/test; fooz=barz; Path=/')
 })
 
+test('use headers.get when .getAll is unavailable', () => {
+  // @ts-expect-error
+  const orgGetAll = Headers.prototype.getAll
+  // @ts-expect-error
+  delete Headers.prototype.getAll
+  const headers = new Headers()
+  headers.append('set-cookie', 'foo=bar; Path=/')
+  headers.append('set-cookie', 'fooz=barz; Path=/')
+  const cookies = new ResponseCookies(headers)
+
+  expect(cookies.toString()).toBe('foo=bar; Path=/; fooz=barz; Path=/')
+
+  // @ts-expect-error
+  Headers.prototype.getAll = orgGetAll
+})
+
 test('formatting with @edge-runtime/format', () => {
   const headers = new Headers()
   const cookies = new ResponseCookies(headers)
