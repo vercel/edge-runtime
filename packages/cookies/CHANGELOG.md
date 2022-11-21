@@ -1,5 +1,11 @@
 # @edge-runtime/cookies
 
+## 3.0.2
+
+### Patch Changes
+
+- Fix [URIError]: URI malformed using middleware ([#215](https://github.com/vercel/edge-runtime/pull/215))
+
 ## 3.0.1
 
 ### Patch Changes
