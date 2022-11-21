@@ -8,6 +8,12 @@ describe('input parsing', () => {
     expect(cookies.getAll()).toEqual([])
     expect([...cookies]).toEqual([])
   })
+  test('invalid element', () => {
+    const headers = requestHeadersWithCookies('a=%F6')
+    const cookies = new RequestCookies(headers)
+    expect(cookies.get('a')).toEqual(undefined)
+    expect(cookies.getAll()).toEqual([])
+  })
   test('single element', () => {
     const headers = requestHeadersWithCookies('a=1')
     const cookies = new RequestCookies(headers)
