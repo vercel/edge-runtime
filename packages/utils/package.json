@@ -15,6 +15,7 @@
   },
   "keywords": [],
   "devDependencies": {
+    "@edge-runtime/primitives": "workspace:2.0.2",
     "tsup": "6"
   },
   "files": [

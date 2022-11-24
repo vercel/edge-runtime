@@ -213,8 +213,10 @@ importers:
 
   packages/utils:
     specifiers:
+      '@edge-runtime/primitives': workspace:2.0.2
       tsup: '6'
     devDependencies:
+      '@edge-runtime/primitives': link:../primitives
       tsup: 6.1.2
 
   packages/vm:
