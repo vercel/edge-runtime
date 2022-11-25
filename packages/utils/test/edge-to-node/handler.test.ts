@@ -1,5 +1,8 @@
 import * as primitives from '@edge-runtime/primitives'
-import { createServer, Server } from 'node:http'
+import { Response } from '@edge-runtime/primitives'
+import { createServer, type Server } from 'node:http'
+import type { AddressInfo } from 'node:net'
+import { Readable } from 'node:stream'
 import { transformToNode } from '../../src'
 import { WebHandler } from '../../src/types'
 
@@ -35,7 +38,9 @@ describe('transformToNode()', () => {
         }
       })
     )
-    const response = await fetch(`http://localhost:${server?.address()?.port}`)
+    const response = await fetch(
+      `http://localhost:${(server?.address() as AddressInfo)?.port}`
+    )
 
     // extract response content to ease expectations
     const headers: Record<string, string> = {}
@@ -113,6 +118,19 @@ describe('transformToNode()', () => {
     })
   })
 
+  it('returns an async json response', async () => {
+    const json = { works: 'just right' }
+    const response = await invokeWebHandler(() =>
+      Promise.resolve(Response.json(json))
+    )
+    expect(response).toMatchObject({
+      status: 200,
+      statusText: 'OK',
+      headers: { 'content-type': 'application/json' },
+      json,
+    })
+  })
+
   it('can configure response headers', async () => {
     const response = await invokeWebHandler(() => {
       const response = new Response()
@@ -129,7 +147,7 @@ describe('transformToNode()', () => {
     const data = ['lorem', 'ipsum', 'nec', 'mergitur']
 
     const response = await invokeWebHandler(
-      () =>
+      async () =>
         new Response(
           new ReadableStream({
             start(controller) {
@@ -147,9 +165,43 @@ describe('transformToNode()', () => {
           })
         )
     )
+    expect(response).toMatchObject({ status: 200, text: data.join('') })
+  })
+
+  it('returns a stream body', async () => {
+    const stream = Readable.from(
+      (async function* () {
+        yield 'hello'
+        await new Promise((resolve) => setTimeout(resolve, 200))
+        yield ' world'
+      })()
+    )
+    const response = await invokeWebHandler(
+      () =>
+        ({
+          status: 200,
+          body: stream,
+          headers: new Headers(),
+        } as unknown as Response)
+    )
     expect(response).toMatchObject({
       status: 200,
-      text: data.join(''),
+      statusText: 'OK',
+      text: 'hello world',
     })
+  })
+
+  it('returns a buffer body', async () => {
+    const text = 'blah'
+
+    const response = await invokeWebHandler(
+      () =>
+        ({
+          status: 200,
+          body: Buffer.from(text),
+          headers: new Headers(),
+        } as unknown as Response)
+    )
+    expect(response).toMatchObject({ status: 200, statusText: 'OK', text })
   })
 })

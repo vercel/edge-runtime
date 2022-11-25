@@ -8,6 +8,7 @@ export class Request extends globalThis.Request {
 
 export class Response extends globalThis.Response {
   readonly headers: Headers
+  static json(data: any, init?: ResponseInit): Response
 }
 
 declare const fetchImplementation: typeof fetch
