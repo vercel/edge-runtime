@@ -1,5 +1,5 @@
 import * as primitives from '@edge-runtime/primitives'
-import { Response } from '@edge-runtime/primitives'
+import { ReadableStream, Response } from '@edge-runtime/primitives'
 import { createServer, type Server } from 'node:http'
 import type { AddressInfo } from 'node:net'
 import { Readable } from 'node:stream'
@@ -60,7 +60,13 @@ describe('transformToNode()', () => {
   }
 
   beforeAll(() => {
-    Object.assign(global, primitives)
+    // only polyfills missing API, depending on the version of node.js used
+    for (const name in primitives) {
+      if (!(name in global)) {
+        // @ts-ignore
+        Object.assign(global, { [name]: primitives[name] })
+      }
+    }
   })
 
   afterEach((done) => {
