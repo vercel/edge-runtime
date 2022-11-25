@@ -1,6 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'http'
 import { Readable } from 'stream'
 import type { WebHandler, NodeHandler } from '../types'
+import { transformToOugoingHeaders } from './headers'
 
 export function transformToNode(webHandler: WebHandler): NodeHandler {
   return (request: IncomingMessage, response: ServerResponse) => {
@@ -22,10 +23,16 @@ function buildResponseMapper(serverResponse: ServerResponse) {
       serverResponse.end()
       return
     }
-    // TODO check for webResponse compliance
-    for (const [name, value] of webResponse.headers.entries()) {
+    for (const [name, value] of Object.entries(
+      transformToOugoingHeaders(
+        // @ts-ignore getAll() may not be defined on headers object
+        webResponse.headers,
+        serverResponse.getHeaders()
+      )
+    )) {
       serverResponse.setHeader(name, value)
     }
+
     serverResponse.statusCode = webResponse.status
     serverResponse.statusMessage = webResponse.statusText
     // TODO trailers? https://nodejs.org/api/http.html#responseaddtrailersheaders https://developer.mozilla.org/en-US/docs/Web/API/Response
