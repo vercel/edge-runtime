@@ -16,7 +16,7 @@ describe('transformToOugoingHeaders()', () => {
     })
   })
 
-  it('handles set-cookie multiple values', () => {
+  it('slits set-cookie with getAll()', () => {
     const headers = new Headers({ 'set-cookie': 'value1' })
     headers.append('set-cookie', 'value2')
     headers.append('set-cookie', 'value3')
@@ -25,30 +25,30 @@ describe('transformToOugoingHeaders()', () => {
     })
   })
 
+  it('slits set-cookie without getAll()', () => {
+    const rawHeaders = {
+      raw: () => ({
+        'set-cookie':
+          'cookie1=value1, cookie2=value2; Max-Age=1000, cookie3=value3; Domain=<domain-value>; Secure',
+      }),
+    }
+    expect(transformToOugoingHeaders(rawHeaders as unknown as Headers)).toEqual(
+      {
+        'set-cookie': [
+          'cookie1=value1',
+          'cookie2=value2; Max-Age=1000',
+          'cookie3=value3; Domain=<domain-value>; Secure',
+        ],
+      }
+    )
+  })
+
   it('handles multiple values as single string', () => {
     const headers = new Headers({ 'x-multiple': 'value1' })
     headers.append('x-multiple', 'value2')
     headers.append('x-multiple', 'value3')
     expect(transformToOugoingHeaders(headers)).toEqual({
       'x-multiple': 'value1, value2, value3',
-    })
-  })
-
-  it('merges with existing values', () => {
-    const headers = new Headers({ 'x-multiple': 'value1' })
-    headers.append('x-multiple', 'value2')
-    headers.set('content-type', 'text/plain')
-    headers.set('content-length', '10')
-    expect(
-      transformToOugoingHeaders(headers, {
-        'content-length': '5',
-        'x-existing': 'oy!',
-      })
-    ).toEqual({
-      'x-multiple': 'value1, value2',
-      'content-type': 'text/plain',
-      'content-length': '10',
-      'x-existing': 'oy!',
     })
   })
 })

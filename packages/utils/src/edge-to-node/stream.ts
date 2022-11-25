@@ -9,6 +9,7 @@ interface FromWebOptions {
 
 /**
  * Code adapted from Node's stream.Readable.fromWeb()
+ * Because it has to run on Node@14
  * @see https://github.com/nodejs/node/blob/bd462ad81bc30e547e52e699ee3b6fa3d7c882c9/lib/internal/webstreams/adapters.js#L458
  */
 export function transformToReadable(

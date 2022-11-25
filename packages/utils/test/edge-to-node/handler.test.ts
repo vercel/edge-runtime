@@ -1,73 +1,19 @@
-import * as primitives from '@edge-runtime/primitives'
-import { ReadableStream, Response } from '@edge-runtime/primitives'
+import {
+  fetch,
+  Headers,
+  ReadableStream,
+  Response,
+} from '@edge-runtime/primitives'
 import { createServer, type Server } from 'node:http'
 import type { AddressInfo } from 'node:net'
 import { Readable } from 'node:stream'
-import { transformToNode } from '../../src'
+import { buildTransformer } from '../../src'
 import { WebHandler } from '../../src/types'
 
 describe('transformToNode()', () => {
   let server: Server & { destroy?: (done: () => void) => void }
 
-  async function invokeWebHandler(handler: WebHandler) {
-    // starts a server with provided handler and invokes it
-    server = createServer(transformToNode(handler))
-
-    // TODO fetch connections are hanging, despite the lack of keepalive.
-    // inspire from https://github.com/isaacs/server-destroy/blob/master/index.js to force-close them.
-    const connections = new Map()
-    server.on('connection', (connection) => {
-      const key = `${connection.remoteAddress}:${connection.remotePort}`
-      connections.set(key, connection)
-      connection.on('close', () => connections.delete(key))
-    })
-
-    server.destroy = (done) => {
-      for (const connection of connections.values()) {
-        connection.destroy()
-      }
-      server.close(done)
-    }
-
-    await new Promise<void>((resolve, reject) =>
-      server.listen((err: any) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve()
-        }
-      })
-    )
-    const response = await fetch(
-      `http://localhost:${(server?.address() as AddressInfo)?.port}`
-    )
-
-    // extract response content to ease expectations
-    const headers: Record<string, string> = {}
-    for (const [name, value] of await response.headers) {
-      headers[name] = value
-    }
-    return {
-      status: response.status,
-      statusText: response.statusText,
-      headers,
-      text: await response.clone().text(),
-      json:
-        headers['content-type'] === 'application/json'
-          ? await response.json()
-          : undefined,
-    }
-  }
-
-  beforeAll(() => {
-    // only polyfills missing API, depending on the version of node.js used
-    for (const name in primitives) {
-      if (!(name in global)) {
-        // @ts-ignore
-        Object.assign(global, { [name]: primitives[name] })
-      }
-    }
-  })
+  const transformToNode = buildTransformer()
 
   afterEach((done) => {
     server.destroy?.(done)
@@ -210,4 +156,54 @@ describe('transformToNode()', () => {
     )
     expect(response).toMatchObject({ status: 200, statusText: 'OK', text })
   })
+
+  async function invokeWebHandler(handler: WebHandler) {
+    // starts a server with provided handler and invokes it
+    server = createServer(transformToNode(handler))
+
+    // TODO fetch connections are hanging, despite the lack of keepalive.
+    // inspire from https://github.com/isaacs/server-destroy/blob/master/index.js to force-close them.
+    const connections = new Map()
+    server.on('connection', (connection) => {
+      const key = `${connection.remoteAddress}:${connection.remotePort}`
+      connections.set(key, connection)
+      connection.on('close', () => connections.delete(key))
+    })
+
+    server.destroy = (done) => {
+      for (const connection of connections.values()) {
+        connection.destroy()
+      }
+      server.close(done)
+    }
+
+    await new Promise<void>((resolve, reject) =>
+      server.listen((err: any) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+    )
+    const response = await fetch(
+      `http://localhost:${(server?.address() as AddressInfo)?.port}`
+    )
+
+    // extract response content to ease expectations
+    const headers: Record<string, string> = {}
+    for (const [name, value] of await response.headers) {
+      headers[name] = value
+    }
+    return {
+      status: response.status,
+      statusText: response.statusText,
+      headers,
+      text: await response.clone().text(),
+      json:
+        headers['content-type'] === 'application/json'
+          ? await response.json()
+          : undefined,
+    }
+  }
 })
