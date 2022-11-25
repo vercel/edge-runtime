@@ -1,9 +1,9 @@
 import type { Headers } from '@edge-runtime/primitives'
-import type { OutgoingHttpHeader } from 'node:http'
+import type { OutgoingHttpHeaders } from 'node:http'
 
 export function transformToOugoingHeaders(
   headers: Headers,
-  existingHeaders: Record<string, OutgoingHttpHeader> = {}
+  existingHeaders: OutgoingHttpHeaders = {}
 ) {
   for (const name of 'raw' in headers
     ? // @ts-ignore TODO @schniz where does raw come from?

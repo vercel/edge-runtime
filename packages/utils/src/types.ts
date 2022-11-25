@@ -1,4 +1,5 @@
 import type { IncomingMessage, ServerResponse } from 'http'
+import type { Request, Response } from '@edge-runtime/primitives'
 
 export type NodeHandler = (req: IncomingMessage, res: ServerResponse) => void
 export type WebHandler = (
