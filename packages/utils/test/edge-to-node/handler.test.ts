@@ -1,111 +1,130 @@
-import {
-  fetch,
-  Headers,
-  ReadableStream,
-  Response,
-} from '@edge-runtime/primitives'
-import { createServer, type Server } from 'node:http'
-import type { AddressInfo } from 'node:net'
-import { Readable } from 'node:stream'
-import { buildTransformer } from '../../src'
-import { WebHandler } from '../../src/types'
+import type { TestServer } from '../test-utils/run-test-server'
+import { buildTransformer } from '../../src/edge-to-node/handler'
+import { runTestServer } from '../test-utils/run-test-server'
+import { serializeResponse } from '../test-utils/serialize-response'
+import * as Edge from '@edge-runtime/primitives'
 
-describe('transformToNode()', () => {
-  let server: Server & { destroy?: (done: () => void) => void }
+const transformToNode = buildTransformer()
+let server: TestServer
 
-  const transformToNode = buildTransformer()
+afterEach(() => {
+  return server.close()
+})
 
-  afterEach((done) => {
-    server.destroy?.(done)
+it('turns null response into an empty request', async () => {
+  server = await runTestServer({
+    handler: transformToNode(() => null),
   })
 
-  it('turns null response into an empty request', async () => {
-    const response = await invokeWebHandler(() => null)
-    expect(response).toMatchObject({
-      status: 200,
-      statusText: 'OK',
-      headers: { 'content-length': '0' },
-      text: '',
-    })
+  const response = await server.fetch('/')
+  expect(await serializeResponse(response)).toMatchObject({
+    headers: { 'content-length': '0' },
+    status: 200,
+    statusText: 'OK',
+    text: '',
+  })
+})
+
+it('returns an empty response', async () => {
+  server = await runTestServer({
+    handler: transformToNode(() => new Edge.Response(null)),
   })
 
-  it('returns an empty response', async () => {
-    const response = await invokeWebHandler(() => new Response(null))
-    expect(response).toMatchObject({
-      status: 200,
-      statusText: 'OK',
-      headers: { 'content-length': '0' },
-      text: '',
-    })
+  const response = await server.fetch('/')
+  expect(await serializeResponse(response)).toMatchObject({
+    headers: { 'content-length': '0' },
+    status: 200,
+    statusText: 'OK',
+    text: '',
+  })
+})
+
+it('can change response text and status', async () => {
+  server = await runTestServer({
+    handler: transformToNode(
+      () => new Edge.Response(null, { status: 204, statusText: 'MY STATUS' })
+    ),
   })
 
-  it('can change response text and status', async () => {
-    const response = await invokeWebHandler(
-      () => new Response(null, { status: 204, statusText: 'MY STATUS' })
-    )
-    expect(response).toMatchObject({
-      status: 204,
-      statusText: 'MY STATUS',
-    })
+  const response = await server.fetch('/')
+  expect(await serializeResponse(response)).toMatchObject({
+    status: 204,
+    statusText: 'MY STATUS',
+  })
+})
+
+it('returns a text response', async () => {
+  server = await runTestServer({
+    handler: transformToNode(() => new Edge.Response('OK')),
   })
 
-  it('returns a text response', async () => {
-    const response = await invokeWebHandler(() => new Response('OK'))
-    expect(response).toMatchObject({
-      status: 200,
-      statusText: 'OK',
-      headers: { 'content-type': 'text/plain;charset=UTF-8' },
-      text: 'OK',
-    })
+  const response = await server.fetch('/')
+  expect(await serializeResponse(response)).toMatchObject({
+    headers: { 'content-type': 'text/plain;charset=UTF-8' },
+    status: 200,
+    statusText: 'OK',
+    text: 'OK',
+  })
+})
+
+it('returns a json response', async () => {
+  const json = { works: 'just right' }
+  server = await runTestServer({
+    handler: transformToNode(() => Edge.Response.json(json)),
   })
 
-  it('returns a json response', async () => {
-    const json = { works: 'just right' }
-    const response = await invokeWebHandler(() => Response.json(json))
-    expect(response).toMatchObject({
-      status: 200,
-      statusText: 'OK',
-      headers: { 'content-type': 'application/json' },
-      json,
-    })
+  const response = await server.fetch('/')
+  expect(await serializeResponse(response)).toMatchObject({
+    headers: { 'content-type': 'application/json' },
+    json,
+    status: 200,
+    statusText: 'OK',
+  })
+})
+
+it('returns an async json response', async () => {
+  const json = { works: 'just right' }
+  server = await runTestServer({
+    handler: transformToNode(() => Promise.resolve(Edge.Response.json(json))),
   })
 
-  it('returns an async json response', async () => {
-    const json = { works: 'just right' }
-    const response = await invokeWebHandler(() =>
-      Promise.resolve(Response.json(json))
-    )
-    expect(response).toMatchObject({
-      status: 200,
-      statusText: 'OK',
-      headers: { 'content-type': 'application/json' },
-      json,
-    })
+  const response = await server.fetch('/')
+  expect(await serializeResponse(response)).toMatchObject({
+    headers: { 'content-type': 'application/json' },
+    json,
+    status: 200,
+    statusText: 'OK',
   })
+})
 
-  it('can configure response headers', async () => {
-    const response = await invokeWebHandler(() => {
-      const response = new Response()
+it('can configure response headers', async () => {
+  server = await runTestServer({
+    handler: transformToNode(() => {
+      const response = new Edge.Response()
       response.headers.set('x-vercel-custom', '1')
       return response
-    })
-    expect(response).toMatchObject({
-      status: 200,
-      headers: { 'x-vercel-custom': '1' },
-    })
+    }),
   })
 
-  it('returns a streams of data', async () => {
-    const data = ['lorem', 'ipsum', 'nec', 'mergitur']
+  const response = await server.fetch('/')
+  expect(await serializeResponse(response)).toMatchObject({
+    headers: { 'x-vercel-custom': '1' },
+    status: 200,
+  })
+})
 
-    const response = await invokeWebHandler(
-      async () =>
-        new Response(
-          new ReadableStream({
+it('returns a streams of data', async () => {
+  const data = ['lorem', 'ipsum', 'nec', 'mergitur']
+  const encoder = new Edge.TextEncoder()
+  server = await runTestServer({
+    handler: transformToNode(
+      () =>
+        new Edge.Response(
+          new Edge.ReadableStream({
             start(controller) {
               let rank = 0
               function write() {
-                controller.enqueue(data[rank++])
+                controller.enqueue(encoder.encode(data[rank++]))
                 if (rank < data.length) {
                   setTimeout(write, 500)
                 } else {
@@ -116,94 +135,55 @@ describe('transformToNode()', () => {
             },
           })
         )
-    )
-    expect(response).toMatchObject({ status: 200, text: data.join('') })
+    ),
   })
 
-  it('returns a stream body', async () => {
-    const stream = Readable.from(
-      (async function* () {
-        yield 'hello'
-        await new Promise((resolve) => setTimeout(resolve, 200))
-        yield ' world'
-      })()
-    )
-    const response = await invokeWebHandler(
-      () =>
-        ({
-          status: 200,
-          body: stream,
-          headers: new Headers(),
-        } as unknown as Response)
-    )
-    expect(response).toMatchObject({
-      status: 200,
-      statusText: 'OK',
-      text: 'hello world',
-    })
+  const response = await server.fetch('/')
+  expect(await serializeResponse(response)).toMatchObject({
+    status: 200,
+    text: data.join(''),
   })
+})
 
-  it('returns a buffer body', async () => {
-    const text = 'blah'
-
-    const response = await invokeWebHandler(
-      () =>
-        ({
-          status: 200,
-          body: Buffer.from(text),
-          headers: new Headers(),
-        } as unknown as Response)
-    )
-    expect(response).toMatchObject({ status: 200, statusText: 'OK', text })
-  })
-
-  async function invokeWebHandler(handler: WebHandler) {
-    // starts a server with provided handler and invokes it
-    server = createServer(transformToNode(handler))
-
-    // TODO fetch connections are hanging, despite the lack of keepalive.
-    // inspire from https://github.com/isaacs/server-destroy/blob/master/index.js to force-close them.
-    const connections = new Map()
-    server.on('connection', (connection) => {
-      const key = `${connection.remoteAddress}:${connection.remotePort}`
-      connections.set(key, connection)
-      connection.on('close', () => connections.delete(key))
-    })
-
-    server.destroy = (done) => {
-      for (const connection of connections.values()) {
-        connection.destroy()
-      }
-      server.close(done)
-    }
-
-    await new Promise<void>((resolve, reject) =>
-      server.listen((err: any) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve()
-        }
+it('returns a stream body', async () => {
+  const encoder = new Edge.TextEncoder()
+  const stream = new Edge.ReadableStream({
+    start(controller) {
+      controller.enqueue(encoder.encode('hello'))
+      setTimeout(() => {
+        controller.enqueue(encoder.encode(' world'))
+        controller.close()
       })
-    )
-    const response = await fetch(
-      `http://localhost:${(server?.address() as AddressInfo)?.port}`
-    )
+    },
+  })
 
-    // extract response content to ease expectations
-    const headers: Record<string, string> = {}
-    for (const [name, value] of await response.headers) {
-      headers[name] = value
-    }
-    return {
-      status: response.status,
-      statusText: response.statusText,
-      headers,
-      text: await response.clone().text(),
-      json:
-        headers['content-type'] === 'application/json'
-          ? await response.json()
-          : undefined,
-    }
-  }
+  server = await runTestServer({
+    handler: transformToNode(() => new Edge.Response(stream, { status: 200 })),
+  })
+
+  const response = await server.fetch('/')
+  expect(await serializeResponse(response)).toMatchObject({
+    status: 200,
+    statusText: 'OK',
+    text: 'hello world',
+  })
+})
+
+it('returns a buffer body', async () => {
+  const text = 'blah'
+  const encoder = new Edge.TextEncoder()
+  server = await runTestServer({
+    handler: transformToNode(() => {
+      return new Edge.Response(encoder.encode(text), {
+        status: 200,
+      })
+    }),
+  })
+
+  const response = await server.fetch('/')
+  expect(await serializeResponse(response)).toMatchObject({
+    status: 200,
+    statusText: 'OK',
+    text,
+  })
 })
