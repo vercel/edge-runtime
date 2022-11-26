@@ -11,7 +11,13 @@ export class Response extends globalThis.Response {
   static json(data: any, init?: ResponseInit): Response
 }
 
-declare const fetchImplementation: typeof fetch
+export type RequestInfo = Parameters<typeof fetch>[0]
+export type RequestInit = Parameters<typeof fetch>[1]
+declare const fetchImplementation: (
+  info: RequestInfo,
+  init?: RequestInit
+) => Promise<Response>
+
 declare const FileConstructor: typeof File
 declare const FormDataConstructor: typeof FormData
 
