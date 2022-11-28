@@ -1,12 +1,12 @@
 {
-  "name": "@edge-runtime/utils",
-  "description": "Helpers for running edge-compliant code",
-  "homepage": "https://edge-runtime.vercel.app/packages/utils",
+  "name": "@edge-runtime/node-utils",
+  "description": "Helpers for running edge-compliant code in Node.js environment",
+  "homepage": "https://edge-runtime.vercel.app/packages/node-utils",
   "version": "1.0.0-beta.1",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "repository": {
-    "directory": "packages/utils",
+    "directory": "packages/node-utils",
     "type": "git",
     "url": "git+https://github.com/vercel/edge-runtime.git"
   },

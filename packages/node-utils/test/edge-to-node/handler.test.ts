@@ -1,10 +1,10 @@
 import type { TestServer } from '../test-utils/run-test-server'
-import { buildTransformer } from '../../src/edge-to-node/handler'
+import { buildToNodeHandler } from '../../src/edge-to-node/handler'
 import { runTestServer } from '../test-utils/run-test-server'
 import { serializeResponse } from '../test-utils/serialize-response'
 import * as Edge from '@edge-runtime/primitives'
 
-const transformToNode = buildTransformer()
+const transformToNode = buildToNodeHandler()
 let server: TestServer
 
 afterEach(() => {

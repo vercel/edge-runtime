@@ -1,6 +1,6 @@
 import { ReadableStream } from '@edge-runtime/primitives'
 import { Readable } from 'node:stream'
-import { transformToReadable } from '../../src'
+import { toToReadable } from '../../src'
 
 describe('transformToReadable()', () => {
   it('handles a web ReadableStream', async () => {
@@ -14,7 +14,7 @@ describe('transformToReadable()', () => {
       },
     })
 
-    const readable = transformToReadable(readableStream)
+    const readable = toToReadable(readableStream)
     expect((await transformToBuffer(readable)).toString()).toEqual(
       'hello world'
     )

@@ -1,7 +1,7 @@
 import type { Headers } from '@edge-runtime/primitives'
 import type { OutgoingHttpHeaders, ServerResponse } from 'node:http'
 
-export function transformToOugoingHeaders(
+export function toOutgoingHeaders(
   headers?: Headers & { raw?: () => Record<string, string> }
 ): OutgoingHttpHeaders {
   const outputHeaders: OutgoingHttpHeaders = {}
@@ -21,13 +21,11 @@ export function transformToOugoingHeaders(
   return outputHeaders
 }
 
-export function mergeHeadersIntoServerResponse(
-  headers: Headers,
+export function mergeIntoServerResponse(
+  headers: OutgoingHttpHeaders,
   serverResponse: ServerResponse
 ) {
-  for (const [name, value] of Object.entries(
-    transformToOugoingHeaders(headers)
-  )) {
+  for (const [name, value] of Object.entries(headers)) {
     if (value !== undefined) {
       serverResponse.setHeader(name, value)
     }

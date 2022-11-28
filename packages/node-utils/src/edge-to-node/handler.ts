@@ -1,10 +1,10 @@
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import type { WebHandler, NodeHandler } from '../types'
-import { mergeHeadersIntoServerResponse } from './headers'
-import { transformToReadable } from './stream'
+import { mergeIntoServerResponse, toOutgoingHeaders } from './headers'
+import { toToReadable } from './stream'
 
-export function buildTransformer() {
-  return function transformToNode(webHandler: WebHandler): NodeHandler {
+export function buildToNodeHandler() {
+  return function toNodeHandler(webHandler: WebHandler): NodeHandler {
     return (request: IncomingMessage, response: ServerResponse) => {
       // TODO map incoming message
       // @ts-ignore TODO map IncompingMessage into Request
@@ -28,8 +28,11 @@ function mergeToServerResponse(
     serverResponse.end()
     return
   }
-  // @ts-ignore getAll() is not standard https://fetch.spec.whatwg.org/#headers-class
-  mergeHeadersIntoServerResponse(webResponse.headers, serverResponse)
+  mergeIntoServerResponse(
+    // @ts-ignore getAll() is not standard https://fetch.spec.whatwg.org/#headers-class
+    toOutgoingHeaders(webResponse.headers),
+    serverResponse
+  )
 
   serverResponse.statusCode = webResponse.status
   serverResponse.statusMessage = webResponse.statusText
@@ -38,7 +41,7 @@ function mergeToServerResponse(
     return
   }
   if ('getReader' in webResponse.body) {
-    transformToReadable(webResponse.body).pipe(serverResponse)
+    toToReadable(webResponse.body).pipe(serverResponse)
   } else if ('pipe' in webResponse.body) {
     // @ts-ignore TODO @shniz how could the web response body have a pipe operator?
     webResponse.body.pipe(serverResponse)

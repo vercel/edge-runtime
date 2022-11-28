@@ -118,6 +118,18 @@ importers:
     devDependencies:
       '@edge-runtime/jest-environment': link:../jest-environment
 
+  packages/node-utils:
+    specifiers:
+      '@edge-runtime/primitives': workspace:2.0.2
+      '@types/test-listen': 1.1.0
+      test-listen: 1.1.0
+      tsup: '6'
+    devDependencies:
+      '@edge-runtime/primitives': link:../primitives
+      '@types/test-listen': 1.1.0
+      test-listen: 1.1.0
+      tsup: 6.1.2
+
   packages/ponyfill:
     specifiers:
       '@edge-runtime/jest-environment': workspace:2.0.2
@@ -210,18 +222,6 @@ importers:
       '@types/ua-parser-js': 0.7.36
       tsup: 6.2.2
       ua-parser-js: 1.0.2
-
-  packages/utils:
-    specifiers:
-      '@edge-runtime/primitives': workspace:2.0.2
-      '@types/test-listen': 1.1.0
-      test-listen: 1.1.0
-      tsup: '6'
-    devDependencies:
-      '@edge-runtime/primitives': link:../primitives
-      '@types/test-listen': 1.1.0
-      test-listen: 1.1.0
-      tsup: 6.1.2
 
   packages/vm:
     specifiers:
