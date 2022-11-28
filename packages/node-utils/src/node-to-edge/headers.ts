@@ -5,10 +5,8 @@ interface Dependencies {
   Headers: typeof Headers
 }
 
-export function buildNodeHeadersToHeaders({ Headers }: Dependencies) {
-  return function nodeHeadersToHeaders(
-    nodeHeaders: IncomingHttpHeaders
-  ): Headers {
+export function buildToHeaders({ Headers }: Dependencies) {
+  return function toHeaders(nodeHeaders: IncomingHttpHeaders): Headers {
     const headers = new Headers()
     for (let [key, value] of Object.entries(nodeHeaders)) {
       const values = Array.isArray(value) ? value : [value]

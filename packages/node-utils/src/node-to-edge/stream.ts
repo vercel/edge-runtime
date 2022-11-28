@@ -5,11 +5,9 @@ interface Dependencies {
   Uint8Array: typeof Uint8Array
 }
 
-export function buildNodeReadableToReadableStream(dependencies: Dependencies) {
+export function buildToReadableStream(dependencies: Dependencies) {
   const { ReadableStream, Uint8Array } = dependencies
-  return function nodeReadableToReadableStream(
-    stream: Readable
-  ): ReadableStream {
+  return function toReadableStream(stream: Readable): ReadableStream {
     return new ReadableStream({
       start(controller) {
         stream.on('data', (chunk) => {

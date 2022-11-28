@@ -4,7 +4,16 @@ import { runTestServer } from '../test-utils/run-test-server'
 import { serializeResponse } from '../test-utils/serialize-response'
 import * as Edge from '@edge-runtime/primitives'
 
-const transformToNode = buildToNodeHandler()
+const transformToNode = buildToNodeHandler(
+  {
+    Headers: Edge.Headers,
+    ReadableStream: Edge.ReadableStream,
+    Request: Edge.Request,
+    Uint8Array: Uint8Array,
+  },
+  { origin: 'http://example.com' }
+)
+
 let server: TestServer
 
 afterEach(() => {
@@ -185,5 +194,38 @@ it('returns a buffer body', async () => {
     status: 200,
     statusText: 'OK',
     text,
+  })
+})
+
+it('consumes incoming request body', async () => {
+  const body = 'hello world'
+  server = await runTestServer({
+    handler: transformToNode((req) => new Edge.Response(req.body)),
+  })
+
+  const response = await server.fetch('/', { method: 'POST', body })
+  expect(await serializeResponse(response)).toMatchObject({
+    status: 200,
+    statusText: 'OK',
+    text: body,
+  })
+})
+
+it('consumes incoming headers', async () => {
+  const headers = {
+    'x-custom-header': 'foo',
+    'x-another-header': 'bar',
+  }
+  server = await runTestServer({
+    handler: transformToNode(
+      (req) => new Edge.Response(null, { headers: req.headers })
+    ),
+  })
+
+  const response = await server.fetch('/', { headers })
+  expect(await serializeResponse(response)).toMatchObject({
+    status: 200,
+    statusText: 'OK',
+    headers,
   })
 })

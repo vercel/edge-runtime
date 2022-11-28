@@ -1,14 +1,22 @@
 import type { IncomingMessage, ServerResponse } from 'node:http'
-import type { WebHandler, NodeHandler } from '../types'
+import type {
+  WebHandler,
+  NodeHandler,
+  BuildDependencies,
+  RequestOptions,
+} from '../types'
+import { buildToRequest } from '../node-to-edge/request'
 import { mergeIntoServerResponse, toOutgoingHeaders } from './headers'
 import { toToReadable } from './stream'
 
-export function buildToNodeHandler() {
+export function buildToNodeHandler(
+  dependencies: BuildDependencies,
+  options: RequestOptions
+) {
+  const toRequest = buildToRequest(dependencies)
   return function toNodeHandler(webHandler: WebHandler): NodeHandler {
     return (request: IncomingMessage, response: ServerResponse) => {
-      // TODO map incoming message
-      // @ts-ignore TODO map IncompingMessage into Request
-      const maybePromise = webHandler(request)
+      const maybePromise = webHandler(toRequest(request, options))
       if (maybePromise instanceof Promise) {
         maybePromise.then((webResponse) =>
           mergeToServerResponse(webResponse, response)
@@ -40,12 +48,5 @@ function mergeToServerResponse(
     serverResponse.end()
     return
   }
-  if ('getReader' in webResponse.body) {
-    toToReadable(webResponse.body).pipe(serverResponse)
-  } else if ('pipe' in webResponse.body) {
-    // @ts-ignore TODO @shniz how could the web response body have a pipe operator?
-    webResponse.body.pipe(serverResponse)
-  } else {
-    serverResponse.end(webResponse.body)
-  }
+  toToReadable(webResponse.body).pipe(serverResponse)
 }
