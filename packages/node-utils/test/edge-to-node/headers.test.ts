@@ -15,7 +15,7 @@ it('handles simple header values', () => {
   })
 })
 
-it('slits set-cookie with getAll()', () => {
+it('splits set-cookie with getAll()', () => {
   const headers = new Headers({ 'set-cookie': 'value1' })
   headers.append('set-cookie', 'value2')
   headers.append('set-cookie', 'value3')

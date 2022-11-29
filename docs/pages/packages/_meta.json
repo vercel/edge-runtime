@@ -3,6 +3,7 @@
   "format": "@edge-runtime/format",
   "jest-environment": "@edge-runtime/jest-environment",
   "jest-expect": "@edge-runtime/jest-expect",
+  "node-utils": "@edge-runtime/node-utils",
   "ponyfill": "@edge-runtime/ponyfill",
   "primitives": "@edge-runtime/primitives",
   "runtime": "edge-runtime",
