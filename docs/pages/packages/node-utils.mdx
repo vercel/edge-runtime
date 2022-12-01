@@ -1,8 +1,10 @@
 import { Tabs, Tab } from '../../components/tabs'
 
-# Edge Runtime Node Utils
+# Edge Runtime Node Utils **Alpha version**
 
-The **@edge-runtime/node-utils** package contains utilities to run web compliant code into a Node.js environment.is.
+The **@edge-runtime/node-utils** package contains utilities to run web compliant code into a Node.js environment.
+
+**Please note this is an alpha version.**
 
 ## Installation
 
@@ -26,7 +28,7 @@ const transformToNode = buildToNodeHandler(global, {
 })
 
 const server = await createServer(
-  // 2. takes an edge compliant request handler, that uses Web globals like Request and Response,
+  // 2. takes an web compliant request handler, that uses Web globals like Request and Response,
   // and turn it into a Node.js compliant request handler.
   transformToNode((req) => new Response(req.body))
 )
@@ -46,8 +48,10 @@ console.log(await response.text()) // is 'hello world'
 
 ### buildToNodeHandler(dependencies, options): toNodeHandler(handler: WebHandler): NodeHandler
 
-Builds a transformer function to turn an edge compliant request handler (`(req: Request) => Promise<Response> | Response | null | undefined`) into
+Builds a transformer function to turn an web compliant request handler (`(req: Request) => Promise<Response> | Response | null | undefined`) into
 a Node.js compliant [request handler](https://nodejs.org/api/http.html#httpcreateserveroptions-requestlistener) (`(req: IncomingMessage, res: ServerResponse) => Promise<void> | void`).
+
+**Limitation:** it does support the web handler second parameter, so `waitUntil` is not implemented yet.
 
 #### dependencies: object
 

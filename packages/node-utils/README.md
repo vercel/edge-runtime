@@ -10,6 +10,8 @@
 
 ## Install
 
+**Note: this is an alpha version.**
+
 Using npm:
 
 ```sh
