@@ -19,16 +19,16 @@ export function buildToNodeHandler(
       const maybePromise = webHandler(toRequest(request, options))
       if (maybePromise instanceof Promise) {
         maybePromise.then((webResponse) =>
-          mergeToServerResponse(webResponse, response)
+          toServerResponse(webResponse, response)
         )
       } else {
-        mergeToServerResponse(maybePromise, response)
+        toServerResponse(maybePromise, response)
       }
     }
   }
 }
 
-function mergeToServerResponse(
+function toServerResponse(
   webResponse: Response | null | undefined,
   serverResponse: ServerResponse
 ) {
