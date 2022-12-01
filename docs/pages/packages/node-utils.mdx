@@ -41,6 +41,7 @@ const response = await fetch(`http://localhost:${server.address().port}`, {
   method: 'POST',
   body: 'hello world',
 })
+
 console.log(await response.text()) // is 'hello world'
 ```
 
