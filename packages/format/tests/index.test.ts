@@ -424,4 +424,47 @@ it('custom inspect symbol', () => {
     expect(format('%O', new Password('r0sebud'))).toBe('{xxx}')
     expect(format('%j', new Password('r0sebud'))).toBe('{}')
   })()
+  ;(() => {
+    const customInspectSymbol = Symbol.for('edge-runtime.inspect.custom')
+
+    class Password {
+      private deepObject: Record<string, any>
+      constructor(value) {
+        Object.defineProperty(this, 'password', {
+          value,
+          enumerable: false,
+        })
+        const o = Object.create(null)
+        o.name = 'name'
+        o.a = { o }
+        o.b = { a: o.a }
+        this.deepObject = o
+        this.deepObject.c = this.deepObject
+      }
+
+      [customInspectSymbol]({
+        format,
+      }: {
+        format: (...args: unknown[]) => string
+      }) {
+        return format(this.deepObject)
+      }
+    }
+
+    expect(format(new Password('r0sebud'))).toBe(
+      `<ref *1> {\n  name: 'name',\n  a: { o: [Circular *1] },\n  b: { a: { o: [Circular *1] } },\n  c: [Circular *1]\n}`
+    )
+    expect(format('%s', new Password('r0sebud'))).toBe(
+      `<ref *1> {\n  name: 'name',\n  a: { o: [Circular *1] },\n  b: { a: { o: [Circular *1] } },\n  c: [Circular *1]\n}`
+    )
+    expect(format('%o', new Password('r0sebud'))).toBe(
+      `<ref *1> {\n  name: 'name',\n  a: { o: [Circular *1] },\n  b: { a: { o: [Circular *1] } },\n  c: [Circular *1]\n}`
+    )
+    expect(format('%O', new Password('r0sebud'))).toBe(
+      `<ref *1> {\n  name: 'name',\n  a: { o: [Circular *1] },\n  b: { a: { o: [Circular *1] } },\n  c: [Circular *1]\n}`
+    )
+    expect(format('%j', new Password('r0sebud'))).toBe(
+      `{"deepObject":{"name":"name","a":{"o":"[Circular]"},"b":{"a":"[Circular]"},"c":"[Circular]"}}`
+    )
+  })()
 })
