@@ -36,21 +36,26 @@ export class EdgeRuntime<
       },
     })
 
-    defineHandlerProps({
-      object: this,
-      setterName: '__onUnhandledRejectionHandler',
-      setter: (handlers: RejectionHandler[]) =>
-        (unhandledRejectionHandlers = handlers),
-      getterName: '__rejectionHandlers',
-      getter: () => unhandledRejectionHandlers,
+    Object.defineProperty(this.context, '__onUnhandledRejectionHandlers', {
+      set: registerUnhandledRejectionHandlers,
+      configurable: false,
+      enumerable: false,
     })
-    defineHandlerProps({
-      object: this,
-      setterName: '__onErrorHandler',
-      setter: (handlers: ErrorHandler[]) =>
-        (uncaughtExceptionHandlers = handlers),
-      getterName: '__errorHandlers',
-      getter: () => uncaughtExceptionHandlers,
+    Object.defineProperty(this, '__rejectionHandlers', {
+      get: () => unhandledRejectionHandlers,
+      configurable: false,
+      enumerable: false,
+    })
+
+    Object.defineProperty(this.context, '__onErrorHandlers', {
+      set: registerUncaughtExceptionHandlers,
+      configurable: false,
+      enumerable: false,
+    })
+    Object.defineProperty(this, '__errorHandlers', {
+      get: () => uncaughtExceptionHandlers,
+      configurable: false,
+      enumerable: false,
     })
 
     this.evaluate<void>(getDefineEventListenersCode())
@@ -62,20 +67,32 @@ export class EdgeRuntime<
 }
 
 /**
- * Define system-level handlers to make sure that we report to the user
+ * Register system-level handlers to make sure that we report to the user
  * whenever there is an unhandled rejection or exception before the process crashes.
+ * Do it on demand so we don't swallow rejections/errors for no reason.
  */
-process.on(
-  'unhandledRejection',
-  function invokeRejectionHandlers(reason, promise) {
-    unhandledRejectionHandlers?.forEach((handler) =>
-      handler({ reason, promise })
+function registerUnhandledRejectionHandlers(handlers: RejectionHandler[]) {
+  if (!unhandledRejectionHandlers) {
+    process.on(
+      'unhandledRejection',
+      function invokeRejectionHandlers(reason, promise) {
+        unhandledRejectionHandlers.forEach((handler) =>
+          handler({ reason, promise })
+        )
+      }
     )
   }
-)
-process.on('uncaughtException', function invokeErrorHandlers(error) {
-  uncaughtExceptionHandlers?.forEach((handler) => handler(error))
-})
+  unhandledRejectionHandlers = handlers
+}
+
+function registerUncaughtExceptionHandlers(handlers: ErrorHandler[]) {
+  if (!uncaughtExceptionHandlers) {
+    process.on('uncaughtException', function invokeErrorHandlers(error) {
+      uncaughtExceptionHandlers.forEach((handler) => handler(error))
+    })
+  }
+  uncaughtExceptionHandlers = handlers
+}
 
 /**
  * Generates polyfills for addEventListener and removeEventListener. It keeps
@@ -95,9 +112,9 @@ function getDefineEventListenersCode() {
 
     function __conditionallyUpdatesHandlerList(eventType) {
       if (eventType === 'unhandledrejection') {
-        self.__onUnhandledRejectionHandler = self.__listeners[eventType];
+        self.__onUnhandledRejectionHandlers = self.__listeners[eventType];
       } else if (eventType === 'error') {
-        self.__onErrorHandler = self.__listeners[eventType];
+        self.__onErrorHandlers = self.__listeners[eventType];
       }
     }
 
@@ -171,34 +188,4 @@ function getDispatchFetchCode() {
       .then(response => getResponse({ response }))
       .catch(error => getResponse({ error }))
   })`
-}
-
-/**
- * Defines a readable property on the VM and the corresponding writable property
- * on the VM's context. These properties are not enumerable nor updatable.
- */
-function defineHandlerProps({
-  object: instance,
-  setterName,
-  setter: setter,
-  getterName,
-  getter,
-}: {
-  object: EdgeRuntime
-  setterName: string
-  setter: (_: any) => void
-  getterName: string
-  getter: () => any
-}) {
-  Object.defineProperty(instance.context, setterName, {
-    set: setter,
-    configurable: false,
-    enumerable: false,
-  })
-
-  Object.defineProperty(instance, getterName, {
-    get: getter,
-    configurable: false,
-    enumerable: false,
-  })
 }
