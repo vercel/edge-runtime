@@ -67,7 +67,7 @@ export class EdgeRuntime<
 }
 
 /**
- * Registere system-level handlers to make sure that we report to the user
+ * Register system-level handlers to make sure that we report to the user
  * whenever there is an unhandled rejection or exception before the process crashes.
  * Do it on demand so we don't swallow rejections/errors for no reason.
  */

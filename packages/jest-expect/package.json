@@ -44,7 +44,7 @@
     "clean:build": "rm -rf dist",
     "clean:node": "rm -rf node_modules",
     "prebuild": "pnpm run clean:build",
-    "test": "jest"
+    "test": "jest --no-colors"
   },
   "license": "MPLv2",
   "publishConfig": {
