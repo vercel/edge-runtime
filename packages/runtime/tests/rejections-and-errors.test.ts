@@ -46,7 +46,7 @@ it('does not swallow uncaught exceptions outside of evaluation', async () => {
   ).rejects.toThrow(/intentional break/)
 })
 
-it('does not swallow unhandled rejections outside of evaluation', async () => {
+it.only('does not swallow unhandled rejections outside of evaluation', async () => {
   const execAsync = promisify(exec)
   await expect(
     execAsync(
@@ -54,7 +54,16 @@ it('does not swallow unhandled rejections outside of evaluation', async () => {
         __dirname,
         './fixtures/legit-unhandled-rejection.ts'
       )}`,
-      { encoding: 'utf8' }
+      {
+        encoding: 'utf8',
+        env: process.version.startsWith('v14')
+          ? {
+              ...process.env,
+              // node 14 does not throw on unhandled rejections, so this test would resolve without the flag
+              'NODE_OPTIONS': '--unhandled-rejections=strict',
+            }
+          : undefined,
+      }
     )
   ).rejects.toThrow(/intentional break/)
 })
