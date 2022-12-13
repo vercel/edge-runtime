@@ -14,7 +14,7 @@ export interface VMOptions<T> {
    * Allows to extend the VMContext. Note that it must return a contextified
    * object so ideally it should return the same reference it receives.
    */
-  extend?: (context: VMContext) =>VMContext & T
+  extend?: (context: VMContext) => VMContext & T
   /**
    * Provides an initial map to the require cache.
    * If none is given, it will be initialized to an empty map.
@@ -45,7 +45,7 @@ export class VM<T extends Dictionary> {
     ) as VMContext
 
     this.requireCache = options.requireCache ?? new Map()
-    this.context = options.extend?.(context) ?? context as VMContext & T
+    this.context = options.extend?.(context) ?? (context as VMContext & T)
     this.requireFn = createRequire(this.context, this.requireCache)
   }
 

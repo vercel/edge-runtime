@@ -1,4 +1,4 @@
-import { EdgeRuntime, runServer } from '../src'
+import { EdgeRuntime, runServer } from '../../src'
 import assert from 'assert'
 import fetch from 'node-fetch'
 import util from 'util'
@@ -44,13 +44,10 @@ async function main() {
       event.reason.message,
       'This ReadableStream did not return bytes.'
     )
-  } catch (error) {
-    return util.inspect(error)
+    return 'TEST PASSED!'
   } finally {
     await server.close()
   }
-
-  return 'TEST PASSED!'
 }
 
 main()
@@ -58,5 +55,4 @@ main()
   .catch((error) => {
     console.log('TEST FAILED!')
     console.log(error)
-    process.exit(1)
   })
