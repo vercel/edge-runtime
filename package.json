@@ -20,12 +20,12 @@
       "email": "info@balazsorban.com"
     },
     {
-      "name": "nkzawa",
-      "email": "naoyuki.kanezawa@gmail.com"
-    },
-    {
       "name": "feugy",
       "email": "damien@vercel.com"
+    },
+    {
+      "name": "nkzawa",
+      "email": "naoyuki.kanezawa@gmail.com"
     },
     {
       "name": "Lee Robinson",
@@ -110,7 +110,7 @@
     "clean": "pnpm -r run clean && rm -rf ./node_modules",
     "clean:build": "pnpm -r run clean:build",
     "clean:node": "pnpm -r run clean:node",
-    "contributors": "git-authors-cli && finepack",
+    "contributors": "(npx git-authors-cli && npx finepack && git add package.json && git commit -m 'build: contributors' --no-verify) || true",
     "coverage": "c8 report --reporter=text-lcov > coverage/lcov.info",
     "lockfile": "pnpm install --lockfile && git add pnpm-lock.yaml && git commit -m \"build: regenerate lock\"",
     "postinstall": "./node_modules/.bin/simple-git-hooks",
