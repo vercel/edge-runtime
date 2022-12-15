@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useTheme } from 'next-themes'
-
+import { useConfig } from 'nextra-theme-docs'
 const useDark = () => {
   const { resolvedTheme } = useTheme()
   const [isDark, setIsDark] = useState(false)
@@ -11,19 +11,26 @@ const useDark = () => {
   }, [resolvedTheme])
   return isDark
 }
-
+/** @type import('nextra-theme-docs').DocsThemeConfig */
 const theme = {
-  github: 'https://github.com/vercel/edge-runtime',
-  projectLink: 'https://github.com/vercel/edge-runtime',
-  docsRepositoryBase:
-    'https://github.com/vercel/edge-runtime/blob/main/docs/pages',
-  titleSuffix: ' | Edge Runtime',
-  search: true,
-  unstable_flexsearch: true,
-  unstable_staticImage: true,
-  floatTOC: true,
-  font: false,
-  feedbackLink: 'Question? Give us feedback →',
+  project: {
+    link: 'https://github.com/vercel/edge-runtime',
+  },
+  editLink: {
+    text: 'Edit this page on GitHub',
+  },
+  feedback: {
+    content: 'Question? Give us feedback →',
+  },
+  toc: {
+    float: true,
+  },
+  docsRepositoryBase: 'https://github.com/vercel/edge-runtime/blob/main/docs',
+  useNextSeoProps() {
+    return {
+      titleTemplate: '%s | Edge Runtime',
+    }
+  },
   logo: function Logo() {
     const isDark = useDark()
     return (
@@ -37,10 +44,10 @@ const theme = {
       </>
     )
   },
-  head: function Head({ title, meta }) {
+  head: function Head() {
     const router = useRouter()
     const isDark = useDark()
-
+    const { frontMatter, title } = useConfig()
     return (
       <>
         <meta name='viewport' content='width=device-width, initial-scale=1.0' />
@@ -52,7 +59,7 @@ const theme = {
         <meta name='twitter:card' content='summary_large_image' />
         <meta property='og:type' content='website' />
         <meta name='og:title' content={title} />
-        <meta name='og:description' content={meta.description} />
+        <meta name='og:description' content={frontMatter.description} />
         <meta
           property='og:url'
           content={`https://edge-runtime.vercel.app${router.asPath}`}
@@ -60,15 +67,12 @@ const theme = {
         <meta
           property='og:image'
           content={`https://edge-runtime.vercel.app${
-            meta.ogImage ?? '/og-image.png'
+            frontMatter.ogImage ?? '/og-image.png'
           }`}
         />
         <meta property='og:site_name' content='Edge Runtime' />
       </>
     )
-  },
-  footerEditLink: () => {
-    return 'Edit this page on GitHub'
   },
 }
 export default theme

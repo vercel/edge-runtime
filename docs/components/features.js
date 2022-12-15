@@ -31,7 +31,7 @@ const features = [
     icon: ArrowsExpandIcon,
   },
   {
-    name: 'Node.js 12 or higher',
+    name: 'Node.js 14 or higher',
     description: `Turborepo doesn't interfere with your runtime code or touch your sourcemaps. It does what it does and then gets out of your way.`,
     icon: ChipIcon,
   },
