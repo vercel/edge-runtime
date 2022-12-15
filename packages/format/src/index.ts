@@ -54,7 +54,7 @@ export function createFormat(opts: FormatterOptions = {}) {
 
     if (!kind(firstArg, 'string')) {
       if (hasCustomSymbol(firstArg, customInspectSymbol)) {
-        return format(firstArg[customInspectSymbol]())
+        return format(firstArg[customInspectSymbol]({ format }))
       } else {
         return args
           .map((item) => inspect(item, { customInspectSymbol }))
@@ -70,7 +70,7 @@ export function createFormat(opts: FormatterOptions = {}) {
         case '%s': {
           const arg = args[index++]
           if (hasCustomSymbol(arg, customInspectSymbol)) {
-            return format(arg[customInspectSymbol]())
+            return format(arg[customInspectSymbol]({ format }))
           } else if (isDate(arg) || isError(arg) || kind(arg, 'bigint')) {
             return format(arg)
           } else {
@@ -127,7 +127,7 @@ export function createFormat(opts: FormatterOptions = {}) {
     recurseTimes: number | null | undefined
   ): string {
     if (hasCustomSymbol(value, customInspectSymbol)) {
-      return format(value[customInspectSymbol]())
+      return format(value[customInspectSymbol]({ format }))
     }
 
     const formattedPrimitive = formatPrimitive(value)
@@ -260,7 +260,7 @@ export function createFormat(opts: FormatterOptions = {}) {
         }
         base = ' ' + base
       } else if (hasCustomSymbol(value, ctx.customInspectSymbol)) {
-        base = format(value[ctx.customInspectSymbol]())
+        base = format(value[ctx.customInspectSymbol]({ format }))
         if (keys.length === 0) {
           return base
         }
@@ -464,7 +464,10 @@ function formatPrimitive(value: unknown) {
 function hasCustomSymbol<CustomSymbol extends symbol>(
   value: unknown,
   customInspectSymbol: CustomSymbol
-): value is Record<CustomSymbol, () => unknown> {
+): value is Record<
+  CustomSymbol,
+  (options: { format: (...args: unknown[]) => string }) => unknown
+> {
   return (
     value !== null &&
     kind(value, 'object') &&
