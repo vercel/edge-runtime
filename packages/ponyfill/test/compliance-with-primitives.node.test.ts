@@ -70,4 +70,6 @@ export const LIMBO_STATE = [
   'DOMException',
   'setGlobalDispatcher',
   'getGlobalDispatcher',
+  'RequestInfo',
+  'RequestInit',
 ]

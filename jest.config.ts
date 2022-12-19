@@ -20,5 +20,6 @@ export default (rootDir: string): Config.InitialOptions => {
       'jest-watch-typeahead/filename',
       'jest-watch-typeahead/testname',
     ],
+    collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
   }
 }

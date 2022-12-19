@@ -1,0 +1,140 @@
+import { Callout } from 'nextra-theme-docs'
+import { Tabs, Tab } from '../../components/tabs'
+
+# Edge Runtime Node Utils
+
+The **@edge-runtime/node-utils** package contains utilities to run web compliant code into a Node.js environment.
+
+<Callout type='warning' emoji='⚠️'>
+  Please note this is an alpha version.
+</Callout>
+
+## Installation
+
+<Tabs items={['npm', 'yarn', 'pnpm']} storageKey="selected-pkg-manager">
+  <Tab>
+    ```sh
+    npm install @edge-runtime/node-utils --save
+    ```
+  </Tab>
+  <Tab>
+    ```sh
+    yarn add @edge-runtime/node-utils
+    ```
+  </Tab>
+  <Tab>
+    ```sh
+    pnpm install @edge-runtime/node-utils --save
+    ```
+  </Tab>
+</Tabs>
+
+This package includes built-in TypeScript support.
+
+## Usage
+
+```ts
+import { once } = from 'node:events'
+import { createServer } from 'node:http'
+import { buildToNodeHandler } from '@edge-runtime/node-utils'
+
+// 1. builds a transformer, using Node.js@18 globals, and a base url for URL constructor.
+const transformToNode = buildToNodeHandler(global, {
+  origin: 'http://example.com',
+})
+
+const server = await createServer(
+  // 2. takes an web compliant request handler, that uses Web globals like Request and Response,
+  // and turn it into a Node.js compliant request handler.
+  transformToNode(async (req: Request) => new Response(req.body))
+)
+
+// 3. start the node.js server
+server.listen()
+await once(server, 'listening')
+
+// 4. invoke the request handler
+const response = await fetch(
+  `http://localhost:${(server.address() as AddressInfo).port}`,
+  { method: 'POST', body: 'hello world' }
+)
+
+console.log(await response.text()) // is 'hello world'
+await server.close()
+```
+
+## API
+
+### buildToNodeHandler(dependencies, options): toNodeHandler(handler: WebHandler): NodeHandler
+
+Builds a transformer function to turn an web compliant request handler (`(req: Request) => Promise<Response> | Response | null | undefined`) into
+a Node.js compliant [request handler](https://nodejs.org/api/http.html#httpcreateserveroptions-requestlistener) (`(req: IncomingMessage, res: ServerResponse) => Promise<void> | void`).
+
+**Limitation:** it does support the web handler second parameter, so `waitUntil` is not implemented yet.
+
+#### dependencies: object
+
+List of Web globals used by the transformer function:
+
+- [Request](https://developer.mozilla.org/en-US/docs/Web/API/Request)
+- [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers)
+- [ReadableStream](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream)
+- [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
+
+When running in Node.js 18+ (or Node.js 16 with [--experimental-fetch](https://nodejs.org/docs/latest-v16.x/api/cli.html#node_optionsoptions)), you may pass the ones from `global` scope.
+
+```js
+import { buildToNodeHandler } from '@edge-runtime/node-utils'
+
+buildToNodeHandler(globals, {
+  /* ... options */
+})
+```
+
+Otherwise, you can reuse primitives from [@edge-runtime/primitives](/packages/primitives)
+
+```js
+import { buildToNodeHandler } from '@edge-runtime/node-utils'
+import * as primitives from '@edge-runtime/primitives'
+
+buildToNodeHandler(primitives, {
+  /* ... options */
+})
+```
+
+#### options: object
+
+Options used to build the transformer function, including:
+
+##### origin: string
+
+Origin used to turn the incoming request relative url into a full [Request.url](https://developer.mozilla.org/en-US/docs/Web/API/Request/url) string.
+
+### buildToRequest(dependencies, options): toRequest(request: IncomingMessage, options: object): Request
+
+Builds a transformer function to turn a Node.js [IncomingMessage](https://nodejs.org/api/http.html#class-httpincomingmessage) into a Web [Request].
+It needs globals Web contstructor a [dependencies](#dependencies-object), as well as [options](#options-object) to handle incoming url.
+
+### toOutgoingHeaders(headers: Headers): OutgoingHttpHeaders
+
+Turns Web [Request.headers](https://developer.mozilla.org/en-US/docs/Web/API/Request/headers) into
+Node.js `ServerResponse` [OutgoingHttpHeaders](https://nodejs.org/api/http.html#responsegetheaders).
+
+Includes `set-cookie` special handling, spliting multiple values when relevant.
+
+### buildToHeaders(dependencies): toHeaders(nodeHeaders: IncomingHttpHeaders): Headers
+
+Builds a transformer to turn Node.js [IncomingHttpHeaders](https://nodejs.org/api/http.html#messageheaders) into
+Web [Request.headers](https://developer.mozilla.org/en-US/docs/Web/API/Request/headers).
+
+### toToReadable(webStream: ReadableStream, options: object): Readable
+
+Turns Web [ReadableStream](https://nodejs.org/api/stream.html#readable-streams)
+(typically, the [Response.body](https://developer.mozilla.org/en-US/docs/Web/API/Response/body)) into
+Node.js [Readable](https://nodejs.org/api/stream.html#readable-streams) stream.
+
+### buildToReadableStream(dependencies): toReadableStream(stream: Readable): ReadableStream
+
+Builds a transformer to turn Node.js [Readable](https://nodejs.org/api/stream.html#readable-streams)
+(typically, the [IncomingMessage](https://nodejs.org/api/http.html#class-httpincomingmessage)'s payload) into
+Web [ReadableStream](https://nodejs.org/api/stream.html#readable-streams).
