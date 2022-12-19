@@ -18,7 +18,8 @@ This package includes built-in TypeScript support.
 
 ## Usage
 
-```js
+```ts
+import { once } = from 'node:events'
 import { createServer } from 'node:http'
 import { buildToNodeHandler } from '@edge-runtime/node-utils'
 
@@ -30,19 +31,21 @@ const transformToNode = buildToNodeHandler(global, {
 const server = await createServer(
   // 2. takes an web compliant request handler, that uses Web globals like Request and Response,
   // and turn it into a Node.js compliant request handler.
-  transformToNode((req) => new Response(req.body))
+  transformToNode(async (req: Request) => new Response(req.body))
 )
 
 // 3. start the node.js server
-await server.listen()
+server.listen()
+await once(server, 'listening')
 
 // 4. invoke the request handler
-const response = await fetch(`http://localhost:${server.address().port}`, {
-  method: 'POST',
-  body: 'hello world',
-})
+const response = await fetch(
+  `http://localhost:${(server.address() as AddressInfo).port}`,
+  { method: 'POST', body: 'hello world' }
+)
 
 console.log(await response.text()) // is 'hello world'
+await server.close()
 ```
 
 ## API
