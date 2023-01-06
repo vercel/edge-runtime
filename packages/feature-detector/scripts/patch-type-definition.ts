@@ -1,8 +1,8 @@
-// Requires node@18
 // assumes being ran in packages/feature-detector
 
-import { writeFile } from 'fs/promises'
-import { join } from 'path'
+import { get } from 'node:https'
+import { writeFile } from 'node:fs/promises'
+import { join } from 'node:path'
 
 const repositoryBaseUrl =
   'https://raw.githubusercontent.com/microsoft/TypeScript/main/lib'
@@ -25,7 +25,16 @@ async function fetchTypeDefinitions(files: string[]) {
 }
 
 async function fetchTypeDefinition(file: string): Promise<string[]> {
-  const content = await (await fetch(`${repositoryBaseUrl}/${file}`)).text()
+  // I wish we could use node@18's fetch...
+  const content = await new Promise<string>((resolve, reject) =>
+    get(`${repositoryBaseUrl}/${file}`, (response) => {
+      let content = ''
+      response.setEncoding('utf8')
+      response.on('data', (chunk: string) => (content += chunk))
+      response.once('end', () => resolve(content))
+      response.once('error', reject)
+    })
+  )
   const result = []
   for (const line of content.split('\n')) {
     const reference = hasReference(line)

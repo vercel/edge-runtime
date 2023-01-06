@@ -129,6 +129,4 @@ describe.each([
     `)
     expect(hasEdgeSignature(file.getFilePath(), project)).toBe(true)
   })
-
-  Response
 })
