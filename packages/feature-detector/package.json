@@ -22,9 +22,10 @@
     "tsup": "^6"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "pnpm run build:patch && pnpm run build:src",
+    "build:patch": "ts-node scripts/patch-type-definition.ts",
+    "build:src": "tsup",
     "clean:build": "rm -rf dist",
-    "clean:node": "rm -rf node_modules",
     "prebuild": "pnpm run clean:build",
     "test": "jest"
   },

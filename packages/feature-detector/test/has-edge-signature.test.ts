@@ -120,4 +120,15 @@ describe.each([
     `)
     expect(hasEdgeSignature(file.getFilePath(), project)).toBe(true)
   })
+
+  it('detects use of fetch', () => {
+    file.replaceWithText(`
+      export default function() {
+        return fetch('https://example.vercel.sh')
+      }
+    `)
+    expect(hasEdgeSignature(file.getFilePath(), project)).toBe(true)
+  })
+
+  Response
 })
