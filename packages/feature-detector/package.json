@@ -1,0 +1,37 @@
+{
+  "name": "@edge-runtime/feature-detector",
+  "description": "Helpers for analyzing code running on the edge and its used low-level APIs",
+  "homepage": "https://edge-runtime.vercel.app/packages/feature-detector",
+  "version": "1.0.0-alpha.1",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "repository": {
+    "directory": "packages/feature-detector",
+    "type": "git",
+    "url": "git+https://github.com/vercel/edge-runtime.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vercel/edge-runtime/issues"
+  },
+  "keywords": [],
+  "devDependencies": {
+    "jest-text-transformer": "1.0.4",
+    "next": "^13.1.1",
+    "tsup": "^6"
+  },
+  "scripts": {
+    "build": "tsup",
+    "clean:build": "rm -rf dist",
+    "clean:node": "rm -rf node_modules",
+    "prebuild": "pnpm run clean:build",
+    "test": "jest"
+  },
+  "license": "MPLv2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "ts-morph": "^17.0.1"
+  }
+}
