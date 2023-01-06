@@ -67,19 +67,6 @@ importers:
       postcss: 8.4.16
       tailwindcss: 3.1.8_postcss@8.4.16
 
-  packages/code-analyzer:
-    specifiers:
-      jest-text-transformer: 1.0.4
-      next: ^13.1.1
-      ts-morph: ^17.0.1
-      tsup: ^6
-    dependencies:
-      ts-morph: 17.0.1
-    devDependencies:
-      jest-text-transformer: 1.0.4
-      next: 13.1.1
-      tsup: 6.1.2
-
   packages/cookies:
     specifiers:
       '@edge-runtime/format': workspace:1.1.0
@@ -91,6 +78,23 @@ importers:
       '@edge-runtime/jest-environment': link:../jest-environment
       '@types/cookie': 0.5.1
       tsup: 6.2.2
+
+  packages/feature-detector:
+    specifiers:
+      jest-text-transformer: 1.0.4
+      next: ^13.1.1
+      react: ~18.2.0
+      react-dom: ~18.2.0
+      ts-morph: ^17.0.1
+      tsup: ^6
+    dependencies:
+      ts-morph: 17.0.1
+    devDependencies:
+      jest-text-transformer: 1.0.4
+      next: 13.1.1_biqbaboplfbrettd7655fr4n2y
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      tsup: 6.1.2
 
   packages/format:
     specifiers:
@@ -5325,7 +5329,6 @@ packages:
     hasBin: true
     dependencies:
       js-tokens: 4.0.0
-    dev: false
 
   /loud-rejection/1.6.0:
     resolution: {integrity: sha512-RPNliZOFkqFumDhvYqOaNY4Uz9oJM2K9tC6JWsJJsNdhuONW4LQHRBpb0qf4pJApVffI5N39SwzWZJuEhfd7eQ==}
@@ -6155,7 +6158,7 @@ packages:
       - babel-plugin-macros
     dev: false
 
-  /next/13.1.1:
+  /next/13.1.1_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-R5eBAaIa3X7LJeYvv1bMdGnAVF4fVToEjim7MkflceFPuANY3YyvFxXee/A+acrSYwYPvOvf7f6v/BM/48ea5w==}
     engines: {node: '>=14.6.0'}
     hasBin: true
@@ -6177,7 +6180,9 @@ packages:
       '@swc/helpers': 0.4.14
       caniuse-lite: 1.0.30001436
       postcss: 8.4.14
-      styled-jsx: 5.1.1
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      styled-jsx: 5.1.1_react@18.2.0
     optionalDependencies:
       '@next/swc-android-arm-eabi': 13.1.1
       '@next/swc-android-arm64': 13.1.1
@@ -6868,7 +6873,6 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
-    dev: false
 
   /react-is/18.2.0:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
@@ -6878,7 +6882,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
-    dev: false
 
   /read-cache/1.0.0:
     resolution: {integrity: sha512-Owdv/Ft7IjOgm/i0xvNDZ1LrRANRfew4b2prF3OWMQLxLfu3bS8FVhCsrSCMK4lR56Y9ya+AThoTpDCTxCmpRA==}
@@ -7145,7 +7148,6 @@ packages:
     resolution: {integrity: sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==}
     dependencies:
       loose-envify: 1.4.0
-    dev: false
 
   /scroll-into-view-if-needed/2.2.29:
     resolution: {integrity: sha512-hxpAR6AN+Gh53AdAimHM6C8oTN1ppwVZITihix+WqalywBeFcQ6LdQP5ABNl26nX8GTEL7VT+b8lKpdqq65wXg==}
@@ -7516,7 +7518,7 @@ packages:
       react: 18.2.0
     dev: false
 
-  /styled-jsx/5.1.1:
+  /styled-jsx/5.1.1_react@18.2.0:
     resolution: {integrity: sha512-pW7uC1l4mBZ8ugbiZrcIsiIvVx1UmTfw7UkC3Um2tmfUq9Bhk8IiyEIPl6F8agHgjzku6j0xQEZbfA5uSgSaCw==}
     engines: {node: '>= 12.0.0'}
     peerDependencies:
@@ -7530,6 +7532,7 @@ packages:
         optional: true
     dependencies:
       client-only: 0.0.1
+      react: 18.2.0
     dev: true
 
   /sucrase/3.21.0:

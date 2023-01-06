@@ -17,6 +17,8 @@
   "devDependencies": {
     "jest-text-transformer": "1.0.4",
     "next": "^13.1.1",
+    "react": "~18.2.0",
+    "react-dom": "~18.2.0",
     "tsup": "^6"
   },
   "scripts": {
