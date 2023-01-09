@@ -1,12 +1,15 @@
 // assumes being ran in packages/feature-detector
 
-import { get } from 'node:https'
 import { writeFile } from 'node:fs/promises'
+import { get, Agent } from 'node:https'
 import { join } from 'node:path'
 
 const repositoryBaseUrl =
   'https://raw.githubusercontent.com/microsoft/TypeScript/main/lib'
+
 const destinationFile = join('src', 'utils/type-definition.txt')
+
+const agent = new Agent({ keepAlive: true })
 
 async function writeTypeDefinition() {
   const aggregatedContent = await fetchTypeDefinitions([
@@ -27,7 +30,7 @@ async function fetchTypeDefinitions(files: string[]) {
 async function fetchTypeDefinition(file: string): Promise<string[]> {
   // I wish we could use node@18's fetch...
   const content = await new Promise<string>((resolve, reject) =>
-    get(`${repositoryBaseUrl}/${file}`, (response) => {
+    get(`${repositoryBaseUrl}/${file}`, { agent }, (response) => {
       let content = ''
       response.setEncoding('utf8')
       response.on('data', (chunk: string) => (content += chunk))
