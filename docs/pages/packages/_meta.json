@@ -1,5 +1,6 @@
 {
   "cookies": "@edge-runtime/cookies",
+  "feature-detector": "@edge-runtime/feature-detector",
   "format": "@edge-runtime/format",
   "jest-environment": "@edge-runtime/jest-environment",
   "jest-expect": "@edge-runtime/jest-expect",
