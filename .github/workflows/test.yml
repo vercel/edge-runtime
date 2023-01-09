@@ -51,7 +51,3 @@ jobs:
       - name: Generate coverage
         run: pnpm coverage
 
-      - name: Upload Coverage
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
