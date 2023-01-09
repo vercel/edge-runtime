@@ -13,8 +13,8 @@
     "url": "https://github.com/vercel/edge-runtime/issues"
   },
   "keywords": [
+    "edge-runtime",
     "edge",
-    "expect",
     "functions",
     "jest",
     "matchers",

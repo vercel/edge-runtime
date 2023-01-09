@@ -158,9 +158,7 @@ async function bundlePackage() {
 }
 
 bundlePackage()
-  .then(() => {
-    process.exit(0)
-  })
+  .then(() => process.exit(0))
   .catch((error) => {
     console.log('Errored', error)
     process.exit(1)

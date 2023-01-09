@@ -16,9 +16,12 @@
     "url": "https://github.com/vercel/edge-runtime/issues"
   },
   "keywords": [
+    "edge-runtime",
     "edge",
     "functions",
-    "runtime"
+    "runtime",
+    "standard",
+    "web"
   ],
   "dependencies": {
     "@edge-runtime/format": "workspace:1.1.0",

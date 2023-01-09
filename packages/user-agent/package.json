@@ -1,6 +1,6 @@
 {
   "name": "@edge-runtime/user-agent",
-  "description": "An Edge Runtime compatible user agent parsing utility",
+  "description": "An Edge Runtime compatible user-agent parsing utility",
   "homepage": "https://edge-runtime.vercel.app/packages/user-agent",
   "version": "1.1.0",
   "main": "dist/index.js",
@@ -14,9 +14,15 @@
     "url": "https://github.com/vercel/edge-runtime/issues"
   },
   "keywords": [
-    "ua-parser",
+    "edge-runtime",
+    "edge",
+    "functions",
+    "runtime",
+    "standard",
     "ua-parser-js",
-    "user-agent"
+    "ua-parser",
+    "user-agent",
+    "web"
   ],
   "devDependencies": {
     "@edge-runtime/jest-environment": "workspace:2.0.2",

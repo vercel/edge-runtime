@@ -13,13 +13,15 @@
     "url": "https://github.com/vercel/edge-runtime/issues"
   },
   "keywords": [
+    "edge-runtime",
     "edge",
     "format",
     "formatter",
     "functions",
     "printf",
     "runtime",
-    "standard"
+    "standard",
+    "web"
   ],
   "devDependencies": {
     "tsup": "6"
@@ -28,11 +30,11 @@
     "dist"
   ],
   "scripts": {
-    "prebuild": "pnpm run clean:build",
     "build": "tsup",
     "clean": "pnpm run clean:node && pnpm run clean:build",
-    "clean:node": "rm -rf node_modules",
     "clean:build": "rm -rf dist",
+    "clean:node": "rm -rf node_modules",
+    "prebuild": "pnpm run clean:build",
     "test": "TZ=UTC jest"
   },
   "license": "MPLv2",

@@ -16,7 +16,13 @@
   "keywords": [
     "cookie",
     "cookies",
-    "set-cookie"
+    "edge-runtime",
+    "edge",
+    "functions",
+    "runtime",
+    "set-cookie",
+    "standard",
+    "web"
   ],
   "devDependencies": {
     "@edge-runtime/format": "workspace:1.1.0",

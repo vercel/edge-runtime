@@ -3,14 +3,14 @@
   <img src="https://edge-runtime.vercel.app/og-image.png" alt="edge-runtime logo">
   <br>
   <br>
-  <p align="center"><strong>@edge-runtime/feature-detector</strong>: utilities to analyze code running on the edge and its used low-level APIs.</p>
+  <p align="center"><strong>@edge-runtime/feature-detector</strong>: A set of utilities to analyze code running on the edge and its used low-level APIs.</p>
   <p align="center">See <a href="https://edge-runtime.vercel.app/packages/feature-detector" target='_blank' rel='noopener noreferrer'>@edge-runtime/feature-detector</a> section in our <a href="https://edge-runtime.vercel.app/" target='_blank' rel='noopener noreferrer'>website</a> for more information.</p>
   <br>
 </div>
 
-## Install
+> **Note**: This is an alpha version.
 
-**Note: this is an alpha version.**
+## Install
 
 Using npm:
 

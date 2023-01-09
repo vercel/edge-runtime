@@ -15,6 +15,7 @@
   },
   "keywords": [
     "apis",
+    "edge-runtime",
     "edge",
     "functions",
     "polyfill",
