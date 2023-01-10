@@ -14,7 +14,7 @@
   },
   "keywords": [
     "edge",
-    "expect",
+    "edge-runtime",
     "functions",
     "jest",
     "matchers",
@@ -32,6 +32,9 @@
   },
   "devDependencies": {
     "@edge-runtime/jest-environment": "workspace:*"
+  },
+  "engines": {
+    "node": ">=14"
   },
   "files": [
     "dist",

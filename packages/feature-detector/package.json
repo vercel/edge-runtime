@@ -1,6 +1,6 @@
 {
   "name": "@edge-runtime/feature-detector",
-  "description": "Helpers for analyzing code running on the edge and its used low-level APIs",
+  "description": "A set of utilities to analyze code running on the edge and its used low-level APIs",
   "homepage": "https://edge-runtime.vercel.app/packages/feature-detector",
   "version": "1.0.0-alpha.1",
   "main": "dist/index.js",
@@ -13,14 +13,32 @@
   "bugs": {
     "url": "https://github.com/vercel/edge-runtime/issues"
   },
-  "keywords": [],
+  "keywords": [
+    "detector",
+    "edge",
+    "edge-runtime",
+    "feature",
+    "functions",
+    "runtime",
+    "standard",
+    "web"
+  ],
+  "dependencies": {
+    "ts-morph": "17.0.1"
+  },
   "devDependencies": {
     "jest-text-transformer": "1.0.4",
-    "next": "^13.1.1",
-    "react": "~18.2.0",
-    "react-dom": "~18.2.0",
-    "tsup": "^6"
+    "next": "13",
+    "react": "18",
+    "react-dom": "18",
+    "tsup": "6"
   },
+  "engines": {
+    "node": ">=14"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "pnpm run build:patch && pnpm run build:src",
     "build:patch": "ts-node scripts/patch-type-definition.ts",
@@ -33,8 +51,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "types": "dist/index.d.ts",
-  "dependencies": {
-    "ts-morph": "^17.0.1"
-  }
+  "types": "dist/index.d.ts"
 }

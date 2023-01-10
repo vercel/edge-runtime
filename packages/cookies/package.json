@@ -16,13 +16,22 @@
   "keywords": [
     "cookie",
     "cookies",
-    "set-cookie"
+    "edge",
+    "edge-runtime",
+    "functions",
+    "runtime",
+    "set-cookie",
+    "standard",
+    "web"
   ],
   "devDependencies": {
     "@edge-runtime/format": "workspace:1.1.0",
     "@edge-runtime/jest-environment": "workspace:2.0.2",
     "@types/cookie": "0.5.1",
     "tsup": "6"
+  },
+  "engines": {
+    "node": ">=14"
   },
   "files": [
     "dist"

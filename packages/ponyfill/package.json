@@ -16,6 +16,7 @@
   "keywords": [
     "apis",
     "edge",
+    "edge-runtime",
     "functions",
     "polyfill",
     "ponyfill",
@@ -32,6 +33,9 @@
     "acorn": "8.8.0",
     "acorn-loose": "8.3.0",
     "acorn-walk": "8.2.0"
+  },
+  "engines": {
+    "node": ">=14"
   },
   "files": [
     "src"

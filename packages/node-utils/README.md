@@ -3,14 +3,14 @@
   <img src="https://edge-runtime.vercel.app/og-image.png" alt="edge-runtime logo">
   <br>
   <br>
-  <p align="center"><strong>@edge-runtime/node-utils</strong>: Utilities to run web compliant code into a Node.js environment.</p>
+  <p align="center"><strong>@edge-runtime/node-utils</strong>: A set of helpers for running edge-compliant code in Node.js environment.</p>
   <p align="center">See <a href="https://edge-runtime.vercel.app/packages/node-utils" target='_blank' rel='noopener noreferrer'>@edge-runtime/node-utils</a> section in our <a href="https://edge-runtime.vercel.app/" target='_blank' rel='noopener noreferrer'>website</a> for more information.</p>
   <br>
 </div>
 
-## Install
+> **Note**: This is an alpha version.
 
-**Note: this is an alpha version.**
+## Install
 
 Using npm:
 

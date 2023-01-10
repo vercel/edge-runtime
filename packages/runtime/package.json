@@ -17,8 +17,11 @@
   },
   "keywords": [
     "edge",
+    "edge-runtime",
     "functions",
-    "runtime"
+    "runtime",
+    "standard",
+    "web"
   ],
   "dependencies": {
     "@edge-runtime/format": "workspace:1.1.0",
@@ -34,6 +37,9 @@
   "devDependencies": {
     "@types/node-fetch": "2.x",
     "node-fetch": "2"
+  },
+  "engines": {
+    "node": ">=14"
   },
   "files": [
     "dist"

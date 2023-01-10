@@ -14,6 +14,7 @@
   },
   "keywords": [
     "edge",
+    "edge-runtime",
     "functions",
     "jest",
     "runtime",
@@ -28,6 +29,9 @@
     "@jest/types": "28.1.3",
     "jest-mock": "28.1.3",
     "jest-util": "28.1.3"
+  },
+  "engines": {
+    "node": ">=14"
   },
   "files": [
     "dist"
