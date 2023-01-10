@@ -13,8 +13,8 @@
   },
   "keywords": [
     "context",
-    "edge-runtime",
     "edge",
+    "edge-runtime",
     "functions",
     "runtime",
     "standard",
@@ -25,6 +25,9 @@
   ],
   "dependencies": {
     "@edge-runtime/primitives": "workspace:2.0.2"
+  },
+  "engines": {
+    "node": ">=14"
   },
   "files": [
     "src"

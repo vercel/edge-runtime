@@ -15,8 +15,8 @@
   },
   "keywords": [
     "detector",
-    "edge-runtime",
     "edge",
+    "edge-runtime",
     "feature",
     "functions",
     "runtime",
@@ -32,6 +32,9 @@
     "react": "18",
     "react-dom": "18",
     "tsup": "6"
+  },
+  "engines": {
+    "node": ">=14"
   },
   "files": [
     "dist"

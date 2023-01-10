@@ -13,8 +13,8 @@
     "url": "https://github.com/vercel/edge-runtime/issues"
   },
   "keywords": [
-    "edge-runtime",
     "edge",
+    "edge-runtime",
     "functions",
     "jest",
     "matchers",
@@ -32,6 +32,9 @@
   },
   "devDependencies": {
     "@edge-runtime/jest-environment": "workspace:*"
+  },
+  "engines": {
+    "node": ">=14"
   },
   "files": [
     "dist",

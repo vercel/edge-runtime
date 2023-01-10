@@ -14,8 +14,8 @@
   },
   "keywords": [
     "apis",
-    "edge-runtime",
     "edge",
+    "edge-runtime",
     "functions",
     "primites",
     "runtime",
@@ -37,6 +37,9 @@
     "urlpattern-polyfill": "6.0.1",
     "web-streams-polyfill": "4.0.0-beta.3",
     "whatwg-url": "11.0.0"
+  },
+  "engines": {
+    "node": ">=14"
   },
   "files": [
     "abort-controller",

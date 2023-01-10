@@ -14,13 +14,13 @@
     "url": "https://github.com/vercel/edge-runtime/issues"
   },
   "keywords": [
-    "edge-runtime",
     "edge",
+    "edge-runtime",
     "functions",
     "runtime",
     "standard",
-    "ua-parser-js",
     "ua-parser",
+    "ua-parser-js",
     "user-agent",
     "web"
   ],
@@ -29,6 +29,9 @@
     "@types/ua-parser-js": "0.7.36",
     "tsup": "6",
     "ua-parser-js": "1.0.2"
+  },
+  "engines": {
+    "node": ">=14"
   },
   "files": [
     "dist"

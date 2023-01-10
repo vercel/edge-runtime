@@ -16,8 +16,8 @@
     "url": "https://github.com/vercel/edge-runtime/issues"
   },
   "keywords": [
-    "edge-runtime",
     "edge",
+    "edge-runtime",
     "functions",
     "runtime",
     "standard",
@@ -37,6 +37,9 @@
   "devDependencies": {
     "@types/node-fetch": "2.x",
     "node-fetch": "2"
+  },
+  "engines": {
+    "node": ">=14"
   },
   "files": [
     "dist"

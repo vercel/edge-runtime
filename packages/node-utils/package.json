@@ -14,8 +14,8 @@
     "url": "https://github.com/vercel/edge-runtime/issues"
   },
   "keywords": [
-    "edge-runtime",
     "edge",
+    "edge-runtime",
     "functions",
     "node",
     "runtime",
@@ -28,6 +28,9 @@
     "@types/test-listen": "1.1.0",
     "test-listen": "1.1.0",
     "tsup": "6"
+  },
+  "engines": {
+    "node": ">=14"
   },
   "files": [
     "dist"

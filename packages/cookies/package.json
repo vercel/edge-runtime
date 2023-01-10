@@ -16,8 +16,8 @@
   "keywords": [
     "cookie",
     "cookies",
-    "edge-runtime",
     "edge",
+    "edge-runtime",
     "functions",
     "runtime",
     "set-cookie",
@@ -29,6 +29,9 @@
     "@edge-runtime/jest-environment": "workspace:2.0.2",
     "@types/cookie": "0.5.1",
     "tsup": "6"
+  },
+  "engines": {
+    "node": ">=14"
   },
   "files": [
     "dist"

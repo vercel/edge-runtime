@@ -13,8 +13,8 @@
     "url": "https://github.com/vercel/edge-runtime/issues"
   },
   "keywords": [
-    "edge-runtime",
     "edge",
+    "edge-runtime",
     "format",
     "formatter",
     "functions",
@@ -25,6 +25,9 @@
   ],
   "devDependencies": {
     "tsup": "6"
+  },
+  "engines": {
+    "node": ">=14"
   },
   "files": [
     "dist"
