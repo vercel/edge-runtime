@@ -40,10 +40,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm run build:patch && pnpm run build:src",
-    "build:patch": "ts-node scripts/patch-type-definition.ts",
-    "build:src": "tsup",
+    "build": "tsup",
     "clean:build": "rm -rf dist",
+    "patch-type-definition": "ts-node scripts/patch-type-definition.ts",
     "prebuild": "pnpm run clean:build",
     "test": "jest"
   },
