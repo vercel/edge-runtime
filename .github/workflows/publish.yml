@@ -3,13 +3,12 @@ name: Publish
 on:
   push:
     branches:
-    - main
+      - main
     tags:
-    - '!*'
+      - '!*'
 
 env:
   NODE_VERSION: '18'
-
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 

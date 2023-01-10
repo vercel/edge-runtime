@@ -50,4 +50,3 @@ jobs:
 
       - name: Generate coverage
         run: pnpm coverage
-
