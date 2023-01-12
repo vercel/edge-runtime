@@ -25,22 +25,41 @@ This package includes built-in TypeScript support.
 
 ## Usage
 
-Here is an example of checking whether a file's default export is a function matching the edge signature, such as:
+Here is a test file. It's in JavaScript, but TypeScript is supported as well.
 
 ```js
+// test.js
+if (typeof process !== 'undefined') {
+  console.log('in node', __dirname)
+} else if (typeof window !== 'undefined') {
+  console.log('in a browser', document)
+}
+setTimeout(() => console.log('setTimeout is not a global, nor console'), 0)
+
 export default function () {
   return Response.json({ message: 'hello world!' })
 }
 ```
 
+In the code snippet bellow, we're checking:
+
+1. whether this file is a function matching the edge signature
+2. globals used, that are not provided by the Edge Runtime
+
 ```ts
-import { hasEdgeSignature } from '@edge-runtime/feature-detector'
+import {
+  hasEdgeSignature,
+  findDependencies,
+} from '@edge-runtime/feature-detector'
 
 const sourceFilePath = './test.js' // could be TypeScript as well. Must be in current working directory
 
+// 1
 if (hasEdgeSignature(sourceFilePath)) {
-  console.log(`${sourcefilePath} can run on the edge``)
+  console.log(`${sourcefilePath} can run on the edge`)
 }
+// 2
+console.log(findDependencies(sourceFilePath).globals)
 ```
 
 ## API

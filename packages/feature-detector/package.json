@@ -27,11 +27,15 @@
     "ts-morph": "17.0.1"
   },
   "devDependencies": {
+    "axios": "0.27.2",
     "jest-text-transformer": "1.0.4",
     "next": "13",
     "react": "18",
     "react-dom": "18",
     "tsup": "6"
+  },
+  "peerDependencies": {
+    "esbuild": "^0.16.16"
   },
   "engines": {
     "node": ">=14"
@@ -42,7 +46,6 @@
   "scripts": {
     "build": "tsup",
     "clean:build": "rm -rf dist",
-    "patch-type-definition": "ts-node scripts/patch-type-definition.ts",
     "prebuild": "pnpm run clean:build",
     "test": "jest"
   },

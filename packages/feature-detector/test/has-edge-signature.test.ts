@@ -9,7 +9,7 @@ describe.each([
 ])('hasEdgeSignature() $title', ({ file }) => {
   it('handles no default export', () => {
     file.replaceWithText(`
-      function() {
+      function foo() {
         return new Response('ok')
       }
     `)
