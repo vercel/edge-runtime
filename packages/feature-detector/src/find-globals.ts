@@ -13,27 +13,17 @@ export function findGlobals(
   const globals = new Set<string>()
   const sourceFile = project.getSourceFileOrThrow(sourcePath)
   addFileGlobals(sourceFile, globals)
-  for (const imported of sourceFile.getImportDeclarations()) {
-    console.log(imported.getModuleSpecifierSourceFileOrThrow())
-    const importedFile = project.getSourceFile(
-      resolve(
-        dirname(sourceFile.getFilePath()),
-        imported.getModuleSpecifierValue()
-      )
-    )
-    if (importedFile) {
-      addFileGlobals(importedFile, globals)
-    }
-  }
   return [...globals]
 }
 
 function addFileGlobals(sourceFile: SourceFile, globals: Set<string>) {
   const program = sourceFile.getProject().getProgram().compilerObject
   const diagnostics = program.getSemanticDiagnostics(sourceFile.compilerNode)
+  // see all diagnostics messages: https://github.com/microsoft/TypeScript/blob/main/src/compiler/diagnosticMessages.json
+  // for example: { code: 2304, messageText: "Cannot find name 'process'." }
   for (const { code, messageText } of diagnostics) {
+    // only some messages will relate with identifiers that could not be found: filter them by code,
     if (
-      // see all messages: https://github.com/microsoft/TypeScript/blob/main/src/compiler/diagnosticMessages.json#L1631
       code === 2304 ||
       code === 2311 ||
       code === 2552 ||
