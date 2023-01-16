@@ -1,7 +1,6 @@
-import { readFile } from 'fs/promises'
 import { join } from 'path'
-import { Project, ScriptKind, SourceFile, SyntaxKind } from 'ts-morph'
-import { findDependencies } from '../src'
+import { Project, SourceFile } from 'ts-morph'
+import { findGlobals } from '../src'
 import { buildProject } from '../src/utils/project'
 
 const fixtureFolder = join(__dirname, 'fixtures')
@@ -9,7 +8,7 @@ const fixtureFolder = join(__dirname, 'fixtures')
 describe.each([
   { title: 'for JavaScript' },
   { title: 'for TypeScript', isTS: true },
-])('findDependencies() $title', ({ isTS }) => {
+])('findGlobals() $title', ({ isTS }) => {
   let project: Project
   let file: SourceFile
 
@@ -23,9 +22,10 @@ describe.each([
       __filename
       process.env['TEST']
     `)
-    expect(findDependencies(file.getFilePath(), project)).toEqual({
-      globals: ['__filename', 'process'],
-    })
+    expect(findGlobals(file.getFilePath(), project)).toEqual([
+      '__filename',
+      'process',
+    ])
   })
 
   it('returns globals variable with typeof', () => {
@@ -34,18 +34,14 @@ describe.each([
         console.log('in node')
       }
     `)
-    expect(findDependencies(file.getFilePath(), project)).toEqual({
-      globals: ['process'],
-    })
+    expect(findGlobals(file.getFilePath(), project)).toEqual(['process'])
   })
 
   it('returns globals variables used as parameters', () => {
     file.replaceWithText(`
       console.log('in node', __dirname)
     `)
-    expect(findDependencies(file.getFilePath(), project)).toEqual({
-      globals: ['__dirname'],
-    })
+    expect(findGlobals(file.getFilePath(), project)).toEqual(['__dirname'])
   })
 
   it('returns globals variables in instructions', () => {
@@ -54,9 +50,10 @@ describe.each([
         for (const key in exports) {}
       }
     `)
-    expect(findDependencies(file.getFilePath(), project)).toEqual({
-      globals: ['__dirname', 'exports'],
-    })
+    expect(findGlobals(file.getFilePath(), project)).toEqual([
+      '__dirname',
+      'exports',
+    ])
   })
 
   it('returns globals used with static methods', () => {
@@ -65,23 +62,17 @@ describe.each([
         return Response.redirect(Buffer.from('ok'))
       }
     `)
-    expect(findDependencies(file.getFilePath(), project)).toEqual({
-      globals: ['Buffer'],
-    })
+    expect(findGlobals(file.getFilePath(), project)).toEqual(['Buffer'])
   })
 
   it('returns globals used with new operator', () => {
     file.replaceWithText(`new Buffer(['o', 'k'])`)
-    expect(findDependencies(file.getFilePath(), project)).toEqual({
-      globals: ['Buffer'],
-    })
+    expect(findGlobals(file.getFilePath(), project)).toEqual(['Buffer'])
   })
 
   it('returns globals used as properties', () => {
     file.replaceWithText(`Buffer.poolSize`)
-    expect(findDependencies(file.getFilePath(), project)).toEqual({
-      globals: ['Buffer'],
-    })
+    expect(findGlobals(file.getFilePath(), project)).toEqual(['Buffer'])
   })
 
   it('returns globals used as functions', () => {
@@ -90,9 +81,10 @@ describe.each([
         $('.do-you[remember="the time"]')
       })
     `)
-    expect(findDependencies(file.getFilePath(), project)).toEqual({
-      globals: ['setImmediate', '$'],
-    })
+    expect(findGlobals(file.getFilePath(), project)).toEqual([
+      'setImmediate',
+      '$',
+    ])
   })
 
   it('ignores known DOM globals', () => {
@@ -100,9 +92,8 @@ describe.each([
       console.log(JSON.stringify({ msg: btoa('hi') }))
       const controller = new AbortController()
     `)
-    expect(findDependencies(file.getFilePath(), project)).toEqual({
-      globals: [], // no console, JSON, btoa, AbortController
-    })
+    // no console, JSON, btoa, AbortController
+    expect(findGlobals(file.getFilePath(), project)).toEqual([])
   })
 
   it('dedupes identified globals', () => {
@@ -115,24 +106,20 @@ describe.each([
         }
       }
     `)
-    expect(findDependencies(file.getFilePath(), project)).toEqual({
-      globals: ['Buffer'],
-    })
+    expect(findGlobals(file.getFilePath(), project)).toEqual(['Buffer'])
   })
 
-  it('find globals from 3rd party code', async () => {
+  it('finds globals from 3rd party code', async () => {
     const file = project.addSourceFileAtPath(
       join(fixtureFolder, 'with-axios.out.js')
     )
-    expect(findDependencies(file.getFilePath(), project)).toEqual({
-      globals: [
-        'navigator',
-        'window',
-        'document',
-        'Buffer',
-        'XMLHttpRequest',
-        'process',
-      ],
-    })
+    expect(findGlobals(file.getFilePath(), project)).toEqual([
+      'navigator',
+      'window',
+      'document',
+      'Buffer',
+      'XMLHttpRequest',
+      'process',
+    ])
   })
 })

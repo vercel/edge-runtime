@@ -1,19 +1,35 @@
-import { Project, ts } from 'ts-morph'
+import { dirname, resolve } from 'path'
+import { Project, SourceFile, ts } from 'ts-morph'
 import { buildProject } from './utils/project'
 
 /**
  * Find the list of globals used by source files in the provided project.
  * Analyzed source files can be filtered by provided a list of glob patterns (default to all TypeScript and JavaScript files, excluding type definitions)
  */
-export function findDependencies(
+export function findGlobals(
   sourcePath: string,
   project: Project = buildProject()
-): {
-  globals: string[]
-} {
+): string[] {
   const globals = new Set<string>()
-  const sourceFile = project.addSourceFileAtPath(sourcePath)
-  const program = project.getProgram().compilerObject
+  const sourceFile = project.getSourceFileOrThrow(sourcePath)
+  addFileGlobals(sourceFile, globals)
+  for (const imported of sourceFile.getImportDeclarations()) {
+    console.log(imported.getModuleSpecifierSourceFileOrThrow())
+    const importedFile = project.getSourceFile(
+      resolve(
+        dirname(sourceFile.getFilePath()),
+        imported.getModuleSpecifierValue()
+      )
+    )
+    if (importedFile) {
+      addFileGlobals(importedFile, globals)
+    }
+  }
+  return [...globals]
+}
+
+function addFileGlobals(sourceFile: SourceFile, globals: Set<string>) {
+  const program = sourceFile.getProject().getProgram().compilerObject
   const diagnostics = program.getSemanticDiagnostics(sourceFile.compilerNode)
   for (const { code, messageText } of diagnostics) {
     if (
@@ -33,5 +49,4 @@ export function findDependencies(
       }
     }
   }
-  return { globals: [...globals] }
 }

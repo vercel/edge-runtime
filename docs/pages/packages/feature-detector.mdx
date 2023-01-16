@@ -47,10 +47,7 @@ In the code snippet bellow, we're checking:
 2. globals used, that are not provided by the Edge Runtime
 
 ```ts
-import {
-  hasEdgeSignature,
-  findDependencies,
-} from '@edge-runtime/feature-detector'
+import { hasEdgeSignature, findGlobals } from '@edge-runtime/feature-detector'
 
 const sourceFilePath = './test.js' // could be TypeScript as well. Must be in current working directory
 
@@ -59,7 +56,7 @@ if (hasEdgeSignature(sourceFilePath)) {
   console.log(`${sourcefilePath} can run on the edge`)
 }
 // 2
-console.log(findDependencies(sourceFilePath).globals)
+console.log(findGlobals(sourceFilePath))
 ```
 
 ## API
