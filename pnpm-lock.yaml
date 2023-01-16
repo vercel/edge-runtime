@@ -17,7 +17,7 @@ importers:
       nano-staged: latest
       prettier: latest
       simple-git-hooks: latest
-      ts-jest: 29.0.4
+      ts-jest: 29.0.5
       ts-node: 10.9.1
       turbo: latest
       typescript: latest
@@ -35,7 +35,7 @@ importers:
       nano-staged: 0.8.0
       prettier: 2.8.2
       simple-git-hooks: 2.8.1
-      ts-jest: 29.0.4_izjwqmc6fmlrsgurdzvro3bxme
+      ts-jest: 29.0.5_izjwqmc6fmlrsgurdzvro3bxme
       ts-node: 10.9.1_6yr256pmli274zrjafonbeyefq
       turbo: 1.7.0
       typescript: 4.9.4
@@ -7757,8 +7757,8 @@ packages:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
     dev: true
 
-  /ts-jest/29.0.4_izjwqmc6fmlrsgurdzvro3bxme:
-    resolution: {integrity: sha512-YdNofkoyzeinwjIqLSYQeAM+GTmFQ7xFNtWcR5OyitY5VLzzNINrNmfhP5H3daA/V+RGQR7O3g1K6ysRgu5xIQ==}
+  /ts-jest/29.0.5_izjwqmc6fmlrsgurdzvro3bxme:
+    resolution: {integrity: sha512-PL3UciSgIpQ7f6XjVOmbi96vmDHUqAyqDr8YxzopDqX3kfgYtX1cuNeBjP+L9sFXi6nzsGGA6R3fP3DDDJyrxA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     hasBin: true
     peerDependencies:
