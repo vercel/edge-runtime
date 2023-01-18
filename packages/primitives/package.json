@@ -2,7 +2,7 @@
   "name": "@edge-runtime/primitives",
   "description": "A set of primitives to build Vercel Edge Runtime.",
   "homepage": "https://edge-runtime.vercel.app/packages/primitives",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "main": "dist/index.js",
   "repository": {
     "directory": "packages/primitives",
@@ -23,7 +23,7 @@
     "web"
   ],
   "devDependencies": {
-    "@edge-runtime/format": "workspace:1.1.0",
+    "@edge-runtime/format": "workspace:2.0.0",
     "@peculiar/webcrypto": "1.4.1",
     "@ungap/structured-clone": "1.0.1",
     "aggregate-error-ponyfill": "1.1.0",

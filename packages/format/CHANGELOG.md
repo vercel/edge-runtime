@@ -1,5 +1,11 @@
 # @edge-runtime/format
 
+## 2.0.0
+
+### Major Changes
+
+- feat: provide formatter inside custom symbol ([#221](https://github.com/vercel/edge-runtime/pull/221))
+
 ## 1.1.0
 
 ### Patch Changes

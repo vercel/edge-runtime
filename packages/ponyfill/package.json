@@ -27,9 +27,9 @@
     "web"
   ],
   "devDependencies": {
-    "@edge-runtime/jest-environment": "workspace:2.0.2",
-    "@edge-runtime/primitives": "workspace:2.0.2",
-    "@edge-runtime/vm": "workspace:2.0.2",
+    "@edge-runtime/jest-environment": "workspace:2.0.3",
+    "@edge-runtime/primitives": "workspace:2.0.3",
+    "@edge-runtime/vm": "workspace:2.0.3",
     "acorn": "8.8.0",
     "acorn-loose": "8.3.0",
     "acorn-walk": "8.2.0"
