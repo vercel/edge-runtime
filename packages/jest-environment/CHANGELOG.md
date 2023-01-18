@@ -1,5 +1,12 @@
 # @edge-runtime/jest-environment
 
+## 2.0.3
+
+### Patch Changes
+
+- Updated dependencies [[`90b1e6f`](https://github.com/vercel/edge-runtime/commit/90b1e6f982683cdc1a957dfe66bac29cbfc64925)]:
+  - @edge-runtime/vm@2.0.3
+
 ## 2.0.2
 
 ### Patch Changes

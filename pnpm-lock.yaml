@@ -25,21 +25,21 @@ importers:
     devDependencies:
       '@changesets/cli': 2.26.0
       '@jest/types': 29.1.2
-      '@svitejs/changesets-changelog-github-compact': 1.0.0
+      '@svitejs/changesets-changelog-github-compact': 1.1.0
       '@types/jest': 29.0.3
       '@types/node': 14.18.32
       c8: 7.12.0
       esbuild: 0.15.5
       finepack: 2.10.15
-      git-authors-cli: 1.0.44
+      git-authors-cli: 1.0.45
       jest: 29.3.1_4f2ldd7um3b3u4eyvetyqsphze
       jest-watch-typeahead: 2.2.1_jest@29.3.1
       nano-staged: 0.8.0
-      prettier: 2.8.2
+      prettier: 2.8.3
       simple-git-hooks: 2.8.1
       ts-jest: 29.0.5_ociplneq27kwoqyqp5pnxhiuwi
       ts-node: 10.9.1_6yr256pmli274zrjafonbeyefq
-      turbo: 1.6.3
+      turbo: 1.7.0
       typescript: 4.9.4
 
   docs:
@@ -71,8 +71,8 @@ importers:
 
   packages/cookies:
     specifiers:
-      '@edge-runtime/format': workspace:1.1.0
-      '@edge-runtime/jest-environment': workspace:2.0.2
+      '@edge-runtime/format': workspace:2.0.0
+      '@edge-runtime/jest-environment': workspace:2.0.3
       '@types/cookie': 0.5.1
       tsup: '6'
     devDependencies:
@@ -108,7 +108,7 @@ importers:
 
   packages/jest-environment:
     specifiers:
-      '@edge-runtime/vm': workspace:2.0.2
+      '@edge-runtime/vm': workspace:2.0.3
       '@jest/environment': 28.1.3
       '@jest/fake-timers': 28.1.3
       '@jest/types': 28.1.3
@@ -141,7 +141,7 @@ importers:
 
   packages/node-utils:
     specifiers:
-      '@edge-runtime/primitives': workspace:2.0.2
+      '@edge-runtime/primitives': workspace:2.0.3
       '@types/test-listen': 1.1.0
       test-listen: 1.1.0
       tsup: '6'
@@ -153,9 +153,9 @@ importers:
 
   packages/ponyfill:
     specifiers:
-      '@edge-runtime/jest-environment': workspace:2.0.2
-      '@edge-runtime/primitives': workspace:2.0.2
-      '@edge-runtime/vm': workspace:2.0.2
+      '@edge-runtime/jest-environment': workspace:2.0.3
+      '@edge-runtime/primitives': workspace:2.0.3
+      '@edge-runtime/vm': workspace:2.0.3
       acorn: 8.8.0
       acorn-loose: 8.3.0
       acorn-walk: 8.2.0
@@ -169,7 +169,7 @@ importers:
 
   packages/primitives:
     specifiers:
-      '@edge-runtime/format': workspace:1.1.0
+      '@edge-runtime/format': workspace:2.0.0
       '@peculiar/webcrypto': 1.4.1
       '@ungap/structured-clone': 1.0.1
       aggregate-error-ponyfill: 1.1.0
@@ -201,8 +201,8 @@ importers:
 
   packages/runtime:
     specifiers:
-      '@edge-runtime/format': workspace:1.1.0
-      '@edge-runtime/vm': workspace:2.0.2
+      '@edge-runtime/format': workspace:2.0.0
+      '@edge-runtime/vm': workspace:2.0.3
       '@types/node-fetch': 2.x
       exit-hook: 2.2.1
       http-status: 1.5.3
@@ -228,13 +228,13 @@ importers:
 
   packages/types:
     specifiers:
-      '@edge-runtime/primitives': workspace:2.0.2
+      '@edge-runtime/primitives': workspace:2.0.3
     dependencies:
       '@edge-runtime/primitives': link:../primitives
 
   packages/user-agent:
     specifiers:
-      '@edge-runtime/jest-environment': workspace:2.0.2
+      '@edge-runtime/jest-environment': workspace:2.0.3
       '@types/ua-parser-js': 0.7.36
       tsup: '6'
       ua-parser-js: 1.0.2
@@ -246,7 +246,7 @@ importers:
 
   packages/vm:
     specifiers:
-      '@edge-runtime/primitives': workspace:2.0.2
+      '@edge-runtime/primitives': workspace:2.0.3
     dependencies:
       '@edge-runtime/primitives': link:../primitives
 
@@ -574,7 +574,7 @@ packages:
       fs-extra: 7.0.1
       lodash.startcase: 4.4.0
       outdent: 0.5.0
-      prettier: 2.8.2
+      prettier: 2.8.3
       resolve-from: 5.0.0
       semver: 5.7.1
     dev: true
@@ -663,8 +663,8 @@ packages:
       semver: 5.7.1
     dev: true
 
-  /@changesets/get-github-info/0.5.1:
-    resolution: {integrity: sha512-w2yl3AuG+hFuEEmT6j1zDlg7GQLM/J2UxTmk0uJBMdRqHni4zXGe/vUlPfLom5KfX3cRfHc0hzGvloDPjWFNZw==}
+  /@changesets/get-github-info/0.5.2:
+    resolution: {integrity: sha512-JppheLu7S114aEs157fOZDjFqUDpm7eHdq5E8SSR0gUBTEK0cNSHsrSR5a66xs0z3RWuo46QvA3vawp8BxDHvg==}
     dependencies:
       dataloader: 1.4.0
       node-fetch: 2.6.7
@@ -751,7 +751,7 @@ packages:
       '@changesets/types': 5.2.1
       fs-extra: 7.0.1
       human-id: 1.0.2
-      prettier: 2.8.2
+      prettier: 2.8.3
     dev: true
 
   /@cspotcode/source-map-support/0.8.1:
@@ -1677,11 +1677,11 @@ packages:
     dependencies:
       '@sinonjs/commons': 1.8.3
 
-  /@svitejs/changesets-changelog-github-compact/1.0.0:
-    resolution: {integrity: sha512-h9pvZ3Bkk1K9bVr707OlWMtjreBPmXnh/GsxbiIp3ukNu9RjmkxlLmyD+h/DCkr8e0l3UpOlDDAUvbUHYNfGnA==}
+  /@svitejs/changesets-changelog-github-compact/1.1.0:
+    resolution: {integrity: sha512-qhUGGDHcpbY2zpjW3SwqchuW8J/5EzlPFud7xNntHKA7f3a/mx5+g+ruJKFHSAiVZYo30PALt+AyhmPUNKH/Og==}
     engines: {node: ^14.13.1 || ^16.0.0 || >=18}
     dependencies:
-      '@changesets/get-github-info': 0.5.1
+      '@changesets/get-github-info': 0.5.2
       dotenv: 16.0.3
     transitivePeerDependencies:
       - encoding
@@ -3884,8 +3884,8 @@ packages:
       get-intrinsic: 1.1.2
     dev: true
 
-  /git-authors-cli/1.0.44:
-    resolution: {integrity: sha512-OD1mYIfWqxmL20IocGihWLYHNe5VsFWQT0SFGKZQM4/msXcnHQ9EX8qUeCc4WYNu/f50VMeMVxaOTwCohMKJhA==}
+  /git-authors-cli/1.0.45:
+    resolution: {integrity: sha512-qrTmTCRs0pBmxfHK2RAy3sxyLV6fXwR/7A5oKeidue7EVBX2UKKFbU7/ZmM94A5pTE4hV+myApt71RF2RZZZIA==}
     engines: {node: '>= 8'}
     hasBin: true
     dependencies:
@@ -6748,8 +6748,8 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /prettier/2.8.2:
-    resolution: {integrity: sha512-BtRV9BcncDyI2tsuS19zzhzoxD8Dh8LiCx7j7tHzrkz8GFXAexeWFdi22mjE1d16dftH2qNaytVxqiRTGlMfpw==}
+  /prettier/2.8.3:
+    resolution: {integrity: sha512-tJ/oJ4amDihPoufT5sM0Z1SKEuKay8LfVAMlbbhnnkvt6BUserZylqo2PN+p9KeljLr0OHa2rXHU1T8reeoTrw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
@@ -7959,65 +7959,65 @@ packages:
       yargs: 17.5.1
     dev: true
 
-  /turbo-darwin-64/1.6.3:
-    resolution: {integrity: sha512-QmDIX0Yh1wYQl0bUS0gGWwNxpJwrzZU2GIAYt3aOKoirWA2ecnyb3R6ludcS1znfNV2MfunP+l8E3ncxUHwtjA==}
+  /turbo-darwin-64/1.7.0:
+    resolution: {integrity: sha512-hSGAueSf5Ko8J67mpqjpt9FsP6ePn1nMcl7IVPoJq5dHsgX3anCP/BPlexJ502bNK+87DDyhQhJ/LPSJXKrSYQ==}
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-darwin-arm64/1.6.3:
-    resolution: {integrity: sha512-75DXhFpwE7CinBbtxTxH08EcWrxYSPFow3NaeFwsG8aymkWXF+U2aukYHJA6I12n9/dGqf7yRXzkF0S/9UtdyQ==}
+  /turbo-darwin-arm64/1.7.0:
+    resolution: {integrity: sha512-BLLOW5W6VZxk5+0ZOj5AO1qjM0P5isIgjbEuyAl8lHZ4s9antUbY4CtFrspT32XxPTYoDl4UjviPMcSsbcl3WQ==}
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-64/1.6.3:
-    resolution: {integrity: sha512-O9uc6J0yoRPWdPg9THRQi69K6E2iZ98cRHNvus05lZbcPzZTxJYkYGb5iagCmCW/pq6fL4T4oLWAd6evg2LGQA==}
+  /turbo-linux-64/1.7.0:
+    resolution: {integrity: sha512-aw2qxmfZa+kT87SB3GNUoFimqEPzTlzlRqhPgHuAAT6Uf0JHnmebPt4K+ZPtDNl5yfVmtB05bhHPqw+5QV97Yg==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-arm64/1.6.3:
-    resolution: {integrity: sha512-dCy667qqEtZIhulsRTe8hhWQNCJO0i20uHXv7KjLHuFZGCeMbWxB8rsneRoY+blf8+QNqGuXQJxak7ayjHLxiA==}
+  /turbo-linux-arm64/1.7.0:
+    resolution: {integrity: sha512-AJEx2jX+zO5fQtJpO3r6uhTabj4oSA5ZhB7zTs/rwu/XqoydsvStA4X8NDW4poTbOjF7DcSHizqwi04tSMzpJw==}
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-64/1.6.3:
-    resolution: {integrity: sha512-lKRqwL3mrVF09b9KySSaOwetehmGknV9EcQTF7d2dxngGYYX1WXoQLjFP9YYH8ZV07oPm+RUOAKSCQuDuMNhiA==}
+  /turbo-windows-64/1.7.0:
+    resolution: {integrity: sha512-ewj7PPv2uxqv0r31hgnBa3E5qwUu7eyVRP5M1gB/TJXfSHduU79gbxpKCyxIZv2fL/N2/3U7EPOQPSZxBAoljA==}
     cpu: [x64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-arm64/1.6.3:
-    resolution: {integrity: sha512-BXY1sDPEA1DgPwuENvDCD8B7Hb0toscjus941WpL8CVd10hg9pk/MWn9CNgwDO5Q9ks0mw+liDv2EMnleEjeNA==}
+  /turbo-windows-arm64/1.7.0:
+    resolution: {integrity: sha512-LzjOUzveWkvTD0jP8DBMYiAnYemmydsvqxdSmsUapHHJkl6wKZIOQNSO7pxsy+9XM/1/+0f9Y9F9ZNl5lePTEA==}
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo/1.6.3:
-    resolution: {integrity: sha512-FtfhJLmEEtHveGxW4Ye/QuY85AnZ2ZNVgkTBswoap7UMHB1+oI4diHPNyqrQLG4K1UFtCkjOlVoLsllUh/9QRw==}
+  /turbo/1.7.0:
+    resolution: {integrity: sha512-cwympNwQNnQZ/TffBd8yT0i0O10Cf/hlxccCYgUcwhcGEb9rDjE5thDbHoHw1hlJQUF/5ua7ERJe7Zr0lNE/ww==}
     hasBin: true
     requiresBuild: true
     optionalDependencies:
-      turbo-darwin-64: 1.6.3
-      turbo-darwin-arm64: 1.6.3
-      turbo-linux-64: 1.6.3
-      turbo-linux-arm64: 1.6.3
-      turbo-windows-64: 1.6.3
-      turbo-windows-arm64: 1.6.3
+      turbo-darwin-64: 1.7.0
+      turbo-darwin-arm64: 1.7.0
+      turbo-linux-64: 1.7.0
+      turbo-linux-arm64: 1.7.0
+      turbo-windows-64: 1.7.0
+      turbo-windows-arm64: 1.7.0
     dev: true
 
   /type-detect/4.0.8:

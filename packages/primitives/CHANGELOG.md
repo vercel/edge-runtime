@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 2.0.3
+
+### Patch Changes
+
+- Introducing @edge-runtime/node-utils to run edge-compliant code in Node.js environment ([#219](https://github.com/vercel/edge-runtime/pull/219))
+
 ## 2.0.2
 
 ### Patch Changes
