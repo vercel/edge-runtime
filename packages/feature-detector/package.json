@@ -27,15 +27,12 @@
     "ts-morph": "17.0.1"
   },
   "devDependencies": {
-    "axios": "0.27.2",
+    "axios": "1.2.3",
     "jest-text-transformer": "1.0.4",
     "next": "13",
     "react": "18",
     "react-dom": "18",
     "tsup": "6"
-  },
-  "peerDependencies": {
-    "esbuild": "^0.16.16"
   },
   "engines": {
     "node": ">=14"

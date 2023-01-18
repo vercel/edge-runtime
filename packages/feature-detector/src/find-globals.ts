@@ -11,7 +11,7 @@ export function findGlobals(
   project: Project = buildProject()
 ): string[] {
   const globals = new Set<string>()
-  const sourceFile = project.getSourceFileOrThrow(sourcePath)
+  const sourceFile = project.addSourceFileAtPath(sourcePath)
   addFileGlobals(sourceFile, globals)
   return [...globals]
 }

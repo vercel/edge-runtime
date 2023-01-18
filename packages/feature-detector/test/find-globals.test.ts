@@ -114,12 +114,14 @@ describe.each([
       join(fixtureFolder, 'with-axios.out.js')
     )
     expect(findGlobals(file.getFilePath(), project)).toEqual([
-      'navigator',
+      'self',
       'window',
-      'document',
+      'global',
       'Buffer',
+      'navigator',
+      'document',
+      'WorkerGlobalScope',
       'XMLHttpRequest',
-      'process',
     ])
   })
 })
