@@ -2,4 +2,4 @@
 '@edge-runtime/feature-detector': minor
 ---
 
-Introduces findDependencies() utility
+Introduces findGlobals() utility
