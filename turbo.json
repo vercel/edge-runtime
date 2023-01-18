@@ -3,6 +3,7 @@
   "globalEnv": ["RUNNER_OS", "NODE_VERSION"],
   "pipeline": {
     "build": {
+      "cache": false,
       "outputs": ["dist/**"],
       "dependsOn": ["^build"]
     },
