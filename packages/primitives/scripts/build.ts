@@ -50,6 +50,7 @@ async function bundlePackage() {
       process: JSON.stringify({ env: {}, versions: { node: '16.6.0' } }),
     },
     esbuildPlugins: [
+      // @ts-ignore
       alias({
         'util/types': resolve('src/patches/util-types.js'),
       }),
