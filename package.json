@@ -101,7 +101,7 @@
     "esbuild": "0.17.4",
     "finepack": "latest",
     "git-authors-cli": "latest",
-    "jest": "29.3.1",
+    "jest": "29.4.0",
     "jest-watch-typeahead": "2.2.2",
     "nano-staged": "latest",
     "prettier": "latest",
