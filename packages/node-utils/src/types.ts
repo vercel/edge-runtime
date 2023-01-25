@@ -13,7 +13,7 @@ export interface BuildDependencies {
 }
 
 export interface RequestOptions {
-  origin: string
+  defaultOrigin: string
 }
 
 export type NodeHandler = (

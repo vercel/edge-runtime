@@ -12,12 +12,29 @@ export function buildToRequest(dependencies: BuildDependencies) {
     request: IncomingMessage,
     options: RequestOptions
   ): Request {
-    return new Request(String(new URL(request.url || '/', options.origin)), {
-      method: request.method,
-      headers: toHeaders(request.headers),
-      body: !['HEAD', 'GET'].includes(request.method ?? '')
-        ? toReadableStream(request)
-        : null,
-    })
+    return new Request(
+      String(
+        new URL(
+          request.url || '/',
+          computeOrigin(request, options.defaultOrigin)
+        )
+      ),
+      {
+        method: request.method,
+        headers: toHeaders(request.headers),
+        body: !['HEAD', 'GET'].includes(request.method ?? '')
+          ? toReadableStream(request)
+          : null,
+      }
+    )
   }
+}
+
+function computeOrigin({ headers }: IncomingMessage, defaultOrigin: string) {
+  const authority = headers.host
+  if (!authority) {
+    return defaultOrigin
+  }
+  const [, port] = authority.split(':')
+  return `${port === '443' ? 'https' : 'http'}://${authority}`
 }

@@ -11,7 +11,7 @@ const transformToNode = buildToNodeHandler(
     Request: Edge.Request,
     Uint8Array: Uint8Array,
   },
-  { origin: 'http://example.com' }
+  { defaultOrigin: 'http://example.com' }
 )
 
 let server: TestServer
