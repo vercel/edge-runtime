@@ -8,6 +8,7 @@ const nodeRequestToRequest = buildToRequest({
   ReadableStream: EdgeRuntime.ReadableStream,
   Request: EdgeRuntime.Request,
   Uint8Array: Uint8Array,
+  FetchEvent: EdgeRuntime.FetchEvent,
 })
 
 let requestMap = new Map<string, Request>()
@@ -23,7 +24,9 @@ beforeAll(async () => {
         return
       }
 
-      const request = nodeRequestToRequest(incoming, { origin: server.url })
+      const request = nodeRequestToRequest(incoming, {
+        defaultOrigin: server.url,
+      })
       const [body, readable] = request.body?.tee() ?? []
       requestMap.set(requestId, new EdgeRuntime.Request(request, { body }))
       response.writeHead(200, { 'Content-Type': 'text/plain' })
@@ -70,50 +73,66 @@ it('maps the request headers`', async () => {
   )
 })
 
-describe('maps the request body', () => {
-  it('allows to read the body as text', async () => {
-    const request = await mapRequest(server.url, {
-      body: 'Hello World',
-      method: 'POST',
-    })
+it(`uses default origin as request url origin when there are no host header`, async () => {
+  const request = await mapRequest(server.url)
+  expect(request.url).toEqual(`${server.url}/`)
+})
 
-    expect(request.method).toEqual('POST')
-    expect(await request.text()).toEqual('Hello World')
+it(`uses request host header as request url origin`, async () => {
+  const host = 'vercel.com'
+  await expect(
+    mapRequest(server.url, { headers: { host } })
+  ).resolves.toHaveProperty('url', `http://${host}/`)
+  await expect(
+    mapRequest(server.url, { headers: { host: `${host}:6000` } })
+  ).resolves.toHaveProperty('url', `http://${host}:6000/`)
+  await expect(
+    mapRequest(server.url, { headers: { host: `${host}:443` } })
+  ).resolves.toHaveProperty('url', `https://${host}/`)
+})
+
+it('allows to read the body as text', async () => {
+  const request = await mapRequest(server.url, {
+    body: 'Hello World',
+    method: 'POST',
   })
 
-  it('allows to read the body as chunks', async () => {
-    const encoder = new EdgeRuntime.TextEncoder()
-    const body = new EdgeRuntime.ReadableStream<Uint8Array>({
-      start(controller) {
-        controller.enqueue(encoder.encode('Hello '))
-        setTimeout(() => {
-          controller.enqueue(encoder.encode('World'))
-          controller.close()
-        }, 500)
-      },
-    })
+  expect(request.method).toEqual('POST')
+  expect(await request.text()).toEqual('Hello World')
+})
 
-    const request = await mapRequest(server.url, {
-      method: 'POST',
-      body,
-    })
-
-    expect(request.method).toEqual('POST')
-    expect(await request.text()).toEqual('Hello World')
+it('allows to read the body as chunks', async () => {
+  const encoder = new EdgeRuntime.TextEncoder()
+  const body = new EdgeRuntime.ReadableStream<Uint8Array>({
+    start(controller) {
+      controller.enqueue(encoder.encode('Hello '))
+      setTimeout(() => {
+        controller.enqueue(encoder.encode('World'))
+        controller.close()
+      }, 500)
+    },
   })
 
-  it('does not allow to read the body twice', async () => {
-    const request = await mapRequest(server.url, {
-      body: 'Hello World',
-      method: 'POST',
-    })
-
-    expect(request.method).toEqual('POST')
-    expect(await request.text()).toEqual('Hello World')
-    await expect(request.text()).rejects.toThrowError(
-      'The body has already been consumed.'
-    )
+  const request = await mapRequest(server.url, {
+    method: 'POST',
+    body,
   })
+
+  expect(request.method).toEqual('POST')
+  expect(await request.text()).toEqual('Hello World')
+})
+
+it('does not allow to read the body twice', async () => {
+  const request = await mapRequest(server.url, {
+    body: 'Hello World',
+    method: 'POST',
+  })
+
+  expect(request.method).toEqual('POST')
+  expect(await request.text()).toEqual('Hello World')
+  await expect(request.text()).rejects.toThrowError(
+    'The body has already been consumed.'
+  )
 })
 
 async function mapRequest(input: string, init: RequestInit = {}) {
