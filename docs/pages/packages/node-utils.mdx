@@ -68,6 +68,7 @@ List of Web globals used by the transformer function:
 - [Headers](https://developer.mozilla.org/en-US/docs/Web/API/Headers)
 - [ReadableStream](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream)
 - [Uint8Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
+- [FetchEvent](https://developer.mozilla.org/en-US/docs/Web/API/FetchEvent)
 
 When running in Node.js 18+ (or Node.js 16 with [--experimental-fetch](https://nodejs.org/docs/latest-v16.x/api/cli.html#node_optionsoptions)), you may pass the ones from `global` scope.
 
@@ -103,6 +104,13 @@ In case no host is provided, this default origin will be used instead.
 
 Builds a transformer function to turn a Node.js [IncomingMessage](https://nodejs.org/api/http.html#class-httpincomingmessage) into a Web [Request].
 It needs globals Web contstructor a [dependencies](#dependencies-object), as well as [options](#options-object) to handle incoming url.
+
+### buildToFetchEvent(dependencies): toFetchEvent(request: Request): FetchEvent
+
+Builds a transformer function to build a fetch event from a web [Request].
+The returned event is linked to provided request, and has a mocked [waitUntil()](https://developer.mozilla.org/en-US/docs/Web/API/ExtendableEvent/waitUntil) method, which throws on access.
+
+It needs globals Web contstructor a [dependencies](#dependencies-object).
 
 ### toOutgoingHeaders(headers: Headers): OutgoingHttpHeaders
 

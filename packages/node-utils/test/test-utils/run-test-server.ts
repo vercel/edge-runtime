@@ -21,7 +21,20 @@ export interface TestServer {
 export async function runTestServer(
   options: ServerOptions
 ): Promise<TestServer> {
-  const server = createServer(options.handler)
+  const server = createServer((req, res) => {
+    try {
+      const result = options.handler(req, res)
+      if (result?.catch) {
+        result.catch((error) => {
+          res.statusCode = 500
+          res.end(error.toString())
+        })
+      }
+    } catch (error) {
+      res.statusCode = 500
+      res.end(error?.toString())
+    }
+  })
   const url = await listen(server)
   return {
     close: getKillServer(server),

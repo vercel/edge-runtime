@@ -5,6 +5,7 @@ import type {
   BuildDependencies,
   RequestOptions,
 } from '../types'
+import { buildToFetchEvent } from '../node-to-edge/fetch-event'
 import { buildToRequest } from '../node-to-edge/request'
 import { mergeIntoServerResponse, toOutgoingHeaders } from './headers'
 import { toToReadable } from './stream'
@@ -14,15 +15,20 @@ export function buildToNodeHandler(
   options: RequestOptions
 ) {
   const toRequest = buildToRequest(dependencies)
+  const toFetchEvent = buildToFetchEvent(dependencies)
   return function toNodeHandler(webHandler: WebHandler): NodeHandler {
-    return (request: IncomingMessage, response: ServerResponse) => {
-      const maybePromise = webHandler(toRequest(request, options))
+    return (
+      incomingMessage: IncomingMessage,
+      serverResponse: ServerResponse
+    ) => {
+      const request = toRequest(incomingMessage, options)
+      const maybePromise = webHandler(request, toFetchEvent(request))
       if (maybePromise instanceof Promise) {
-        maybePromise.then((webResponse) =>
-          toServerResponse(webResponse, response)
+        maybePromise.then((response) =>
+          toServerResponse(response, serverResponse)
         )
       } else {
-        toServerResponse(maybePromise, response)
+        toServerResponse(maybePromise, serverResponse)
       }
     }
   }

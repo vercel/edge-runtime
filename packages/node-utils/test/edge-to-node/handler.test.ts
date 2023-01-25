@@ -10,6 +10,7 @@ const transformToNode = buildToNodeHandler(
     ReadableStream: Edge.ReadableStream,
     Request: Edge.Request,
     Uint8Array: Uint8Array,
+    FetchEvent: Edge.FetchEvent,
   },
   { defaultOrigin: 'http://example.com' }
 )
@@ -227,5 +228,21 @@ it('consumes incoming headers', async () => {
     status: 200,
     statusText: 'OK',
     headers,
+  })
+})
+
+it('fails when using waitUntil()', async () => {
+  server = await runTestServer({
+    handler: transformToNode((req, evt) => {
+      evt.waitUntil(Promise.resolve())
+      return new Edge.Response('ok')
+    }),
+  })
+
+  const response = await server.fetch('/')
+  expect(await serializeResponse(response)).toMatchObject({
+    status: 500,
+    statusText: 'Internal Server Error',
+    text: 'Error: waitUntil is not supported yet.',
   })
 })
