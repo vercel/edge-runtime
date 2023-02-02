@@ -85,7 +85,7 @@ export function createHandler<T extends EdgeContext>(options: Options<T>) {
         options.logger?.debug(`${subject} → ${code} in ${time}`)
         res.end()
       } finally {
-        if (!res.finished) {
+        if (!res.writableEnded) {
           res.end()
         }
       }
