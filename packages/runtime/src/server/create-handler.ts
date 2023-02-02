@@ -5,8 +5,9 @@ import type { EdgeContext } from '@edge-runtime/vm'
 import { consumeUint8ArrayReadableStream } from './body-streams'
 import { getClonableBodyStream } from './body-streams'
 import prettyMs from 'pretty-ms'
-import status from 'http-status'
 import timeSpan from 'time-span'
+
+import { STATUS_CODES } from 'http'
 
 export interface Options<T extends EdgeContext> {
   /**
@@ -80,7 +81,7 @@ export function createHandler<T extends EdgeContext>(options: Options<T>) {
           .match(/[a-zA-Z]+|[0-9]+/g)
           ?.join(' ')}`
 
-        const code = `${res.statusCode} ${status[res.statusCode]}`
+        const code = `${res.statusCode} ${STATUS_CODES[res.statusCode]}`
         options.logger?.debug(`${subject} → ${code} in ${time}`)
         res.end()
       } finally {
