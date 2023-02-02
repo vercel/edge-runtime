@@ -27,16 +27,15 @@
     "@edge-runtime/format": "workspace:2.0.0",
     "@edge-runtime/vm": "workspace:2.0.3",
     "exit-hook": "2.2.1",
-    "http-status": "1.5.3",
     "mri": "1.2.0",
     "picocolors": "1.0.0",
-    "pretty-bytes": "5.6.0",
-    "pretty-ms": "7.0.1",
-    "time-span": "4.0.0"
+    "pretty-bytes": "6.0.0",
+    "pretty-ms": "8.0.0",
+    "time-span": "5.1.0"
   },
   "devDependencies": {
     "@types/node-fetch": "2.x",
-    "node-fetch": "2"
+    "node-fetch": "3"
   },
   "engines": {
     "node": ">=14"
