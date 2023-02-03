@@ -27,7 +27,6 @@
     "@edge-runtime/format": "workspace:2.0.0",
     "@edge-runtime/vm": "workspace:2.0.3",
     "exit-hook": "2.2.1",
-    "http-status": "1.5.3",
     "mri": "1.2.0",
     "picocolors": "1.0.0",
     "pretty-bytes": "5.6.0",
