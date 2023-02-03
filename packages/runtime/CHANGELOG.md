@@ -1,5 +1,11 @@
 # edge-runtime
 
+## 2.0.4
+
+### Patch Changes
+
+- removed unnecessary `http-status` dependency. ([#252](https://github.com/vercel/edge-runtime/pull/252))
+
 ## 2.0.3
 
 ### Patch Changes
