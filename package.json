@@ -98,7 +98,7 @@
     "@types/jest": "29.0.3",
     "@types/node": "14",
     "c8": "latest",
-    "esbuild": "0.17.5",
+    "esbuild": "0.17.6",
     "finepack": "latest",
     "git-authors-cli": "latest",
     "jest": "29.3.1",
