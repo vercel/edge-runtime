@@ -125,3 +125,18 @@ test('formatting with @edge-runtime/format', () => {
     `"ResponseCookies {"a":{"name":"a","value":"1","httpOnly":true,"path":"/"},"b":{"name":"b","value":"2","sameSite":"lax","path":"/"}}"`
   )
 })
+
+test('splitting multiple set-cookie', () => {
+  const headers = new Headers()
+  headers.set('set-cookie', 'foo=bar')
+  headers.append('set-cookie', 'fooz=barz')
+  const cookies = new ResponseCookies(headers)
+  expect(cookies.get('foo')?.value).toBe('bar')
+  expect(cookies.get('fooz')?.value).toBe('barz')
+
+  const headers2 = new Headers({ 'set-cookie': 'foo=bar' })
+  headers2.set('set-cookie', 'fooz=barz') // override on purpose
+  const cookies2 = new ResponseCookies(headers2)
+  expect(cookies2.get('foo')?.value).toBe(undefined)
+  expect(cookies2.get('fooz')?.value).toBe('barz')
+})

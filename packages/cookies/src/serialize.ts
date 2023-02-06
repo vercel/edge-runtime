@@ -15,7 +15,7 @@ export function serialize(c: ResponseCookie | RequestCookie): string {
 }
 
 /**
- * Parse a `Cookie` or `Set-Cookie header value
+ * Parse a `Cookie` or `Set-Cookie` header value
  */
 export function parseCookieString(cookie: string): Map<string, string> {
   const map = new Map<string, string>()
