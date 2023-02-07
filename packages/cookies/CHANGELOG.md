@@ -1,5 +1,11 @@
 # @edge-runtime/cookies
 
+## 3.0.4
+
+### Patch Changes
+
+- Only split on first occurrence of "=" ([#259](https://github.com/vercel/edge-runtime/pull/259))
+
 ## 3.0.3
 
 ### Patch Changes
