@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 2.0.4
+
+### Patch Changes
+
+- build: update dependencies ([`029c6af`](https://github.com/vercel/edge-runtime/commit/029c6afe2b1a56a1c105663de6b0d6715a7b4f0a))
+
 ## 2.0.3
 
 ### Patch Changes

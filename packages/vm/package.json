@@ -2,7 +2,7 @@
   "name": "@edge-runtime/vm",
   "description": "Low level bindings for creating Web Standard contexts.",
   "homepage": "https://edge-runtime.vercel.app/packages/vm",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "main": "dist/index.js",
   "repository": {
     "directory": "packages/vm",
@@ -23,7 +23,7 @@
     "web"
   ],
   "dependencies": {
-    "@edge-runtime/primitives": "workspace:2.0.3"
+    "@edge-runtime/primitives": "workspace:2.0.4"
   },
   "engines": {
     "node": ">=14"
