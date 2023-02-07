@@ -1,5 +1,6 @@
 import { RequestCookies } from '../src/request-cookies'
 import { createFormat } from '@edge-runtime/format'
+import { parseCookieString } from '../src/serialize'
 
 describe('input parsing', () => {
   test('empty cookie header element', () => {
@@ -89,3 +90,40 @@ test('formatting with @edge-runtime/format', () => {
 function requestHeadersWithCookies(cookies: string) {
   return new Headers({ cookie: cookies })
 }
+
+function mapToCookieString(map: Map<string, string>) {
+  let s = ''
+  for (const [k, v] of map.entries()) {
+    s += `${k}=${v};`
+  }
+  return s
+}
+
+describe('parse cookie string', () => {
+  it('with a plain value', async () => {
+    const input = new Map([['foo', 'bar']])
+    const result = parseCookieString(mapToCookieString(input))
+    expect(result).toEqual(input)
+  })
+  it('with multiple `=`', async () => {
+    const input = new Map([['foo', 'bar=']])
+    const result = parseCookieString(mapToCookieString(input))
+    expect(result).toEqual(input)
+  })
+  it('with multiple plain values', async () => {
+    const input = new Map([
+      ['foo', 'bar'],
+      ['baz', 'qux'],
+    ])
+    const result = parseCookieString(mapToCookieString(input))
+    expect(result).toEqual(input)
+  })
+  it('with multiple values with `=`', async () => {
+    const input = new Map([
+      ['foo', 'bar=='],
+      ['baz', '=qux'],
+    ])
+    const result = parseCookieString(mapToCookieString(input))
+    expect(result).toEqual(input)
+  })
+})

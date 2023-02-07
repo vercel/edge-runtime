@@ -14,18 +14,17 @@ export function serialize(c: ResponseCookie | RequestCookie): string {
   return `${c.name}=${encodeURIComponent(c.value ?? '')}; ${attrs.join('; ')}`
 }
 
-/**
- * Parse a `Cookie` or `Set-Cookie` header value
- */
-export function parseCookieString(cookie: string): Map<string, string> {
+/** Parse a `Cookie` header value */
+export function parseCookieString(cookie: string) {
   const map = new Map<string, string>()
 
   for (const pair of cookie.split(/; */)) {
     if (!pair) continue
-    const [key, value] = pair.split('=', 2)
+    const splitAt = pair.indexOf('=')
+    const [key, value] = [pair.slice(0, splitAt), pair.slice(splitAt + 1)]
     try {
       map.set(key, decodeURIComponent(value ?? 'true'))
-    } catch (err) {
+    } catch {
       // ignore invalid encoded values
     }
   }
@@ -33,9 +32,7 @@ export function parseCookieString(cookie: string): Map<string, string> {
   return map
 }
 
-/**
- * Parse a `Set-Cookie` header value
- */
+/** Parse a `Set-Cookie` header value */
 export function parseSetCookieString(
   setCookie: string
 ): undefined | ResponseCookie {
