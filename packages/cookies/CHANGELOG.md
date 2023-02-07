@@ -1,5 +1,13 @@
 # @edge-runtime/cookies
 
+## 3.0.3
+
+### Patch Changes
+
+- Be able to split `set-cookie` without `getAll` ([#255](https://github.com/vercel/edge-runtime/pull/255))
+
+  Ref: https://github.com/whatwg/fetch/issues/973
+
 ## 3.0.2
 
 ### Patch Changes
