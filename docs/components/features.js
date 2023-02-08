@@ -1,16 +1,16 @@
 import {
-  ArrowsExpandIcon,
-  ChipIcon,
-  CloudUploadIcon,
+  ArrowPathIcon,
   FingerPrintIcon,
-  LightningBoltIcon,
-  RefreshIcon,
-} from '@heroicons/react/outline'
+  CloudArrowUpIcon,
+  BoltIcon,
+  CpuChipIcon,
+  ArrowsPointingOutIcon,
+} from '@heroicons/react/24/outline'
 
 const features = [
   {
     name: 'Web APIs',
-    icon: RefreshIcon,
+    icon: ArrowPathIcon,
   },
   {
     name: 'Context isolation',
@@ -18,22 +18,22 @@ const features = [
   },
   {
     name: 'Easy to extend',
-    icon: CloudUploadIcon,
+    icon: CloudArrowUpIcon,
   },
   {
     name: 'Lightweight',
     description: `Execute builds using every core at maximum parallelism without wasting idle CPUs.`,
-    icon: LightningBoltIcon,
+    icon: BoltIcon,
   },
   {
     name: 'Written in TypeScript',
     description: `Define the relationships between your tasks and then let Turborepo optimize what to build and when.`,
-    icon: ArrowsExpandIcon,
+    icon: ArrowsPointingOutIcon,
   },
   {
     name: 'Node.js 14 or higher',
     description: `Turborepo doesn't interfere with your runtime code or touch your sourcemaps. It does what it does and then gets out of your way.`,
-    icon: ChipIcon,
+    icon: CpuChipIcon,
   },
 ]
 
