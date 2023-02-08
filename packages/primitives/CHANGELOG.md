@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 2.0.5
+
+### Patch Changes
+
+- We are already falling back in code, the types just need to reflect this correctly ([#262](https://github.com/vercel/edge-runtime/pull/262))
+
 ## 2.0.4
 
 ### Patch Changes
