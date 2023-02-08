@@ -12,9 +12,7 @@ export function toOutgoingHeaders(
       outputHeaders[name] = value
       if (name.toLowerCase() === 'set-cookie') {
         outputHeaders[name] =
-          'getAll' in headers
-            ? headers.getAll('set-cookie')
-            : splitCookiesString(value)
+          headers.getAll?.('set-cookie') ?? splitCookiesString(value)
       }
     }
   }
