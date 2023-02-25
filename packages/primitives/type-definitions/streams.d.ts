@@ -15,6 +15,8 @@ declare class ReadableStreamBYOBReader {
 declare const ReadableStreamConstructor: typeof ReadableStream
 declare const ReadableStreamBYOBReaderConstructor: typeof ReadableStreamBYOBReader
 declare const ReadableStreamDefaultReaderConstructor: typeof ReadableStreamDefaultReader
+declare const TextDecoderStreamConstructor: typeof TextDecoderStream
+declare const TextEncoderStreamConstructor: typeof TextEncoderStream
 declare const TransformStreamConstructor: typeof TransformStream
 declare const WritableStreamConstructor: typeof WritableStream
 declare const WritableStreamDefaultWriterConstructor: typeof WritableStreamDefaultWriter
@@ -22,6 +24,8 @@ declare const WritableStreamDefaultWriterConstructor: typeof WritableStreamDefau
 export { ReadableStreamConstructor as ReadableStream }
 export { ReadableStreamBYOBReaderConstructor as ReadableStreamBYOBReader }
 export { ReadableStreamDefaultReaderConstructor as ReadableStreamDefaultReader }
+export { TextDecoderStreamConstructor as TextDecoderStream }
+export { TextEncoderStreamConstructor as TextEncoderStream }
 export { TransformStreamConstructor as TransformStream }
 export { WritableStreamConstructor as WritableStream }
 export { WritableStreamDefaultWriterConstructor as WritableStreamDefaultWriter }

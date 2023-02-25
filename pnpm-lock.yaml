@@ -171,6 +171,7 @@ importers:
     specifiers:
       '@edge-runtime/format': workspace:2.0.0
       '@peculiar/webcrypto': 1.4.1
+      '@stardazed/streams-text-encoding': 1.0.2
       '@types/multer': 1.4.7
       '@types/test-listen': 1.1.0
       '@ungap/structured-clone': 1.0.1
@@ -191,6 +192,7 @@ importers:
     devDependencies:
       '@edge-runtime/format': link:../format
       '@peculiar/webcrypto': 1.4.1
+      '@stardazed/streams-text-encoding': 1.0.2
       '@types/multer': 1.4.7
       '@types/test-listen': 1.1.0
       '@ungap/structured-clone': 1.0.1
@@ -1870,6 +1872,10 @@ packages:
     resolution: {integrity: sha512-BPS4ynJW/o92PUR4wgriz2Ud5gpST5vz6GQfMixEDK0Z8ZCUv2M7SkBLykH56T++Xs+8ln9zTGbOvNGIe02/jw==}
     dependencies:
       '@sinonjs/commons': 1.8.3
+
+  /@stardazed/streams-text-encoding/1.0.2:
+    resolution: {integrity: sha512-f2Z15BId3t44a/u21yYSGXFAkCyKocmAyduoAy7swnZ4xIfbaZlOWsgly/jDNNOuj6hYQN72UaBRe3Z/tOHfqg==}
+    dev: true
 
   /@svitejs/changesets-changelog-github-compact/1.1.0:
     resolution: {integrity: sha512-qhUGGDHcpbY2zpjW3SwqchuW8J/5EzlPFud7xNntHKA7f3a/mx5+g+ruJKFHSAiVZYo30PALt+AyhmPUNKH/Og==}
