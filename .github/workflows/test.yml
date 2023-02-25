@@ -44,9 +44,9 @@ jobs:
 
       - run: pnpm install --recursive --loglevel=error
 
-      - run: pnpm build
+      - run: pnpm build --filter='!@edge-runtime/docs'
 
-      - run: pnpm test
+      - run: pnpm test --filter='!@edge-runtime/docs'
 
       - name: Generate coverage
         run: pnpm coverage
