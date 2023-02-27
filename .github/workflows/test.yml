@@ -46,7 +46,7 @@ jobs:
 
       - run: pnpm build --filter='!@edge-runtime/docs'
 
-      - run: pnpm test --filter='!@edge-runtime/docs'
+      - run: pnpm run test --filter='!@edge-runtime/docs'
 
       - name: Generate coverage
         run: pnpm coverage
