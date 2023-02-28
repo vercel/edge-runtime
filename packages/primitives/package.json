@@ -33,7 +33,7 @@
     "esbuild-plugin-alias": "latest",
     "event-target-shim": "6.0.2",
     "formdata-node": "5.0.0",
-    "http-body": "1.0.1",
+    "http-body": "1.0.2",
     "multer": "1.4.5-lts.1",
     "test-listen": "1.1.0",
     "text-encoding": "0.7.0",
