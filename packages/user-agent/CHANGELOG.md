@@ -1,5 +1,11 @@
 # @edge-runtime/user-agent
 
+## 1.1.1
+
+### Patch Changes
+
+- build: update dependencies ([#271](https://github.com/vercel/edge-runtime/pull/271))
+
 ## 1.1.0
 
 ### Patch Changes

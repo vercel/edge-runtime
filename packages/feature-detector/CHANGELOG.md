@@ -1,5 +1,11 @@
 # @edge-runtime/feature-detector
 
+## 1.0.1
+
+### Patch Changes
+
+- build: update dependencies ([#271](https://github.com/vercel/edge-runtime/pull/271))
+
 ## 1.0.0
 
 ### Minor Changes
