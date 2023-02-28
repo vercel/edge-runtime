@@ -28,7 +28,7 @@ importers:
       '@svitejs/changesets-changelog-github-compact': 1.1.0
       '@types/jest': 29.0.3
       '@types/node': 14.18.32
-      c8: 7.12.0
+      c8: 7.13.0
       esbuild: 0.17.5
       finepack: 2.10.15
       git-authors-cli: 1.0.45
@@ -39,7 +39,7 @@ importers:
       simple-git-hooks: 2.8.1
       ts-jest: 29.0.5_6qbjmobtf6dep6xdreexz7rbsq
       ts-node: 10.9.1_gvautt7gdeuivcibnat6klxaoe
-      turbo: 1.7.4
+      turbo: 1.8.3
       typescript: 4.9.5
 
   docs:
@@ -72,7 +72,7 @@ importers:
   packages/cookies:
     specifiers:
       '@edge-runtime/format': workspace:2.0.0
-      '@edge-runtime/jest-environment': workspace:2.0.5
+      '@edge-runtime/jest-environment': workspace:2.0.6
       '@types/cookie': 0.5.1
       tsup: '6'
     devDependencies:
@@ -108,7 +108,7 @@ importers:
 
   packages/jest-environment:
     specifiers:
-      '@edge-runtime/vm': workspace:2.0.5
+      '@edge-runtime/vm': workspace:2.1.0
       '@jest/environment': 28.1.3
       '@jest/fake-timers': 28.1.3
       '@jest/types': 28.1.3
@@ -141,7 +141,7 @@ importers:
 
   packages/node-utils:
     specifiers:
-      '@edge-runtime/primitives': workspace:2.0.5
+      '@edge-runtime/primitives': workspace:2.1.0
       '@types/test-listen': 1.1.0
       test-listen: 1.1.0
       tsup: '6'
@@ -153,9 +153,9 @@ importers:
 
   packages/ponyfill:
     specifiers:
-      '@edge-runtime/jest-environment': workspace:2.0.5
-      '@edge-runtime/primitives': workspace:2.0.5
-      '@edge-runtime/vm': workspace:2.0.5
+      '@edge-runtime/jest-environment': workspace:2.0.6
+      '@edge-runtime/primitives': workspace:2.1.0
+      '@edge-runtime/vm': workspace:2.1.0
       acorn: 8.8.0
       acorn-loose: 8.3.0
       acorn-walk: 8.2.0
@@ -214,7 +214,7 @@ importers:
   packages/runtime:
     specifiers:
       '@edge-runtime/format': workspace:2.0.0
-      '@edge-runtime/vm': workspace:2.0.5
+      '@edge-runtime/vm': workspace:2.1.0
       '@types/node-fetch': 2.x
       exit-hook: 2.2.1
       mri: 1.2.0
@@ -238,13 +238,13 @@ importers:
 
   packages/types:
     specifiers:
-      '@edge-runtime/primitives': workspace:2.0.5
+      '@edge-runtime/primitives': workspace:2.1.0
     dependencies:
       '@edge-runtime/primitives': link:../primitives
 
   packages/user-agent:
     specifiers:
-      '@edge-runtime/jest-environment': workspace:2.0.5
+      '@edge-runtime/jest-environment': workspace:2.0.6
       '@types/ua-parser-js': 0.7.36
       tsup: '6'
       ua-parser-js: 1.0.2
@@ -256,7 +256,7 @@ importers:
 
   packages/vm:
     specifiers:
-      '@edge-runtime/primitives': workspace:2.0.5
+      '@edge-runtime/primitives': workspace:2.1.0
     dependencies:
       '@edge-runtime/primitives': link:../primitives
 
@@ -2632,8 +2632,8 @@ packages:
       streamsearch: 1.1.0
     dev: true
 
-  /c8/7.12.0:
-    resolution: {integrity: sha512-CtgQrHOkyxr5koX1wEUmN/5cfDa2ckbHRA4Gy5LAL0zaCFtVWJS5++n+w4/sr2GWGerBxgTjpKeDclk/Qk6W/A==}
+  /c8/7.13.0:
+    resolution: {integrity: sha512-/NL4hQTv1gBL6J6ei80zu3IiTrmePDKXKXOTLpHvcIWZTVYQlDhVWjjWvkhICylE8EwwnMVzDZugCvdx0/DIIA==}
     engines: {node: '>=10.12.0'}
     hasBin: true
     dependencies:
@@ -8563,65 +8563,65 @@ packages:
       yargs: 17.6.2
     dev: true
 
-  /turbo-darwin-64/1.7.4:
-    resolution: {integrity: sha512-ZyYrQlUl8K/mYN1e6R7bEhPPYjMakz0DYMaexkyD7TAijQtWmTSd4a+I7VknOYNEssnUZ/v41GU3gPV1JAzxxQ==}
+  /turbo-darwin-64/1.8.3:
+    resolution: {integrity: sha512-bLM084Wr17VAAY/EvCWj7+OwYHvI9s/NdsvlqGp8iT5HEYVimcornCHespgJS/yvZDfC+mX9EQkn3V2JmYgGGw==}
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-darwin-arm64/1.7.4:
-    resolution: {integrity: sha512-CKIXg9uqp1a+Yeq/c4U0alPOqvwLUq5SBZf1PGYhGqJsfG0fRBtJfkUjHuBsuJIOGXg8rCmcGSWGIsIF6fqYuw==}
+  /turbo-darwin-arm64/1.8.3:
+    resolution: {integrity: sha512-4oZjXtzakopMK110kue3z/hqu3WLv+eDLZOX1NGdo49gqca9BeD8GbH+sXpAp6tqyeuzpss+PIliVYuyt7LgbA==}
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-64/1.7.4:
-    resolution: {integrity: sha512-RIUl4RUFFyzD2T024vL7509Ygwcw+SEa8NOwPfaN6TtJHK7RZV/SBP3fLNVOptG9WRLnOWX3OvsLMbiOqDLLyA==}
+  /turbo-linux-64/1.8.3:
+    resolution: {integrity: sha512-uvX2VKotf5PU14FCxJA5iHItPQno2JWzerMd+g3/h/Asay6dvxvtVjc39MQeGT0H5njSvzVKFkT+3/5q8lgOEg==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-arm64/1.7.4:
-    resolution: {integrity: sha512-Bg65F0AjYYYxqE6RPf2H5TIGuA/EyWMeGOATHVSZOWAbYcnG3Ly03GZii8AHnUi7ntWBdjwvXf/QbOS1ayNB6A==}
+  /turbo-linux-arm64/1.8.3:
+    resolution: {integrity: sha512-E1p+oH3XKMaPS4rqWhYsL4j2Pzc0d/9P5KU7Kn1kqVLo2T3iRA7n2KVULEieUNE0nTH+aIJPXYXOpqCI5wFJaA==}
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-64/1.7.4:
-    resolution: {integrity: sha512-rTaV50XZ2BRxRHOHqt1UsWfeDmYLbn8UKE6g2D2ED+uW+kmnTvR9s01nmlGWd2sAuWcRYQyQ2V+O09VfKPKcQw==}
+  /turbo-windows-64/1.8.3:
+    resolution: {integrity: sha512-cnzAytHtoLXd0J7aNzRpZFpL/GTjcBmkvAPlbOdf/Pl1iwS4qzGrudZQ+OM1lmLgLIfBPIavsGHBknTwTNib4A==}
     cpu: [x64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-arm64/1.7.4:
-    resolution: {integrity: sha512-h8sxdKPvHTnWUPtwnYszFMmSO0P/iUUwmYY9n7iYThA71zSao28UeZ0H0Gw75cY3MPjvkjn2C4EBAUGPjuZJLw==}
+  /turbo-windows-arm64/1.8.3:
+    resolution: {integrity: sha512-ulIiItNm2w/zYJdD5/oAzjzNns1IjbpweRzpsE8tLXaWwo6+fnXXkyloUug0IUhcd2k6fJXfoiDZfygqpOVuXg==}
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo/1.7.4:
-    resolution: {integrity: sha512-8RLedDoUL0kkVKWEZ/RMM70BvKLyDFen06QuKKhYC2XNOfNKqFDqzIdcY/vGick869bNIWalChoy4O07k0HLsA==}
+  /turbo/1.8.3:
+    resolution: {integrity: sha512-zGrkU1EuNFmkq6iky6LcMqD4h0OLE8XysVFxQWRIZbcTNnf0XAycbsbeEyiJpiWeqb7qtg2bVuY9EYcNoNhVuQ==}
     hasBin: true
     requiresBuild: true
     optionalDependencies:
-      turbo-darwin-64: 1.7.4
-      turbo-darwin-arm64: 1.7.4
-      turbo-linux-64: 1.7.4
-      turbo-linux-arm64: 1.7.4
-      turbo-windows-64: 1.7.4
-      turbo-windows-arm64: 1.7.4
+      turbo-darwin-64: 1.8.3
+      turbo-darwin-arm64: 1.8.3
+      turbo-linux-64: 1.8.3
+      turbo-linux-arm64: 1.8.3
+      turbo-windows-64: 1.8.3
+      turbo-windows-arm64: 1.8.3
     dev: true
 
   /type-detect/4.0.8:

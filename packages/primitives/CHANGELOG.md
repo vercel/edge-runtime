@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 2.1.0
+
+### Minor Changes
+
+- feat(encoding): add `TextDecoderStream` and `TextEncoderStream` ([#267](https://github.com/vercel/edge-runtime/pull/267))
+
 ## 2.0.5
 
 ### Patch Changes
