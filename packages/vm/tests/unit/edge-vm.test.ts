@@ -212,6 +212,11 @@ it('uses the same builtins in polyfills as in VM', () => {
   expect(
     new EdgeVM().evaluate(`(new TextEncoder().encode('abc')) instanceof Object`)
   ).toBe(true)
+  expect(
+    new EdgeVM().evaluate(
+      `(new TextEncoderStream()).writable instanceof WritableStream`
+    )
+  ).toBe(true)
   expect(new EdgeVM().evaluate(`(new Uint8Array()) instanceof Object`)).toBe(
     true
   )
@@ -352,7 +357,9 @@ describe('contains all required primitives', () => {
     { api: 'Symbol' },
     { api: 'SyntaxError' },
     { api: 'TextDecoder' },
+    { api: 'TextDecoderStream' },
     { api: 'TextEncoder' },
+    { api: 'TextEncoderStream' },
     { api: 'TransformStream' },
     { api: 'TypeError' },
     { api: 'Uint8Array' },

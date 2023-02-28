@@ -73,7 +73,9 @@ export type EdgeContext = VMContext & {
   structuredClone: typeof EdgePrimitives.structuredClone
   SubtleCrypto: typeof EdgePrimitives.SubtleCrypto
   TextDecoder: typeof EdgePrimitives.TextDecoder
+  TextDecoderStream: typeof EdgePrimitives.TextDecoderStream
   TextEncoder: typeof EdgePrimitives.TextEncoder
+  TextEncoderStream: typeof EdgePrimitives.TextEncoderStream
   TransformStream: typeof EdgePrimitives.TransformStream
   URL: typeof EdgePrimitives.URL
   URLPattern: typeof EdgePrimitives.URLPattern
@@ -127,6 +129,8 @@ function addPrimitives(context: VMContext) {
       'ReadableStream',
       'ReadableStreamBYOBReader',
       'ReadableStreamDefaultReader',
+      'TextDecoderStream',
+      'TextEncoderStream',
       'TransformStream',
       'WritableStream',
       'WritableStreamDefaultWriter',
