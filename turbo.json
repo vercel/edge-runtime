@@ -19,15 +19,14 @@
         "cache/**",
         "console/**",
         "crypto/**",
+        "dist/**",
         "encoding/**",
         "events/**",
         "fetch/**",
         "streams/**",
         "structured-clone/**",
         "types/**",
-        "url/**",
-        "dist/**",
-        "types/**"
+        "url/**"
       ]
     },
     "test": {

@@ -124,7 +124,7 @@
     "lockfile": "pnpm install --lockfile && git add pnpm-lock.yaml && git commit -m \"build: regenerate lock\"",
     "postinstall": "./node_modules/.bin/simple-git-hooks",
     "prebuild": "pnpm -r run clean:build",
-    "test": "c8 -x 'packages/primitives/*' turbo run test --concurrency=1",
+    "test": "c8 turbo run test",
     "update": "pnpm -r exec ncu -- --upgrade && ncu -- --upgrade",
     "update:check": "pnpm -r exec ncu -- --errorLevel 2 && ncu -- --errorLevel 2",
     "version:prepare": "changeset version && pnpm install --no-frozen-lockfile",
