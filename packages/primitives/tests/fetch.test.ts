@@ -4,7 +4,7 @@ import * as httpBody from 'http-body'
 import listen from 'test-listen'
 import multer from 'multer'
 
-import { FormData, fetch } from '../fetch'
+import { FormData, fetch, Headers } from '../fetch'
 import { URL } from '../url'
 
 let server: Server
@@ -114,9 +114,16 @@ test('perform a POST as multipart/form-data', async () => {
 })
 
 test('sets header calling Headers constructor', async () => {
-  const url = new URL('/about', 'https://vercel.com')
-  const response = await fetch(url)
+  server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
+    res.end(req.headers['user-agent'])
+  })
+  const serverUrl = await listen(server)
+  const response = await fetch(serverUrl, {
+    headers: new Headers({ 'user-agent': 'vercel/edge-runtime' }),
+  })
   expect(response.status).toBe(200)
+  const text = await response.text()
+  expect(text).toBe('vercel/edge-runtime')
 })
 
 test('sets headers unsupported in undici', async () => {
