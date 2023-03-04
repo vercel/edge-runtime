@@ -49,7 +49,7 @@
     "prebuild": "pnpm run clean:build",
     "test": "jest --no-colors"
   },
-  "license": "MPLv2",
+  "license": "MPL-2.0",
   "publishConfig": {
     "access": "public"
   },
