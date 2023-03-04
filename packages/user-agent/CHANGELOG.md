@@ -1,5 +1,11 @@
 # @edge-runtime/user-agent
 
+## 1.1.2
+
+### Patch Changes
+
+- Use valid SPDX license expression ([#276](https://github.com/vercel/edge-runtime/pull/276))
+
 ## 1.1.1
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # edge-runtime
 
+## 2.1.2
+
+### Patch Changes
+
+- Use valid SPDX license expression ([#276](https://github.com/vercel/edge-runtime/pull/276))
+
+- Updated dependencies [[`36bce62`](https://github.com/vercel/edge-runtime/commit/36bce62f366ee630ec87f7f542276980a6e9d974)]:
+  - @edge-runtime/format@2.0.1
+  - @edge-runtime/vm@2.1.2
+
 ## 2.1.1
 
 ### Patch Changes
