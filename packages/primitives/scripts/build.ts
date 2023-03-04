@@ -3,7 +3,7 @@ import alias from 'esbuild-plugin-alias'
 import { Options, build } from 'tsup'
 import fs from 'fs'
 
-const TARGET = ['node14.6']
+const TARGET = 'node14.6'
 
 const BUNDLE_OPTIONS: Options = {
   bundle: true,
