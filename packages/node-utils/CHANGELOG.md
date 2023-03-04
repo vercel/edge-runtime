@@ -1,5 +1,11 @@
 # @edge-runtime/node-utils
 
+## 2.0.3
+
+### Patch Changes
+
+- Use valid SPDX license expression ([#276](https://github.com/vercel/edge-runtime/pull/276))
+
 ## 2.0.2
 
 ### Patch Changes
