@@ -16,8 +16,8 @@ export class ResponseCookies {
     this._headers = responseHeaders
 
     const setCookie =
-      // @ts-expect-error See https://github.com/whatwg/fetch/issues/973
-      responseHeaders.getAll?.('set-cookie') ??
+      // @ts-expect-error Implemented as a part of the `@edge-runtime/primitives` package
+      responseHeaders.getSetCookie?.() ??
       responseHeaders.get('set-cookie') ??
       []
 

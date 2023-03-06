@@ -1,5 +1,5 @@
 export class Headers extends globalThis.Headers {
-  getAll?(key: 'set-cookie'): string[]
+  getSetCookie?(): string[]
 }
 
 export class Request extends globalThis.Request {
