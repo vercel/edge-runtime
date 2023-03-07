@@ -2,7 +2,6 @@ import { AbortController } from './abort-controller'
 import { AbortSignal } from './abort-controller'
 
 import * as FetchSymbols from 'undici/lib/fetch/symbols'
-import * as HeadersModule from 'undici/lib/fetch/headers'
 import * as ResponseModule from 'undici/lib/fetch/response'
 
 import { fetch as fetchImpl } from 'undici/lib/fetch'
@@ -55,9 +54,9 @@ export async function fetch() {
   return response
 }
 
-export const Headers = HeadersModule.Headers
 export const Response = ResponseModule.Response
 
 export { FormData } from 'undici/lib/fetch/formdata'
 export { Request } from 'undici/lib/fetch/request'
+export { Headers } from 'undici/lib/fetch/headers'
 export { File } from 'undici/lib/fetch/file'
