@@ -87,6 +87,7 @@ function addPrimitives(context: VMContext) {
   defineProperty(context, 'Symbol', { value: Symbol })
   defineProperty(context, 'clearInterval', { value: clearInterval })
   defineProperty(context, 'clearTimeout', { value: clearTimeout })
+  defineProperty(context, 'setImmediate', { value: setImmediate })
   defineProperty(context, 'setInterval', { value: setInterval })
   defineProperty(context, 'setTimeout', { value: setTimeout })
   defineProperty(context, 'EdgeRuntime', { value: 'edge-runtime' })

@@ -73,11 +73,13 @@ importers:
     specifiers:
       '@edge-runtime/format': workspace:2.0.1
       '@edge-runtime/jest-environment': workspace:2.0.8
+      '@edge-runtime/primitives': workspace:2.1.2
       '@types/cookie': 0.5.1
       tsup: '6'
     devDependencies:
       '@edge-runtime/format': link:../format
       '@edge-runtime/jest-environment': link:../jest-environment
+      '@edge-runtime/primitives': link:../primitives
       '@types/cookie': 0.5.1
       tsup: 6.2.2
 

@@ -1,5 +1,6 @@
 import type { RequestCookie } from './types'
 import { parseCookieString, serialize } from './serialize'
+import type { Headers } from '@edge-runtime/primitives'
 
 /**
  * A class for manipulating {@link Request} cookies (`Cookie` header).

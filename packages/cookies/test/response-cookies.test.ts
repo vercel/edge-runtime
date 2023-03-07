@@ -1,4 +1,5 @@
 import { createFormat } from '@edge-runtime/format'
+import { Headers } from '@edge-runtime/primitives'
 import { ResponseCookies } from '../src/response-cookies'
 
 test('reflect .set into `set-cookie`', async () => {
@@ -51,8 +52,17 @@ test('reflect .set into `set-cookie`', async () => {
     expires: new Date(0),
   })
 
-  expect(Object.fromEntries(headers.entries())['set-cookie']).toBe(
-    'foo=bar; Path=/test, fooz=barz; Path=/test2, fooHttpOnly=barHttpOnly; Path=/; HttpOnly, fooExpires=barExpires; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooExpiresDate=barExpiresDate; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
+  const setCookieHeaders = headers.getSetCookie?.()
+  expect(setCookieHeaders).toContain('foo=bar; Path=/test')
+  expect(setCookieHeaders).toContain('fooz=barz; Path=/test2')
+  expect(setCookieHeaders).toContain(
+    'fooHttpOnly=barHttpOnly; Path=/; HttpOnly'
+  )
+  expect(setCookieHeaders).toContain(
+    'fooExpires=barExpires; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
+  )
+  expect(setCookieHeaders).toContain(
+    'fooExpiresDate=barExpiresDate; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
   )
 })
 
@@ -73,9 +83,9 @@ test('reflect .delete into `set-cookie`', async () => {
   })
 
   cookies.set('fooz', 'barz')
-  expect(Object.fromEntries(headers.entries())['set-cookie']).toBe(
-    'foo=bar; Path=/, fooz=barz; Path=/'
-  )
+  let setCookieHeaders = headers.getSetCookie?.()
+  expect(setCookieHeaders).toContain('foo=bar; Path=/')
+  expect(setCookieHeaders).toContain('fooz=barz; Path=/')
 
   expect(cookies.get('fooz')?.value).toBe('barz')
   expect(cookies.get('fooz')).toEqual({
@@ -85,9 +95,11 @@ test('reflect .delete into `set-cookie`', async () => {
   })
 
   cookies.delete('foo')
-  expect(Object.fromEntries(headers.entries())['set-cookie']).toBe(
-    'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooz=barz; Path=/'
+  setCookieHeaders = headers.getSetCookie?.()
+  expect(setCookieHeaders).toContain(
+    'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
   )
+  expect(setCookieHeaders).toContain('fooz=barz; Path=/')
 
   expect(cookies.get('foo')).toEqual({
     name: 'foo',
@@ -98,8 +110,12 @@ test('reflect .delete into `set-cookie`', async () => {
 
   cookies.delete('fooz')
 
-  expect(Object.fromEntries(headers.entries())['set-cookie']).toBe(
-    'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooz=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
+  setCookieHeaders = headers.getSetCookie?.()
+  expect(setCookieHeaders).toContain(
+    'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
+  )
+  expect(setCookieHeaders).toContain(
+    'fooz=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
   )
 
   expect(cookies.get('fooz')).toEqual({

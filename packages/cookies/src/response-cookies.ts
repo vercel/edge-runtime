@@ -1,5 +1,6 @@
 import type { ResponseCookie } from './types'
 import { parseSetCookieString, serialize } from './serialize'
+import type { Headers } from '@edge-runtime/primitives'
 
 /**
  * A class for manipulating {@link Response} cookies (`Set-Cookie` header).
@@ -16,7 +17,6 @@ export class ResponseCookies {
     this._headers = responseHeaders
 
     const setCookie =
-      // @ts-expect-error Implemented as a part of the `@edge-runtime/primitives` package
       responseHeaders.getSetCookie?.() ??
       responseHeaders.get('set-cookie') ??
       []

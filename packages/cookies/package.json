@@ -25,6 +25,7 @@
     "web"
   ],
   "devDependencies": {
+    "@edge-runtime/primitives": "workspace:2.1.2",
     "@edge-runtime/format": "workspace:2.0.1",
     "@edge-runtime/jest-environment": "workspace:2.0.8",
     "@types/cookie": "0.5.1",

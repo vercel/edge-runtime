@@ -125,6 +125,7 @@ function revealPrimitives(vm: EdgeVM<any>) {
     'String',
     'Symbol',
     'SyntaxError',
+    'setImmediate',
     'TypeError',
     'Uint8Array',
     'Uint8ClampedArray',
