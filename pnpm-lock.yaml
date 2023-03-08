@@ -28,7 +28,7 @@ importers:
       '@svitejs/changesets-changelog-github-compact': 1.1.0
       '@types/jest': 29.0.3
       '@types/node': 14.18.32
-      c8: 7.12.0
+      c8: 7.13.0
       esbuild: 0.17.11
       finepack: 2.10.15
       git-authors-cli: 1.0.45
@@ -53,7 +53,7 @@ importers:
       postcss: ~8.4.21
       react: ~18.2.0
       react-dom: ~18.2.0
-      swr: 2.0.4
+      swr: 2.1.0
       tailwindcss: ~3.2.7
     dependencies:
       '@heroicons/react': 2.0.16_react@18.2.0
@@ -63,7 +63,7 @@ importers:
       nextra-theme-docs: 2.2.16_wiegl5vs7jjtynbfz6c5lbuan4
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      swr: 2.0.4_react@18.2.0
+      swr: 2.1.0_react@18.2.0
     devDependencies:
       autoprefixer: 10.4.13_postcss@8.4.21
       postcss: 8.4.21
@@ -2672,8 +2672,8 @@ packages:
       streamsearch: 1.1.0
     dev: true
 
-  /c8/7.12.0:
-    resolution: {integrity: sha512-CtgQrHOkyxr5koX1wEUmN/5cfDa2ckbHRA4Gy5LAL0zaCFtVWJS5++n+w4/sr2GWGerBxgTjpKeDclk/Qk6W/A==}
+  /c8/7.13.0:
+    resolution: {integrity: sha512-/NL4hQTv1gBL6J6ei80zu3IiTrmePDKXKXOTLpHvcIWZTVYQlDhVWjjWvkhICylE8EwwnMVzDZugCvdx0/DIIA==}
     engines: {node: '>=10.12.0'}
     hasBin: true
     dependencies:
@@ -8293,8 +8293,8 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /swr/2.0.4_react@18.2.0:
-    resolution: {integrity: sha512-4GUiTjknRUVuw4MWUHR7mzJ9G/DWL+yZz/TgWDfiA0OZ9tL6qyrTkN2wPeboBpL3OJTkej3pexh3mWCnv8cFkQ==}
+  /swr/2.1.0_react@18.2.0:
+    resolution: {integrity: sha512-4hYl5p3/KalQ1MORealM79g/DtLohmud6yyfXw5l4wjtFksYUnocRFudvyaoUtgj3FrVNK9lS25Av9dsZYvz0g==}
     engines: {pnpm: '7'}
     peerDependencies:
       react: ^16.11.0 || ^17.0.0 || ^18.0.0
