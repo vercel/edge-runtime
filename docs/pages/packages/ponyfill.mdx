@@ -7,26 +7,14 @@ The **@edge-runtime/ponyfill** package helps to have the Edge Runtime APIs avail
 - When running on Edge Runtime, no polyfills will be loaded, and the native implementations will be used.
 - When running on Node.js runtimes, this package will load the polyfills from [@edge-runtime/primitives](/packages/primitives).
 
-Note this is just necessary if you want to run the same code accross diferent environments.
+Note this is just necessary if you want to run the same code across different environments.
 
 ## Installation
 
-<Tabs items={['npm', 'yarn', 'pnpm']} storageKey="selected-pkg-manager">
-  <Tab>
-    ```sh
-    npm install @edge-runtime/ponyfill --save
-    ```
-  </Tab>
-  <Tab>
-    ```sh
-    yarn add @edge-runtime/ponyfill
-    ```
-  </Tab>
-  <Tab>
-    ```sh
-    pnpm install @edge-runtime/ponyfill --save
-    ```
-  </Tab>
+<Tabs items={['npm', 'yarn', 'pnpm']} storageKey='selected-pkg-manager'>
+  <Tab>```sh npm install @edge-runtime/ponyfill --save ```</Tab>
+  <Tab>```sh yarn add @edge-runtime/ponyfill ```</Tab>
+  <Tab>```sh pnpm install @edge-runtime/ponyfill --save ```</Tab>
 </Tabs>
 
 This package includes built-in TypeScript support.

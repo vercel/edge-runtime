@@ -110,14 +110,14 @@ It needs globals Web contstructor a [dependencies](#dependencies-object), as wel
 Builds a transformer function to build a fetch event from a web [Request].
 The returned event is linked to provided request, and has a mocked [waitUntil()](https://developer.mozilla.org/en-US/docs/Web/API/ExtendableEvent/waitUntil) method, which throws on access.
 
-It needs globals Web contstructor a [dependencies](#dependencies-object).
+It needs globals Web constructor a [dependencies](#dependencies-object).
 
 ### toOutgoingHeaders(headers: Headers): OutgoingHttpHeaders
 
 Turns Web [Request.headers](https://developer.mozilla.org/en-US/docs/Web/API/Request/headers) into
 Node.js `ServerResponse` [OutgoingHttpHeaders](https://nodejs.org/api/http.html#responsegetheaders).
 
-Includes `set-cookie` special handling, spliting multiple values when relevant.
+Includes `set-cookie` special handling, splitting multiple values when relevant.
 
 ### buildToHeaders(dependencies): toHeaders(nodeHeaders: IncomingHttpHeaders): Headers
 
