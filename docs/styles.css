@@ -70,6 +70,9 @@ body {
     fixed 10px 10px / 20px 20px radial-gradient(#313131 1px, transparent 0);
 }
 
+code[data-language="sh"] {
+  --shiki-token-string: var(--shiki-color-text);
+}
 
 #__next article.nextra-body h1 {
   font-size: 2em;

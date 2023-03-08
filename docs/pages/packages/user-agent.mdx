@@ -1,0 +1,77 @@
+import { Callout } from 'nextra-theme-docs'
+import { Tabs, Tab } from '../../components/tabs'
+
+# Edge Runtime User Agent
+
+The **@edge-runtime/user-agent** package gives some utilities on top of [ua-parser-js](https://faisalman.github.io/ua-parser-js/).
+
+## Installation
+
+<Tabs items={['npm', 'yarn', 'pnpm']} storageKey='selected-pkg-manager'>
+  <Tab>```sh npm install @edge-runtime/user-agent --save ```</Tab>
+  <Tab>```sh yarn add @edge-runtime/user-agent ```</Tab>
+  <Tab>```sh pnpm install @edge-runtime/user-agent --save ```</Tab>
+</Tabs>
+
+This package includes built-in TypeScript support.
+
+## Usage
+
+Just call the exported `.userAgentFromString` method for getting the parsed data from an [User-Agent](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent) HTTP header:
+
+```js
+import { userAgentFromString } from '@edge-runtime/user-agent'
+
+export default (request: Request) => {
+  const userAgent = request.headers.get('user-agent')
+  userAgentFromString(userAgent)
+
+  return Response.json(userAgent(request))
+  // => {
+  //   browser: {
+  //     major: '83',
+  //     name: 'Chrome',
+  //     version: '83.0.4103.116',
+  //   },
+  //   cpu: { architecture: 'amd64' },
+  //   engine: {
+  //     name: 'Blink',
+  //     version: '83.0.4103.116',
+  //   },
+  //   isBot: false,
+  //   os: {
+  //     name: 'Windows',
+  //     version: '10',
+  //   },
+  //   ua: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)…'
+  // }
+}
+```
+
+or alternatively, you can call `.userAgent` and pass the `Request` instance:
+
+```ts
+import { userAgent } from '@edge-runtime/user-agent'
+
+export default (request: Request) => {
+  return Response.json(userAgent(request))
+  // => {
+  //   browser: {
+  //     major: '83',
+  //     name: 'Chrome',
+  //     version: '83.0.4103.116',
+  //   },
+  //   cpu: { architecture: 'amd64' },
+  //   engine: {
+  //     name: 'Blink',
+  //     version: '83.0.4103.116',
+  //   },
+  //   isBot: false,
+  //   os: {
+  //     name: 'Windows',
+  //     version: '10',
+  //   },
+  //   ua: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)…'
+  // }
+}
+```
