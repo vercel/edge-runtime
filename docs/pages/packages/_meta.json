@@ -9,5 +9,6 @@
   "primitives": "@edge-runtime/primitives",
   "runtime": "edge-runtime",
   "types": "@edge-runtime/types",
+  "user-agent": "@edge-runtime/user-agent",
   "vm": "@edge-runtime/vm"
 }
