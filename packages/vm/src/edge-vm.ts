@@ -48,11 +48,7 @@ export type EdgeContext = VMContext & {
   atob: typeof EdgePrimitives.atob
   Blob: typeof EdgePrimitives.Blob
   btoa: typeof EdgePrimitives.btoa
-  Cache: typeof EdgePrimitives.Cache
-  caches: typeof EdgePrimitives.caches
-  CacheStorage: typeof EdgePrimitives.CacheStorage
   console: typeof EdgePrimitives.console
-  createCaches: typeof EdgePrimitives.createCaches
   crypto: typeof EdgePrimitives.crypto
   Crypto: typeof EdgePrimitives.Crypto
   CryptoKey: typeof EdgePrimitives.CryptoKey
@@ -216,23 +212,6 @@ function addPrimitives(context: VMContext) {
       'Request',
       'Response',
     ],
-  })
-
-  // Cache
-  defineProperties(context, {
-    exports: requireWithCache({
-      cache: new Map([
-        [
-          require.resolve('@edge-runtime/primitives/fetch'),
-          { exports: webFetch },
-        ],
-      ]),
-      context,
-      path: require.resolve('@edge-runtime/primitives/cache'),
-      scopedContext: { global: {} },
-    }),
-    enumerable: ['caches'],
-    nonenumerable: ['Cache', 'CacheStorage'],
   })
 
   // Crypto

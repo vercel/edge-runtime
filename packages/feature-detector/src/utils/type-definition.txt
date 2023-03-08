@@ -29,18 +29,6 @@ declare var Blob: {
   new(): Blob;
 };
 
-interface CacheStorage {}
-declare var CacheStorage: {
-  prototype: CacheStorage;
-  new(): CacheStorage;
-};
-
-interface Cache {}
-declare var Cache: {
-  prototype: Cache;
-  new(): Cache;
-};
-
 interface Crypto {}
 declare var Crypto: {
   prototype: Crypto;
@@ -172,14 +160,8 @@ declare var WritableStreamDefaultWriter: {
 
 declare var atob: (encoded: string) => string;
 declare var btoa: (str: string) => string;
-declare var caches: CacheStorage;
 declare var console: {};
 declare var crypto: Crypto;
-declare var createCaches: () => {
-  cacheStorage(): CacheStorage;
-  Cache: Cache;
-  CacheStorage: CacheStorage;
-};
 declare var fetch: () => Promise<Response>;
 declare var setTimeout: () => number;
 declare var structuredClone: <T>(any: T) => T;
