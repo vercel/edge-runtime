@@ -23,7 +23,7 @@
     "web"
   ],
   "dependencies": {
-    "@edge-runtime/primitives": "workspace:2.1.2"
+    "@edge-runtime/primitives": "workspace:*"
   },
   "engines": {
     "node": ">=14"
@@ -32,10 +32,12 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc --project ./tsconfig.prod.json",
+    "build": "tsc --project tsconfig.prod.json",
     "clean": "pnpm run clean:node && pnpm run clean:build",
     "clean:build": "rm -rf dist",
     "clean:node": "rm -rf node_modules",
+    "postversion": "pnpm run build",
+    "prebuild": "pnpm run clean:build",
     "test": "jest"
   },
   "license": "MPL-2.0",

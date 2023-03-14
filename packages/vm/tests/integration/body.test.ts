@@ -203,7 +203,7 @@ test('throws when reading a text body as JSON but it is invalid', async () => {
 
 test('streams Uint8Array that can be decoded into a string', async () => {
   const response = await fetch('https://example.vercel.sh')
-  const reader = response.body.getReader()
+  const reader = response.body!.getReader()
   let value: string = ''
   const decoder = new TextDecoder()
   while (true) {

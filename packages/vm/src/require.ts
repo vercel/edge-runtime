@@ -1,4 +1,3 @@
-import type { Dictionary } from './types'
 import type { Context } from 'vm'
 import { readFileSync } from 'fs'
 import { runInContext } from 'vm'
@@ -11,7 +10,7 @@ import { dirname } from 'path'
  */
 export function requireDependencies(params: {
   context: Context
-  requireCache: Map<string, Dictionary>
+  requireCache: Map<string, Record<string | number, any>>
   dependencies: Array<{
     mapExports: { [key: string]: string }
     path: string

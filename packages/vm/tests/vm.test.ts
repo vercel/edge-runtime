@@ -1,13 +1,13 @@
+import { VM } from '../src/vm'
 import path from 'path'
-import { VM } from '../../src'
 
-test('create an empty context', () => {
+it('creates a VM with empty context', () => {
   const vm = new VM()
   vm.evaluate('this.foo = "bar"')
   expect(vm.context).toStrictEqual({ foo: 'bar' })
 })
 
-test('extend an empty a context with environment variables', () => {
+it('allows to extend the context with environment variables', () => {
   const vm = new VM({
     extend: (context) =>
       Object.assign(context, {
@@ -20,18 +20,7 @@ test('extend an empty a context with environment variables', () => {
   expect(env).toEqual('development')
 })
 
-test('extend an empty a context by returning it', () => {
-  const vm = new VM({
-    extend: (context) =>
-      Object.assign(context, { process: { env: { NODE_ENV: 'development' } } }),
-  })
-
-  expect(vm.context.process.env.NODE_ENV).toEqual('development')
-  const env = vm.evaluate('process.env.NODE_ENV')
-  expect(env).toEqual('development')
-})
-
-test('extend an empty context with edgeVM APIs', () => {
+it('allows to extend the context with APIs implementations', () => {
   class MockURL {
     href: string
     constructor(url: string) {
@@ -54,7 +43,7 @@ test('extend an empty context with edgeVM APIs', () => {
   expect(vm.context.URL.name).toEqual('MockURL')
 })
 
-test('evaluate an script in an empty context', () => {
+it('allows to extend the context with code evaluation', () => {
   const script = `
   function MockURL (href) {
     if (!(this instanceof MockURL)) return new MockURL(href)
@@ -73,9 +62,9 @@ test('evaluate an script in an empty context', () => {
   expect(vm.context.URL.name).toEqual('MockURL')
 })
 
-test('require a filepath', () => {
+it('allows to require a CJS module file from the vm context', () => {
   const vm = new VM()
-  const modulepath = path.resolve(__dirname, '../fixtures/mock-url.js')
+  const modulepath = path.resolve(__dirname, './fixtures/cjs-module.js')
   const moduleLoaded = vm.require<{ URL: URL }>(modulepath)
 
   vm.context.URL = moduleLoaded.URL
@@ -88,10 +77,9 @@ test('require a filepath', () => {
   expect(vm.context.URL.name).toEqual('MockURL')
 })
 
-test('require a CJS file module in an empty context', () => {
+it('allows to require a CJS module file and load it into the vm context', () => {
   const vm = new VM()
-
-  const modulepath = path.resolve(__dirname, '../fixtures/mock-url.js')
+  const modulepath = path.resolve(__dirname, './fixtures/cjs-module.js')
   vm.requireInContext(modulepath)
 
   vm.evaluate('this.hasURL = !!URL')
@@ -102,7 +90,7 @@ test('require a CJS file module in an empty context', () => {
   expect(vm.context.URL.name).toEqual('MockURL')
 })
 
-test('require a CJS module in an empty context', () => {
+it('allows to require CJS module code from the vm context', () => {
   const vm = new VM()
 
   const script = `function MockURL (href) {
@@ -120,4 +108,34 @@ test('require a CJS module in an empty context', () => {
   expect(vm.context.hasURL).toBeTruthy()
   expect(vm.context.url.href).toEqual('https://edge-ping.vercel.app')
   expect(vm.context.URL.name).toEqual('MockURL')
+})
+
+it('does not allow to run `new Function`', () => {
+  const vm = new VM()
+  expect(() => {
+    vm.evaluate('new Function(1)')
+  }).toThrow({
+    name: 'EvalError',
+    message: 'Code generation from strings disallowed for this context',
+  })
+})
+
+it('does not allow `eval`', () => {
+  const vm = new VM()
+  expect(() => {
+    vm.evaluate('eval("1 + 1")')
+  }).toThrow({
+    name: 'EvalError',
+    message: 'Code generation from strings disallowed for this context',
+  })
+})
+
+it('does not define `require`', () => {
+  const vm = new VM()
+  expect(() => {
+    vm.evaluate("const Blob = require('buffer').Blob; this.blob = new Blob()")
+  }).toThrow({
+    name: 'ReferenceError',
+    message: 'require is not defined',
+  })
 })

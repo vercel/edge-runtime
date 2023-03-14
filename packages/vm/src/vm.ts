@@ -1,5 +1,4 @@
 import type { CreateContextOptions } from 'vm'
-import type { Dictionary } from './types'
 import { createContext, runInContext } from 'vm'
 import { createRequire } from './require'
 import { tempFile } from './temp-file'
@@ -19,7 +18,7 @@ export interface VMOptions<T> {
    * Provides an initial map to the require cache.
    * If none is given, it will be initialized to an empty map.
    */
-  requireCache?: Map<string, Dictionary>
+  requireCache?: Map<string, Record<string | number, any>>
 }
 
 /**
@@ -27,9 +26,9 @@ export interface VMOptions<T> {
  * a realm-like interface where one can evaluate code or require CommonJS
  * modules in multiple ways.
  */
-export class VM<T extends Dictionary> {
+export class VM<T extends Record<string | number, any>> {
   private readonly requireFn: (referrer: string, specifier: string) => any
-  public readonly requireCache: Map<string, Dictionary>
+  public readonly requireCache: Map<string, Record<string | number, any>>
   public readonly context: VMContext & T
 
   constructor(options: VMOptions<T> = {}) {
@@ -60,7 +59,7 @@ export class VM<T extends Dictionary> {
    * Allows to require a CommonJS module referenced in the provided file
    * path within the VM context. It will return its exports.
    */
-  require<T extends Dictionary = any>(filepath: string): T {
+  require<T extends Record<string | number, any> = any>(filepath: string): T {
     return this.requireFn(filepath, filepath)
   }
 
@@ -69,7 +68,9 @@ export class VM<T extends Dictionary> {
    * of the vm. Then exports can be used inside of the vm with an
    * evaluated script.
    */
-  requireInContext<T extends Dictionary = any>(filepath: string): void {
+  requireInContext<T extends Record<string | number, any> = any>(
+    filepath: string
+  ): void {
     const moduleLoaded = this.require<T>(filepath)
     for (const [key, value] of Object.entries(moduleLoaded)) {
       this.context[key as keyof typeof this.context] = value
