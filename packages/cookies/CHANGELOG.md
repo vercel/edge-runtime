@@ -1,5 +1,11 @@
 # @edge-runtime/cookies
 
+## 3.0.6
+
+### Patch Changes
+
+- Accept `DOMHighResTimeStamp` on expires of cookie ([#284](https://github.com/vercel/edge-runtime/pull/284))
+
 ## 3.0.5
 
 ### Patch Changes
