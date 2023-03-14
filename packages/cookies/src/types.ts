@@ -7,12 +7,14 @@ import type { CookieSerializeOptions } from 'cookie'
 export interface CookieListItem
   extends Pick<
     CookieSerializeOptions,
-    'domain' | 'path' | 'expires' | 'secure' | 'sameSite'
+    'domain' | 'path' | 'secure' | 'sameSite'
   > {
   /** A string with the name of a cookie. */
   name: string
   /** A string containing the value of the cookie. */
   value: string
+  /** A number of milliseconds or Date interface containing the expires of the cookie. */
+  expires?: number | CookieSerializeOptions['expires']
 }
 
 /**

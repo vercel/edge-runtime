@@ -98,6 +98,10 @@ function replace(bag: Map<string, ResponseCookie>, headers: Headers) {
 }
 
 function normalizeCookie(cookie: ResponseCookie = { name: '', value: '' }) {
+  if (typeof cookie.expires === 'number') {
+    cookie.expires = new Date(cookie.expires)
+  }
+
   if (cookie.maxAge) {
     cookie.expires = new Date(Date.now() + cookie.maxAge * 1000)
   }

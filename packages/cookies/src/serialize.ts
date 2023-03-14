@@ -3,7 +3,12 @@ import type { RequestCookie, ResponseCookie } from './types'
 export function serialize(c: ResponseCookie | RequestCookie): string {
   const attrs = [
     'path' in c && c.path && `Path=${c.path}`,
-    'expires' in c && c.expires && `Expires=${c.expires.toUTCString()}`,
+    'expires' in c &&
+      (c.expires || c.expires === 0) &&
+      `Expires=${(typeof c.expires === 'number'
+        ? new Date(c.expires)
+        : c.expires
+      ).toUTCString()}`,
     'maxAge' in c && c.maxAge && `Max-Age=${c.maxAge}`,
     'domain' in c && c.domain && `Domain=${c.domain}`,
     'secure' in c && c.secure && 'Secure',
