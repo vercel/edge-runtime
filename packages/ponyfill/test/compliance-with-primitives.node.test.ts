@@ -66,7 +66,6 @@ async function getExportedNames() {
 }
 
 export const LIMBO_STATE = [
-  'createCaches',
   'DOMException',
   'setGlobalDispatcher',
   'getGlobalDispatcher',

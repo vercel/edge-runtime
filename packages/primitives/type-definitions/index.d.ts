@@ -1,6 +1,5 @@
 export * from './abort-controller'
 export * from './blob'
-export * from './cache'
 export * from './console'
 export * from './crypto'
 export * from './encoding'
