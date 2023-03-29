@@ -105,7 +105,10 @@ function addPrimitives(context: VMContext) {
   const encodings = requireWithCache({
     context,
     path: require.resolve('@edge-runtime/primitives/encoding'),
-    scopedContext: { Buffer, global: {} },
+    scopedContext: {
+      Buffer,
+      global: { ArrayBuffer },
+    },
   })
 
   // Encoding APIs
@@ -201,6 +204,8 @@ function addPrimitives(context: VMContext) {
       queueMicrotask,
       setImmediate,
       clearImmediate,
+      TextEncoder: encodings.TextEncoder,
+      TextDecoder: encodings.TextDecoder,
     },
   })
 

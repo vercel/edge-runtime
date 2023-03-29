@@ -11,8 +11,8 @@ export class Response extends globalThis.Response {
   static json(data: any, init?: ResponseInit): Response
 }
 
-export type RequestInfo = Parameters<typeof fetch>[0]
-export type RequestInit = Parameters<typeof fetch>[1]
+type RequestInfo = globalThis.RequestInfo | URL
+type RequestInit = globalThis.RequestInit | undefined
 declare const fetchImplementation: (
   info: RequestInfo,
   init?: RequestInit

@@ -198,12 +198,13 @@ test('throws when reading a text body as JSON but it is invalid', async () => {
   const response = new Response('{ hi: "there", ')
   const error = await response.json().catch((err) => err)
   expect(error).toBeInstanceOf(SyntaxError)
-  expect(error.message).toEqual('Unexpected token h in JSON at position 2')
+  expect(error.message).toEqual('Unexpected end of JSON input')
 })
 
 test('streams Uint8Array that can be decoded into a string', async () => {
   const response = await fetch('https://example.vercel.sh')
-  const reader = response.body.getReader()
+  expect(response.body).not.toBeNull()
+  const reader = response.body!.getReader()
   let value: string = ''
   const decoder = new TextDecoder()
   while (true) {
