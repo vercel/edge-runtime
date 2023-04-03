@@ -114,7 +114,7 @@
     "nano-staged": "latest",
     "prettier": "latest",
     "simple-git-hooks": "latest",
-    "ts-jest": "29.0.5",
+    "ts-jest": "29.1.0",
     "ts-node": "10.9.1",
     "turbo": "latest",
     "typescript": "latest"
