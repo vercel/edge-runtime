@@ -53,7 +53,7 @@ importers:
       postcss: ~8.4.21
       react: ~18.2.0
       react-dom: ~18.2.0
-      swr: 2.1.1
+      swr: 2.1.2
       tailwindcss: ~3.3.0
     dependencies:
       '@heroicons/react': 2.0.16_react@18.2.0
@@ -63,7 +63,7 @@ importers:
       nextra-theme-docs: 2.2.16_vew7vg7qzvsrfl7ub63f7u6dme
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      swr: 2.1.1_react@18.2.0
+      swr: 2.1.2_react@18.2.0
     devDependencies:
       autoprefixer: 10.4.13_postcss@8.4.21
       postcss: 8.4.21
@@ -7849,9 +7849,8 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /swr/2.1.1_react@18.2.0:
-    resolution: {integrity: sha512-OgwqZmpjOgxNbaez6qzTVqiRWn+Ti5Uzmktk2c01Afqwc50q6z15DeNC8m9G1aY+w2BwEAsKvk59iq6aHlhgyw==}
-    engines: {pnpm: '7'}
+  /swr/2.1.2_react@18.2.0:
+    resolution: {integrity: sha512-ocfaD2rnYZKqTDplCEX2bH5Z1++n2JSej9oYi7hVfXXWYm+0RP+H6fVrogWB0mtMclv1guk9kEnAzNLygOy9Hw==}
     peerDependencies:
       react: ^16.11.0 || ^17.0.0 || ^18.0.0
     dependencies:
