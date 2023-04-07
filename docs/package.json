@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "dependencies": {
     "@heroicons/react": "~2.0.16",
-    "next": "~13.2.1",
+    "next": "~13.3.0",
     "next-themes": "0.2.1",
     "nextra": "2.2.16",
     "nextra-theme-docs": "2.2.16",
