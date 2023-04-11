@@ -37,10 +37,10 @@ importers:
       nano-staged: 0.8.0
       prettier: 2.8.7
       simple-git-hooks: 2.8.1
-      ts-jest: 29.1.0_zggedb2mkuvpcbnmos3xdwzqci
-      ts-node: 10.9.1_dmcyoboxk5hlx3ttbnpelijely
+      ts-jest: 29.1.0_opoe5stapy6ihe3ulkmcmnaswm
+      ts-node: 10.9.1_7qmv6wywm5pgikewajnarfcjiq
       turbo: 1.8.8
-      typescript: 5.0.3
+      typescript: 5.0.4
 
   docs:
     specifiers:
@@ -53,7 +53,7 @@ importers:
       postcss: ~8.4.21
       react: ~18.2.0
       react-dom: ~18.2.0
-      swr: 2.1.2
+      swr: 2.1.3
       tailwindcss: ~3.3.0
     dependencies:
       '@heroicons/react': 2.0.16_react@18.2.0
@@ -63,7 +63,7 @@ importers:
       nextra-theme-docs: 2.2.16_6teglhrtuj4i5ym44grk6u7xbu
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-      swr: 2.1.2_react@18.2.0
+      swr: 2.1.3_react@18.2.0
     devDependencies:
       autoprefixer: 10.4.13_postcss@8.4.21
       postcss: 8.4.21
@@ -4814,7 +4814,7 @@ packages:
       pretty-format: 29.5.0
       slash: 3.0.0
       strip-json-comments: 3.1.1
-      ts-node: 10.9.1_dmcyoboxk5hlx3ttbnpelijely
+      ts-node: 10.9.1_7qmv6wywm5pgikewajnarfcjiq
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -4854,7 +4854,7 @@ packages:
       pretty-format: 29.5.0
       slash: 3.0.0
       strip-json-comments: 3.1.1
-      ts-node: 10.9.1_dmcyoboxk5hlx3ttbnpelijely
+      ts-node: 10.9.1_7qmv6wywm5pgikewajnarfcjiq
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -7991,8 +7991,8 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /swr/2.1.2_react@18.2.0:
-    resolution: {integrity: sha512-ocfaD2rnYZKqTDplCEX2bH5Z1++n2JSej9oYi7hVfXXWYm+0RP+H6fVrogWB0mtMclv1guk9kEnAzNLygOy9Hw==}
+  /swr/2.1.3_react@18.2.0:
+    resolution: {integrity: sha512-g3ApxIM4Fjbd6vvEAlW60hJlKcYxHb+wtehogTygrh6Jsw7wNagv9m4Oj5Gq6zvvZw0tcyhVGL9L0oISvl3sUw==}
     peerDependencies:
       react: ^16.11.0 || ^17.0.0 || ^18.0.0
     dependencies:
@@ -8161,7 +8161,7 @@ packages:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
     dev: true
 
-  /ts-jest/29.1.0_zggedb2mkuvpcbnmos3xdwzqci:
+  /ts-jest/29.1.0_opoe5stapy6ihe3ulkmcmnaswm:
     resolution: {integrity: sha512-ZhNr7Z4PcYa+JjMl62ir+zPiNJfXJN6E8hSLnaUKhOgqcn8vb3e537cpkd0FuAfRK3sR1LSqM1MOhliXNgOFPA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     hasBin: true
@@ -8192,7 +8192,7 @@ packages:
       lodash.memoize: 4.1.2
       make-error: 1.3.6
       semver: 7.3.8
-      typescript: 5.0.3
+      typescript: 5.0.4
       yargs-parser: 21.1.1
     dev: true
 
@@ -8203,7 +8203,7 @@ packages:
       code-block-writer: 11.0.3
     dev: false
 
-  /ts-node/10.9.1_dmcyoboxk5hlx3ttbnpelijely:
+  /ts-node/10.9.1_7qmv6wywm5pgikewajnarfcjiq:
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
     peerDependencies:
@@ -8229,7 +8229,7 @@ packages:
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 5.0.3
+      typescript: 5.0.4
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     dev: true
@@ -8422,8 +8422,8 @@ packages:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
     dev: true
 
-  /typescript/5.0.3:
-    resolution: {integrity: sha512-xv8mOEDnigb/tN9PSMTwSEqAnUvkoXMQlicOb0IUVDBSQCgBSaAAROUZYy2IcUy5qU6XajK5jjjO7TMWqBTKZA==}
+  /typescript/5.0.4:
+    resolution: {integrity: sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==}
     engines: {node: '>=12.20'}
     hasBin: true
     dev: true
