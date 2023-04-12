@@ -1,5 +1,11 @@
 # edge-runtime
 
+## 2.1.3
+
+### Patch Changes
+
+- refactor(edge-runtime): accepts listen options ([#304](https://github.com/vercel/edge-runtime/pull/304))
+
 ## 2.1.2
 
 ### Patch Changes
