@@ -1,7 +1,6 @@
 import { EdgeRuntime, runServer } from '../../src'
 import assert from 'assert'
 import fetch from 'node-fetch'
-import util from 'util'
 
 async function main() {
   const runtime = new EdgeRuntime()

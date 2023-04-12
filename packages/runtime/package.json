@@ -24,8 +24,8 @@
     "web"
   ],
   "dependencies": {
-    "@edge-runtime/format": "workspace:2.0.1",
-    "@edge-runtime/vm": "workspace:2.1.2",
+    "@edge-runtime/format": "workspace:*",
+    "@edge-runtime/vm": "workspace:*",
     "async-listen": "2.0.3",
     "exit-hook": "2.2.1",
     "mri": "1.2.0",
