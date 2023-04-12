@@ -6,7 +6,7 @@ import type { ListenOptions } from 'net'
 
 interface ServerOptions<T extends EdgeContext> extends Options<T> {}
 
-interface EdgeRuntimeServer {
+export interface EdgeRuntimeServer {
   /**
    * The server URL.
    */
@@ -29,6 +29,7 @@ interface EdgeRuntimeServer {
 export async function runServer<T extends EdgeContext>(
   options: ListenOptions & ServerOptions<T>
 ): Promise<EdgeRuntimeServer> {
+  if (options.port === undefined) options.port = 0
   const { handler, waitUntil } = createHandler(options)
   const server = http.createServer(handler)
   const url = await listen(server, options)

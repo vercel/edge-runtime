@@ -22,6 +22,7 @@ export function createLogger() {
   logger.info = logger
   logger.error = (message, opts) => print(message, { color: 'red', ...opts })
   logger.debug = (message, opts) => print(message, { color: 'dim', ...opts })
+  logger.warn = (message, opts) => print(message, { color: 'yellow', ...opts })
   logger.quotes = (str: string) => `\`${str}\``
   return logger
 }

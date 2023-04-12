@@ -8,6 +8,7 @@ export interface LoggerOptions {
 
 export interface Logger {
   (message: string, opts?: LoggerOptions): void
+  warn(message: string, opts?: LoggerOptions): void
   debug(message: string, opts?: LoggerOptions): void
   error(message: string, opts?: LoggerOptions): void
   info(message: string, opts?: LoggerOptions): void

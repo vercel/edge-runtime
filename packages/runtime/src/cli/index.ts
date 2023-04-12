@@ -3,7 +3,7 @@
 import { EdgeRuntime } from '../edge-runtime'
 import { promisify } from 'util'
 import { readFileSync } from 'fs'
-import { runServer } from '../server'
+import { runServer, type EdgeRuntimeServer } from '../server'
 import childProcess from 'child_process'
 import exitHook from 'exit-hook'
 import mri from 'mri'
@@ -12,17 +12,18 @@ import path from 'path'
 const { _: input, ...flags } = mri(process.argv.slice(2), {
   alias: {
     e: 'eval',
-    h: 'help',
+    h: 'host',
     l: 'listen',
     p: 'port',
   },
   default: {
     cwd: process.cwd(),
+    eval: false,
     help: false,
+    host: '127.0.0.1',
     listen: false,
     port: 3000,
     repl: false,
-    eval: false,
   },
 })
 
@@ -55,6 +56,7 @@ async function main() {
     path.resolve(process.cwd(), scriptPath),
     'utf-8'
   )
+
   const runtime = new EdgeRuntime({ initialCode })
   if (!flags.listen) return runtime.evaluate('')
 
@@ -71,13 +73,25 @@ async function main() {
   /**
    * Start a server with the script provided in the file path.
    */
-  const server = await runServer({
-    logger: logger,
-    port: flags.port,
-    runtime,
-  })
+  let server: undefined | EdgeRuntimeServer
+  let port = flags.port
+  while (server === undefined) {
+    try {
+      server = await runServer({
+        host: flags.host,
+        logger: logger,
+        port,
+        runtime,
+      })
+    } catch (error: any) {
+      if (error?.code === 'EADDRINUSE') {
+        logger.warn(`Port \`${port}\` already in use`)
+        ++port
+      } else throw error
+    }
+  }
 
-  exitHook(() => server.close())
+  exitHook(() => server?.close())
   logger(`Waiting incoming requests at ${logger.quotes(server.url)}`)
 }
 
