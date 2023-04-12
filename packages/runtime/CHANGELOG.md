@@ -1,5 +1,11 @@
 # edge-runtime
 
+## 2.1.4
+
+### Patch Changes
+
+- fix: inline type statement ([#306](https://github.com/vercel/edge-runtime/pull/306))
+
 ## 2.1.3
 
 ### Patch Changes
