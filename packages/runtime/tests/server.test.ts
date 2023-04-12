@@ -34,8 +34,8 @@ test('starts an http server', async () => {
     });
   `)
 
-  server = await runServer({ runtime, port: 3000 })
-  expect(server.url).toEqual('http://localhost:3000')
+  server = await runServer({ runtime, host: '127.0.0.1', port: 3000 })
+  expect(server.url).toEqual('http://127.0.0.1:3000/')
 })
 
 test('run fetch events through http', async () => {

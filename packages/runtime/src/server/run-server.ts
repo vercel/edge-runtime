@@ -1,17 +1,12 @@
-import type { EdgeContext } from '@edge-runtime/vm'
 import { createHandler, Options } from './create-handler'
-import { once } from 'events'
+import type { EdgeContext } from '@edge-runtime/vm'
+import listen from 'async-listen'
 import http from 'http'
+import type { ListenOptions } from 'net'
 
-interface ServerOptions<T extends EdgeContext> extends Options<T> {
-  /**
-   * The port to start the server. If none is provided it will use a random
-   * available port.
-   */
-  port?: number
-}
+interface ServerOptions<T extends EdgeContext> extends Options<T> {}
 
-interface EdgeRuntimeServer {
+export interface EdgeRuntimeServer {
   /**
    * The server URL.
    */
@@ -32,29 +27,15 @@ interface EdgeRuntimeServer {
  * server will use a random one.
  */
 export async function runServer<T extends EdgeContext>(
-  options: ServerOptions<T>
+  options: ListenOptions & ServerOptions<T>
 ): Promise<EdgeRuntimeServer> {
+  if (options.port === undefined) options.port = 0
   const { handler, waitUntil } = createHandler(options)
   const server = http.createServer(handler)
-  server.listen(options.port)
-
-  try {
-    await once(server, 'listening')
-  } catch (error: any) {
-    if (error?.code === 'EADDRINUSE') {
-      return runServer({ ...options, port: undefined })
-    }
-    throw error
-  }
-
-  const address = server.address()
-  const url =
-    typeof address === 'string' || address == null
-      ? String(address)
-      : `http://localhost:${address.port}`
+  const url = await listen(server, options)
 
   return {
-    url,
+    url: String(url),
     close: async () => {
       await waitUntil()
       await new Promise<void>((resolve, reject) => {

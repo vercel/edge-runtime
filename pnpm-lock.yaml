@@ -216,6 +216,7 @@ importers:
       '@edge-runtime/format': workspace:2.0.1
       '@edge-runtime/vm': workspace:2.1.2
       '@types/node-fetch': '2'
+      async-listen: 2.0.3
       exit-hook: 2.2.1
       mri: 1.2.0
       node-fetch: '2'
@@ -226,6 +227,7 @@ importers:
     dependencies:
       '@edge-runtime/format': link:../format
       '@edge-runtime/vm': link:../vm
+      async-listen: 2.0.3
       exit-hook: 2.2.1
       mri: 1.2.0
       picocolors: 1.0.0
@@ -2570,6 +2572,11 @@ packages:
   /astring/1.8.4:
     resolution: {integrity: sha512-97a+l2LBU3Op3bBQEff79i/E4jMD2ZLFD8rHx9B6mXyB2uQwhJQYfiDqUwtfjF4QA1F2qs//N6Cw8LetMbQjcw==}
     hasBin: true
+    dev: false
+
+  /async-listen/2.0.3:
+    resolution: {integrity: sha512-WVLi/FGIQaXyfYyNvmkwKT1RZbkzszLLnmW/gFCc5lbVvN/0QQCWpBwRBk2OWSdkkmKRBc8yD6BrKsjA3XKaSw==}
+    engines: {node: '>= 14'}
     dev: false
 
   /async/3.2.4:
