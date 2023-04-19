@@ -359,14 +359,11 @@ function addPrimitives(context: VMContext) {
 
   // Structured Clone
   defineProperties(context, {
-    exports:
-      typeof structuredClone !== 'undefined'
-        ? { structuredClone }
-        : requireWithFakeGlobalScope({
-            path: require.resolve('@edge-runtime/primitives/structured-clone'),
-            context,
-            scopedContext: streamsImpl,
-          }),
+    exports: requireWithFakeGlobalScope({
+      path: require.resolve('@edge-runtime/primitives/structured-clone'),
+      context,
+      scopedContext: streamsImpl,
+    }),
     nonenumerable: ['structuredClone'],
   })
 
