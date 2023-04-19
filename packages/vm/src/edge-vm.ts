@@ -72,10 +72,38 @@ export class EdgeVM<T extends EdgeContext = EdgeContext> extends VM<T> {
 
     this.evaluate<void>(getDefineEventListenersCode())
     this.dispatchFetch = this.evaluate<DispatchFetch>(getDispatchFetchCode())
+    ;['Object', 'Uint8Array'].forEach((item) => {
+      patchInstanceOf(item, this.context)
+    })
+
     if (options?.initialCode) {
       this.evaluate(options.initialCode)
     }
   }
+}
+
+function patchInstanceOf(item: string, ctx: any) {
+  // @ts-ignore
+  ctx[Symbol.for(`node:${item}`)] = eval(item)
+
+  return runInContext(
+    `
+      globalThis.${item} = new Proxy(${item}, {
+        get(target, prop, receiver) {
+          if (prop === Symbol.hasInstance) {
+            const nodeTarget = globalThis[Symbol.for('node:${item}')];
+            if (nodeTarget) {
+              return function(instance) {
+                return instance instanceof target || instance instanceof nodeTarget;
+              };
+            }
+          }
+
+          return Reflect.get(target, prop, receiver);
+        }
+      })`,
+    ctx
+  )
 }
 
 /**
@@ -263,15 +291,15 @@ function addPrimitives(context: VMContext) {
     nonenumerable: ['console'],
   })
 
-  const encodings = requireWithCache({
-    context,
-    path: require.resolve('@edge-runtime/primitives/encoding'),
-    scopedContext: { Buffer, global: {} },
-  })
+  // const encodings = requireWithCache({
+  //   context,
+  //   path: require.resolve('@edge-runtime/primitives/encoding'),
+  //   scopedContext: { Buffer, global: {} },
+  // })
 
   // Encoding APIs
   defineProperties(context, {
-    exports: encodings,
+    exports: { atob, btoa, TextEncoder, TextDecoder },
     nonenumerable: ['atob', 'btoa', 'TextEncoder', 'TextDecoder'],
   })
 
@@ -313,8 +341,8 @@ function addPrimitives(context: VMContext) {
       context,
       path: require.resolve('@edge-runtime/primitives/url'),
       scopedContext: {
-        TextEncoder: encodings.TextEncoder,
-        TextDecoder: encodings.TextDecoder,
+        TextEncoder: TextEncoder,
+        TextDecoder: TextDecoder,
       },
     }),
     nonenumerable: ['URL', 'URLSearchParams', 'URLPattern'],
@@ -354,7 +382,7 @@ function addPrimitives(context: VMContext) {
     ]),
     path: require.resolve('@edge-runtime/primitives/fetch'),
     scopedContext: {
-      Uint8Array: createUint8ArrayForContext(context),
+      // Uint8Array: createUint8ArrayForContext(context),
       Buffer,
       global: {},
       queueMicrotask,
@@ -387,7 +415,7 @@ function addPrimitives(context: VMContext) {
       path: require.resolve('@edge-runtime/primitives/crypto'),
       scopedContext: {
         Buffer,
-        Uint8Array: createUint8ArrayForContext(context),
+        // Uint8Array: createUint8ArrayForContext(context),
       },
     }),
     enumerable: ['crypto'],
@@ -459,22 +487,22 @@ function defineProperties(
   }
 }
 
-function createUint8ArrayForContext(context: VMContext) {
-  return new Proxy(runInContext('Uint8Array', context), {
-    // on every construction (new Uint8Array(...))
-    construct(target, args) {
-      // construct it
-      const value: Uint8Array = new target(...args)
+// function createUint8ArrayForContext(context: VMContext) {
+//   return new Proxy(runInContext('Uint8Array', context), {
+//     // on every construction (new Uint8Array(...))
+//     construct(target, args) {
+//       // construct it
+//       const value: Uint8Array = new target(...args)
 
-      // if this is not a buffer
-      if (!(args[0] instanceof Buffer)) {
-        // return what we just constructed
-        return value
-      }
+//       // if this is not a buffer
+//       if (!(args[0] instanceof Buffer)) {
+//         // return what we just constructed
+//         return value
+//       }
 
-      // if it is a buffer, then we spread the binary data into an array,
-      // and build the Uint8Array from that
-      return new target([...value])
-    },
-  })
-}
+//       // if it is a buffer, then we spread the binary data into an array,
+//       // and build the Uint8Array from that
+//       return new target([...value])
+//     },
+//   })
+// }
