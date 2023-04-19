@@ -89,24 +89,6 @@ export class EdgeVM<T extends EdgeContext = EdgeContext> extends VM<T> {
       patchInstanceOf(item, this.context)
     }
 
-    this.evaluate(`
-      (() => {
-        console.log('boooohooo');
-        const stringifyError = Error.prototype.toString;
-        const NodeError = globalThis[Symbol.for('node:Error')];
-        Error.prototype.toString = function() {
-          console.log('boooohooo 666');
-          if (this instanceof NodeError) {
-            console.log('nice');
-            return NodeError.prototype.toString.call(this);
-          }
-
-          console.log('not nice');
-          return stringifyError.call(this);
-        }
-      })()
-    `)
-
     if (options?.initialCode) {
       this.evaluate(options.initialCode)
     }
