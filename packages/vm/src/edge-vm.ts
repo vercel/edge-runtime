@@ -324,6 +324,9 @@ function addPrimitives(context: VMContext) {
     nonenumerable: ['console'],
   })
 
+  const atob = (str: string) => Buffer.from(str, 'base64').toString('binary')
+  const btoa = (str: string) => Buffer.from(str, 'binary').toString('base64')
+
   // Encoding APIs
   defineProperties(context, {
     exports: { atob, btoa, TextEncoder, TextDecoder },
