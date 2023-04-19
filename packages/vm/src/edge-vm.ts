@@ -1,9 +1,9 @@
 import type * as EdgePrimitives from '@edge-runtime/primitives'
 import type { DispatchFetch, ErrorHandler, RejectionHandler } from './types'
-import { requireWithCache, requireWithFakeGlobalScope } from './require'
+import { requireWithFakeGlobalScope } from './require'
 import { runInContext } from 'vm'
 import { VM, type VMContext, type VMOptions } from './vm'
-import * as webStreamsImpl from '@edge-runtime/primitives/streams'
+import * as streamsImpl from '@edge-runtime/primitives/streams'
 import * as consoleImpl from '@edge-runtime/primitives/console'
 import * as abortControllerImpl from '@edge-runtime/primitives/abort-controller'
 import * as urlImpl from '@edge-runtime/primitives/url'
@@ -307,14 +307,14 @@ function addPrimitives(context: VMContext) {
     nonenumerable: ['atob', 'btoa', 'TextEncoder', 'TextDecoder'],
   })
 
-  const stream2 = requireWithFakeGlobalScope({
+  const textEncodingStreamImpl = requireWithFakeGlobalScope({
     path: require.resolve('@edge-runtime/primitives/text-encoding-streams'),
-    scopedContext: webStreamsImpl,
+    scopedContext: streamsImpl,
   })
 
   // Streams
   defineProperties(context, {
-    exports: { ...webStreamsImpl, ...stream2 },
+    exports: { ...streamsImpl, ...textEncodingStreamImpl },
     nonenumerable: [
       'ReadableStream',
       'ReadableStreamBYOBReader',
@@ -343,7 +343,7 @@ function addPrimitives(context: VMContext) {
   defineProperties(context, {
     exports: requireWithFakeGlobalScope({
       path: require.resolve('@edge-runtime/primitives/blob'),
-      scopedContext: webStreamsImpl,
+      scopedContext: streamsImpl,
     }),
     nonenumerable: ['Blob'],
   })
@@ -352,7 +352,7 @@ function addPrimitives(context: VMContext) {
   defineProperties(context, {
     exports: requireWithFakeGlobalScope({
       path: require.resolve('@edge-runtime/primitives/fetch'),
-      scopedContext: { ...webStreamsImpl, ...urlImpl },
+      scopedContext: { ...streamsImpl, ...urlImpl },
     }),
     nonenumerable: [
       'fetch',
