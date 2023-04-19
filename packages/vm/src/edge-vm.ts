@@ -72,7 +72,7 @@ export class EdgeVM<T extends EdgeContext = EdgeContext> extends VM<T> {
 
     this.evaluate<void>(getDefineEventListenersCode())
     this.dispatchFetch = this.evaluate<DispatchFetch>(getDispatchFetchCode())
-    ;['Object', 'Uint8Array'].forEach((item) => {
+    ;['Object', 'Uint8Array', 'ArrayBuffer'].forEach((item) => {
       patchInstanceOf(item, this.context)
     })
 
@@ -486,23 +486,3 @@ function defineProperties(
     })
   }
 }
-
-// function createUint8ArrayForContext(context: VMContext) {
-//   return new Proxy(runInContext('Uint8Array', context), {
-//     // on every construction (new Uint8Array(...))
-//     construct(target, args) {
-//       // construct it
-//       const value: Uint8Array = new target(...args)
-
-//       // if this is not a buffer
-//       if (!(args[0] instanceof Buffer)) {
-//         // return what we just constructed
-//         return value
-//       }
-
-//       // if it is a buffer, then we spread the binary data into an array,
-//       // and build the Uint8Array from that
-//       return new target([...value])
-//     },
-//   })
-// }
