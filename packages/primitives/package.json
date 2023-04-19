@@ -58,6 +58,7 @@
     "fetch",
     "streams",
     "structured-clone",
+    "text-encoding-streams",
     "types",
     "url"
   ],

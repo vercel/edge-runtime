@@ -1,10 +1,9 @@
 import type * as EdgePrimitives from '@edge-runtime/primitives'
 import type { DispatchFetch, ErrorHandler, RejectionHandler } from './types'
-import { requireWithFakeGlobalScope } from './require'
+import { requireWithCache, requireWithFakeGlobalScope } from './require'
 import { runInContext } from 'vm'
 import { VM, type VMContext, type VMOptions } from './vm'
 import * as streamsImpl from '@edge-runtime/primitives/streams'
-import * as consoleImpl from '@edge-runtime/primitives/console'
 import * as abortControllerImpl from '@edge-runtime/primitives/abort-controller'
 import * as urlImpl from '@edge-runtime/primitives/url'
 import * as cryptoImpl from '@edge-runtime/primitives/crypto'
@@ -79,16 +78,34 @@ export class EdgeVM<T extends EdgeContext = EdgeContext> extends VM<T> {
 
     this.evaluate<void>(getDefineEventListenersCode())
     this.dispatchFetch = this.evaluate<DispatchFetch>(getDispatchFetchCode())
-    ;[
+    for (const item of [
       'Object',
       'Uint8Array',
       'ArrayBuffer',
       'Error',
       'SyntaxError',
       'TypeError',
-    ].forEach((item) => {
+    ]) {
       patchInstanceOf(item, this.context)
-    })
+    }
+
+    this.evaluate(`
+      (() => {
+        console.log('boooohooo');
+        const stringifyError = Error.prototype.toString;
+        const NodeError = globalThis[Symbol.for('node:Error')];
+        Error.prototype.toString = function() {
+          console.log('boooohooo 666');
+          if (this instanceof NodeError) {
+            console.log('nice');
+            return NodeError.prototype.toString.call(this);
+          }
+
+          console.log('not nice');
+          return stringifyError.call(this);
+        }
+      })()
+    `)
 
     if (options?.initialCode) {
       this.evaluate(options.initialCode)
@@ -104,18 +121,21 @@ function patchInstanceOf(item: string, ctx: any) {
     `
       globalThis.${item} = new Proxy(${item}, {
         get(target, prop, receiver) {
-          if (prop === Symbol.hasInstance) {
+          if (prop === Symbol.hasInstance && receiver === globalThis.${item}) {
             const nodeTarget = globalThis[Symbol.for('node:${item}')];
             if (nodeTarget) {
               return function(instance) {
                 return instance instanceof target || instance instanceof nodeTarget;
               };
+            } else {
+              throw new Error('node target must exist')
             }
           }
 
           return Reflect.get(target, prop, receiver);
         }
-      })`,
+      })
+    `,
     ctx
   )
 }
@@ -297,7 +317,10 @@ function addPrimitives(context: VMContext) {
 
   // Console
   defineProperties(context, {
-    exports: consoleImpl,
+    exports: requireWithCache({
+      path: require.resolve('@edge-runtime/primitives/console'),
+      context,
+    }),
     nonenumerable: ['console'],
   })
 
@@ -308,6 +331,7 @@ function addPrimitives(context: VMContext) {
   })
 
   const textEncodingStreamImpl = requireWithFakeGlobalScope({
+    context,
     path: require.resolve('@edge-runtime/primitives/text-encoding-streams'),
     scopedContext: streamsImpl,
   })
@@ -342,6 +366,7 @@ function addPrimitives(context: VMContext) {
   // Blob
   defineProperties(context, {
     exports: requireWithFakeGlobalScope({
+      context,
       path: require.resolve('@edge-runtime/primitives/blob'),
       scopedContext: streamsImpl,
     }),
@@ -351,8 +376,13 @@ function addPrimitives(context: VMContext) {
   // Fetch APIs
   defineProperties(context, {
     exports: requireWithFakeGlobalScope({
+      context,
       path: require.resolve('@edge-runtime/primitives/fetch'),
-      scopedContext: { ...streamsImpl, ...urlImpl },
+      scopedContext: {
+        ...streamsImpl,
+        ...urlImpl,
+        ...abortControllerImpl,
+      },
     }),
     nonenumerable: [
       'fetch',

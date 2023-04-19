@@ -33,5 +33,6 @@ coverage
 docs/.next
 docs/node_modules
 packages/*/dist
+packages/*/*.tgz
 packages/runtime/src/version.ts
 .vercel

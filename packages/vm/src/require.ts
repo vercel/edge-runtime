@@ -92,12 +92,13 @@ export function requireWithCache(params: {
 }
 
 export function requireWithFakeGlobalScope(params: {
+  context: Context
   path: string
   references?: Set<string>
   scopedContext: Record<string, any>
 }) {
   const resolved = require.resolve(params.path)
-  const getModuleCode = `(function(module,exports,require,__dirname,__filename,${Object.keys(
+  const getModuleCode = `(function(module,exports,require,__dirname,__filename,globalThis,${Object.keys(
     params.scopedContext
   ).join(',')}) {${readFileSync(resolved, 'utf-8')}\n})`
   const module = {
@@ -114,6 +115,7 @@ export function requireWithFakeGlobalScope(params: {
     moduleRequire,
     dirname(resolved),
     resolved,
+    params.context,
     ...Object.values(params.scopedContext)
   )
 
