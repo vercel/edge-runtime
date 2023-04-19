@@ -107,7 +107,7 @@ export function requireWithFakeGlobalScope(params: {
     id: resolved,
   }
 
-  const moduleRequire = (createRequireFromPath || createRequireM)(resolved)
+  const moduleRequire = (createRequireM || createRequireFromPath)(resolved)
 
   eval(getModuleCode)(
     module,
