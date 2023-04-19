@@ -1,8 +1,15 @@
 import type * as EdgePrimitives from '@edge-runtime/primitives'
 import type { DispatchFetch, ErrorHandler, RejectionHandler } from './types'
-import { requireWithCache } from './require'
+import { requireWithCache, requireWithFakeGlobalScope } from './require'
 import { runInContext } from 'vm'
 import { VM, type VMContext, type VMOptions } from './vm'
+import * as webStreamsImpl from '@edge-runtime/primitives/streams'
+import * as consoleImpl from '@edge-runtime/primitives/console'
+import * as abortControllerImpl from '@edge-runtime/primitives/abort-controller'
+import * as urlImpl from '@edge-runtime/primitives/url'
+import * as cryptoImpl from '@edge-runtime/primitives/crypto'
+import * as eventsImpl from '@edge-runtime/primitives/events'
+import * as structuredCloneImpl from '@edge-runtime/primitives/structured-clone'
 
 export interface EdgeVMOptions<T extends EdgeContext> {
   /**
@@ -72,7 +79,14 @@ export class EdgeVM<T extends EdgeContext = EdgeContext> extends VM<T> {
 
     this.evaluate<void>(getDefineEventListenersCode())
     this.dispatchFetch = this.evaluate<DispatchFetch>(getDispatchFetchCode())
-    ;['Object', 'Uint8Array', 'ArrayBuffer'].forEach((item) => {
+    ;[
+      'Object',
+      'Uint8Array',
+      'ArrayBuffer',
+      'Error',
+      'SyntaxError',
+      'TypeError',
+    ].forEach((item) => {
       patchInstanceOf(item, this.context)
     })
 
@@ -283,19 +297,9 @@ function addPrimitives(context: VMContext) {
 
   // Console
   defineProperties(context, {
-    exports: requireWithCache({
-      context,
-      path: require.resolve('@edge-runtime/primitives/console'),
-      scopedContext: { console },
-    }),
+    exports: consoleImpl,
     nonenumerable: ['console'],
   })
-
-  // const encodings = requireWithCache({
-  //   context,
-  //   path: require.resolve('@edge-runtime/primitives/encoding'),
-  //   scopedContext: { Buffer, global: {} },
-  // })
 
   // Encoding APIs
   defineProperties(context, {
@@ -303,14 +307,14 @@ function addPrimitives(context: VMContext) {
     nonenumerable: ['atob', 'btoa', 'TextEncoder', 'TextDecoder'],
   })
 
-  const streams = requireWithCache({
-    path: require.resolve('@edge-runtime/primitives/streams'),
-    context,
+  const stream2 = requireWithFakeGlobalScope({
+    path: require.resolve('@edge-runtime/primitives/text-encoding-streams'),
+    scopedContext: webStreamsImpl,
   })
 
   // Streams
   defineProperties(context, {
-    exports: streams,
+    exports: { ...webStreamsImpl, ...stream2 },
     nonenumerable: [
       'ReadableStream',
       'ReadableStreamBYOBReader',
@@ -323,77 +327,33 @@ function addPrimitives(context: VMContext) {
     ],
   })
 
-  const abort = requireWithCache({
-    context,
-    path: require.resolve('@edge-runtime/primitives/abort-controller'),
-  })
-
   // AbortController
   defineProperties(context, {
-    exports: abort,
+    exports: abortControllerImpl,
     nonenumerable: ['AbortController', 'AbortSignal', 'DOMException'],
   })
 
   // URL
   defineProperties(context, {
-    exports: requireWithCache({
-      cache: new Map([['punycode', { exports: require('punycode') }]]),
-      context,
-      path: require.resolve('@edge-runtime/primitives/url'),
-      scopedContext: {
-        TextEncoder: TextEncoder,
-        TextDecoder: TextDecoder,
-      },
-    }),
+    exports: urlImpl,
     nonenumerable: ['URL', 'URLSearchParams', 'URLPattern'],
-  })
-
-  const blob = requireWithCache({
-    context,
-    path: require.resolve('@edge-runtime/primitives/blob'),
   })
 
   // Blob
   defineProperties(context, {
-    exports: blob,
+    exports: requireWithFakeGlobalScope({
+      path: require.resolve('@edge-runtime/primitives/blob'),
+      scopedContext: webStreamsImpl,
+    }),
     nonenumerable: ['Blob'],
-  })
-
-  const webFetch = requireWithCache({
-    context,
-    cache: new Map([
-      ['abort-controller', { exports: abort }],
-      ['assert', { exports: require('assert') }],
-      ['buffer', { exports: require('buffer') }],
-      ['events', { exports: require('events') }],
-      ['http', { exports: require('http') }],
-      ['net', { exports: require('net') }],
-      ['perf_hooks', { exports: require('perf_hooks') }],
-      ['querystring', { exports: require('querystring') }],
-      ['stream', { exports: require('stream') }],
-      ['tls', { exports: require('tls') }],
-      ['util', { exports: require('util') }],
-      ['zlib', { exports: require('zlib') }],
-      [
-        require.resolve('@edge-runtime/primitives/streams'),
-        { exports: streams },
-      ],
-      [require.resolve('@edge-runtime/primitives/blob'), { exports: blob }],
-    ]),
-    path: require.resolve('@edge-runtime/primitives/fetch'),
-    scopedContext: {
-      // Uint8Array: createUint8ArrayForContext(context),
-      Buffer,
-      global: {},
-      queueMicrotask,
-      setImmediate,
-      clearImmediate,
-    },
   })
 
   // Fetch APIs
   defineProperties(context, {
-    exports: webFetch,
+    exports: requireWithFakeGlobalScope({
+      path: require.resolve('@edge-runtime/primitives/fetch'),
+      scopedContext: { ...webStreamsImpl, ...urlImpl },
+    }),
     nonenumerable: [
       'fetch',
       'File',
@@ -406,28 +366,14 @@ function addPrimitives(context: VMContext) {
 
   // Crypto
   defineProperties(context, {
-    exports: requireWithCache({
-      context,
-      cache: new Map([
-        ['crypto', { exports: require('crypto') }],
-        ['process', { exports: require('process') }],
-      ]),
-      path: require.resolve('@edge-runtime/primitives/crypto'),
-      scopedContext: {
-        Buffer,
-        // Uint8Array: createUint8ArrayForContext(context),
-      },
-    }),
+    exports: cryptoImpl,
     enumerable: ['crypto'],
     nonenumerable: ['Crypto', 'CryptoKey', 'SubtleCrypto'],
   })
 
   // Events
   defineProperties(context, {
-    exports: requireWithCache({
-      context,
-      path: require.resolve('@edge-runtime/primitives/events'),
-    }),
+    exports: eventsImpl,
     nonenumerable: [
       'Event',
       'EventTarget',
@@ -438,10 +384,7 @@ function addPrimitives(context: VMContext) {
 
   // Structured Clone
   defineProperties(context, {
-    exports: requireWithCache({
-      context,
-      path: require.resolve('@edge-runtime/primitives/structured-clone'),
-    }),
+    exports: structuredCloneImpl,
     nonenumerable: ['structuredClone'],
   })
 

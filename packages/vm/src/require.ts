@@ -2,6 +2,7 @@ import type { Context } from 'vm'
 import { readFileSync } from 'fs'
 import { runInContext } from 'vm'
 import { dirname } from 'path'
+import { createRequireFromPath, createRequire as createRequireM } from 'module'
 
 /**
  * Allows to require a series of dependencies provided by their path
@@ -88,4 +89,33 @@ export function requireWithCache(params: {
     params.references,
     params.scopedContext
   ).call(null, params.path, params.path)
+}
+
+export function requireWithFakeGlobalScope(params: {
+  path: string
+  references?: Set<string>
+  scopedContext: Record<string, any>
+}) {
+  const resolved = require.resolve(params.path)
+  const getModuleCode = `(function(module,exports,require,__dirname,__filename,${Object.keys(
+    params.scopedContext
+  ).join(',')}) {${readFileSync(resolved, 'utf-8')}\n})`
+  const module = {
+    exports: {},
+    loaded: false,
+    id: resolved,
+  }
+
+  const moduleRequire = (createRequireFromPath || createRequireM)(resolved)
+
+  eval(getModuleCode)(
+    module,
+    module.exports,
+    moduleRequire,
+    dirname(resolved),
+    resolved,
+    ...Object.values(params.scopedContext)
+  )
+
+  return module.exports
 }

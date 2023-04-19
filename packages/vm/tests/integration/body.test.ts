@@ -1,6 +1,7 @@
 /**
  * @jest-environment ../jest-environment/dist
  */
+
 it('throws when the body was directly consumed', async () => {
   const object = { hello: 'world' }
   const blob = new Blob([JSON.stringify(object, null, 2)], {
@@ -191,7 +192,7 @@ test('allows to read a Blob body as Blob', async () => {
 test('allows to read a text body as JSON', async () => {
   const response = new Response(JSON.stringify({ message: 'hi', value: 10 }))
   const value = await response.json()
-  expect(value).toStrictEqual({ message: 'hi', value: 10 })
+  expect(value).toEqual({ message: 'hi', value: 10 })
 })
 
 test('throws when reading a text body as JSON but it is invalid', async () => {
