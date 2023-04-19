@@ -166,7 +166,7 @@ importers:
       test-listen: 1.1.0
       text-encoding: 0.7.0
       tsup: '6'
-      undici: 5.11.0
+      undici: 5.21.2
       urlpattern-polyfill: 6.0.2
       web-streams-polyfill: 4.0.0-beta.3
       whatwg-url: 12.0.0
@@ -187,7 +187,7 @@ importers:
       test-listen: 1.1.0
       text-encoding: 0.7.0
       tsup: 6.6.2
-      undici: 5.11.0
+      undici: 5.21.2
       urlpattern-polyfill: 6.0.2
       web-streams-polyfill: 4.0.0-beta.3
       whatwg-url: 12.0.0
@@ -8184,8 +8184,8 @@ packages:
     resolution: {integrity: sha512-z4o1fvKUojIWh9XuaVLUDdf86RQiq13AC1dmHbTpoyuu+bquHms76v16CjycCbec87J7z0k//SiQVk0sMdFmpQ==}
     dev: true
 
-  /undici/5.11.0:
-    resolution: {integrity: sha512-oWjWJHzFet0Ow4YZBkyiJwiK5vWqEYoH7BINzJAJOLedZ++JpAlCbUktW2GQ2DS2FpKmxD/JMtWUUWl1BtghGw==}
+  /undici/5.21.2:
+    resolution: {integrity: sha512-f6pTQ9RF4DQtwoWSaC42P/NKlUjvezVvd9r155ohqkwFNRyBKM3f3pcty3ouusefNRyM25XhIQEbeQ46sZDJfQ==}
     engines: {node: '>=12.18'}
     dependencies:
       busboy: 1.6.0

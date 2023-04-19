@@ -8,7 +8,6 @@ import * as abortControllerImpl from '@edge-runtime/primitives/abort-controller'
 import * as urlImpl from '@edge-runtime/primitives/url'
 import * as cryptoImpl from '@edge-runtime/primitives/crypto'
 import * as eventsImpl from '@edge-runtime/primitives/events'
-import * as structuredCloneImpl from '@edge-runtime/primitives/structured-clone'
 
 export interface EdgeVMOptions<T extends EdgeContext> {
   /**
@@ -358,6 +357,19 @@ function addPrimitives(context: VMContext) {
     nonenumerable: ['Blob'],
   })
 
+  // Structured Clone
+  defineProperties(context, {
+    exports:
+      typeof structuredClone !== 'undefined'
+        ? { structuredClone }
+        : requireWithFakeGlobalScope({
+            path: require.resolve('@edge-runtime/primitives/structured-clone'),
+            context,
+            scopedContext: streamsImpl,
+          }),
+    nonenumerable: ['structuredClone'],
+  })
+
   // Fetch APIs
   defineProperties(context, {
     exports: requireWithFakeGlobalScope({
@@ -367,6 +379,7 @@ function addPrimitives(context: VMContext) {
         ...streamsImpl,
         ...urlImpl,
         ...abortControllerImpl,
+        structuredClone: context.structuredClone,
       },
     }),
     nonenumerable: [
@@ -395,12 +408,6 @@ function addPrimitives(context: VMContext) {
       'FetchEvent',
       'PromiseRejectionEvent',
     ],
-  })
-
-  // Structured Clone
-  defineProperties(context, {
-    exports: structuredCloneImpl,
-    nonenumerable: ['structuredClone'],
   })
 
   return context as EdgeContext

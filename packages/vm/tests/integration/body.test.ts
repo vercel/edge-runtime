@@ -43,7 +43,7 @@ it('throws when the body was directly consumed', async () => {
   const error = await response.text().catch((err) => err)
 
   expect(error).toBeInstanceOf(TypeError)
-  expect(error.message).toEqual('The stream is locked.')
+  expect(error.message).toEqual('Body is unusable')
 })
 
 test('throws when the body was indirectly consumed', async () => {
@@ -65,7 +65,7 @@ test('throws when the body was indirectly consumed', async () => {
   const error = await response.text().catch((err) => err)
 
   expect(error).toBeInstanceOf(TypeError)
-  expect(error.message).toEqual('The body has already been consumed.')
+  expect(error.message).toEqual('Body is unusable')
 })
 
 test('allows to read a FormData body as text', async () => {
@@ -82,7 +82,7 @@ test('allows to read a FormData body as text', async () => {
   const res = new Response(formData)
   const text = await res?.text()
 
-  expect(text.replace(/formdata-undici-0\.\d+/g, 'formdata-unidici-0.1234'))
+  expect(text.replace(/formdata-undici-0\d+/g, 'formdata-unidici-0.1234'))
     .toMatchInlineSnapshot(`
     "------formdata-unidici-0.1234
     Content-Disposition: form-data; name="name"
