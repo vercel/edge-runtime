@@ -1,5 +1,3 @@
-import { fetch, AbortController, AbortSignal, DOMException } from '..'
-
 describe('AbortController', () => {
   it('allows to abort fetch', async () => {
     expect.assertions(1)

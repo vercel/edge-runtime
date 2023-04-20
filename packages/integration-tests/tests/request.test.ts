@@ -1,5 +1,3 @@
-import { fetch, Headers, Request } from '..'
-
 test('combine with fetch', async () => {
   const request = new Request('https://example.vercel.sh')
   const response = await fetch(request)

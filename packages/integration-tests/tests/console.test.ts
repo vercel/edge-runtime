@@ -1,5 +1,3 @@
-import { console as konsole } from '..'
-
 it.each([
   { method: 'assert' },
   { method: 'count' },
@@ -14,7 +12,7 @@ it.each([
   { method: 'warn' },
 ])('$method', ({ method }) => {
   const key = method.toString()
-  expect(konsole).toHaveProperty(key, expect.any(Function))
-  const fn = konsole[key as keyof typeof konsole]
+  expect(console).toHaveProperty(key, expect.any(Function))
+  const fn = console[key as keyof typeof console]
   expect(typeof fn.bind(console)).toBe('function')
 })
