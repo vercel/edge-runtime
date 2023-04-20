@@ -1,5 +1,4 @@
-import { AbortController, AbortSignal, DOMException } from '../abort-controller'
-import { fetch } from '../fetch'
+import { fetch, AbortController, AbortSignal, DOMException } from '..'
 
 describe('AbortController', () => {
   it('allows to abort fetch', async () => {

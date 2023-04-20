@@ -12,18 +12,26 @@ function setAndRevert(obj, target, fn) {
   }
 }
 
-setAndRevert(require('./streams'), globalThis, () => {
-  module.exports = {
-    ...require('./abort-controller'),
-    ...require('./blob'),
-    ...require('./console'),
-    ...require('./crypto'),
-    ...require('./encoding'),
+setAndRevert(
+  {
     ...require('./events'),
-    ...require('./fetch'),
+    ...require('./abort-controller'),
     ...require('./streams'),
-    ...require('./text-encoding-streams'),
-    ...require('./structured-clone'),
-    ...require('./url'),
+  },
+  globalThis,
+  () => {
+    module.exports = {
+      ...require('./abort-controller'),
+      ...require('./blob'),
+      ...require('./console'),
+      ...require('./crypto'),
+      ...require('./encoding'),
+      ...require('./events'),
+      ...require('./fetch'),
+      ...require('./streams'),
+      ...require('./text-encoding-streams'),
+      ...require('./structured-clone'),
+      ...require('./url'),
+    }
   }
-})
+)

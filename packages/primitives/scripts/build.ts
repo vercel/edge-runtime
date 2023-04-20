@@ -49,6 +49,7 @@ async function bundlePackage() {
     define: {
       process: JSON.stringify({ env: {}, versions: { node: '16.6.0' } }),
     },
+    inject: ['./src/inject/events.js'],
     esbuildPlugins: [
       // @ts-ignore
       alias({
