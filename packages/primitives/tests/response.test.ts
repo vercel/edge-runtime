@@ -1,4 +1,4 @@
-import { fetch, Response } from '../fetch'
+import { fetch, Response } from '..'
 
 test('allow to set `set-cookie` header', async () => {
   const response = new Response(null)

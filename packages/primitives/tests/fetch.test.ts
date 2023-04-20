@@ -3,9 +3,7 @@ import { Server, createServer, IncomingMessage, ServerResponse } from 'http'
 import * as httpBody from 'http-body'
 import listen from 'test-listen'
 import multer from 'multer'
-
-import { FormData, fetch, Headers } from '../fetch'
-import { URL } from '../url'
+import { URL, FormData, fetch, Headers } from '..'
 
 let server: Server
 afterEach(() => new Promise((resolve) => server.close(resolve)))

@@ -1,4 +1,4 @@
-import { fetch, Headers, Request } from '../fetch'
+import { fetch, Headers, Request } from '..'
 
 test('combine with fetch', async () => {
   const request = new Request('https://example.vercel.sh')
