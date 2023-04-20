@@ -1,4 +1,4 @@
-import { TextDecoder } from '../encoding'
+import { TextDecoder } from '..'
 
 test('TextDecoder', () => {
   const input = new Uint8Array([

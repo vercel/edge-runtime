@@ -1,4 +1,4 @@
-import { Headers } from '../fetch'
+import { Headers } from '..'
 
 test('sets header calling Headers constructor', async () => {
   const headers = new Headers({ cookie: 'hello=world' })

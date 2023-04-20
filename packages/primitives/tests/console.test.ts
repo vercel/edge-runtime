@@ -1,4 +1,4 @@
-import { console as konsole } from '../console'
+import { console as konsole } from '..'
 
 it.each([
   { method: 'assert' },

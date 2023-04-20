@@ -1,4 +1,4 @@
-import { crypto } from '../crypto'
+import { crypto } from '..'
 
 test('crypto.randomUUID', () => {
   expect(crypto.randomUUID()).toEqual(expect.stringMatching(/^[a-f0-9-]+$/))

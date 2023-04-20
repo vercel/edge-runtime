@@ -1,4 +1,4 @@
-import { URL } from '../url'
+import { URL } from '..'
 
 test('URL', async () => {
   const url = new URL('https://edge-ping.vercel.app/')
