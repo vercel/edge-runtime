@@ -1,11 +1,29 @@
-export * from './abort-controller'
-export * from './blob'
-export * from './console'
-export * from './crypto'
-export * from './encoding'
-export * from './events'
-export * from './fetch'
-export * from './streams'
-export * from './text-encoding-streams'
-export * from './structured-clone'
-export * from './url'
+function setAndRevert(obj, target, fn) {
+  const before = Object.keys(obj).map((key) => [key, target[key]])
+  Object.entries(obj).forEach(([key, value]) => {
+    target[key] = value
+  })
+  try {
+    return fn()
+  } finally {
+    before.forEach(([key, value]) => {
+      target[key] = value
+    })
+  }
+}
+
+setAndRevert(require('./streams'), globalThis, () => {
+  module.exports = {
+    ...require('./abort-controller'),
+    ...require('./blob'),
+    ...require('./console'),
+    ...require('./crypto'),
+    ...require('./encoding'),
+    ...require('./events'),
+    ...require('./fetch'),
+    ...require('./streams'),
+    ...require('./text-encoding-streams'),
+    ...require('./structured-clone'),
+    ...require('./url'),
+  }
+})
