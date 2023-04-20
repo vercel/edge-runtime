@@ -36,6 +36,7 @@ function edge() {
     URL,
     URLPattern,
     URLSearchParams,
+    WebSocket,
     WritableStream,
     WritableStreamDefaultWriter,
   }
