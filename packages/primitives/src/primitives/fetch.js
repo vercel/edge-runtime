@@ -30,6 +30,9 @@ HeadersModule.Headers.prototype.entries = function* () {
   }
 }
 
+HeadersModule.Headers.prototype[Symbol.iterator] =
+  HeadersModule.Headers.prototype.entries
+
 HeadersModule.Headers.prototype.values = function* () {
   for (const [, value] of __entries.call(this)) {
     yield value
