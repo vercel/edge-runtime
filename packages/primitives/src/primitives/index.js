@@ -1,37 +1,28 @@
-function setAndRevert(obj, target, fn) {
-  const before = Object.keys(obj).map((key) => [key, target[key]])
-  Object.entries(obj).forEach(([key, value]) => {
-    target[key] = value
-  })
-  try {
-    return fn()
-  } finally {
-    before.forEach(([key, value]) => {
-      target[key] = value
-    })
-  }
+const primitives = {
+  Event: require('./events').Event,
+  EventTarget: require('./events').EventTarget,
+  AbortController: require('./abort-controller').AbortController,
+  ReadableStream: require('./streams').ReadableStream,
+  TransformStream: require('./streams').TransformStream,
 }
 
-setAndRevert(
-  {
-    ...require('./events'),
-    ...require('./abort-controller'),
-    ...require('./streams'),
-  },
-  globalThis,
-  () => {
-    module.exports = {
-      ...require('./abort-controller'),
-      ...require('./blob'),
-      ...require('./console'),
-      ...require('./crypto'),
-      ...require('./encoding'),
-      ...require('./events'),
-      ...require('./fetch'),
-      ...require('./streams'),
-      ...require('./text-encoding-streams'),
-      ...require('./structured-clone'),
-      ...require('./url'),
-    }
-  }
-)
+Object.defineProperty(globalThis, Symbol.for('@edge-runtime/primitives'), {
+  enumerable: false,
+  value: primitives,
+})
+
+module.exports = {
+  ...require('./abort-controller'),
+  ...require('./blob'),
+  ...require('./console'),
+  ...require('./crypto'),
+  ...require('./encoding'),
+  ...require('./events'),
+  ...require('./fetch'),
+  ...require('./streams'),
+  ...require('./text-encoding-streams'),
+  ...require('./structured-clone'),
+  ...require('./url'),
+}
+
+Object.assign(primitives, module.exports)
