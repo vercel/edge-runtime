@@ -42,5 +42,9 @@
   "publishConfig": {
     "access": "public"
   },
-  "types": "dist/index.d.ts"
+  "types": "dist/index.d.ts",
+  "devDependencies": {
+    "@types/ws": "8.5.3",
+    "ws": "8.13.0"
+  }
 }

@@ -386,6 +386,7 @@ function addPrimitives(context: VMContext) {
       'Headers',
       'Request',
       'Response',
+      'WebSocket',
     ],
   })
 

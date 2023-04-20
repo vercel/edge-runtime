@@ -17,6 +17,7 @@ global.AbortSignal = AbortSignal
 // undici uses `process.nextTick`,
 // but process APIs doesn't exist in a runtime context.
 process.nextTick = setImmediate
+process.emitWarning = () => {}
 
 const Request = new Proxy(BaseRequest, {
   construct(target, args) {
@@ -165,4 +166,5 @@ export const Response = ResponseModule.Response
 
 export { FormData } from 'undici/lib/fetch/formdata'
 export { File } from 'undici/lib/fetch/file'
+export { WebSocket } from 'undici/lib/websocket/websocket'
 export { Request }

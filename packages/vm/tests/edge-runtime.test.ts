@@ -136,6 +136,7 @@ describe('Global primitives', () => {
     { api: 'WeakMap' },
     { api: 'WeakSet' },
     { api: 'WebAssembly' },
+    { api: 'WebSocket' },
     { api: 'WritableStream' },
     { api: 'WritableStreamDefaultWriter' },
   ])('`$api` is defined in global scope', ({ api }) => {
