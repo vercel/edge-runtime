@@ -21,6 +21,7 @@ it('AbortController', async () => {
       '.constructor.name': err.constructor.name,
       'instanceof DOMException': err instanceof DOMException,
       'instanceof Error': err instanceof Error,
+      'signal instanceof AbortSignal': controller.signal instanceof AbortSignal,
     }
   }
 
@@ -32,6 +33,7 @@ it('AbortController', async () => {
     '.constructor.name': 'DOMException',
     'instanceof DOMException': true,
     'instanceof Error': true,
+    'signal instanceof AbortSignal': true,
   })
 })
 

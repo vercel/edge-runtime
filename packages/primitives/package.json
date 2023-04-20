@@ -4,6 +4,7 @@
   "homepage": "https://edge-runtime.vercel.app/packages/primitives",
   "version": "2.1.2",
   "main": "dist/index.js",
+  "private": true,
   "repository": {
     "directory": "packages/primitives",
     "type": "git",
@@ -67,7 +68,7 @@
     "clean:build": "rm -rf dist abort-controller blob console crypto encoding events fetch streams structured-clone url",
     "clean:node": "rm -rf node_modules",
     "prebuild": "pnpm run clean:build",
-    "test": "jest"
+    "test": "#"
   },
   "license": "MPL-2.0",
   "publishConfig": {

@@ -22,9 +22,6 @@
     "vm",
     "web"
   ],
-  "dependencies": {
-    "@edge-runtime/primitives": "workspace:*"
-  },
   "engines": {
     "node": ">=14"
   },
@@ -43,7 +40,11 @@
     "access": "public"
   },
   "types": "dist/index.d.ts",
+  "bundleDependencies": [
+    "@edge-runtime/primitives"
+  ],
   "devDependencies": {
+    "@edge-runtime/primitives": "workspace:*",
     "@types/ws": "8.5.3",
     "ws": "8.13.0"
   }

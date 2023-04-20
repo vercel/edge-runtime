@@ -48,10 +48,7 @@ async function bundlePackage() {
     },
     define: {
       process: JSON.stringify({ env: {}, versions: { node: '16.6.0' } }),
-      'globalThis.TransformStream': '__vc_globalthis__TransformStream__',
-      'globalThis.ReadableStream': '__vc_globalthis__ReadableStream__',
     },
-    inject: ['./src/inject/events.js'],
     esbuildPlugins: [
       // @ts-ignore
       alias({

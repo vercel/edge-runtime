@@ -348,7 +348,11 @@ function addPrimitives(context: VMContext) {
 
   // AbortController
   defineProperties(context, {
-    exports: abortControllerImpl,
+    exports: requireWithFakeGlobalScope({
+      path: require.resolve('@edge-runtime/primitives/abort-controller'),
+      context,
+      scopedContext: eventsImpl,
+    }),
     nonenumerable: ['AbortController', 'AbortSignal', 'DOMException'],
   })
 

@@ -93,6 +93,7 @@ export function requireWithCache(params: {
 
 export function requireWithFakeGlobalScope(params: {
   context: Context
+  cache?: Map<string, any>
   path: string
   references?: Set<string>
   scopedContext: Record<string, any>

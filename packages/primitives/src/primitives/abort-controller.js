@@ -1,5 +1,3 @@
-import { EventTarget, Event } from './events'
-
 const kSignal = Symbol('kSignal')
 const kAborted = Symbol('kAborted')
 const kReason = Symbol('kReason')
