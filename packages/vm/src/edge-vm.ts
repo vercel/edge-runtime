@@ -308,6 +308,17 @@ function addPrimitives(context: VMContext) {
   const atob = (str: string) => Buffer.from(str, 'base64').toString('binary')
   const btoa = (str: string) => Buffer.from(str, 'binary').toString('base64')
 
+  // Events
+  defineProperties(context, {
+    exports: eventsImpl,
+    nonenumerable: [
+      'Event',
+      'EventTarget',
+      'FetchEvent',
+      'PromiseRejectionEvent',
+    ],
+  })
+
   // Encoding APIs
   defineProperties(context, {
     exports: { atob, btoa, TextEncoder, TextDecoder },
@@ -376,6 +387,7 @@ function addPrimitives(context: VMContext) {
         ...streamsImpl,
         ...urlImpl,
         ...abortControllerImpl,
+        ...eventsImpl,
         structuredClone: context.structuredClone,
       },
     }),
@@ -395,17 +407,6 @@ function addPrimitives(context: VMContext) {
     exports: cryptoImpl,
     enumerable: ['crypto'],
     nonenumerable: ['Crypto', 'CryptoKey', 'SubtleCrypto'],
-  })
-
-  // Events
-  defineProperties(context, {
-    exports: eventsImpl,
-    nonenumerable: [
-      'Event',
-      'EventTarget',
-      'FetchEvent',
-      'PromiseRejectionEvent',
-    ],
   })
 
   return context as EdgeContext
