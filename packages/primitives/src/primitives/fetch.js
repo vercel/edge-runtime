@@ -1,12 +1,12 @@
 import { AbortController } from './abort-controller'
 import { AbortSignal } from './abort-controller'
 
-import * as CoreSymbols from 'undici/lib/core/symbols'
 import * as FetchSymbols from 'undici/lib/fetch/symbols'
 import * as HeadersModule from 'undici/lib/fetch/headers'
 import * as ResponseModule from 'undici/lib/fetch/response'
 import * as UtilModule from 'undici/lib/fetch/util'
 import * as WebIDLModule from 'undici/lib/fetch/webidl'
+import { Request as BaseRequest } from 'undici/lib/fetch/request'
 
 import { fetch as fetchImpl } from 'undici/lib/fetch'
 import Agent from 'undici/lib/agent'
@@ -17,6 +17,13 @@ global.AbortSignal = AbortSignal
 // undici uses `process.nextTick`,
 // but process APIs doesn't exist in a runtime context.
 process.nextTick = setImmediate
+
+const Request = new Proxy(BaseRequest, {
+  construct(target, args) {
+    const [input, init] = args
+    return new target(input, addDuplexToInit(init))
+  },
+})
 
 const __entries = HeadersModule.Headers.prototype.entries
 HeadersModule.Headers.prototype.entries = function* () {
@@ -131,12 +138,23 @@ export function setGlobalDispatcher(agent) {
 }
 
 /**
+ * Add `duplex: 'half'` by default to all requests
+ */
+function addDuplexToInit(init) {
+  if (typeof init === 'undefined' || typeof init === 'object') {
+    return { duplex: 'half', ...init }
+  }
+  return init
+}
+
+/**
  * Export fetch with an implementation that uses a default global dispatcher.
  * It also re-cretates a new Response object in order to allow mutations on
  * the Response headers.
  */
-export async function fetch() {
-  const res = await fetchImpl.apply(getGlobalDispatcher(), arguments)
+export async function fetch(info, init) {
+  init = addDuplexToInit(init)
+  const res = await fetchImpl.call(getGlobalDispatcher(), info, init)
   const response = new Response(res.body, res)
   Object.defineProperty(response, 'url', { value: res.url })
   return response
@@ -146,5 +164,5 @@ export const Headers = HeadersModule.Headers
 export const Response = ResponseModule.Response
 
 export { FormData } from 'undici/lib/fetch/formdata'
-export { Request } from 'undici/lib/fetch/request'
 export { File } from 'undici/lib/fetch/file'
+export { Request }

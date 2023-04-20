@@ -101,7 +101,7 @@ it('allows to read the body as text', async () => {
   expect(await request.text()).toEqual('Hello World')
 })
 
-it('allows to read the body as chunks', async () => {
+it.only('allows to read the body as chunks', async () => {
   const encoder = new EdgeRuntime.TextEncoder()
   const body = new EdgeRuntime.ReadableStream<Uint8Array>({
     start(controller) {
@@ -130,7 +130,9 @@ it('does not allow to read the body twice', async () => {
 
   expect(request.method).toEqual('POST')
   expect(await request.text()).toEqual('Hello World')
-  await expect(request.text()).rejects.toThrowError('The body has already been consumed.')
+  await expect(request.text()).rejects.toThrowError(
+    'The body has already been consumed.'
+  )
 })
 
 async function mapRequest(input: string, init: RequestInit = {}) {

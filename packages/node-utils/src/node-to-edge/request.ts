@@ -12,9 +12,6 @@ export function buildToRequest(dependencies: BuildDependencies) {
     request: IncomingMessage,
     options: RequestOptions
   ): Request {
-    const body = !['HEAD', 'GET'].includes(request.method ?? '')
-      ? toReadableStream(request)
-      : null
     return new Request(
       String(
         new URL(
@@ -25,10 +22,9 @@ export function buildToRequest(dependencies: BuildDependencies) {
       {
         method: request.method,
         headers: toHeaders(request.headers),
-        body,
-        ...(body && {
-          duplex: 'half',
-        }),
+        body: !['HEAD', 'GET'].includes(request.method ?? '')
+          ? toReadableStream(request)
+          : null,
       }
     )
   }
