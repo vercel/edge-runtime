@@ -28,7 +28,7 @@
     "@edge-runtime/jest-environment": "workspace:2.0.8",
     "@types/ua-parser-js": "0.7.36",
     "tsup": "6",
-    "ua-parser-js": "1.0.33"
+    "ua-parser-js": "1.0.35"
   },
   "engines": {
     "node": ">=14"
