@@ -1,5 +1,11 @@
 # @edge-runtime/jest-environment
 
+## 2.1.0
+
+### Minor Changes
+
+- Merge `EdgeRuntime` into `EdgeVM` ([#289](https://github.com/vercel/edge-runtime/pull/289))
+
 ## 2.0.8
 
 ### Patch Changes
