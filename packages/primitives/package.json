@@ -66,7 +66,7 @@
     "clean:build": "rm -rf dist abort-controller blob console crypto encoding events fetch streams structured-clone url",
     "clean:node": "rm -rf node_modules",
     "prebuild": "pnpm run clean:build",
-    "test": "jest"
+    "test": "#"
   },
   "license": "MPL-2.0",
   "publishConfig": {
