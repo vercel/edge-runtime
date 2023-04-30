@@ -1,3 +1,5 @@
+import { Headers } from '@edge-runtime/ponyfill'
+
 test('sets header calling Headers constructor', async () => {
   const headers = new Headers({ cookie: 'hello=world' })
   expect(headers.get('cookie')).toBe('hello=world')
