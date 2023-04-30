@@ -40,11 +40,10 @@
     "access": "public"
   },
   "types": "dist/index.d.ts",
-  "bundleDependencies": [
-    "@edge-runtime/primitives"
-  ],
+  "dependencies": {
+    "@edge-runtime/primitives": "workspace:*"
+  },
   "devDependencies": {
-    "@edge-runtime/primitives": "workspace:*",
     "@types/multer": "1.4.7",
     "@types/test-listen": "1.1.0",
     "@types/ws": "8.5.3",

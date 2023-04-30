@@ -4,7 +4,6 @@
   "homepage": "https://edge-runtime.vercel.app/packages/primitives",
   "version": "2.1.2",
   "main": "dist/index.js",
-  "private": true,
   "repository": {
     "directory": "packages/primitives",
     "type": "git",
