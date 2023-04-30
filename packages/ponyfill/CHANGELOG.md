@@ -1,5 +1,11 @@
 # @edge-runtime/ponyfill
 
+## 2.2.0
+
+### Minor Changes
+
+- Merge `EdgeRuntime` into `EdgeVM` ([#289](https://github.com/vercel/edge-runtime/pull/289))
+
 ## 2.1.2
 
 ### Patch Changes

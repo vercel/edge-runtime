@@ -1,5 +1,11 @@
 # @edge-runtime/cookies
 
+## 3.1.0
+
+### Minor Changes
+
+- Merge `EdgeRuntime` into `EdgeVM` ([#289](https://github.com/vercel/edge-runtime/pull/289))
+
 ## 3.0.6
 
 ### Patch Changes
