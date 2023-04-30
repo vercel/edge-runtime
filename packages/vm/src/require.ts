@@ -110,10 +110,23 @@ export function requireWithFakeGlobalScope(params: {
 
   const moduleRequire = (createRequireM || createRequireFromPath)(resolved)
 
+  function throwingRequire(path: string) {
+    if (path.startsWith('./')) {
+      const moduleName = path.replace(/^\.\//, '')
+      if (!params.cache?.has(moduleName)) {
+        throw new Error(`Cannot find module '${moduleName}'`)
+      }
+      return params.cache.get(moduleName).exports
+    }
+    return moduleRequire(path)
+  }
+
+  throwingRequire.resolve = moduleRequire.resolve.bind(moduleRequire)
+
   eval(getModuleCode)(
     module,
     module.exports,
-    moduleRequire,
+    throwingRequire,
     dirname(resolved),
     resolved,
     params.context,

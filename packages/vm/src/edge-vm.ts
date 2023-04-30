@@ -4,7 +4,6 @@ import { requireWithCache, requireWithFakeGlobalScope } from './require'
 import { runInContext } from 'vm'
 import { VM, type VMContext, type VMOptions } from './vm'
 import * as streamsImpl from '@edge-runtime/primitives/streams'
-import * as abortControllerImpl from '@edge-runtime/primitives/abort-controller'
 import * as urlImpl from '@edge-runtime/primitives/url'
 import * as cryptoImpl from '@edge-runtime/primitives/crypto'
 import * as eventsImpl from '@edge-runtime/primitives/events'
@@ -347,12 +346,13 @@ function addPrimitives(context: VMContext) {
   })
 
   // AbortController
+  const abortControllerImpl = requireWithFakeGlobalScope({
+    path: require.resolve('@edge-runtime/primitives/abort-controller'),
+    context,
+    scopedContext: eventsImpl,
+  })
   defineProperties(context, {
-    exports: requireWithFakeGlobalScope({
-      path: require.resolve('@edge-runtime/primitives/abort-controller'),
-      context,
-      scopedContext: eventsImpl,
-    }),
+    exports: abortControllerImpl,
     nonenumerable: ['AbortController', 'AbortSignal', 'DOMException'],
   })
 
@@ -386,13 +386,19 @@ function addPrimitives(context: VMContext) {
   defineProperties(context, {
     exports: requireWithFakeGlobalScope({
       context,
+      cache: new Map([
+        ['abort-controller', { exports: abortControllerImpl }],
+        ['streams', { exports: streamsImpl }],
+      ]),
       path: require.resolve('@edge-runtime/primitives/fetch'),
       scopedContext: {
         ...streamsImpl,
         ...urlImpl,
-        ...abortControllerImpl,
-        ...eventsImpl,
         structuredClone: context.structuredClone,
+        ...eventsImpl,
+        AbortController: context.AbortController,
+        DOMException: context.DOMException,
+        AbortSignal: context.AbortSignal,
       },
     }),
     nonenumerable: [
