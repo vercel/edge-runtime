@@ -1,3 +1,5 @@
+import { fetch, Response } from '@edge-runtime/ponyfill'
+
 test('allow to set `set-cookie` header', async () => {
   const response = new Response(null)
   response.headers.set('set-cookie', 'foo=bar')
@@ -8,8 +10,10 @@ test('allow to append multiple `set-cookie` header', async () => {
   const response = new Response(null)
   response.headers.append('set-cookie', 'foo=bar')
   response.headers.append('set-cookie', 'bar=baz')
-  // @ts-expect-error this is problematic
-  expect(response.headers.getAll('set-cookie')).toEqual(['foo=bar', 'bar=baz'])
+  expect(response.headers.getAll?.('set-cookie')).toEqual([
+    'foo=bar',
+    'bar=baz',
+  ])
 })
 
 test('disallow mutate response headers for redirects', async () => {

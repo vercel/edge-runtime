@@ -1,3 +1,5 @@
+import { fetch, Request } from '@edge-runtime/ponyfill'
+
 test('combine with fetch', async () => {
   const request = new Request('https://example.vercel.sh')
   const response = await fetch(request)

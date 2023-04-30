@@ -80,6 +80,10 @@ function load() {
   const fetchImpl = requireWithFakeGlobalScope({
     context,
     path: require.resolve('./fetch'),
+    cache: new Map([
+      ['abort-controller', { exports: abortControllerImpl }],
+      ['streams', { exports: streamsImpl }],
+    ]),
     scopedContext: {
       ...streamsImpl,
       ...urlImpl,
@@ -111,7 +115,7 @@ function load() {
 
 module.exports = load()
 
-import { createRequireFromPath, createRequire as createRequireM } from 'module'
+import Module from 'module'
 import { dirname } from 'path'
 import { readFileSync } from 'fs'
 
@@ -135,12 +139,27 @@ function requireWithFakeGlobalScope(params) {
     id: resolved,
   }
 
-  const moduleRequire = (createRequireM || createRequireFromPath)(resolved)
+  const moduleRequire = (Module.createRequire || Module.createRequireFromPath)(
+    resolved
+  )
+
+  function throwingRequire(path) {
+    if (path.startsWith('./')) {
+      const moduleName = path.replace(/^\.\//, '')
+      if (!params.cache || !params.cache.has(moduleName)) {
+        throw new Error(`Cannot find module '${moduleName}'`)
+      }
+      return params.cache.get(moduleName).exports
+    }
+    return moduleRequire(path)
+  }
+
+  throwingRequire.resolve = moduleRequire.resolve.bind(moduleRequire)
 
   eval(getModuleCode)(
     module,
     module.exports,
-    moduleRequire,
+    throwingRequire,
     dirname(resolved),
     resolved,
     params.context,

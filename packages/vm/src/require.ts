@@ -2,7 +2,7 @@ import type { Context } from 'vm'
 import { readFileSync } from 'fs'
 import { runInContext } from 'vm'
 import { dirname } from 'path'
-import { createRequireFromPath, createRequire as createRequireM } from 'module'
+import Module from 'module'
 
 /**
  * Allows to require a series of dependencies provided by their path
@@ -108,7 +108,9 @@ export function requireWithFakeGlobalScope(params: {
     id: resolved,
   }
 
-  const moduleRequire = (createRequireM || createRequireFromPath)(resolved)
+  const moduleRequire = (Module.createRequire || Module.createRequireFromPath)(
+    resolved
+  )
 
   function throwingRequire(path: string) {
     if (path.startsWith('./')) {
