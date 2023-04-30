@@ -54,7 +54,7 @@ afterAll(() => {
   return server.close()
 })
 
-it.only('maps the request input', async () => {
+it('maps the request input', async () => {
   const input = `${server.url}/hi/there?=foo&bar=baz`
   const request = await mapRequest(input)
   expect(request.url).toEqual(input)
