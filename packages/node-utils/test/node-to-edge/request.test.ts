@@ -1,8 +1,6 @@
 import type { TestServer } from '../test-utils/run-test-server'
 import { buildToRequest } from '../../src/node-to-edge/request'
 import { runTestServer } from '../test-utils/run-test-server'
-
-// TODO: move require.ts to primitives, allowing to import it from here?
 import * as EdgeRuntime from '@edge-runtime/primitives'
 
 const nodeRequestToRequest = buildToRequest({
