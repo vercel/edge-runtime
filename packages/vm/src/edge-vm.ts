@@ -78,6 +78,8 @@ export class EdgeVM<T extends EdgeContext = EdgeContext> extends VM<T> {
     this.dispatchFetch = this.evaluate<DispatchFetch>(getDispatchFetchCode())
     for (const item of [
       'Object',
+      'Array',
+      'RegExp',
       'Uint8Array',
       'ArrayBuffer',
       'Error',
