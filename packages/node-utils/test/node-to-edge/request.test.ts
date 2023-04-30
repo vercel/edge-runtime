@@ -1,6 +1,8 @@
 import type { TestServer } from '../test-utils/run-test-server'
 import { buildToRequest } from '../../src/node-to-edge/request'
 import { runTestServer } from '../test-utils/run-test-server'
+
+// TODO: move require.ts to primitives, allowing to import it from here?
 import * as EdgeRuntime from '@edge-runtime/primitives'
 
 const nodeRequestToRequest = buildToRequest({
@@ -54,7 +56,7 @@ afterAll(() => {
   return server.close()
 })
 
-it('maps the request input', async () => {
+it.only('maps the request input', async () => {
   const input = `${server.url}/hi/there?=foo&bar=baz`
   const request = await mapRequest(input)
   expect(request.url).toEqual(input)
