@@ -1,0 +1,20 @@
+{
+  "mode": "pre",
+  "tag": "beta",
+  "initialVersions": {
+    "@edge-runtime/docs": "0.0.0",
+    "@edge-runtime/cookies": "3.1.0",
+    "@edge-runtime/format": "2.0.1",
+    "@edge-runtime/integration-tests": "1.0.0",
+    "@edge-runtime/jest-environment": "2.1.0",
+    "@edge-runtime/jest-expect": "1.0.1",
+    "@edge-runtime/node-utils": "2.0.3",
+    "@edge-runtime/ponyfill": "2.2.0",
+    "@edge-runtime/primitives": "2.1.2",
+    "edge-runtime": "2.2.0",
+    "@edge-runtime/types": "2.0.8",
+    "@edge-runtime/user-agent": "1.1.2",
+    "@edge-runtime/vm": "2.1.2"
+  },
+  "changesets": []
+}
