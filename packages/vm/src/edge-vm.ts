@@ -76,16 +76,7 @@ export class EdgeVM<T extends EdgeContext = EdgeContext> extends VM<T> {
 
     this.evaluate<void>(getDefineEventListenersCode())
     this.dispatchFetch = this.evaluate<DispatchFetch>(getDispatchFetchCode())
-    for (const item of [
-      'Object',
-      'Array',
-      'RegExp',
-      'Uint8Array',
-      'ArrayBuffer',
-      'Error',
-      'SyntaxError',
-      'TypeError',
-    ]) {
+    for (const item of constructorsToPatchInstanceOf) {
       patchInstanceOf(item, this.context)
     }
 
@@ -94,6 +85,35 @@ export class EdgeVM<T extends EdgeContext = EdgeContext> extends VM<T> {
     }
   }
 }
+
+/**
+ * A list of constructors that need to be patched to make sure that the
+ * `instanceof` operator works as expected from within the vm context,
+ * even when passing it objects that were created in the Node.js realm.
+ *
+ * Example: the return value from `new TextEncoder().encode("hello")` is a
+ * Uint8Array. If `TextEncoder` is coming from the Node.js realm, then the
+ * following will be false, which doesn't fit the expectation of the user:
+ * ```ts
+ * new TextEncoder().encode("hello") instanceof Uint8Array
+ * ```
+ *
+ * This is because the `Uint8Array` in the `vm` context is not the same
+ * as the one in the Node.js realm.
+ *
+ * Patching the constructors in the `vm` is done by the {@link patchInstanceOf}
+ * function, and this is the list of constructors that need to be patched.
+ */
+const constructorsToPatchInstanceOf = [
+  'Object',
+  'Array',
+  'RegExp',
+  'Uint8Array',
+  'ArrayBuffer',
+  'Error',
+  'SyntaxError',
+  'TypeError',
+]
 
 function patchInstanceOf(item: string, ctx: any) {
   // @ts-ignore
