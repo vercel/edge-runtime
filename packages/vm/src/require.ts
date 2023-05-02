@@ -2,7 +2,6 @@ import type { Context } from 'vm'
 import { readFileSync } from 'fs'
 import { runInContext } from 'vm'
 import { dirname } from 'path'
-import Module from 'module'
 
 /**
  * Allows to require a series of dependencies provided by their path
@@ -89,51 +88,4 @@ export function requireWithCache(params: {
     params.references,
     params.scopedContext
   ).call(null, params.path, params.path)
-}
-
-export function requireWithFakeGlobalScope(params: {
-  context: Context
-  cache?: Map<string, any>
-  path: string
-  references?: Set<string>
-  scopedContext: Record<string, any>
-}) {
-  const resolved = require.resolve(params.path)
-  const getModuleCode = `(function(module,exports,require,__dirname,__filename,globalThis,${Object.keys(
-    params.scopedContext
-  ).join(',')}) {${readFileSync(resolved, 'utf-8')}\n})`
-  const module = {
-    exports: {},
-    loaded: false,
-    id: resolved,
-  }
-
-  const moduleRequire = (Module.createRequire || Module.createRequireFromPath)(
-    resolved
-  )
-
-  function throwingRequire(path: string) {
-    if (path.startsWith('./')) {
-      const moduleName = path.replace(/^\.\//, '')
-      if (!params.cache?.has(moduleName)) {
-        throw new Error(`Cannot find module '${moduleName}'`)
-      }
-      return params.cache.get(moduleName).exports
-    }
-    return moduleRequire(path)
-  }
-
-  throwingRequire.resolve = moduleRequire.resolve.bind(moduleRequire)
-
-  eval(getModuleCode)(
-    module,
-    module.exports,
-    throwingRequire,
-    dirname(resolved),
-    resolved,
-    params.context,
-    ...Object.values(params.scopedContext)
-  )
-
-  return module.exports
 }
