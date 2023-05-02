@@ -25,3 +25,36 @@ test('serialize body into JSON', async () => {
   const data = await request.json()
   expect(data).toEqual(obj)
 })
+
+test('adds duplex: half to all requests', () => {
+  const request = new Request('https://example.vercel.sh')
+  // @ts-expect-error duplex is not defined on Request
+  expect(request.duplex).toBe('half')
+})
+
+test('can be extended', async () => {
+  class SubRequest extends Request {
+    constructor(input: Request | string, init?: RequestInit) {
+      super(input, init)
+    }
+
+    myField = 'default value'
+
+    setField(value: string) {
+      this.myField = value
+    }
+  }
+
+  const request = new SubRequest('https://example.vercel.sh', {
+    headers: { 'x-test': 'hello' },
+  })
+
+  // @ts-expect-error duplex is not defined on Request
+  expect(request.duplex).toBe('half')
+  expect(request.myField).toBe('default value')
+  request.setField('new value')
+  expect(request.myField).toBe('new value')
+
+  expect(request.headers.get('x-test')).toBe('hello')
+  expect(request).toBeInstanceOf(Request)
+})
