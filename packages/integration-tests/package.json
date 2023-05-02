@@ -7,7 +7,7 @@
     "test:edge": "jest --testEnvironment @edge-runtime/jest-environment",
     "test:node": "jest --testEnvironment node"
   },
-  "license": "ISC",
+  "license": "MPL-2.0",
   "devDependencies": {
     "@edge-runtime/jest-environment": "workspace:2.1.0",
     "@edge-runtime/ponyfill": "workspace:2.2.0",
