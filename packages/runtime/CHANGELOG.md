@@ -1,5 +1,17 @@
 # edge-runtime
 
+## 2.3.0-beta.0
+
+### Minor Changes
+
+- Fix `instanceof` tests, upgrade undici and revamp how we import stuff into the VM ([#309](https://github.com/vercel/edge-runtime/pull/309))
+
+### Patch Changes
+
+- Updated dependencies [[`ed225b3`](https://github.com/vercel/edge-runtime/commit/ed225b37ec2fa47ab5ce6496746dc285fc8925a6)]:
+  - @edge-runtime/format@2.1.0-beta.0
+  - @edge-runtime/vm@2.2.0-beta.0
+
 ## 2.2.0
 
 ### Minor Changes

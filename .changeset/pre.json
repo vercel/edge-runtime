@@ -16,5 +16,7 @@
     "@edge-runtime/user-agent": "1.1.2",
     "@edge-runtime/vm": "2.1.2"
   },
-  "changesets": []
+  "changesets": [
+    "orange-colts-cover"
+  ]
 }
