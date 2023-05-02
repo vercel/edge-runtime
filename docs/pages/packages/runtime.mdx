@@ -49,7 +49,7 @@ addEventListener('fetch', event => {
 const runtime = new EdgeRuntime({ initialCode })
 
 const response = await runtime.dispatchFetch(
-  'http://vercel.com?url=https://example.com'
+  'http://vercel.com?url=https://example.vercel.sh'
 )
 
 // If your code logic performs asynchronous tasks, you should await them.

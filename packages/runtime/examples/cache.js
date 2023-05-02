@@ -3,7 +3,7 @@
 async function handleRequest(event) {
   const cache = await caches.open('default')
   const { searchParams } = new URL(event.request.url)
-  const url = searchParams.get('url') || 'https://example.com'
+  const url = searchParams.get('url') || 'https://example.vercel.sh'
 
   const cacheKey = new URL(url).toString()
   const request = new Request(cacheKey)
