@@ -25,3 +25,28 @@ test('serialize body into JSON', async () => {
   const data = await request.json()
   expect(data).toEqual(obj)
 })
+
+test('can be extended', async () => {
+  class SubRequest extends Request {
+    constructor(input: Request | string, init?: RequestInit) {
+      super(input, init)
+    }
+
+    myField = 'default value'
+
+    setField(value: string) {
+      this.myField = value
+    }
+  }
+
+  const request = new SubRequest('https://example.vercel.sh', {
+    headers: { 'x-test': 'hello' },
+  })
+
+  expect(request.myField).toBe('default value')
+  request.setField('new value')
+  expect(request.myField).toBe('new value')
+
+  expect(request.headers.get('x-test')).toBe('hello')
+  expect(request).toBeInstanceOf(Request)
+})
