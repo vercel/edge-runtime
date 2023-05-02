@@ -65,6 +65,6 @@ async function fetchRequest(url) {
 
 addEventListener('fetch', (event) => {
   const { searchParams } = new URL(event.request.url)
-  const url = searchParams.get('url') || 'https://example.com'
+  const url = searchParams.get('url') || 'https://example.vercel.s'
   return event.respondWith(fetchRequest(url))
 })

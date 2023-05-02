@@ -5,7 +5,7 @@ import { promisify } from 'util'
 import { readFileSync } from 'fs'
 import { runServer, type EdgeRuntimeServer } from '../server'
 import childProcess from 'child_process'
-import exitHook from 'exit-hook'
+import { onExit } from 'signal-exit'
 import mri from 'mri'
 import path from 'path'
 
@@ -91,7 +91,7 @@ async function main() {
     }
   }
 
-  exitHook(() => server?.close())
+  onExit(() => server?.close())
   logger(`Waiting incoming requests at ${logger.quotes(server.url)}`)
 }
 

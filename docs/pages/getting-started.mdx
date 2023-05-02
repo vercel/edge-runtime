@@ -11,22 +11,10 @@ import { Tabs, Tab } from '../components/tabs'
 
 The **Edge Runtime** is available as Node.js package. You can install it with your favorite package manager:
 
-<Tabs items={['npm', 'yarn', 'pnpm']} storageKey="selected-pkg-manager">
-  <Tab>
-    ```sh
-    npm install edge-runtime
-    ```
-  </Tab>
-  <Tab>
-    ```sh
-    yarn add edge-runtime
-    ```
-  </Tab>
-  <Tab>
-    ```sh
-    pnpm install edge-runtime
-    ```
-  </Tab>
+<Tabs items={['npm', 'yarn', 'pnpm']} storageKey='selected-pkg-manager'>
+  <Tab>```sh npm install edge-runtime ```</Tab>
+  <Tab>```sh yarn add edge-runtime ```</Tab>
+  <Tab>```sh pnpm install edge-runtime ```</Tab>
 </Tabs>
 
 ## Usage
@@ -37,7 +25,7 @@ Once it's installed, you can evaluate any script into the runtime context:
 import { EdgeRuntime } from 'edge-runtime'
 
 const runtime = new EdgeRuntime()
-const result = await runtime.evaluate("fetch('https://example.com')")
+const result = await runtime.evaluate("fetch('https://example.vercel.sh')")
 
 console.log(result)
 ```
@@ -67,32 +55,31 @@ const result = await runtime.evaluate("fetch('example.com')")
 console.log(result)
 ```
 
-You can also load some initial code and interact with it as a regular HTTP server:
+You can load some initial code, for example, to be ready for receiving fetch events:
 
 ```js
 import { EdgeRuntime } from 'edge-runtime'
 
 const initialCode = `
 addEventListener('fetch', event => {
-  const { searchParams } = new URL(event.request.url)
-  const url = searchParams.get('url')
-  return event.respondWith(fetch(url))
+  return event.respondWith(fetch(event.request.url))
 })`
 
 const edgeRuntime = new EdgeRuntime({ initialCode })
-
-const response = await edgeRuntime.dispatchFetch('https://example.com')
+const response = await edgeRuntime.dispatchFetch('https://example.vercel.sh')
 
 // If your code logic performs asynchronous tasks, you should await them.
 // https://developer.mozilla.org/en-US/docs/Web/API/ExtendableEvent/waitUntil
 await response.waitUntil()
+
+console.log(await response.text())
 ```
 
-To expose the server:
+and expose it locally to be used via HTTP:
 
 ```js
 import { EdgeRuntime, runServer } from 'edge-runtime'
-import exitHook from 'exit-hook'
+import { onExit } from 'signal-exit'
 import fetch from 'node-fetch'
 
 const initialCode = `
@@ -104,9 +91,13 @@ addEventListener('fetch', event => {
 
 const edgeRuntime = new EdgeRuntime({ initialCode })
 
-const server = await runServer({ runtime: edgeRuntime })
+const server = await runServer({ runtime: edgeRuntime, port: 3000 })
+console.log(`> Edge server running at ${server.url}`)
+onExit(() => server.close())
+```
 
-exitHook(server.close)
+After that, you will be ready to hit your local server from your terminal:
 
-const response = await fetch(server.url)
+```
+curl http://[::]:3000?url=https://example.vercel.sh
 ```
