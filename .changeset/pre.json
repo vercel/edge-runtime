@@ -17,6 +17,7 @@
     "@edge-runtime/vm": "2.1.2"
   },
   "changesets": [
+    "clean-kings-learn",
     "orange-colts-cover"
   ]
 }

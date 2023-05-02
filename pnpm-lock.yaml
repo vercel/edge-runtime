@@ -132,7 +132,7 @@ importers:
 
   packages/node-utils:
     specifiers:
-      '@edge-runtime/primitives': workspace:2.2.0-beta.0
+      '@edge-runtime/primitives': workspace:2.2.0-beta.1
       '@types/test-listen': 1.1.0
       test-listen: 1.1.0
       tsup: '6'
@@ -227,13 +227,13 @@ importers:
 
   packages/types:
     specifiers:
-      '@edge-runtime/primitives': workspace:2.2.0-beta.0
+      '@edge-runtime/primitives': workspace:2.2.0-beta.1
     dependencies:
       '@edge-runtime/primitives': link:../primitives
 
   packages/user-agent:
     specifiers:
-      '@edge-runtime/jest-environment': workspace:2.2.0-beta.0
+      '@edge-runtime/jest-environment': workspace:2.2.0-beta.1
       '@types/ua-parser-js': 0.7.36
       tsup: '6'
       ua-parser-js: 1.0.35
