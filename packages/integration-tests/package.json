@@ -11,8 +11,6 @@
   "devDependencies": {
     "@edge-runtime/jest-environment": "workspace:*",
     "@edge-runtime/ponyfill": "workspace:*",
-    "@edge-runtime/primitives": "workspace:*",
-    "jest": "29.5.0",
-    "ts-jest": "29.1.0"
+    "@edge-runtime/primitives": "workspace:*"
   }
 }
