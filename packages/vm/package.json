@@ -22,9 +22,6 @@
     "vm",
     "web"
   ],
-  "dependencies": {
-    "@edge-runtime/primitives": "workspace:*"
-  },
   "engines": {
     "node": ">=14"
   },
@@ -42,5 +39,16 @@
   "publishConfig": {
     "access": "public"
   },
-  "types": "dist/index.d.ts"
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "@edge-runtime/primitives": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/multer": "1.4.7",
+    "@types/test-listen": "1.1.0",
+    "@types/ws": "8.5.3",
+    "multer": "1.4.5-lts.1",
+    "test-listen": "1.1.0",
+    "ws": "8.13.0"
+  }
 }

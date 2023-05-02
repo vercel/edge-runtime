@@ -4,8 +4,18 @@ import * as httpBody from 'http-body'
 import listen from 'test-listen'
 import multer from 'multer'
 
-import { FormData, fetch, Headers } from '../fetch'
-import { URL } from '../url'
+import { EdgeVM } from '../src/edge-vm'
+
+const fromVm = ((): {
+  fetch: typeof fetch
+  Headers: typeof Headers
+  FormData: typeof FormData
+  URL: typeof URL
+} => {
+  return new EdgeVM().evaluate(`({ fetch, Headers, FormData, URL })`)
+})()
+
+const { fetch, Headers, FormData, URL } = fromVm
 
 let server: Server
 afterEach(() => new Promise((resolve) => server.close(resolve)))

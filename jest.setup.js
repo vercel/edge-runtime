@@ -1,6 +1,3 @@
-global.AbortSignal =
-  require('./packages/primitives/dist/abort-controller').AbortSignal
-
 /**
  * Jest uses a VM under the covers but it is setup to look like Node.js.
  * Those globals that are missing in the VM but exist in Node.js will be

@@ -1,12 +1,12 @@
 import { AbortController } from './abort-controller'
 import { AbortSignal } from './abort-controller'
 
-import * as CoreSymbols from 'undici/lib/core/symbols'
 import * as FetchSymbols from 'undici/lib/fetch/symbols'
 import * as HeadersModule from 'undici/lib/fetch/headers'
 import * as ResponseModule from 'undici/lib/fetch/response'
 import * as UtilModule from 'undici/lib/fetch/util'
 import * as WebIDLModule from 'undici/lib/fetch/webidl'
+import { Request as BaseRequest } from 'undici/lib/fetch/request'
 
 import { fetch as fetchImpl } from 'undici/lib/fetch'
 import Agent from 'undici/lib/agent'
@@ -17,79 +17,33 @@ global.AbortSignal = AbortSignal
 // undici uses `process.nextTick`,
 // but process APIs doesn't exist in a runtime context.
 process.nextTick = setImmediate
+process.emitWarning = () => {}
 
-/**
- * A symbol used to store cookies in the headers module.
- */
-const SCookies = Symbol('set-cookie')
+const Request = new Proxy(BaseRequest, {
+  construct(target, args) {
+    const [input, init] = args
+    return new target(input, addDuplexToInit(init))
+  },
+})
 
-/**
- * Patch HeadersList.append so that when a `set-cookie` header is appended
- * we keep it in an list to allow future retrieval of all values.
- */
-const __append = HeadersModule.HeadersList.prototype.append
-HeadersModule.HeadersList.prototype.append = function (name, value) {
-  const result = __append.call(this, name, value)
-  if (!this[SCookies]) {
-    Object.defineProperty(this, SCookies, {
-      configurable: false,
-      enumerable: false,
-      writable: true,
-      value: [],
-    })
+const __entries = HeadersModule.Headers.prototype.entries
+HeadersModule.Headers.prototype.entries = function* () {
+  for (const [key, value] of __entries.call(this)) {
+    if (key === 'set-cookie') {
+      const cookies = this.getSetCookie()
+      yield [key, cookies.join(', ')]
+    } else {
+      yield [key, value]
+    }
   }
-
-  const _name = normalizeAndValidateHeaderValue(name, 'Header.append')
-  if (_name === 'set-cookie') {
-    this[SCookies].push(normalizeAndValidateHeaderValue(value, 'Header.append'))
-  }
-
-  return result
 }
 
-/**
- * Patch HeadersList.set to make sure that when a new value for `set-cookie`
- * is set it will also entirely replace the internal list of values.
- */
-const __set = HeadersModule.HeadersList.prototype.set
-HeadersModule.HeadersList.prototype.set = function (name, value) {
-  const result = __set.call(this, name, value)
-  if (!this[SCookies]) {
-    Object.defineProperty(this, SCookies, {
-      configurable: false,
-      enumerable: false,
-      writable: true,
-      value: [],
-    })
-  }
+HeadersModule.Headers.prototype[Symbol.iterator] =
+  HeadersModule.Headers.prototype.entries
 
-  const _name = normalizeAndValidateHeaderName(name)
-  if (_name === 'set-cookie') {
-    this[SCookies] = [normalizeAndValidateHeaderValue(value, 'HeadersList.set')]
-  }
-
-  return result
-}
-
-/**
- * Patch HeaderList.delete to make sure that when `set-cookie` is cleared
- * we also remove the internal list values.
- */
-const __delete = HeadersModule.HeadersList.prototype.delete
-HeadersModule.HeadersList.prototype.delete = function (name) {
-  __delete.call(this, name)
-  if (!this[SCookies]) {
-    Object.defineProperty(this, SCookies, {
-      configurable: false,
-      enumerable: false,
-      writable: true,
-      value: [],
-    })
-  }
-
-  const _name = normalizeAndValidateHeaderName(name, 'Headers.delete')
-  if (_name === 'set-cookie') {
-    this[SCookies] = []
+HeadersModule.Headers.prototype.values = function* () {
+  for (const [, value] of __entries.call(this)) {
+    yield value
   }
 }
 
@@ -104,7 +58,7 @@ HeadersModule.Headers.prototype.getAll = function (name) {
     throw new Error(`getAll can only be used with 'set-cookie'`)
   }
 
-  return this[CoreSymbols.kHeadersList][SCookies] || []
+  return this.getSetCookie()
 }
 
 /**
@@ -185,12 +139,23 @@ export function setGlobalDispatcher(agent) {
 }
 
 /**
+ * Add `duplex: 'half'` by default to all requests
+ */
+function addDuplexToInit(init) {
+  if (typeof init === 'undefined' || typeof init === 'object') {
+    return { duplex: 'half', ...init }
+  }
+  return init
+}
+
+/**
  * Export fetch with an implementation that uses a default global dispatcher.
  * It also re-cretates a new Response object in order to allow mutations on
  * the Response headers.
  */
-export async function fetch() {
-  const res = await fetchImpl.apply(getGlobalDispatcher(), arguments)
+export async function fetch(info, init) {
+  init = addDuplexToInit(init)
+  const res = await fetchImpl.call(getGlobalDispatcher(), info, init)
   const response = new Response(res.body, res)
   Object.defineProperty(response, 'url', { value: res.url })
   return response
@@ -200,5 +165,6 @@ export const Headers = HeadersModule.Headers
 export const Response = ResponseModule.Response
 
 export { FormData } from 'undici/lib/fetch/formdata'
-export { Request } from 'undici/lib/fetch/request'
 export { File } from 'undici/lib/fetch/file'
+export { WebSocket } from 'undici/lib/websocket/websocket'
+export { Request }

@@ -130,7 +130,7 @@ it('does not allow to read the body twice', async () => {
 
   expect(request.method).toEqual('POST')
   expect(await request.text()).toEqual('Hello World')
-  await expect(request.text()).rejects.toThrowError('The body has already been consumed.')
+  await expect(request.text()).rejects.toThrowError('Body is unusable')
 })
 
 async function mapRequest(input: string, init: RequestInit = {}) {

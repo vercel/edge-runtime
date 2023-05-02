@@ -20,7 +20,9 @@ declare const fetchImplementation: (
 
 declare const FileConstructor: typeof File
 declare const FormDataConstructor: typeof FormData
+declare const WebSocketConstructor: typeof WebSocket
 
 export { fetchImplementation as fetch }
 export { FileConstructor as File }
 export { FormDataConstructor as FormData }
+export { WebSocketConstructor as WebSocket }

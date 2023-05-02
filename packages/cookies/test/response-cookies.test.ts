@@ -73,7 +73,7 @@ test('reflect .delete into `set-cookie`', async () => {
   })
 
   cookies.set('fooz', 'barz')
-  expect(Object.fromEntries(headers.entries())['set-cookie']).toBe(
+  expect(Object.fromEntries(headers)['set-cookie']).toBe(
     'foo=bar; Path=/, fooz=barz; Path=/'
   )
 

@@ -10,5 +10,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@edge-runtime/docs"]
+  "ignore": ["@edge-runtime/docs", "@edge-runtime/integration-tests"]
 }

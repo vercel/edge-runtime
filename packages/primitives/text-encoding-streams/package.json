@@ -1,0 +1,4 @@
+{
+  "main": "../dist/text-encoding-streams.js",
+  "types": "../types/text-encoding-streams.d.ts"
+}
