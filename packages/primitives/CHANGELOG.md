@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 2.2.0-beta.1
+
+### Patch Changes
+
+- bugfix: Request can now be extended ([#322](https://github.com/vercel/edge-runtime/pull/322))
+
 ## 2.2.0-beta.0
 
 ### Minor Changes

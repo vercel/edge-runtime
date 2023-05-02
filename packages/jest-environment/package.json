@@ -2,7 +2,7 @@
   "name": "@edge-runtime/jest-environment",
   "description": "A Jest integration to run assertions in Edge Runtime context.",
   "homepage": "https://edge-runtime.vercel.app/packages/jest-environment",
-  "version": "2.2.0-beta.0",
+  "version": "2.2.0-beta.1",
   "main": "dist/index.js",
   "repository": {
     "directory": "packages/jest-environment",
