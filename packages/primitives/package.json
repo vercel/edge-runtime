@@ -37,7 +37,7 @@
     "test-listen": "1.1.0",
     "text-encoding": "0.7.0",
     "tsup": "6",
-    "undici": "5.21.2",
+    "undici": "5.22.0",
     "urlpattern-polyfill": "8.0.2",
     "web-streams-polyfill": "4.0.0-beta.3",
     "whatwg-url": "12.0.1"
