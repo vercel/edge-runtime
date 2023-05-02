@@ -19,16 +19,11 @@ global.AbortSignal = AbortSignal
 process.nextTick = setImmediate
 process.emitWarning = () => {}
 
-const Request = new Proxy(BaseRequest, {
-  construct(target, args, newTarget) {
-    if (target === newTarget) {
-      const [input, init] = args
-      return new newTarget(input, addDuplexToInit(init))
-    } else {
-      return Reflect.construct(target, args, newTarget)
-    }
-  },
-})
+class Request extends BaseRequest {
+  constructor(input, init) {
+    super(input, addDuplexToInit(init))
+  }
+}
 
 const __entries = HeadersModule.Headers.prototype.entries
 HeadersModule.Headers.prototype.entries = function* () {
