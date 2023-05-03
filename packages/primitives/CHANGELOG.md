@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 2.2.0-beta.2
+
+### Patch Changes
+
+- Don't use require.resolve for the custom import resolution ([#324](https://github.com/vercel/edge-runtime/pull/324))
+
 ## 2.2.0-beta.1
 
 ### Patch Changes

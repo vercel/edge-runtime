@@ -1,5 +1,14 @@
 # @edge-runtime/vm
 
+## 2.2.0-beta.2
+
+### Patch Changes
+
+- simplify primitives loading in VM ([#324](https://github.com/vercel/edge-runtime/pull/324))
+
+- Updated dependencies [[`a9054f7`](https://github.com/vercel/edge-runtime/commit/a9054f72032c0a164052f18150e80f97a82d2c13)]:
+  - @edge-runtime/primitives@2.2.0-beta.2
+
 ## 2.2.0-beta.1
 
 ### Patch Changes
