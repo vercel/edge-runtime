@@ -28,15 +28,15 @@ importers:
       '@svitejs/changesets-changelog-github-compact': 1.1.0
       '@types/jest': 29.5.1
       '@types/node': 14.18.36
-      c8: 7.13.0
+      c8: 7.12.0
       esbuild: 0.17.18
       finepack: 2.10.15
-      git-authors-cli: 1.0.46
+      git-authors-cli: 1.0.40
       jest: 29.5.0_nw6xvwuzmqp7vps7knduexkcvm
       jest-watch-typeahead: 2.2.2_jest@29.5.0
       nano-staged: 0.8.0
       prettier: 2.8.8
-      simple-git-hooks: 2.8.1
+      simple-git-hooks: 2.8.0
       ts-jest: 29.1.0_gqcs3aehavy7c2m6btobsdxwhu
       ts-node: 10.9.1_7qmv6wywm5pgikewajnarfcjiq
       turbo: 1.9.3
@@ -172,7 +172,6 @@ importers:
       http-body: 1.0.4
       multer: 1.4.5-lts.1
       test-listen: 1.1.0
-      text-encoding: 0.7.0
       tsup: '6'
       undici: 5.22.0
       urlpattern-polyfill: 8.0.2
@@ -191,7 +190,6 @@ importers:
       http-body: 1.0.4
       multer: 1.4.5-lts.1
       test-listen: 1.1.0
-      text-encoding: 0.7.0
       tsup: 6.6.2
       undici: 5.22.0
       urlpattern-polyfill: 8.0.2
@@ -2488,8 +2486,8 @@ packages:
     dependencies:
       streamsearch: 1.1.0
 
-  /c8/7.13.0:
-    resolution: {integrity: sha512-/NL4hQTv1gBL6J6ei80zu3IiTrmePDKXKXOTLpHvcIWZTVYQlDhVWjjWvkhICylE8EwwnMVzDZugCvdx0/DIIA==}
+  /c8/7.12.0:
+    resolution: {integrity: sha512-CtgQrHOkyxr5koX1wEUmN/5cfDa2ckbHRA4Gy5LAL0zaCFtVWJS5++n+w4/sr2GWGerBxgTjpKeDclk/Qk6W/A==}
     engines: {node: '>=10.12.0'}
     hasBin: true
     dependencies:
@@ -2818,7 +2816,7 @@ packages:
     dev: false
 
   /concat-map/0.0.1:
-    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
 
   /concat-stream/1.6.2:
     resolution: {integrity: sha512-27HBghJxjiZtIk3Ycvn/4kbJk/1uZuJFfuPEns6LaEvpvG1f0hTea8lilrouyo9mVc2GWdcEZ8OLoGmSADlrCw==}
@@ -3628,8 +3626,8 @@ packages:
       get-intrinsic: 1.2.0
     dev: true
 
-  /git-authors-cli/1.0.46:
-    resolution: {integrity: sha512-aRByRbF2GjHzlc58AQDFzg5kvZoTyzUAmDRyAfU7jkR/R4hUP/hlxq4mfh+m9cXFSqSv6LUl5HJmJY97+d6AFg==}
+  /git-authors-cli/1.0.40:
+    resolution: {integrity: sha512-ZbCVPVJXTF3P5ath0AwuLlj2tNi2rHUcaY0Pr2ck46yjqz+7L36PgiVIfVgWyt9+EodSVaaU0bSukJLxyrybmA==}
     engines: {node: '>= 8'}
     hasBin: true
     dependencies:
@@ -3637,8 +3635,9 @@ packages:
       execa: 5.1.1
       exists-file: 3.0.2
       json-future: 2.2.18
-      mri: 1.2.0
-      picocolors: 1.0.0
+      meow: 9.0.0
+      picocolors: 0.2.1
+      update-notifier: 5.1.0
     dev: true
 
   /git-up/7.0.0:
@@ -5834,6 +5833,7 @@ packages:
   /mri/1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
     engines: {node: '>=4'}
+    dev: false
 
   /ms/2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
@@ -6332,6 +6332,10 @@ packages:
       estree-walker: 3.0.3
       is-reference: 3.0.1
     dev: false
+
+  /picocolors/0.2.1:
+    resolution: {integrity: sha512-cMlDqaLEqfSaW8Z7N5Jw+lyIW869EzT73/F5lhtY9cLGoVxSXznfgfXMO0Z5K0o0Q2TkTXq+0KFsdnSe3jDViA==}
+    dev: true
 
   /picocolors/1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
@@ -7024,8 +7028,8 @@ packages:
     engines: {node: '>=14'}
     dev: false
 
-  /simple-git-hooks/2.8.1:
-    resolution: {integrity: sha512-DYpcVR1AGtSfFUNzlBdHrQGPsOhuuEJ/FkmPOOlFysP60AHd3nsEpkGq/QEOdtUyT1Qhk7w9oLmFoMG+75BDog==}
+  /simple-git-hooks/2.8.0:
+    resolution: {integrity: sha512-ocmZQORwa6x9mxg+gVIAp5o4wXiWOHGXyrDBA0+UxGKIEKOyFtL4LWNKkP/2ornQPdlnlDGDteVeYP5FjhIoWA==}
     hasBin: true
     requiresBuild: true
     dev: true
@@ -7430,11 +7434,6 @@ packages:
 
   /test-listen/1.1.0:
     resolution: {integrity: sha512-OyEVi981C1sb9NX1xayfgZls3p8QTDRwp06EcgxSgd1kktaENBW8dO15i8v/7Fi15j0IYQctJzk5J+hyEBId2w==}
-    dev: true
-
-  /text-encoding/0.7.0:
-    resolution: {integrity: sha512-oJQ3f1hrOnbRLOcwKz0Liq2IcrvDeZRHXhd9RgLrsT+DjWY/nty1Hi7v3dtkaEYbPYe0mUoOfzRrMwfXXwgPUA==}
-    deprecated: no longer maintained
     dev: true
 
   /thenify-all/1.6.0:

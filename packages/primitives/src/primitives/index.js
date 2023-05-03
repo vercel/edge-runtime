@@ -1,5 +1,7 @@
 // @ts-check
 
+const path = require('path')
+
 function load() {
   /** @type {Record<string, any>} */
   const context = {}
@@ -14,7 +16,7 @@ function load() {
 
   const consoleImpl = requireWithFakeGlobalScope({
     context,
-    path: require.resolve('./console'),
+    path: path.resolve(__dirname, './console.js'),
     scopedContext: {},
   })
   Object.assign(context, { console: consoleImpl.console })
@@ -30,7 +32,7 @@ function load() {
   const streamsImpl = require('./streams')
   const textEncodingStreamImpl = requireWithFakeGlobalScope({
     context,
-    path: require.resolve('./text-encoding-streams'),
+    path: path.resolve(__dirname, './text-encoding-streams.js'),
     scopedContext: streamsImpl,
   })
 
@@ -47,7 +49,7 @@ function load() {
 
   const abortControllerImpl = requireWithFakeGlobalScope({
     context,
-    path: require.resolve('./abort-controller'),
+    path: path.resolve(__dirname, './abort-controller.js'),
     scopedContext: eventsImpl,
   })
   Object.assign(context, abortControllerImpl)
@@ -61,7 +63,7 @@ function load() {
 
   const blobImpl = requireWithFakeGlobalScope({
     context,
-    path: require.resolve('./blob'),
+    path: path.resolve(__dirname, './blob.js'),
     scopedContext: streamsImpl,
   })
   Object.assign(context, {
@@ -69,7 +71,7 @@ function load() {
   })
 
   const structuredCloneImpl = requireWithFakeGlobalScope({
-    path: require.resolve('./structured-clone'),
+    path: path.resolve(__dirname, './structured-clone.js'),
     context,
     scopedContext: streamsImpl,
   })
@@ -79,7 +81,7 @@ function load() {
 
   const fetchImpl = requireWithFakeGlobalScope({
     context,
-    path: require.resolve('./fetch'),
+    path: path.resolve(__dirname, './fetch.js'),
     cache: new Map([
       ['abort-controller', { exports: abortControllerImpl }],
       ['streams', { exports: streamsImpl }],
@@ -129,7 +131,7 @@ import { readFileSync } from 'fs'
  * @returns {any}
  */
 function requireWithFakeGlobalScope(params) {
-  const resolved = require.resolve(params.path)
+  const resolved = path.resolve(params.path)
   const getModuleCode = `(function(module,exports,require,__dirname,__filename,globalThis,${Object.keys(
     params.scopedContext
   ).join(',')}) {${readFileSync(resolved, 'utf-8')}\n})`

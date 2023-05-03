@@ -1,12 +1,7 @@
-import type * as EdgePrimitives from '@edge-runtime/primitives'
+import * as EdgePrimitives from '@edge-runtime/primitives'
 import type { DispatchFetch, ErrorHandler, RejectionHandler } from './types'
-import { requireWithCache, requireWithFakeGlobalScope } from './require'
 import { runInContext } from 'vm'
 import { VM, type VMContext, type VMOptions } from './vm'
-import * as streamsImpl from '@edge-runtime/primitives/streams'
-import * as urlImpl from '@edge-runtime/primitives/url'
-import * as cryptoImpl from '@edge-runtime/primitives/crypto'
-import * as eventsImpl from '@edge-runtime/primitives/events'
 
 export interface EdgeVMOptions<T extends EdgeContext> {
   /**
@@ -317,45 +312,41 @@ function addPrimitives(context: VMContext) {
   defineProperty(context, 'setTimeout', { value: setTimeout })
   defineProperty(context, 'EdgeRuntime', { value: 'edge-runtime' })
 
-  // Console
   defineProperties(context, {
-    exports: requireWithCache({
-      path: require.resolve('@edge-runtime/primitives/console'),
-      context,
-    }),
-    nonenumerable: ['console'],
-  })
-
-  const atob = (str: string) => Buffer.from(str, 'base64').toString('binary')
-  const btoa = (str: string) => Buffer.from(str, 'binary').toString('base64')
-
-  // Events
-  defineProperties(context, {
-    exports: eventsImpl,
+    exports: EdgePrimitives,
+    enumerable: ['crypto'],
     nonenumerable: [
-      'Event',
-      'EventTarget',
-      'FetchEvent',
-      'PromiseRejectionEvent',
-    ],
-  })
+      // Crypto
+      'Crypto',
+      'CryptoKey',
+      'SubtleCrypto',
 
-  // Encoding APIs
-  defineProperties(context, {
-    exports: { atob, btoa, TextEncoder, TextDecoder },
-    nonenumerable: ['atob', 'btoa', 'TextEncoder', 'TextDecoder'],
-  })
+      // Fetch APIs
+      'fetch',
+      'File',
+      'FormData',
+      'Headers',
+      'Request',
+      'Response',
+      'WebSocket',
 
-  const textEncodingStreamImpl = requireWithFakeGlobalScope({
-    context,
-    path: require.resolve('@edge-runtime/primitives/text-encoding-streams'),
-    scopedContext: streamsImpl,
-  })
+      // Structured Clone
+      'structuredClone',
 
-  // Streams
-  defineProperties(context, {
-    exports: { ...streamsImpl, ...textEncodingStreamImpl },
-    nonenumerable: [
+      // Blob
+      'Blob',
+
+      // URL
+      'URL',
+      'URLSearchParams',
+      'URLPattern',
+
+      // AbortController
+      'AbortController',
+      'AbortSignal',
+      'DOMException',
+
+      // Streams
       'ReadableStream',
       'ReadableStreamBYOBReader',
       'ReadableStreamDefaultReader',
@@ -364,81 +355,22 @@ function addPrimitives(context: VMContext) {
       'TransformStream',
       'WritableStream',
       'WritableStreamDefaultWriter',
+
+      // Encoding
+      'atob',
+      'btoa',
+      'TextEncoder',
+      'TextDecoder',
+
+      // Events
+      'Event',
+      'EventTarget',
+      'FetchEvent',
+      'PromiseRejectionEvent',
+
+      // Console
+      'console',
     ],
-  })
-
-  // AbortController
-  const abortControllerImpl = requireWithFakeGlobalScope({
-    path: require.resolve('@edge-runtime/primitives/abort-controller'),
-    context,
-    scopedContext: eventsImpl,
-  })
-  defineProperties(context, {
-    exports: abortControllerImpl,
-    nonenumerable: ['AbortController', 'AbortSignal', 'DOMException'],
-  })
-
-  // URL
-  defineProperties(context, {
-    exports: urlImpl,
-    nonenumerable: ['URL', 'URLSearchParams', 'URLPattern'],
-  })
-
-  // Blob
-  defineProperties(context, {
-    exports: requireWithFakeGlobalScope({
-      context,
-      path: require.resolve('@edge-runtime/primitives/blob'),
-      scopedContext: streamsImpl,
-    }),
-    nonenumerable: ['Blob'],
-  })
-
-  // Structured Clone
-  defineProperties(context, {
-    exports: requireWithFakeGlobalScope({
-      path: require.resolve('@edge-runtime/primitives/structured-clone'),
-      context,
-      scopedContext: streamsImpl,
-    }),
-    nonenumerable: ['structuredClone'],
-  })
-
-  // Fetch APIs
-  defineProperties(context, {
-    exports: requireWithFakeGlobalScope({
-      context,
-      cache: new Map([
-        ['abort-controller', { exports: abortControllerImpl }],
-        ['streams', { exports: streamsImpl }],
-      ]),
-      path: require.resolve('@edge-runtime/primitives/fetch'),
-      scopedContext: {
-        ...streamsImpl,
-        ...urlImpl,
-        structuredClone: context.structuredClone,
-        ...eventsImpl,
-        AbortController: context.AbortController,
-        DOMException: context.DOMException,
-        AbortSignal: context.AbortSignal,
-      },
-    }),
-    nonenumerable: [
-      'fetch',
-      'File',
-      'FormData',
-      'Headers',
-      'Request',
-      'Response',
-      'WebSocket',
-    ],
-  })
-
-  // Crypto
-  defineProperties(context, {
-    exports: cryptoImpl,
-    enumerable: ['crypto'],
-    nonenumerable: ['Crypto', 'CryptoKey', 'SubtleCrypto'],
   })
 
   return context as EdgeContext
