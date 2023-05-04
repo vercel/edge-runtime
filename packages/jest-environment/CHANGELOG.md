@@ -1,5 +1,11 @@
 # @edge-runtime/jest-environment
 
+## 2.2.0-beta.3
+
+### Patch Changes
+
+- Add "react-server" export condition to Jest environment ([#328](https://github.com/vercel/edge-runtime/pull/328))
+
 ## 2.2.0-beta.2
 
 ### Patch Changes
