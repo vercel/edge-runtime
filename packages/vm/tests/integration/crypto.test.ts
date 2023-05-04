@@ -40,3 +40,30 @@ function toHex(buffer: ArrayBuffer) {
     .map((b) => b.toString(16).padStart(2, '0'))
     .join('')
 }
+
+const nodeWebCrypto = typeof SubtleCrypto !== 'undefined'
+if (nodeWebCrypto) {
+  test('Ed25519', async () => {
+    const vm = new EdgeVM()
+
+    function fn() {
+      return crypto.subtle.generateKey('Ed25519', false, ['sign', 'verify'])
+    }
+
+    const kp = await vm.evaluate(`(${fn})()`)
+    expect(kp).toHaveProperty('privateKey')
+    expect(kp).toHaveProperty('publicKey')
+  })
+
+  test('X25519', async () => {
+    const vm = new EdgeVM()
+
+    function fn() {
+      return crypto.subtle.generateKey('X25519', false, ['deriveBits', 'deriveKey'])
+    }
+
+    const kp = await vm.evaluate(`(${fn})()`)
+    expect(kp).toHaveProperty('privateKey')
+    expect(kp).toHaveProperty('publicKey')
+  })
+}

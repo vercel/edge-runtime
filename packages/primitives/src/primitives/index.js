@@ -104,13 +104,53 @@ function load() {
     WebSocket: fetchImpl.WebSocket,
   })
 
-  const cryptoImpl = require('./crypto')
-  Object.assign(context, {
-    crypto: cryptoImpl.crypto,
-    Crypto: cryptoImpl.Crypto,
-    CryptoKey: cryptoImpl.CryptoKey,
-    SubtleCrypto: cryptoImpl.SubtleCrypto,
-  })
+  if (typeof SubtleCrypto !== 'undefined') {
+    // @ts-ignore
+    const { value: _generateKey } = Object.getOwnPropertyDescriptor(SubtleCrypto.prototype, 'generateKey');
+    // @ts-ignore
+    const { value: _importKey } = Object.getOwnPropertyDescriptor(SubtleCrypto.prototype, 'importKey');
+
+    Object.defineProperties(SubtleCrypto.prototype, {
+      generateKey: {
+        value: function generateKey () {
+          return _generateKey.apply(this, arguments).then((/** @type {CryptoKey | CryptoKeyPair} */result) => {
+            if (result instanceof CryptoKey) {
+              return result;
+            }
+            if (result.publicKey.algorithm.name === 'Ed448' || result.publicKey.algorithm.name === 'X448') {
+              throw new DOMException('Unrecognized algorithm name', 'NotSupportedError')
+            }
+            return result
+          })
+        },
+      },
+      importKey: {
+        value: function importKey () {
+          return _importKey.apply(this, arguments).then((/** @type {CryptoKey} */ result) => {
+            if (result.algorithm.name === 'Ed448' || result.algorithm.name === 'X448') {
+              throw new DOMException('Unrecognized algorithm name', 'NotSupportedError')
+            }
+            return result
+          })
+        },
+      },
+    })
+
+    Object.assign(context, {
+      crypto: globalThis.crypto,
+      Crypto: globalThis.Crypto,
+      CryptoKey: globalThis.CryptoKey,
+      SubtleCrypto: globalThis.SubtleCrypto,
+    })
+  } else {
+    const cryptoImpl = require('./crypto')
+    Object.assign(context, {
+      crypto: cryptoImpl.crypto,
+      Crypto: cryptoImpl.Crypto,
+      CryptoKey: cryptoImpl.CryptoKey,
+      SubtleCrypto: cryptoImpl.SubtleCrypto,
+    })
+  }
 
   return context
 }
