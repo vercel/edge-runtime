@@ -68,7 +68,7 @@ export = class EdgeEnvironment implements JestEnvironment<number> {
   }
 
   exportConditions(): string[] {
-    return ['edge', 'edge-light']
+    return ['edge', 'edge-light', 'react-server']
   }
 
   getVmContext(): Context | null {
