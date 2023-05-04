@@ -41,8 +41,8 @@ function toHex(buffer: ArrayBuffer) {
     .join('')
 }
 
-const nodeWebCrypto = typeof SubtleCrypto !== 'undefined'
-if (nodeWebCrypto) {
+const nodeMajorVersion = parseInt(process.versions.node.split('.')[0])
+if (nodeMajorVersion >= 16) {
   test('Ed25519', async () => {
     const vm = new EdgeVM()
 
