@@ -40,3 +40,21 @@ function toHex(buffer: ArrayBuffer) {
     .map((b) => b.toString(16).padStart(2, '0'))
     .join('')
 }
+
+test('crypto.generateKey works with a Uint8Array from the VM', async () => {
+  async function fn() {
+    await crypto.subtle.generateKey(
+      {
+        name: 'RSA-PSS',
+        hash: 'SHA-256',
+        publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+        modulusLength: 2048,
+      },
+      false,
+      ['sign', 'verify']
+    )
+  }
+
+  const vm = new EdgeVM()
+  await vm.evaluate(`(${fn})()`)
+})

@@ -1,0 +1,223 @@
+// @ts-check
+
+import Module from 'module'
+import { dirname, resolve } from 'path'
+import { readFileSync } from 'fs'
+
+/**
+ * @param {Object} params
+ * @param {unknown} params.context
+ * @param {Map<string, any>} [params.cache]
+ * @param {string} params.path
+ * @param {Set<string>} [params.references]
+ * @param {Record<string, any>} params.scopedContext
+ * @returns {any}
+ */
+function requireWithFakeGlobalScope(params) {
+  const resolved = resolve(params.path)
+  const getModuleCode = `(function(module,exports,require,__dirname,__filename,globalThis,${Object.keys(
+    params.scopedContext
+  ).join(',')}) {${readFileSync(resolved, 'utf-8')}\n})`
+  const module = {
+    exports: {},
+    loaded: false,
+    id: resolved,
+  }
+
+  const moduleRequire = (Module.createRequire || Module.createRequireFromPath)(
+    resolved
+  )
+
+  /** @param {string} pathToRequire */
+  function throwingRequire(pathToRequire) {
+    if (pathToRequire.startsWith('./')) {
+      const moduleName = pathToRequire.replace(/^\.\//, '')
+      if (!params.cache || !params.cache.has(moduleName)) {
+        throw new Error(`Cannot find module '${moduleName}'`)
+      }
+      return params.cache.get(moduleName).exports
+    }
+    return moduleRequire(pathToRequire)
+  }
+
+  throwingRequire.resolve = moduleRequire.resolve.bind(moduleRequire)
+
+  eval(getModuleCode)(
+    module,
+    module.exports,
+    throwingRequire,
+    dirname(resolved),
+    resolved,
+    params.context,
+    ...Object.values(params.scopedContext)
+  )
+
+  return module.exports
+}
+
+/**
+ * @returns {import('../../type-definitions/index')}
+ * @param {Record<string, any>} [scopedContext]
+ */
+export function load(scopedContext = {}) {
+  /** @type Record<string, any> */
+  const context = {}
+  /** @type {import('../../type-definitions/encoding')} */
+  const encodingImpl = requireWithFakeGlobalScope({
+    context,
+    path: resolve(__dirname, './encoding.js'),
+    scopedContext: scopedContext,
+  })
+  assign(context, {
+    TextDecoder: encodingImpl.TextDecoder,
+    TextEncoder: encodingImpl.TextEncoder,
+    atob: encodingImpl.atob,
+    btoa: encodingImpl.btoa,
+  })
+
+  /** @type {import('../../type-definitions/console')} */
+  const consoleImpl = requireWithFakeGlobalScope({
+    context,
+    path: resolve(__dirname, './console.js'),
+    scopedContext: scopedContext,
+  })
+  assign(context, { console: consoleImpl.console })
+
+  /** @type {import('../../type-definitions/events')} */
+  const eventsImpl = requireWithFakeGlobalScope({
+    context,
+    path: resolve(__dirname, './events.js'),
+    scopedContext: scopedContext,
+  })
+  assign(context, {
+    Event: eventsImpl.Event,
+    EventTarget: eventsImpl.EventTarget,
+    FetchEvent: eventsImpl.FetchEvent,
+    // @ts-expect-error we need to add this to the type definitions maybe
+    PromiseRejectionEvent: eventsImpl.PromiseRejectionEvent,
+  })
+
+  /** @type {import('../../type-definitions/streams')} */
+  const streamsImpl = requireWithFakeGlobalScope({
+    context,
+    path: resolve(__dirname, './streams.js'),
+    scopedContext: { ...scopedContext },
+  })
+
+  /** @type {import('../../type-definitions/text-encoding-streams')} */
+  const textEncodingStreamImpl = requireWithFakeGlobalScope({
+    context,
+    path: resolve(__dirname, './text-encoding-streams.js'),
+    scopedContext: { ...streamsImpl, ...scopedContext },
+  })
+
+  assign(context, {
+    ReadableStream: streamsImpl.ReadableStream,
+    ReadableStreamBYOBReader: streamsImpl.ReadableStreamBYOBReader,
+    ReadableStreamDefaultReader: streamsImpl.ReadableStreamDefaultReader,
+    TextDecoderStream: textEncodingStreamImpl.TextDecoderStream,
+    TextEncoderStream: textEncodingStreamImpl.TextEncoderStream,
+    TransformStream: streamsImpl.TransformStream,
+    WritableStream: streamsImpl.WritableStream,
+    WritableStreamDefaultWriter: streamsImpl.WritableStreamDefaultWriter,
+  })
+
+  /** @type {import('../../type-definitions/abort-controller')} */
+  const abortControllerImpl = requireWithFakeGlobalScope({
+    context,
+    path: resolve(__dirname, './abort-controller.js'),
+    scopedContext: { ...eventsImpl, ...scopedContext },
+  })
+  assign(context, {
+    AbortController: abortControllerImpl.AbortController,
+    AbortSignal: abortControllerImpl.AbortSignal,
+    DOMException: abortControllerImpl.DOMException,
+  })
+
+  /** @type {import('../../type-definitions/url')} */
+  const urlImpl = requireWithFakeGlobalScope({
+    context,
+    path: resolve(__dirname, './url.js'),
+    scopedContext: { ...scopedContext },
+  })
+  assign(context, {
+    URL: urlImpl.URL,
+    URLSearchParams: urlImpl.URLSearchParams,
+    URLPattern: urlImpl.URLPattern,
+  })
+
+  /** @type {import('../../type-definitions/blob')} */
+  const blobImpl = requireWithFakeGlobalScope({
+    context,
+    path: resolve(__dirname, './blob.js'),
+    scopedContext: { ...streamsImpl, ...scopedContext },
+  })
+  assign(context, {
+    Blob: blobImpl.Blob,
+  })
+
+  /** @type {import('../../type-definitions/structured-clone')} */
+  const structuredCloneImpl = requireWithFakeGlobalScope({
+    path: resolve(__dirname, './structured-clone.js'),
+    context,
+    scopedContext: { ...streamsImpl, ...scopedContext },
+  })
+  assign(context, {
+    structuredClone: structuredCloneImpl.structuredClone,
+  })
+
+  /** @type {import('../../type-definitions/fetch')} */
+  const fetchImpl = requireWithFakeGlobalScope({
+    context,
+    path: resolve(__dirname, './fetch.js'),
+    cache: new Map([
+      ['abort-controller', { exports: abortControllerImpl }],
+      ['streams', { exports: streamsImpl }],
+    ]),
+    scopedContext: {
+      ...scopedContext,
+      ...streamsImpl,
+      ...urlImpl,
+      ...abortControllerImpl,
+      ...eventsImpl,
+      structuredClone: context.structuredClone,
+    },
+  })
+  assign(context, {
+    fetch: fetchImpl.fetch,
+    File: fetchImpl.File,
+    FormData: fetchImpl.FormData,
+    Headers: fetchImpl.Headers,
+    Request: fetchImpl.Request,
+    Response: fetchImpl.Response,
+    WebSocket: fetchImpl.WebSocket,
+  })
+
+  /** @type {import('../../type-definitions/crypto')} */
+  const cryptoImpl = requireWithFakeGlobalScope({
+    context,
+    path: resolve(__dirname, './crypto.js'),
+    scopedContext: {
+      ...scopedContext,
+    },
+  })
+  assign(context, {
+    crypto: cryptoImpl.crypto,
+    Crypto: cryptoImpl.Crypto,
+    CryptoKey: cryptoImpl.CryptoKey,
+    SubtleCrypto: cryptoImpl.SubtleCrypto,
+  })
+
+  return context
+}
+
+/**
+ * @template {object} T
+ * @template {object} U
+ * @param {T} context
+ * @param {U} additions
+ * @returns {asserts context is T & U}
+ */
+function assign(context, additions) {
+  Object.assign(context, additions)
+}

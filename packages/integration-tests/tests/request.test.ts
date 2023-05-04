@@ -28,7 +28,6 @@ test('serialize body into JSON', async () => {
 
 test('adds duplex: half to all requests', () => {
   const request = new Request('https://example.vercel.sh')
-  // @ts-expect-error duplex is not defined on Request
   expect(request.duplex).toBe('half')
 })
 
@@ -49,7 +48,6 @@ test('can be extended', async () => {
     headers: { 'x-test': 'hello' },
   })
 
-  // @ts-expect-error duplex is not defined on Request
   expect(request.duplex).toBe('half')
   expect(request.myField).toBe('default value')
   request.setField('new value')
