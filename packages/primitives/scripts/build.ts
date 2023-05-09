@@ -24,11 +24,13 @@ async function bundlePackage() {
     dts: {
       resolve: true,
     },
+    splitting: false,
     format: [],
     target: TARGET,
     entry: filesExt
       .map((f) => f.replace(/\.(js|ts)$/, '.d.ts'))
       .map((f) => join(__dirname, '../type-definitions', f)),
+    external: ['./index'],
     outDir: resolve(__dirname, '../types'),
   })
 
