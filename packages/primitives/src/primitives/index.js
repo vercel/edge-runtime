@@ -1,6 +1,7 @@
 // @ts-check
 
 const path = require('path')
+const nodeCrypto = require('crypto')
 
 function load() {
   /** @type {Record<string, any>} */
@@ -104,13 +105,34 @@ function load() {
     WebSocket: fetchImpl.WebSocket,
   })
 
-  const cryptoImpl = require('./crypto')
-  Object.assign(context, {
-    crypto: cryptoImpl.crypto,
-    Crypto: cryptoImpl.Crypto,
-    CryptoKey: cryptoImpl.CryptoKey,
-    SubtleCrypto: cryptoImpl.SubtleCrypto,
-  })
+  if (typeof SubtleCrypto !== 'undefined') {
+    Object.assign(context, {
+      crypto: globalThis.crypto,
+      Crypto: globalThis.Crypto,
+      CryptoKey: globalThis.CryptoKey,
+      SubtleCrypto: globalThis.SubtleCrypto,
+    })
+  // @ts-ignore
+  } else if (nodeCrypto.webcrypto) {
+    Object.assign(context, {
+      // @ts-ignore
+      crypto: nodeCrypto.webcrypto,
+      // @ts-ignore
+      Crypto: nodeCrypto.webcrypto.constructor,
+      // @ts-ignore
+      CryptoKey: nodeCrypto.webcrypto.CryptoKey,
+      // @ts-ignore
+      SubtleCrypto: nodeCrypto.webcrypto.subtle.constructor,
+    })
+  } else {
+    const cryptoImpl = require('./crypto')
+    Object.assign(context, {
+      crypto: cryptoImpl.crypto,
+      Crypto: cryptoImpl.Crypto,
+      CryptoKey: cryptoImpl.CryptoKey,
+      SubtleCrypto: cryptoImpl.SubtleCrypto,
+    })
+  }
 
   return context
 }
