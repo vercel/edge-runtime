@@ -1,5 +1,15 @@
 # @edge-runtime/primitives
 
+## 2.2.0-beta.3
+
+### Minor Changes
+
+- use node's webcrypto when available ([#326](https://github.com/vercel/edge-runtime/pull/326))
+
+### Patch Changes
+
+- Extract a `@edge-runtime/primitives/load` entrypoint that loads the primitives given a scoped global context ([#327](https://github.com/vercel/edge-runtime/pull/327))
+
 ## 2.2.0-beta.2
 
 ### Patch Changes

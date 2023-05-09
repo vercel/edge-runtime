@@ -1,5 +1,14 @@
 # edge-runtime
 
+## 2.3.0-beta.3
+
+### Patch Changes
+
+- chore: upgrade `async-listen` dependency ([#332](https://github.com/vercel/edge-runtime/pull/332))
+
+- Updated dependencies [[`9f35416`](https://github.com/vercel/edge-runtime/commit/9f35416aaf224877ca42e089f9e8452cab3ba41d)]:
+  - @edge-runtime/vm@2.2.0-beta.3
+
 ## 2.3.0-beta.2
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @edge-runtime/vm
 
+## 2.2.0-beta.3
+
+### Patch Changes
+
+- Extract a `@edge-runtime/primitives/load` entrypoint that loads the primitives given a scoped global context ([#327](https://github.com/vercel/edge-runtime/pull/327))
+
+- Updated dependencies [[`a373606`](https://github.com/vercel/edge-runtime/commit/a3736068c29bad3f8ebdc3e6835c6e616e636fa5), [`9f35416`](https://github.com/vercel/edge-runtime/commit/9f35416aaf224877ca42e089f9e8452cab3ba41d)]:
+  - @edge-runtime/primitives@2.2.0-beta.3
+
 ## 2.2.0-beta.2
 
 ### Patch Changes
