@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 2.2.0-beta.5
+
+### Patch Changes
+
+- Fix `@/primitives/load` types by externalizing `@/primitives/index` in the type definition ([#338](https://github.com/vercel/edge-runtime/pull/338))
+
 ## 2.2.0-beta.4
 
 ### Patch Changes

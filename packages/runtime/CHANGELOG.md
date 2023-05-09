@@ -1,5 +1,12 @@
 # edge-runtime
 
+## 2.3.0-beta.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @edge-runtime/vm@2.2.0-beta.5
+
 ## 2.3.0-beta.4
 
 ### Patch Changes
