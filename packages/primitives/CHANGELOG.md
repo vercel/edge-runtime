@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 2.2.0-beta.4
+
+### Patch Changes
+
+- expose `primitives/load` ([#336](https://github.com/vercel/edge-runtime/pull/336))
+
 ## 2.2.0-beta.3
 
 ### Minor Changes
