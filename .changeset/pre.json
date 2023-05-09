@@ -17,6 +17,7 @@
     "@edge-runtime/vm": "2.1.2"
   },
   "changesets": [
+    "beige-lions-film",
     "clean-kings-learn",
     "five-pans-remember",
     "hip-hairs-sing",
