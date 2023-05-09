@@ -3,6 +3,7 @@
 import Module from 'module'
 import { dirname, resolve } from 'path'
 import { readFileSync } from 'fs'
+import nodeCrypto from 'crypto'
 
 /**
  * @param {Object} params
@@ -24,6 +25,7 @@ function requireWithFakeGlobalScope(params) {
     id: resolved,
   }
 
+  // @ts-ignore
   const moduleRequire = (Module.createRequire || Module.createRequireFromPath)(
     resolved
   )
@@ -193,14 +195,7 @@ export function load(scopedContext = {}) {
     WebSocket: fetchImpl.WebSocket,
   })
 
-  /** @type {import('../../type-definitions/crypto')} */
-  const cryptoImpl = requireWithFakeGlobalScope({
-    context,
-    path: resolve(__dirname, './crypto.js'),
-    scopedContext: {
-      ...scopedContext,
-    },
-  })
+  const cryptoImpl = getCrypto(context, scopedContext)
   assign(context, {
     crypto: cryptoImpl.crypto,
     Crypto: cryptoImpl.Crypto,
@@ -212,7 +207,38 @@ export function load(scopedContext = {}) {
 }
 
 /**
- * @template {object} T
+ * @returns {import('../../type-definitions/crypto')}
+ */
+function getCrypto(context, scopedContext) {
+  if (typeof SubtleCrypto !== undefined) {
+    return {
+      crypto: scopedContext.crypto || globalThis.crypto,
+      Crypto: scopedContext.Crypto || globalThis.Crypto,
+      CryptoKey: scopedContext.CryptoKey || globalThis.CryptoKey,
+      SubtleCrypto: scopedContext.SubtleCrypto || globalThis.SubtleCrypto,
+    }
+  } else if (nodeCrypto.webcrypto) {
+    // @ts-ignore
+    /** @type {any} */
+    const webcrypto = nodeCrypto.webcrypto
+    return {
+      crypto: webcrypto,
+      Crypto: webcrypto.constructor,
+      CryptoKey: webcrypto.CryptoKey,
+      SubtleCrypto: webcrypto.subtle.constructor,
+    }
+  }
+  return requireWithFakeGlobalScope({
+    context,
+    path: resolve(__dirname, './crypto.js'),
+    scopedContext: {
+      ...scopedContext,
+    },
+  })
+}
+
+/**
+ * @template {Record<never, never>} T
  * @template {object} U
  * @param {T} context
  * @param {U} additions
