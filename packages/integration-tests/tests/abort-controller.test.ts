@@ -1,4 +1,9 @@
-import { AbortController, fetch, DOMException } from '@edge-runtime/ponyfill'
+import {
+  AbortController,
+  AbortSignal,
+  fetch,
+  DOMException,
+} from '@edge-runtime/ponyfill'
 
 describe('AbortController', () => {
   it('allows to abort fetch', async () => {
