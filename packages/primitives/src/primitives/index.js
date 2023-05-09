@@ -2,4 +2,4 @@
 
 import { load } from './load'
 
-module.exports = load({})
+module.exports = load({ WeakRef: global.WeakRef })

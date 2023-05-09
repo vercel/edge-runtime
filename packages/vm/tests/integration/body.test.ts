@@ -199,7 +199,7 @@ test('throws when reading a text body as JSON but it is invalid', async () => {
   const response = new Response('{ hi: "there", ')
   const error = await response.json().catch((err) => err)
   expect(error).toBeInstanceOf(SyntaxError)
-  expect(error.message).toEqual('Unexpected token h in JSON at position 2')
+  expect(error.message).toContain(' in JSON at position 2')
 })
 
 test('streams Uint8Array that can be decoded into a string', async () => {

@@ -327,7 +327,10 @@ function addPrimitives(context: VMContext) {
   const transferables = getTransferablePrimitivesFromContext(context)
 
   defineProperties(context, {
-    exports: loadPrimitives(transferables),
+    exports: loadPrimitives({
+      ...transferables,
+      WeakRef: runInContext(`WeakRef`, context),
+    }),
     enumerable: ['crypto'],
     nonenumerable: [
       // Crypto

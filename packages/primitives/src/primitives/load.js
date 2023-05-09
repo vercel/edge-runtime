@@ -177,6 +177,7 @@ export function load(scopedContext = {}) {
       ['streams', { exports: streamsImpl }],
     ]),
     scopedContext: {
+      global: { ...scopedContext },
       ...scopedContext,
       ...streamsImpl,
       ...urlImpl,
