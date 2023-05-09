@@ -210,7 +210,7 @@ export function load(scopedContext = {}) {
  * @returns {import('../../type-definitions/crypto')}
  */
 function getCrypto(context, scopedContext) {
-  if (typeof SubtleCrypto !== undefined) {
+  if (typeof SubtleCrypto !== 'undefined' || scopedContext.SubtleCrypto) {
     return {
       crypto: scopedContext.crypto || globalThis.crypto,
       Crypto: scopedContext.Crypto || globalThis.Crypto,
@@ -228,6 +228,7 @@ function getCrypto(context, scopedContext) {
       SubtleCrypto: webcrypto.subtle.constructor,
     }
   }
+
   return requireWithFakeGlobalScope({
     context,
     path: resolve(__dirname, './crypto.js'),
