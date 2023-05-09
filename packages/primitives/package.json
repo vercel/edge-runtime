@@ -53,6 +53,7 @@
     "encoding",
     "events",
     "fetch",
+    "load",
     "streams",
     "structured-clone",
     "text-encoding-streams",
