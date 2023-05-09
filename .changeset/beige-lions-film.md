@@ -1,5 +1,5 @@
 ---
-"@edge-runtime/jest-environment": patch
+'@edge-runtime/jest-environment': patch
 ---
 
 Add "react-server" export condition to Jest environment

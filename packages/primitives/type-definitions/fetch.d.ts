@@ -4,6 +4,7 @@ export class Headers extends globalThis.Headers {
 
 export class Request extends globalThis.Request {
   readonly headers: Headers
+  readonly duplex: string
 }
 
 export class Response extends globalThis.Response {
@@ -11,8 +12,8 @@ export class Response extends globalThis.Response {
   static json(data: any, init?: ResponseInit): Response
 }
 
-export type RequestInfo = Parameters<typeof fetch>[0]
-export type RequestInit = Parameters<typeof fetch>[1]
+export type RequestInfo = string | Request | globalThis.Request
+export type RequestInit = globalThis.RequestInit
 declare const fetchImplementation: (
   info: RequestInfo,
   init?: RequestInit

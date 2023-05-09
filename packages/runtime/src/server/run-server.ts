@@ -1,6 +1,6 @@
 import { createHandler, Options } from './create-handler'
 import type { EdgeContext } from '@edge-runtime/vm'
-import { listen } from 'async-listen'
+import listen from 'async-listen'
 import http from 'http'
 import type { ListenOptions } from 'net'
 

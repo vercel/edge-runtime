@@ -1,6 +1,7 @@
-import * as EdgePrimitives from '@edge-runtime/primitives'
+import type * as EdgePrimitives from '@edge-runtime/primitives'
+import { load as loadPrimitives } from '@edge-runtime/primitives/load'
 import type { DispatchFetch, ErrorHandler, RejectionHandler } from './types'
-import { runInContext } from 'vm'
+import { Context, runInContext } from 'vm'
 import { VM, type VMContext, type VMOptions } from './vm'
 
 export interface EdgeVMOptions<T extends EdgeContext> {
@@ -71,8 +72,8 @@ export class EdgeVM<T extends EdgeContext = EdgeContext> extends VM<T> {
 
     this.evaluate<void>(getDefineEventListenersCode())
     this.dispatchFetch = this.evaluate<DispatchFetch>(getDispatchFetchCode())
-    for (const item of constructorsToPatchInstanceOf) {
-      patchInstanceOf(item, this.context)
+    for (const name of transferableConstructors) {
+      patchInstanceOf(name, this.context)
     }
 
     if (options?.initialCode) {
@@ -82,13 +83,20 @@ export class EdgeVM<T extends EdgeContext = EdgeContext> extends VM<T> {
 }
 
 /**
- * A list of constructors that need to be patched to make sure that the
- * `instanceof` operator works as expected from within the vm context,
- * even when passing it objects that were created in the Node.js realm.
+ * Transferable constructors are the constructors that we expect to be
+ * "shared" between the realms.
  *
- * Example: the return value from `new TextEncoder().encode("hello")` is a
- * Uint8Array. If `TextEncoder` is coming from the Node.js realm, then the
- * following will be false, which doesn't fit the expectation of the user:
+ * When a user creates an instance of one of these constructors, we want
+ * to make sure that the `instanceof` operator works as expected:
+ *
+ * * If the instance was created in the Node.js realm, then `instanceof`
+ *   should return true when used in the EdgeVM realm.
+ * * If the instance was created in the EdgeVM realm, then `instanceof`
+ *   should return true when used in the EdgeVM realm.
+ *
+ * For example, the return value from `new TextEncoder().encode("hello")` is a
+ * Uint8Array. Since `TextEncoder` implementation is coming from the Node.js realm,
+ * therefore the following will be false, which doesn't fit the expectation of the user:
  * ```ts
  * new TextEncoder().encode("hello") instanceof Uint8Array
  * ```
@@ -98,8 +106,12 @@ export class EdgeVM<T extends EdgeContext = EdgeContext> extends VM<T> {
  *
  * Patching the constructors in the `vm` is done by the {@link patchInstanceOf}
  * function, and this is the list of constructors that need to be patched.
+ *
+ * These constructors are also being injected as "globals" when the VM is
+ * constructed, by passing them as arguments to the {@link loadPrimitives}
+ * function.
  */
-const constructorsToPatchInstanceOf = [
+const transferableConstructors = [
   'Object',
   'Array',
   'RegExp',
@@ -108,7 +120,7 @@ const constructorsToPatchInstanceOf = [
   'Error',
   'SyntaxError',
   'TypeError',
-]
+] as const
 
 function patchInstanceOf(item: string, ctx: any) {
   // @ts-ignore
@@ -312,8 +324,10 @@ function addPrimitives(context: VMContext) {
   defineProperty(context, 'setTimeout', { value: setTimeout })
   defineProperty(context, 'EdgeRuntime', { value: 'edge-runtime' })
 
+  const transferables = getTransferablePrimitivesFromContext(context)
+
   defineProperties(context, {
-    exports: EdgePrimitives,
+    exports: loadPrimitives(transferables),
     enumerable: ['crypto'],
     nonenumerable: [
       // Crypto
@@ -413,4 +427,16 @@ function defineProperties(
       value: options.exports[property],
     })
   }
+}
+
+/**
+ * Create an object that contains all the {@link transferableConstructors}
+ * implemented in the provided context.
+ */
+function getTransferablePrimitivesFromContext(
+  context: Context
+): Record<(typeof transferableConstructors)[number], unknown> {
+  const keys = transferableConstructors.join(',')
+  const stringifedObject = `({${keys}})`
+  return runInContext(stringifedObject, context)
 }
