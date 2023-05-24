@@ -14,12 +14,14 @@ test('reflect .set into `set-cookie`', async () => {
     .set('fooHttpOnly', 'barHttpOnly', { httpOnly: true })
     .set('fooExpires', 'barExpires', { expires: 0 })
     .set('fooExpiresDate', 'barExpiresDate', { expires: new Date(0) })
+    .set('fooMaxAge', '', { maxAge: 0 })
 
   expect(cookies.get('foo')?.value).toBe('bar')
   expect(cookies.get('fooz')?.value).toBe('barz')
   expect(cookies.get('fooHttpOnly')?.value).toBe('barHttpOnly')
   expect(cookies.get('fooExpires')?.value).toBe('barExpires')
   expect(cookies.get('fooExpiresDate')?.value).toBe('barExpiresDate')
+  expect(cookies.get('fooMaxAge')?.value).toBe('')
 
   const opt1 = cookies.get('foo')
   expect(opt1).toEqual<typeof opt1>({
@@ -50,9 +52,15 @@ test('reflect .set into `set-cookie`', async () => {
     path: '/',
     expires: new Date(0),
   })
+  expect(cookies.get('fooMaxAge')).toEqual({
+    name: 'fooMaxAge',
+    value: '',
+    path: '/',
+    maxAge: 0,
+  })
 
   expect(Object.fromEntries(headers.entries())['set-cookie']).toBe(
-    'foo=bar; Path=/test, fooz=barz; Path=/test2, fooHttpOnly=barHttpOnly; Path=/; HttpOnly, fooExpires=barExpires; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooExpiresDate=barExpiresDate; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
+    'foo=bar; Path=/test, fooz=barz; Path=/test2, fooHttpOnly=barHttpOnly; Path=/; HttpOnly, fooExpires=barExpires; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooExpiresDate=barExpiresDate; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooMaxAge=; Path=/; Max-Age=0'
   )
 })
 
