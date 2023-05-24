@@ -27,8 +27,13 @@ class Request extends BaseRequest {
 
 const __entries = HeadersModule.Headers.prototype.entries
 HeadersModule.Headers.prototype.entries = function* () {
+  let sentSetCookie = false
   for (const [key, value] of __entries.call(this)) {
     if (key === 'set-cookie') {
+      if (sentSetCookie) {
+        continue
+      }
+      sentSetCookie = true
       const cookies = this.getSetCookie()
       yield [key, cookies.join(', ')]
     } else {

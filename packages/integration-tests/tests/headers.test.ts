@@ -10,3 +10,11 @@ test('sets header calling Headers constructor', async () => {
   headers.set('cookie', 'hello=world')
   expect(headers.get('cookie')).toBe('hello=world')
 })
+
+test('multiple headers', async () => {
+  const headers = new Headers()
+  headers.append('set-cookie', 'foo=chocochip')
+  headers.append('set-cookie', 'bar=chocochip')
+  expect(headers.get('set-cookie')).toBe('foo=chocochip, bar=chocochip')
+  expect([...headers]).toEqual([['set-cookie', 'foo=chocochip, bar=chocochip']])
+})
