@@ -1,7 +1,7 @@
 // @ts-check
 
 import Module from 'module'
-import { dirname, resolve } from 'path'
+import { dirname, join } from 'path'
 import { readFileSync } from 'fs'
 import nodeCrypto from 'crypto'
 
@@ -15,7 +15,7 @@ import nodeCrypto from 'crypto'
  * @returns {any}
  */
 function requireWithFakeGlobalScope(params) {
-  const resolved = resolve(params.path)
+  const resolved = params.path
   const getModuleCode = `(function(module,exports,require,__dirname,__filename,globalThis,${Object.keys(
     params.scopedContext
   ).join(',')}) {${readFileSync(resolved, 'utf-8')}\n})`
@@ -67,7 +67,7 @@ export function load(scopedContext = {}) {
   /** @type {import('../../type-definitions/encoding')} */
   const encodingImpl = requireWithFakeGlobalScope({
     context,
-    path: resolve(__dirname, './encoding.js'),
+    path: join(__dirname, './encoding.js'),
     scopedContext: scopedContext,
   })
   assign(context, {
@@ -80,7 +80,7 @@ export function load(scopedContext = {}) {
   /** @type {import('../../type-definitions/console')} */
   const consoleImpl = requireWithFakeGlobalScope({
     context,
-    path: resolve(__dirname, './console.js'),
+    path: join(__dirname, './console.js'),
     scopedContext: scopedContext,
   })
   assign(context, { console: consoleImpl.console })
@@ -88,7 +88,7 @@ export function load(scopedContext = {}) {
   /** @type {import('../../type-definitions/events')} */
   const eventsImpl = requireWithFakeGlobalScope({
     context,
-    path: resolve(__dirname, './events.js'),
+    path: join(__dirname, './events.js'),
     scopedContext: scopedContext,
   })
   assign(context, {
@@ -102,14 +102,14 @@ export function load(scopedContext = {}) {
   /** @type {import('../../type-definitions/streams')} */
   const streamsImpl = requireWithFakeGlobalScope({
     context,
-    path: resolve(__dirname, './streams.js'),
+    path: join(__dirname, './streams.js'),
     scopedContext: { ...scopedContext },
   })
 
   /** @type {import('../../type-definitions/text-encoding-streams')} */
   const textEncodingStreamImpl = requireWithFakeGlobalScope({
     context,
-    path: resolve(__dirname, './text-encoding-streams.js'),
+    path: join(__dirname, './text-encoding-streams.js'),
     scopedContext: { ...streamsImpl, ...scopedContext },
   })
 
@@ -127,7 +127,7 @@ export function load(scopedContext = {}) {
   /** @type {import('../../type-definitions/abort-controller')} */
   const abortControllerImpl = requireWithFakeGlobalScope({
     context,
-    path: resolve(__dirname, './abort-controller.js'),
+    path: join(__dirname, './abort-controller.js'),
     scopedContext: { ...eventsImpl, ...scopedContext },
   })
   assign(context, {
@@ -139,7 +139,7 @@ export function load(scopedContext = {}) {
   /** @type {import('../../type-definitions/url')} */
   const urlImpl = requireWithFakeGlobalScope({
     context,
-    path: resolve(__dirname, './url.js'),
+    path: join(__dirname, './url.js'),
     scopedContext: { ...scopedContext },
   })
   assign(context, {
@@ -151,7 +151,7 @@ export function load(scopedContext = {}) {
   /** @type {import('../../type-definitions/blob')} */
   const blobImpl = requireWithFakeGlobalScope({
     context,
-    path: resolve(__dirname, './blob.js'),
+    path: join(__dirname, './blob.js'),
     scopedContext: { ...streamsImpl, ...scopedContext },
   })
   assign(context, {
@@ -160,7 +160,7 @@ export function load(scopedContext = {}) {
 
   /** @type {import('../../type-definitions/structured-clone')} */
   const structuredCloneImpl = requireWithFakeGlobalScope({
-    path: resolve(__dirname, './structured-clone.js'),
+    path: join(__dirname, './structured-clone.js'),
     context,
     scopedContext: { ...streamsImpl, ...scopedContext },
   })
@@ -171,7 +171,7 @@ export function load(scopedContext = {}) {
   /** @type {import('../../type-definitions/fetch')} */
   const fetchImpl = requireWithFakeGlobalScope({
     context,
-    path: resolve(__dirname, './fetch.js'),
+    path: join(__dirname, './fetch.js'),
     cache: new Map([
       ['abort-controller', { exports: abortControllerImpl }],
       ['streams', { exports: streamsImpl }],
@@ -232,7 +232,7 @@ function getCrypto(context, scopedContext) {
 
   return requireWithFakeGlobalScope({
     context,
-    path: resolve(__dirname, './crypto.js'),
+    path: join(__dirname, './crypto.js'),
     scopedContext: {
       ...scopedContext,
     },
