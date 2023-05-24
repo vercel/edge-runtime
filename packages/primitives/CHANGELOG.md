@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 2.2.0-beta.6
+
+### Patch Changes
+
+- Use path.join instead of path.resolve, if possible ([#344](https://github.com/vercel/edge-runtime/pull/344))
+
 ## 2.2.0-beta.5
 
 ### Patch Changes
