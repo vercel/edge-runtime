@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 2.2.0-beta.7
+
+### Patch Changes
+
+- fix entries iteration on Headers ([#346](https://github.com/vercel/edge-runtime/pull/346))
+
 ## 2.2.0-beta.6
 
 ### Patch Changes
