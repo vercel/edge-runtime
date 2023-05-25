@@ -1,5 +1,11 @@
 # @edge-runtime/cookies
 
+## 3.2.0-beta.1
+
+### Patch Changes
+
+- fix: Max-Age=0 being dropped from set-cookie header ([#348](https://github.com/vercel/edge-runtime/pull/348))
+
 ## 3.2.0-beta.0
 
 ### Minor Changes
