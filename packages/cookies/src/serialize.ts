@@ -9,7 +9,7 @@ export function serialize(c: ResponseCookie | RequestCookie): string {
         ? new Date(c.expires)
         : c.expires
       ).toUTCString()}`,
-    'maxAge' in c && c.maxAge && `Max-Age=${c.maxAge}`,
+    'maxAge' in c && typeof c.maxAge === 'number' && `Max-Age=${c.maxAge}`,
     'domain' in c && c.domain && `Domain=${c.domain}`,
     'secure' in c && c.secure && 'Secure',
     'httpOnly' in c && c.httpOnly && 'HttpOnly',
