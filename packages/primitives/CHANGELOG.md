@@ -1,5 +1,14 @@
 # @edge-runtime/primitives
 
+## 2.2.0-beta.8
+
+### Patch Changes
+
+- remove dynamism in imports: add a `${primitive}.text.js` file that will be ([#351](https://github.com/vercel/edge-runtime/pull/351))
+  required, instead of using `fs` to read the file at runtime.
+
+  This will help bundlers to statically analyze the code.
+
 ## 2.2.0-beta.7
 
 ### Patch Changes
