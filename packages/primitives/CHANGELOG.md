@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 2.2.0-beta.9
+
+### Patch Changes
+
+- Remove dynamic path manipulation ([#353](https://github.com/vercel/edge-runtime/pull/353))
+
 ## 2.2.0-beta.8
 
 ### Patch Changes
