@@ -1,4 +1,5 @@
 // @ts-check
+/// <reference path="../injectSourceCode.d.ts" />
 
 import Module from 'module'
 import nodeCrypto from 'crypto'
@@ -152,12 +153,25 @@ export function load(scopedContext = {}) {
   })
 
   /** @type {import('../../type-definitions/blob')} */
-  const blobImpl = requireWithFakeGlobalScope({
-    context,
-    id: 'blob.js',
-    sourceCode: injectSourceCode('./blob.js'),
-    scopedContext: { ...streamsImpl, ...scopedContext },
-  })
+  const blobImpl = (() => {
+    if (typeof Blob === 'function') {
+      return { Blob }
+    }
+
+    /** @type {any} */
+    const global = {
+      ...streamsImpl,
+      ...scopedContext,
+      Blob: undefined,
+    }
+    global.global = global
+    return requireWithFakeGlobalScope({
+      context,
+      id: 'blob.js',
+      sourceCode: injectSourceCode('./blob.js'),
+      scopedContext: global,
+    })
+  })()
   assign(context, {
     Blob: blobImpl.Blob,
   })

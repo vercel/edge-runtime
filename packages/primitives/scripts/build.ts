@@ -119,26 +119,6 @@ async function bundlePackage() {
           )
         },
       },
-      /**
-       * Modern Node.js versions include Blob globally which makes the Blob
-       * polyfill fail as if it was running on the browser so we attempt to
-       * remove if from `global` always.
-       */
-      {
-        name: 'hide-builtin-blob',
-        setup: (build) => {
-          build.onLoad({ filter: /blob-polyfill/ }, async (args) => {
-            return {
-              contents: Buffer.concat([
-                Buffer.from(
-                  `(() => { try { global.Blob = undefined; } catch {} })(); `
-                ),
-                await fs.promises.readFile(args.path),
-              ]),
-            }
-          })
-        },
-      },
     ],
   })
 
