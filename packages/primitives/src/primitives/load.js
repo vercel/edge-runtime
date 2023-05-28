@@ -2,7 +2,6 @@
 
 import Module from 'module'
 import { dirname, join } from 'path'
-import { readFileSync } from 'fs'
 import nodeCrypto from 'crypto'
 
 /**
@@ -12,22 +11,22 @@ import nodeCrypto from 'crypto'
  * @param {string} params.path
  * @param {Set<string>} [params.references]
  * @param {Record<string, any>} params.scopedContext
+ * @param {string} params.sourceCode
  * @returns {any}
  */
 function requireWithFakeGlobalScope(params) {
-  const resolved = params.path
   const getModuleCode = `(function(module,exports,require,__dirname,__filename,globalThis,${Object.keys(
     params.scopedContext
-  ).join(',')}) {${readFileSync(resolved, 'utf-8')}\n})`
+  ).join(',')}) {${params.sourceCode}\n})`
   const module = {
     exports: {},
     loaded: false,
-    id: resolved,
+    id: params.path,
   }
 
   // @ts-ignore
   const moduleRequire = (Module.createRequire || Module.createRequireFromPath)(
-    resolved
+    params.path
   )
 
   /** @param {string} pathToRequire */
@@ -48,8 +47,8 @@ function requireWithFakeGlobalScope(params) {
     module,
     module.exports,
     throwingRequire,
-    dirname(resolved),
-    resolved,
+    dirname(params.path),
+    params.path,
     params.context,
     ...Object.values(params.scopedContext)
   )
@@ -68,6 +67,7 @@ export function load(scopedContext = {}) {
   const encodingImpl = requireWithFakeGlobalScope({
     context,
     path: join(__dirname, './encoding.js'),
+    sourceCode: injectSourceCode('./encoding.js'),
     scopedContext: scopedContext,
   })
   assign(context, {
@@ -81,6 +81,7 @@ export function load(scopedContext = {}) {
   const consoleImpl = requireWithFakeGlobalScope({
     context,
     path: join(__dirname, './console.js'),
+    sourceCode: injectSourceCode('./console.js'),
     scopedContext: scopedContext,
   })
   assign(context, { console: consoleImpl.console })
@@ -89,6 +90,7 @@ export function load(scopedContext = {}) {
   const eventsImpl = requireWithFakeGlobalScope({
     context,
     path: join(__dirname, './events.js'),
+    sourceCode: injectSourceCode('./events.js'),
     scopedContext: scopedContext,
   })
   assign(context, {
@@ -103,6 +105,7 @@ export function load(scopedContext = {}) {
   const streamsImpl = requireWithFakeGlobalScope({
     context,
     path: join(__dirname, './streams.js'),
+    sourceCode: injectSourceCode('./streams.js'),
     scopedContext: { ...scopedContext },
   })
 
@@ -110,6 +113,7 @@ export function load(scopedContext = {}) {
   const textEncodingStreamImpl = requireWithFakeGlobalScope({
     context,
     path: join(__dirname, './text-encoding-streams.js'),
+    sourceCode: injectSourceCode('./text-encoding-streams.js'),
     scopedContext: { ...streamsImpl, ...scopedContext },
   })
 
@@ -128,6 +132,7 @@ export function load(scopedContext = {}) {
   const abortControllerImpl = requireWithFakeGlobalScope({
     context,
     path: join(__dirname, './abort-controller.js'),
+    sourceCode: injectSourceCode('./abort-controller.js'),
     scopedContext: { ...eventsImpl, ...scopedContext },
   })
   assign(context, {
@@ -140,6 +145,7 @@ export function load(scopedContext = {}) {
   const urlImpl = requireWithFakeGlobalScope({
     context,
     path: join(__dirname, './url.js'),
+    sourceCode: injectSourceCode('./url.js'),
     scopedContext: { ...scopedContext },
   })
   assign(context, {
@@ -152,6 +158,7 @@ export function load(scopedContext = {}) {
   const blobImpl = requireWithFakeGlobalScope({
     context,
     path: join(__dirname, './blob.js'),
+    sourceCode: injectSourceCode('./blob.js'),
     scopedContext: { ...streamsImpl, ...scopedContext },
   })
   assign(context, {
@@ -162,6 +169,7 @@ export function load(scopedContext = {}) {
   const structuredCloneImpl = requireWithFakeGlobalScope({
     path: join(__dirname, './structured-clone.js'),
     context,
+    sourceCode: injectSourceCode('./structured-clone.js'),
     scopedContext: { ...streamsImpl, ...scopedContext },
   })
   assign(context, {
@@ -172,6 +180,7 @@ export function load(scopedContext = {}) {
   const fetchImpl = requireWithFakeGlobalScope({
     context,
     path: join(__dirname, './fetch.js'),
+    sourceCode: injectSourceCode('./fetch.js'),
     cache: new Map([
       ['abort-controller', { exports: abortControllerImpl }],
       ['streams', { exports: streamsImpl }],
@@ -218,9 +227,12 @@ function getCrypto(context, scopedContext) {
       CryptoKey: scopedContext.CryptoKey || globalThis.CryptoKey,
       SubtleCrypto: scopedContext.SubtleCrypto || globalThis.SubtleCrypto,
     }
-  } else if (nodeCrypto.webcrypto) {
+  } else if (
     // @ts-ignore
+    nodeCrypto.webcrypto
+  ) {
     /** @type {any} */
+    // @ts-ignore
     const webcrypto = nodeCrypto.webcrypto
     return {
       crypto: webcrypto,
@@ -233,6 +245,7 @@ function getCrypto(context, scopedContext) {
   return requireWithFakeGlobalScope({
     context,
     path: join(__dirname, './crypto.js'),
+    sourceCode: injectSourceCode('./crypto.js'),
     scopedContext: {
       ...scopedContext,
     },
