@@ -1,5 +1,12 @@
 # @edge-runtime/vm
 
+## 3.0.0-beta.12
+
+### Patch Changes
+
+- Updated dependencies [[`a6b6124`](https://github.com/vercel/edge-runtime/commit/a6b61244dcb65821465bf7feee9d4352889fdb81)]:
+  - @edge-runtime/primitives@2.2.0-beta.11
+
 ## 3.0.0-beta.11
 
 ### Patch Changes
