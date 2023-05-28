@@ -1,5 +1,4 @@
 import { VM } from '../src/vm'
-import path from 'path'
 
 it('creates a VM with empty context', () => {
   const vm = new VM()
@@ -54,54 +53,6 @@ it('allows to extend the context with code evaluation', () => {
   const vm = new VM()
 
   vm.evaluate(script)
-  vm.evaluate('this.hasURL = !!URL')
-  vm.evaluate('this.url = new URL("https://edge-ping.vercel.app")')
-
-  expect(vm.context.hasURL).toBeTruthy()
-  expect(vm.context.url.href).toEqual('https://edge-ping.vercel.app')
-  expect(vm.context.URL.name).toEqual('MockURL')
-})
-
-it('allows to require a CJS module file from the vm context', () => {
-  const vm = new VM()
-  const modulepath = path.resolve(__dirname, './fixtures/cjs-module.js')
-  const moduleLoaded = vm.require<{ URL: URL }>(modulepath)
-
-  vm.context.URL = moduleLoaded.URL
-
-  vm.evaluate('this.hasURL = !!URL')
-  vm.evaluate('this.url = new URL("https://edge-ping.vercel.app")')
-
-  expect(vm.context.hasURL).toBeTruthy()
-  expect(vm.context.url.href).toEqual('https://edge-ping.vercel.app')
-  expect(vm.context.URL.name).toEqual('MockURL')
-})
-
-it('allows to require a CJS module file and load it into the vm context', () => {
-  const vm = new VM()
-  const modulepath = path.resolve(__dirname, './fixtures/cjs-module.js')
-  vm.requireInContext(modulepath)
-
-  vm.evaluate('this.hasURL = !!URL')
-  vm.evaluate('this.url = new URL("https://edge-ping.vercel.app")')
-
-  expect(vm.context.hasURL).toBeTruthy()
-  expect(vm.context.url.href).toEqual('https://edge-ping.vercel.app')
-  expect(vm.context.URL.name).toEqual('MockURL')
-})
-
-it('allows to require CJS module code from the vm context', () => {
-  const vm = new VM()
-
-  const script = `function MockURL (href) {
-    if (!(this instanceof MockURL)) return new MockURL(href)
-    this.href = href
-  }
-
-  module.exports.URL = MockURL`
-
-  vm.requireInlineInContext(script)
-
   vm.evaluate('this.hasURL = !!URL')
   vm.evaluate('this.url = new URL("https://edge-ping.vercel.app")')
 

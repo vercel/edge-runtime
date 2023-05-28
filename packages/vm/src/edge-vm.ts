@@ -21,11 +21,6 @@ export interface EdgeVMOptions<T extends EdgeContext> {
    * evaluating.
    */
   initialCode?: string
-  /**
-   * Provides an initial map to the require cache.
-   * If none is given, it will be initialized to an empty map.
-   */
-  requireCache?: VMOptions<T>['requireCache']
 }
 
 /**

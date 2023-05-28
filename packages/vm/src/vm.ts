@@ -1,7 +1,5 @@
 import type { CreateContextOptions } from 'vm'
 import { createContext, runInContext } from 'vm'
-import { createRequire } from './require'
-import { tempFile } from './temp-file'
 
 export interface VMOptions<T> {
   /**
@@ -14,11 +12,6 @@ export interface VMOptions<T> {
    * object so ideally it should return the same reference it receives.
    */
   extend?: (context: VMContext) => VMContext & T
-  /**
-   * Provides an initial map to the require cache.
-   * If none is given, it will be initialized to an empty map.
-   */
-  requireCache?: Map<string, Record<string | number, any>>
 }
 
 /**
@@ -27,8 +20,6 @@ export interface VMOptions<T> {
  * modules in multiple ways.
  */
 export class VM<T extends Record<string | number, any>> {
-  private readonly requireFn: (referrer: string, specifier: string) => any
-  public readonly requireCache: Map<string, Record<string | number, any>>
   public readonly context: VMContext & T
 
   constructor(options: VMOptions<T> = {}) {
@@ -43,9 +34,7 @@ export class VM<T extends Record<string | number, any>> {
       }
     ) as VMContext
 
-    this.requireCache = options.requireCache ?? new Map()
     this.context = options.extend?.(context) ?? (context as VMContext & T)
-    this.requireFn = createRequire(this.context, this.requireCache)
   }
 
   /**
@@ -53,39 +42,6 @@ export class VM<T extends Record<string | number, any>> {
    */
   evaluate<T = any>(code: string): T {
     return runInContext(code, this.context)
-  }
-
-  /**
-   * Allows to require a CommonJS module referenced in the provided file
-   * path within the VM context. It will return its exports.
-   */
-  require<T extends Record<string | number, any> = any>(filepath: string): T {
-    return this.requireFn(filepath, filepath)
-  }
-
-  /**
-   * Same as `require` but it will copy each of the exports in the context
-   * of the vm. Then exports can be used inside of the vm with an
-   * evaluated script.
-   */
-  requireInContext<T extends Record<string | number, any> = any>(
-    filepath: string
-  ): void {
-    const moduleLoaded = this.require<T>(filepath)
-    for (const [key, value] of Object.entries(moduleLoaded)) {
-      this.context[key as keyof typeof this.context] = value
-    }
-  }
-
-  /**
-   * Same as `requireInContext` but allows to pass the code instead of a
-   * reference to a file. It will create a temporary file and then load
-   * it in the VM Context.
-   */
-  requireInlineInContext(code: string): void {
-    const file = tempFile(code)
-    this.requireInContext(file.path)
-    file.remove()
   }
 }
 
