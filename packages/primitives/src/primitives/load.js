@@ -166,9 +166,12 @@ export function load(scopedContext = {}) {
     const global = {
       ...streamsImpl,
       ...scopedContext,
-      Blob: undefined,
     }
-    global.global = global
+
+    const globalGlobal = { ...global, Blob: undefined }
+    Object.setPrototypeOf(globalGlobal, globalThis)
+
+    global.global = globalGlobal
     return requireWithFakeGlobalScope({
       context,
       id: 'blob.js',
