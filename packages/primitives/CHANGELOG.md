@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 2.2.0-beta.10
+
+### Patch Changes
+
+- bump undici to v5.22.1 ([#357](https://github.com/vercel/edge-runtime/pull/357))
+
 ## 2.2.0-beta.9
 
 ### Patch Changes
