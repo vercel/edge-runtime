@@ -154,6 +154,10 @@ export function load(scopedContext = {}) {
 
   /** @type {import('../../type-definitions/blob')} */
   const blobImpl = (() => {
+    if (typeof scopedContext.Blob === 'function') {
+      return { Blob: scopedContext.Blob }
+    }
+
     if (typeof Blob === 'function') {
       return { Blob }
     }
