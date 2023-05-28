@@ -1,4 +1,5 @@
 import { parse } from 'acorn-loose'
+import { createRequire } from './create-require'
 import { promises as fs } from 'fs'
 import { simple } from 'acorn-walk'
 import { EdgeVM } from '@edge-runtime/vm'
@@ -17,7 +18,11 @@ test('exports all primitives in Edge Runtime', async () => {
   const runtime = new EdgeVM({
     codeGeneration: { strings: false, wasm: false },
   })
-  const result = runtime.require(require.resolve('..'))
+
+  const moduleRequire = createRequire(runtime.context, new Map())
+  runtime.context.require = moduleRequire
+
+  const result = moduleRequire(require.resolve('..'), require.resolve('..'))
 
   for (const key of LIMBO_STATE) {
     delete anyObject[key]
