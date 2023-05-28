@@ -3,37 +3,16 @@ import { readFileSync } from 'fs'
 import { runInContext } from 'vm'
 import { dirname } from 'path'
 
-/**
- * Allows to require a series of dependencies provided by their path
- * into a provided module context. It fills and accepts a require
- * cache to ensure each module is loaded once.
- */
-export function requireDependencies(params: {
-  context: Context
-  requireCache: Map<string, Record<string | number, any>>
-  dependencies: Array<{
-    mapExports: { [key: string]: string }
-    path: string
-  }>
-}): void {
-  const { context, requireCache, dependencies } = params
-  const requireFn = createRequire(context, requireCache)
-  for (const { path, mapExports } of dependencies) {
-    const mod = requireFn(path, path)
-    for (const mapKey of Object.keys(mapExports)) {
-      context[mapExports[mapKey]] = mod[mapKey]
-    }
-  }
-}
-
 export function createRequire(
   context: Context,
   cache: Map<string, any>,
   references?: Set<string>,
   scopedContext: Record<any, any> = {}
 ) {
+  const requireResolve = eval('require.resolve') as (typeof require)['resolve']
+
   return function requireFn(referrer: string, specifier: string) {
-    const resolved = require.resolve(specifier, {
+    const resolved = requireResolve(specifier, {
       paths: [dirname(referrer)],
     })
 
@@ -73,19 +52,4 @@ export function createRequire(
     module.loaded = true
     return module.exports
   }
-}
-
-export function requireWithCache(params: {
-  cache?: Map<string, any>
-  context: Context
-  path: string
-  references?: Set<string>
-  scopedContext?: Record<string, any>
-}) {
-  return createRequire(
-    params.context,
-    params.cache ?? new Map(),
-    params.references,
-    params.scopedContext
-  ).call(null, params.path, params.path)
 }
