@@ -17,6 +17,7 @@
     "@edge-runtime/vm": "2.1.2"
   },
   "changesets": [
+    "afraid-garlics-fail",
     "beige-lions-film",
     "clean-kings-learn",
     "cold-geckos-serve",

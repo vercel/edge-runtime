@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 2.2.0-beta.11
+
+### Patch Changes
+
+- Don't remove Blob from global scope, and use global Blob if available ([#359](https://github.com/vercel/edge-runtime/pull/359))
+
 ## 2.2.0-beta.10
 
 ### Patch Changes
