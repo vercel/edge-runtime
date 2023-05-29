@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 3.0.0-beta.12
+
+### Major Changes
+
+- remove specific-polyfill entrypoints ([#361](https://github.com/vercel/edge-runtime/pull/361))
+
 ## 2.2.0-beta.11
 
 ### Patch Changes

@@ -21,7 +21,7 @@ importers:
         version: 14.18.36
       c8:
         specifier: latest
-        version: 7.13.0
+        version: 7.14.0
       esbuild:
         specifier: 0.17.19
         version: 0.17.19
@@ -175,7 +175,7 @@ importers:
   packages/node-utils:
     devDependencies:
       '@edge-runtime/primitives':
-        specifier: workspace:2.2.0-beta.11
+        specifier: workspace:3.0.0-beta.12
         version: link:../primitives
       '@types/test-listen':
         specifier: 1.1.0
@@ -302,13 +302,13 @@ importers:
   packages/types:
     dependencies:
       '@edge-runtime/primitives':
-        specifier: workspace:2.2.0-beta.11
+        specifier: workspace:3.0.0-beta.12
         version: link:../primitives
 
   packages/user-agent:
     devDependencies:
       '@edge-runtime/jest-environment':
-        specifier: workspace:2.2.0-beta.13
+        specifier: workspace:2.2.0-beta.14
         version: link:../jest-environment
       '@types/ua-parser-js':
         specifier: 0.7.36
@@ -2737,8 +2737,8 @@ packages:
     dependencies:
       streamsearch: 1.1.0
 
-  /c8@7.13.0:
-    resolution: {integrity: sha512-/NL4hQTv1gBL6J6ei80zu3IiTrmePDKXKXOTLpHvcIWZTVYQlDhVWjjWvkhICylE8EwwnMVzDZugCvdx0/DIIA==}
+  /c8@7.14.0:
+    resolution: {integrity: sha512-i04rtkkcNcCf7zsQcSv/T9EbUn4RXQ6mropeMcjFOsQXQ0iGLAr/xT6TImQg4+U9hmNpN9XdvPkjUL1IzbgxJw==}
     engines: {node: '>=10.12.0'}
     hasBin: true
     dependencies:
