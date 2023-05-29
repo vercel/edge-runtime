@@ -175,7 +175,7 @@ importers:
   packages/node-utils:
     devDependencies:
       '@edge-runtime/primitives':
-        specifier: workspace:3.0.0-beta.13
+        specifier: workspace:3.0.0
         version: link:../primitives
       '@types/test-listen':
         specifier: 1.1.0
@@ -211,7 +211,7 @@ importers:
   packages/primitives:
     devDependencies:
       '@edge-runtime/format':
-        specifier: workspace:2.1.0-beta.0
+        specifier: workspace:2.1.0
         version: link:../format
       '@peculiar/webcrypto':
         specifier: 1.4.3
@@ -302,13 +302,13 @@ importers:
   packages/types:
     dependencies:
       '@edge-runtime/primitives':
-        specifier: workspace:3.0.0-beta.13
+        specifier: workspace:3.0.0
         version: link:../primitives
 
   packages/user-agent:
     devDependencies:
       '@edge-runtime/jest-environment':
-        specifier: workspace:2.2.0-beta.15
+        specifier: workspace:2.2.0
         version: link:../jest-environment
       '@types/ua-parser-js':
         specifier: 0.7.36

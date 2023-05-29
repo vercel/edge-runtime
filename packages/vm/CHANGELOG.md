@@ -1,5 +1,28 @@
 # @edge-runtime/vm
 
+## 3.0.0
+
+### Major Changes
+
+- remove `.require` helpers. This is not necessary as people can add dependencies ([#355](https://github.com/vercel/edge-runtime/pull/355))
+  to the context and instanceof should just work.
+
+  we don't use the vm as a security boundary, so we don't need to worry about
+  people adding malicious code to the context.
+
+### Minor Changes
+
+- Fix `instanceof` tests, upgrade undici and revamp how we import stuff into the VM ([#309](https://github.com/vercel/edge-runtime/pull/309))
+
+### Patch Changes
+
+- simplify primitives loading in VM ([#324](https://github.com/vercel/edge-runtime/pull/324))
+
+- Extract a `@edge-runtime/primitives/load` entrypoint that loads the primitives given a scoped global context ([#327](https://github.com/vercel/edge-runtime/pull/327))
+
+- Updated dependencies [[`a6b6124`](https://github.com/vercel/edge-runtime/commit/a6b61244dcb65821465bf7feee9d4352889fdb81), [`9cc5d75`](https://github.com/vercel/edge-runtime/commit/9cc5d756578972d130416d45a757ee1f22a8e730), [`a373606`](https://github.com/vercel/edge-runtime/commit/a3736068c29bad3f8ebdc3e6835c6e616e636fa5), [`8b1dee4`](https://github.com/vercel/edge-runtime/commit/8b1dee44b55caeda304715141aa02301cfb21b08), [`2a2c018`](https://github.com/vercel/edge-runtime/commit/2a2c018e85d4d8abc10c549a36dc4757c72ac8e7), [`a9054f7`](https://github.com/vercel/edge-runtime/commit/a9054f72032c0a164052f18150e80f97a82d2c13), [`e3cf3f8`](https://github.com/vercel/edge-runtime/commit/e3cf3f8d9160713ad83870c86a31f7d05493d824), [`9f35416`](https://github.com/vercel/edge-runtime/commit/9f35416aaf224877ca42e089f9e8452cab3ba41d), [`ed225b3`](https://github.com/vercel/edge-runtime/commit/ed225b37ec2fa47ab5ce6496746dc285fc8925a6), [`2f930a6`](https://github.com/vercel/edge-runtime/commit/2f930a658ec1b247b80d000d2bc5bc9209e1b93e), [`8d4f786`](https://github.com/vercel/edge-runtime/commit/8d4f7860fcf1588a1815a63bcca7000d95960b59), [`7da12a7`](https://github.com/vercel/edge-runtime/commit/7da12a7a1b02c46cb5fe9d7f26d3f7b9c61fc55a), [`1d8b6ce`](https://github.com/vercel/edge-runtime/commit/1d8b6ce2f34e7511e8d36542731d76e498f6cde3), [`b02cec8`](https://github.com/vercel/edge-runtime/commit/b02cec86708f8f14dfdf8c8d8ba6e7128f2dde02), [`0114cf4`](https://github.com/vercel/edge-runtime/commit/0114cf460d8a61463b36588316a3038dae589ea3)]:
+  - @edge-runtime/primitives@3.0.0
+
 ## 3.0.0-beta.14
 
 ### Patch Changes

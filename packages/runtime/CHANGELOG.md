@@ -1,5 +1,19 @@
 # edge-runtime
 
+## 2.3.0
+
+### Minor Changes
+
+- Fix `instanceof` tests, upgrade undici and revamp how we import stuff into the VM ([#309](https://github.com/vercel/edge-runtime/pull/309))
+
+### Patch Changes
+
+- chore: upgrade `async-listen` dependency ([#332](https://github.com/vercel/edge-runtime/pull/332))
+
+- Updated dependencies [[`a9054f7`](https://github.com/vercel/edge-runtime/commit/a9054f72032c0a164052f18150e80f97a82d2c13), [`9f35416`](https://github.com/vercel/edge-runtime/commit/9f35416aaf224877ca42e089f9e8452cab3ba41d), [`a594675`](https://github.com/vercel/edge-runtime/commit/a594675e695264e0325c2ae511b38bdc015a436d), [`ed225b3`](https://github.com/vercel/edge-runtime/commit/ed225b37ec2fa47ab5ce6496746dc285fc8925a6)]:
+  - @edge-runtime/vm@3.0.0
+  - @edge-runtime/format@2.1.0
+
 ## 2.3.0-beta.14
 
 ### Patch Changes
