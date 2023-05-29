@@ -1,5 +1,11 @@
 # @edge-runtime/format
 
+## 2.1.0
+
+### Minor Changes
+
+- Fix `instanceof` tests, upgrade undici and revamp how we import stuff into the VM ([#309](https://github.com/vercel/edge-runtime/pull/309))
+
 ## 2.1.0-beta.0
 
 ### Minor Changes

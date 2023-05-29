@@ -1,5 +1,46 @@
 # @edge-runtime/primitives
 
+## 3.0.0
+
+### Major Changes
+
+- remove specific-polyfill entrypoints ([#361](https://github.com/vercel/edge-runtime/pull/361))
+
+### Minor Changes
+
+- use node's webcrypto when available ([#326](https://github.com/vercel/edge-runtime/pull/326))
+
+- Fix `instanceof` tests, upgrade undici and revamp how we import stuff into the VM ([#309](https://github.com/vercel/edge-runtime/pull/309))
+
+### Patch Changes
+
+- Don't remove Blob from global scope, and use global Blob if available ([#359](https://github.com/vercel/edge-runtime/pull/359))
+
+- bugfix: Request can now be extended ([#322](https://github.com/vercel/edge-runtime/pull/322))
+
+- update patching of undici request ([#363](https://github.com/vercel/edge-runtime/pull/363))
+
+- Use path.join instead of path.resolve, if possible ([#344](https://github.com/vercel/edge-runtime/pull/344))
+
+- Don't use require.resolve for the custom import resolution ([#324](https://github.com/vercel/edge-runtime/pull/324))
+
+- expose `primitives/load` ([#336](https://github.com/vercel/edge-runtime/pull/336))
+
+- Extract a `@edge-runtime/primitives/load` entrypoint that loads the primitives given a scoped global context ([#327](https://github.com/vercel/edge-runtime/pull/327))
+
+- Fix `@/primitives/load` types by externalizing `@/primitives/index` in the type definition ([#338](https://github.com/vercel/edge-runtime/pull/338))
+
+- remove dynamism in imports: add a `${primitive}.text.js` file that will be ([#351](https://github.com/vercel/edge-runtime/pull/351))
+  required, instead of using `fs` to read the file at runtime.
+
+  This will help bundlers to statically analyze the code.
+
+- Remove dynamic path manipulation ([#353](https://github.com/vercel/edge-runtime/pull/353))
+
+- bump undici to v5.22.1 ([#357](https://github.com/vercel/edge-runtime/pull/357))
+
+- fix entries iteration on Headers ([#346](https://github.com/vercel/edge-runtime/pull/346))
+
 ## 3.0.0-beta.13
 
 ### Patch Changes
