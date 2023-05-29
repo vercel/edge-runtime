@@ -1,11 +1,2 @@
-abort-controller
-blob
-console
-crypto
-encoding
-events
-fetch
-streams
-structured-clone
-url
 types
+load

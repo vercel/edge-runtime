@@ -45,20 +45,9 @@
     "node": ">=14"
   },
   "files": [
-    "abort-controller",
-    "blob",
-    "console",
-    "crypto",
     "dist",
-    "encoding",
-    "events",
-    "fetch",
     "load",
-    "streams",
-    "structured-clone",
-    "text-encoding-streams",
-    "types",
-    "url"
+    "types"
   ],
   "scripts": {
     "build": "ts-node scripts/build.ts",

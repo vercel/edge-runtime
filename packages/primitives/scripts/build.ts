@@ -122,36 +122,9 @@ async function bundlePackage() {
     ],
   })
 
-  if (true) {
-    const loadSource = fs.promises.readFile(
-      resolve(__dirname, '../dist/load.js'),
-      'utf8'
-    )
-    const files = new Set<string>()
-    const loadSourceWithPolyfills = (await loadSource).replace(
-      /injectSourceCode\("(.+)"\)/g,
-      (_, filename) => {
-        files.add(filename)
-        return `require(${JSON.stringify(`${filename}.text.js`)})`
-      }
-    )
-    await fs.promises.writeFile(
-      resolve(__dirname, '../dist/load.js'),
-      loadSourceWithPolyfills
-    )
-    for (const file of files) {
-      const contents = await fs.promises.readFile(
-        resolve(__dirname, '../dist', file),
-        'utf8'
-      )
-      await fs.promises.writeFile(
-        resolve(__dirname, '../dist', `${file}.text.js`),
-        `module.exports = ${JSON.stringify(contents)}`
-      )
-    }
-  }
+  await generateTextFiles()
 
-  for (const file of filesExt.map((file) => parse(file).name)) {
+  for (const file of ['load']) {
     if (file !== 'index') {
       await fs.promises.mkdir(resolve(__dirname, `../${file}`)).catch(() => {})
       await fs.promises.writeFile(
@@ -166,6 +139,37 @@ async function bundlePackage() {
         )
       )
     }
+  }
+}
+
+async function generateTextFiles() {
+  const loadSource = fs.promises.readFile(
+    resolve(__dirname, '../dist/load.js'),
+    'utf8'
+  )
+  const files = new Set<string>()
+  const loadSourceWithPolyfills = (await loadSource).replace(
+    /injectSourceCode\("(.+)"\)/g,
+    (_, filename) => {
+      files.add(filename)
+      return `require(${JSON.stringify(`${filename}.text.js`)})`
+    }
+  )
+  await fs.promises.writeFile(
+    resolve(__dirname, '../dist/load.js'),
+    loadSourceWithPolyfills
+  )
+  for (const file of files) {
+    const contents = await fs.promises.readFile(
+      resolve(__dirname, '../dist', file),
+      'utf8'
+    )
+    await fs.promises.writeFile(
+      resolve(__dirname, '../dist', `${file}.text.js`),
+      `module.exports = ${JSON.stringify(contents)}`
+    )
+    // remove the original file
+    await fs.promises.unlink(resolve(__dirname, '../dist', file))
   }
 }
 
