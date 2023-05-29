@@ -1,24 +1,38 @@
-// Copied from https://github.com/nodejs/undici/blob/v5.10.0/lib/core/request.js
+// Copied from https://github.com/nodejs/undici/blob/v5.22.1/lib/core/request.js
 // modified to allow any headers
 
 'use strict'
 
-const {
-  InvalidArgumentError,
-  NotSupportedError,
-} = require('undici/lib/core/errors')
+const { InvalidArgumentError } = require('undici/lib/core/errors')
 const assert = require('assert')
 const util = require('undici/lib/core/util')
+
+// tokenRegExp and headerCharRegex have been lifted from
+// https://github.com/nodejs/node/blob/main/lib/_http_common.js
+
+/**
+ * Verifies that the given val is a valid HTTP token
+ * per the rules defined in RFC 7230
+ * See https://tools.ietf.org/html/rfc7230#section-3.2.6
+ */
+const tokenRegExp = /^[\^_`a-zA-Z\-0-9!#$%&'*+.|~]+$/
+
+/**
+ * Matches if val contains an invalid field-vchar
+ *  field-value    = *( field-content / obs-fold )
+ *  field-content  = field-vchar [ 1*( SP / HTAB ) field-vchar ]
+ *  field-vchar    = VCHAR / obs-text
+ */
+const headerCharRegex = /[^\t\x20-\x7e\x80-\xff]/
+
+// Verifies that a given path is valid does not contain control chars \x00 to \x20
+const invalidPathRegex = /[^\u0021-\u00ff]/
 
 const kHandler = Symbol('handler')
 
 const channels = {}
 
 let extractBody
-
-const nodeVersion = process.versions.node.split('.')
-const nodeMajor = Number(nodeVersion[0])
-const nodeMinor = Number(nodeVersion[1])
 
 try {
   const diagnosticsChannel = require('diagnostics_channel')
@@ -49,6 +63,7 @@ class Request {
       upgrade,
       headersTimeout,
       bodyTimeout,
+      reset,
       throwOnError,
     },
     handler
@@ -63,10 +78,14 @@ class Request {
       throw new InvalidArgumentError(
         'path must be an absolute URL or start with a slash'
       )
+    } else if (invalidPathRegex.exec(path) !== null) {
+      throw new InvalidArgumentError('invalid request path')
     }
 
     if (typeof method !== 'string') {
       throw new InvalidArgumentError('method must be a string')
+    } else if (tokenRegExp.exec(method) === null) {
+      throw new InvalidArgumentError('invalid request method')
     }
 
     if (upgrade && typeof upgrade !== 'string') {
@@ -85,6 +104,10 @@ class Request {
       (!Number.isFinite(bodyTimeout) || bodyTimeout < 0)
     ) {
       throw new InvalidArgumentError('invalid bodyTimeout')
+    }
+
+    if (reset != null && typeof reset !== 'boolean') {
+      throw new InvalidArgumentError('invalid reset')
     }
 
     this.headersTimeout = headersTimeout
@@ -136,6 +159,8 @@ class Request {
 
     this.blocking = blocking == null ? false : blocking
 
+    this.reset = reset == null ? null : reset
+
     this.host = null
 
     this.contentLength = null
@@ -162,9 +187,12 @@ class Request {
     }
 
     if (util.isFormDataLike(this.body)) {
-      if (nodeMajor < 16 || (nodeMajor === 16 && nodeMinor < 5)) {
+      if (
+        util.nodeMajor < 16 ||
+        (util.nodeMajor === 16 && util.nodeMinor < 8)
+      ) {
         throw new InvalidArgumentError(
-          'Form-Data bodies are only supported in node v16.5 and newer.'
+          'Form-Data bodies are only supported in node v16.8 and newer.'
         )
       }
 
@@ -178,6 +206,7 @@ class Request {
         this.headers += `content-type: ${contentType}\r\n`
       }
       this.body = bodyStream.stream
+      this.contentLength = bodyStream.length
     } else if (util.isBlobLike(body) && this.contentType == null && body.type) {
       this.contentType = body.type
       this.headers += `content-type: ${body.type}\r\n`
@@ -273,8 +302,22 @@ class Request {
   }
 }
 
-function processHeader(request, key, val) {
+function processHeaderValue(key, val) {
   if (val && typeof val === 'object') {
+    throw new InvalidArgumentError(`invalid ${key} header`)
+  }
+
+  val = val != null ? `${val}` : ''
+
+  if (headerCharRegex.exec(val) !== null) {
+    throw new InvalidArgumentError(`invalid ${key} header`)
+  }
+
+  return `${key}: ${val}\r\n`
+}
+
+function processHeader(request, key, val) {
+  if (val && typeof val === 'object' && !Array.isArray(val)) {
     throw new InvalidArgumentError(`invalid ${key} header`)
   } else if (val === undefined) {
     return
@@ -302,11 +345,15 @@ function processHeader(request, key, val) {
     key.toLowerCase() === 'content-type'
   ) {
     request.contentType = val
-    request.headers += `${key}: ${val}\r\n`
-  } else if (key.length === 6 && key.toLowerCase() === 'expect') {
-    throw new NotSupportedError('expect header not supported')
+    request.headers += processHeaderValue(key, val)
   } else {
-    request.headers += `${key}: ${val}\r\n`
+    if (Array.isArray(val)) {
+      for (let i = 0; i < val.length; i++) {
+        request.headers += processHeaderValue(key, val[i])
+      }
+    } else {
+      request.headers += processHeaderValue(key, val)
+    }
   }
 }
 
