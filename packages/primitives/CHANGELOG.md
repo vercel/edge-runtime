@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 3.0.0-beta.13
+
+### Patch Changes
+
+- update patching of undici request ([#363](https://github.com/vercel/edge-runtime/pull/363))
+
 ## 3.0.0-beta.12
 
 ### Major Changes
