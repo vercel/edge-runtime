@@ -1,5 +1,11 @@
 # @edge-runtime/user-agent
 
+## 1.3.0
+
+### Minor Changes
+
+- Add new `Google-InspectionTool` token to known bot UA list ([`cb04b3e`](https://github.com/vercel/edge-runtime/commit/cb04b3ec0933c6e16bf25efda08c772ddccc588f))
+
 ## 1.2.0
 
 ### Minor Changes
