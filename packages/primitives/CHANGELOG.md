@@ -1,5 +1,13 @@
 # @edge-runtime/primitives
 
+## 3.0.1
+
+### Patch Changes
+
+- build(primitives): update dependencies ([#370](https://github.com/vercel/edge-runtime/pull/370))
+
+- chore(primitives): remove unnecessary polyfills ([#368](https://github.com/vercel/edge-runtime/pull/368))
+
 ## 3.0.0
 
 ### Major Changes
