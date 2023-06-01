@@ -99,6 +99,7 @@ describe('Global primitives', () => {
     { api: 'Promise' },
     { api: 'PromiseRejectionEvent' },
     { api: 'Proxy' },
+    { api: 'queueMicrotask' },
     { api: 'RangeError' },
     { api: 'ReadableStream' },
     { api: 'ReadableStreamBYOBReader' },
