@@ -1,5 +1,14 @@
 # @edge-runtime/vm
 
+## 3.0.1
+
+### Patch Changes
+
+- chore(vm): add queueMicrotask in global scope ([#371](https://github.com/vercel/edge-runtime/pull/371))
+
+- Updated dependencies [[`bebd74f`](https://github.com/vercel/edge-runtime/commit/bebd74f644f53ccde0afd9b8e2f22a76b1dee714), [`8c3e24d`](https://github.com/vercel/edge-runtime/commit/8c3e24d03c36762913e8ff97a9d4e22767fc054f)]:
+  - @edge-runtime/primitives@3.0.1
+
 ## 3.0.0
 
 ### Major Changes
