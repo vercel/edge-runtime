@@ -147,8 +147,8 @@ export function load(scopedContext = {}) {
     scopedContext: { ...scopedContext },
   })
   assign(context, {
-    URL: urlImpl.URL,
-    URLSearchParams: urlImpl.URLSearchParams,
+    URL: URL,
+    URLSearchParams: URLSearchParams,
     URLPattern: urlImpl.URLPattern,
   })
 
