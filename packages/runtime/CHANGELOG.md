@@ -1,5 +1,11 @@
 # edge-runtime
 
+## 2.3.2
+
+### Patch Changes
+
+- chore(repl): add history ([#372](https://github.com/vercel/edge-runtime/pull/372))
+
 ## 2.3.1
 
 ### Patch Changes
