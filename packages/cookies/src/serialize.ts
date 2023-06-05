@@ -23,9 +23,7 @@ export function serialize(c: ResponseCookie | RequestCookie): string {
 export function parseCookieString(cookie: string) {
   const map = new Map<string, string>()
 
-  const pairs = cookie.split(/; */)
-  for (let i = 0; i < pairs.length; i++) {
-    const pair = pairs[i]
+  for (const pair of cookie.split(/; */)) {
     if (!pair) continue
 
     const splitAt = pair.indexOf('=')
