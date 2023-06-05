@@ -64,6 +64,30 @@ test('reflect .set into `set-cookie`', async () => {
   )
 })
 
+describe('`set-cookie` into .get and .getAll', () => {
+  test.each([
+    'name=value; Secure; HttpOnly',
+    'name=value; Secure; HttpOnly;',
+    'name=value; HttpOnly; Secure',
+    'name=value; HttpOnly; Secure;',
+  ])('parses %s header correctly', (value) => {
+    const headers = new Headers()
+    headers.set('set-cookie', value)
+    const cookies = new ResponseCookies(headers)
+    const all = cookies.getAll()
+
+    expect(all).toHaveLength(1)
+    expect(all).toContainEqual({
+      name: 'name',
+      value: 'value',
+      httpOnly: true,
+      secure: true,
+    })
+
+    expect(cookies.get('name')).toEqual(all[0])
+  })
+})
+
 test('reflect .delete into `set-cookie`', async () => {
   const headers = new Headers()
   const cookies = new ResponseCookies(headers)

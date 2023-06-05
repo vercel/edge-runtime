@@ -25,7 +25,17 @@ export function parseCookieString(cookie: string) {
 
   for (const pair of cookie.split(/; */)) {
     if (!pair) continue
+
     const splitAt = pair.indexOf('=')
+
+    // If the attribute doesn't have a value, set it to 'true'.
+    if (splitAt === -1) {
+      map.set(pair, 'true')
+      continue
+    }
+
+    // Otherwise split it into key and value and trim the whitespace on the
+    // value.
     const [key, value] = [pair.slice(0, splitAt), pair.slice(splitAt + 1)]
     try {
       map.set(key, decodeURIComponent(value ?? 'true'))
