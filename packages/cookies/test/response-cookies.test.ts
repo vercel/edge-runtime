@@ -1,5 +1,6 @@
 import { createFormat } from '@edge-runtime/format'
 import { ResponseCookies } from '../src/response-cookies'
+import { parseCookieString } from '../src/serialize'
 
 test('reflect .set into `set-cookie`', async () => {
   const headers = new Headers()
@@ -62,6 +63,28 @@ test('reflect .set into `set-cookie`', async () => {
   expect(Object.fromEntries(headers.entries())['set-cookie']).toBe(
     'foo=bar; Path=/test, fooz=barz; Path=/test2, fooHttpOnly=barHttpOnly; Path=/; HttpOnly, fooExpires=barExpires; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooExpiresDate=barExpiresDate; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooMaxAge=; Path=/; Max-Age=0'
   )
+})
+
+test('it handles set-cookie headers correctly', () => {
+  const headers = new Headers()
+  headers.set('set-cookie', 'secure_2=true; Secure; HttpOnly')
+  const cookies = new ResponseCookies(headers)
+  const all = cookies.getAll()
+
+  expect(all).toHaveLength(1)
+  expect(all[0]).toEqual({
+    httpOnly: true,
+    name: 'secure_2',
+    secure: true,
+    value: 'true',
+  })
+
+  const parsed = parseCookieString('secure_2=true; Secure; HttpOnly')
+  const entries = Array.from(parsed.entries())
+  expect(entries).toHaveLength(3)
+  expect(entries).toContainEqual(['secure_2', 'true'])
+  expect(entries).toContainEqual(['Secure', 'true'])
+  expect(entries).toContainEqual(['HttpOnly', 'true'])
 })
 
 test('reflect .delete into `set-cookie`', async () => {

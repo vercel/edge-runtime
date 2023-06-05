@@ -23,12 +23,26 @@ export function serialize(c: ResponseCookie | RequestCookie): string {
 export function parseCookieString(cookie: string) {
   const map = new Map<string, string>()
 
-  for (const pair of cookie.split(/; */)) {
+  const pairs = cookie.split(/; */)
+  for (let i = 0; i < pairs.length; i++) {
+    const pair = pairs[i]
     if (!pair) continue
+
     const splitAt = pair.indexOf('=')
+
+    // If the attribute doesn't have a value, set it to 'true'.
+    if (splitAt === -1) {
+      map.set(pair, 'true')
+      continue
+    }
+
+    // Otherwise split it into key and value and trim the whitespace on the
+    // value.
     const [key, value] = [pair.slice(0, splitAt), pair.slice(splitAt + 1)]
     try {
-      map.set(key, decodeURIComponent(value ?? 'true'))
+      // Decode the value using the `decodeURIComponent` function and trim
+      // whitespace from it.
+      map.set(key, decodeURIComponent(value.trim() ?? 'true'))
     } catch {
       // ignore invalid encoded values
     }
