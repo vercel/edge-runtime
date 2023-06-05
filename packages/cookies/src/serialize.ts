@@ -38,9 +38,7 @@ export function parseCookieString(cookie: string) {
     // value.
     const [key, value] = [pair.slice(0, splitAt), pair.slice(splitAt + 1)]
     try {
-      // Decode the value using the `decodeURIComponent` function and trim
-      // whitespace from it.
-      map.set(key, decodeURIComponent(value.trim() ?? 'true'))
+      map.set(key, decodeURIComponent(value ?? 'true'))
     } catch {
       // ignore invalid encoded values
     }
