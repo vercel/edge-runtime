@@ -1,5 +1,11 @@
 # @edge-runtime/cookies
 
+## 3.2.1
+
+### Patch Changes
+
+- Fixed Cookie Parsing ([#374](https://github.com/vercel/edge-runtime/pull/374))
+
 ## 3.2.0
 
 ### Minor Changes
