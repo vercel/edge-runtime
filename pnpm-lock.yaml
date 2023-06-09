@@ -253,8 +253,8 @@ importers:
         specifier: 5.22.1
         version: 5.22.1
       urlpattern-polyfill:
-        specifier: 8.0.2
-        version: 8.0.2
+        specifier: 9.0.0
+        version: 9.0.0
       web-streams-polyfill:
         specifier: 4.0.0-beta.3
         version: 4.0.0-beta.3
@@ -8496,8 +8496,8 @@ packages:
       prepend-http: 2.0.0
     dev: true
 
-  /urlpattern-polyfill@8.0.2:
-    resolution: {integrity: sha512-Qp95D4TPJl1kC9SKigDcqgyM2VDVO4RiJc2d4qe5GrYm+zbIQCWWKAFaJNQ4BhdFeDGwBmAxqJBwWSJDb9T3BQ==}
+  /urlpattern-polyfill@9.0.0:
+    resolution: {integrity: sha512-WHN8KDQblxd32odxeIgo83rdVDE2bvdkb86it7bMhYZwWKJz0+O0RK/eZiHYnM+zgt/U7hAHOlCQGfjjvSkw2g==}
     dev: true
 
   /use-sync-external-store@1.2.0(react@18.2.0):
