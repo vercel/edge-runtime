@@ -37,7 +37,7 @@
     "test-listen": "1.1.0",
     "tsup": "6",
     "undici": "5.22.1",
-    "urlpattern-polyfill": "8.0.2",
+    "urlpattern-polyfill": "9.0.0",
     "web-streams-polyfill": "4.0.0-beta.3"
   },
   "engines": {

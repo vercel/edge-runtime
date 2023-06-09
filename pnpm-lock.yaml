@@ -14,8 +14,8 @@ importers:
         specifier: latest
         version: 1.1.0
       '@types/jest':
-        specifier: 29.5.1
-        version: 29.5.1
+        specifier: 29.5.2
+        version: 29.5.2
       '@types/node':
         specifier: '14'
         version: 14.18.36
@@ -253,8 +253,8 @@ importers:
         specifier: 5.22.1
         version: 5.22.1
       urlpattern-polyfill:
-        specifier: 8.0.2
-        version: 8.0.2
+        specifier: 9.0.0
+        version: 9.0.0
       web-streams-polyfill:
         specifier: 4.0.0-beta.3
         version: 4.0.0-beta.3
@@ -283,8 +283,8 @@ importers:
         specifier: 7.0.1
         version: 7.0.1
       signal-exit:
-        specifier: 4.0.1
-        version: 4.0.1
+        specifier: 4.0.2
+        version: 4.0.2
       time-span:
         specifier: 4.0.0
         version: 4.0.0
@@ -294,7 +294,7 @@ importers:
         version: 2.6.2
       node-fetch:
         specifier: '2'
-        version: 2.6.9
+        version: 2.6.11
 
   packages/types:
     dependencies:
@@ -330,8 +330,8 @@ importers:
         specifier: 1.1.0
         version: 1.1.0
       '@types/ws':
-        specifier: 8.5.3
-        version: 8.5.3
+        specifier: 8.5.5
+        version: 8.5.5
       multer:
         specifier: 1.4.5-lts.1
         version: 1.4.5-lts.1
@@ -2037,8 +2037,8 @@ packages:
     dependencies:
       '@types/istanbul-lib-report': 3.0.0
 
-  /@types/jest@29.5.1:
-    resolution: {integrity: sha512-tEuVcHrpaixS36w7hpsfLBLpjtMRJUE09/MHXn923LOVojDwyC14cWcfc0rDs0VEfUyYmt/+iX1kxxp+gZMcaQ==}
+  /@types/jest@29.5.2:
+    resolution: {integrity: sha512-mSoZVJF5YzGVCk+FsDxzDuH7s+SCkzrgKZzf0Z0T2WudhBUPoF6ktoTPC4R0ZoCPCV5xUvuU6ias5NvxcBcMMg==}
     dependencies:
       expect: 29.5.0
       pretty-format: 29.5.0
@@ -2172,10 +2172,10 @@ packages:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
     dev: false
 
-  /@types/ws@8.5.3:
-    resolution: {integrity: sha512-6YOoWjruKj1uLf3INHH7D3qTXwFfEsg1kf3c0uDdSBJwfa/llkwIjrAGV7j7mVgGNbzTQ3HiHKKDXl6bJPD97w==}
+  /@types/ws@8.5.5:
+    resolution: {integrity: sha512-lwhs8hktwxSjf9UaZ9tG5M03PGogvFaH8gUgLNbN9HKIg0dvv6q+gkSuJ8HN4/VbyxkuLzCjlN7GquQ0gUJfIg==}
     dependencies:
-      '@types/node': 18.13.0
+      '@types/node': 14.18.36
     dev: true
 
   /@types/yargs-parser@21.0.0:
@@ -6532,18 +6532,6 @@ packages:
       whatwg-url: 5.0.0
     dev: true
 
-  /node-fetch@2.6.9:
-    resolution: {integrity: sha512-DJm/CJkZkRjKKj4Zi4BsKVZh3ValV5IR5s7LVZnW+6YMh0W1BfNA8XSs6DLMGYlId5F3KnA70uu2qepcR08Qqg==}
-    engines: {node: 4.x || >=6.0.0}
-    peerDependencies:
-      encoding: ^0.1.0
-    peerDependenciesMeta:
-      encoding:
-        optional: true
-    dependencies:
-      whatwg-url: 5.0.0
-    dev: true
-
   /node-int64@0.4.0:
     resolution: {integrity: sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==}
 
@@ -7531,8 +7519,8 @@ packages:
   /signal-exit@3.0.7:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
 
-  /signal-exit@4.0.1:
-    resolution: {integrity: sha512-uUWsN4aOxJAS8KOuf3QMyFtgm1pkb6I+KRZbRF/ghdf5T7sM+B1lLLzPDxswUjkmHyxQAVzEgG35E3NzDM9GVw==}
+  /signal-exit@4.0.2:
+    resolution: {integrity: sha512-MY2/qGx4enyjprQnFaZsHib3Yadh3IXyV2C321GY0pjGfVBu4un0uDJkwgdxqO+Rdx8JMT8IfJIRwbYVz3Ob3Q==}
     engines: {node: '>=14'}
     dev: false
 
@@ -8496,8 +8484,8 @@ packages:
       prepend-http: 2.0.0
     dev: true
 
-  /urlpattern-polyfill@8.0.2:
-    resolution: {integrity: sha512-Qp95D4TPJl1kC9SKigDcqgyM2VDVO4RiJc2d4qe5GrYm+zbIQCWWKAFaJNQ4BhdFeDGwBmAxqJBwWSJDb9T3BQ==}
+  /urlpattern-polyfill@9.0.0:
+    resolution: {integrity: sha512-WHN8KDQblxd32odxeIgo83rdVDE2bvdkb86it7bMhYZwWKJz0+O0RK/eZiHYnM+zgt/U7hAHOlCQGfjjvSkw2g==}
     dev: true
 
   /use-sync-external-store@1.2.0(react@18.2.0):
