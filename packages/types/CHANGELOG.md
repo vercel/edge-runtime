@@ -1,5 +1,12 @@
 # @edge-runtime/types
 
+## 2.1.2
+
+### Patch Changes
+
+- Updated dependencies [[`fc425d2`](https://github.com/vercel/edge-runtime/commit/fc425d2575a1efe438e09d465d17c630c0dfe50f)]:
+  - @edge-runtime/primitives@3.0.2
+
 ## 2.1.1
 
 ### Patch Changes

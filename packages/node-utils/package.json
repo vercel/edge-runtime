@@ -24,7 +24,7 @@
     "web"
   ],
   "devDependencies": {
-    "@edge-runtime/primitives": "workspace:3.0.1",
+    "@edge-runtime/primitives": "workspace:3.0.2",
     "@types/test-listen": "1.1.0",
     "test-listen": "1.1.0",
     "tsup": "6"

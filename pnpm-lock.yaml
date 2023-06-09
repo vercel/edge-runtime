@@ -175,7 +175,7 @@ importers:
   packages/node-utils:
     devDependencies:
       '@edge-runtime/primitives':
-        specifier: workspace:3.0.1
+        specifier: workspace:3.0.2
         version: link:../primitives
       '@types/test-listen':
         specifier: 1.1.0
@@ -299,13 +299,13 @@ importers:
   packages/types:
     dependencies:
       '@edge-runtime/primitives':
-        specifier: workspace:3.0.1
+        specifier: workspace:3.0.2
         version: link:../primitives
 
   packages/user-agent:
     devDependencies:
       '@edge-runtime/jest-environment':
-        specifier: workspace:2.2.1
+        specifier: workspace:2.2.2
         version: link:../jest-environment
       '@types/ua-parser-js':
         specifier: 0.7.36
