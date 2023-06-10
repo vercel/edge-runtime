@@ -29,10 +29,10 @@
     "async-listen": "3.0.0",
     "mri": "1.2.0",
     "picocolors": "1.0.0",
-    "pretty-bytes": "5.6.0",
-    "pretty-ms": "7.0.1",
+    "pretty-bytes": "6.1.0",
+    "pretty-ms": "8.0.0",
     "signal-exit": "4.0.2",
-    "time-span": "4.0.0"
+    "time-span": "5.1.0"
   },
   "devDependencies": {
     "@types/node-fetch": "2",
