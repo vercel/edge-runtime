@@ -2,7 +2,6 @@ import type { EdgeRuntime } from '../edge-runtime'
 import type { IncomingMessage, ServerResponse } from 'http'
 import type { Logger, NodeHeaders } from '../types'
 import type { EdgeContext } from '@edge-runtime/vm'
-import { consumeUint8ArrayReadableStream } from './body-streams'
 import { getClonableBodyStream } from './body-streams'
 import prettyMs from 'pretty-ms'
 import timeSpan from 'time-span'
@@ -68,13 +67,7 @@ export function createHandler<T extends EdgeContext>(options: Options<T>) {
           }
         }
 
-        if (response.body) {
-          for await (const chunk of consumeUint8ArrayReadableStream(
-            response.body
-          )) {
-            res.write(chunk)
-          }
-        }
+        await stream(response.body, res)
 
         const subject = `${req.socket.remoteAddress} ${req.method} ${req.url}`
         const time = `${prettyMs(start())
@@ -93,6 +86,51 @@ export function createHandler<T extends EdgeContext>(options: Options<T>) {
 
     waitUntil: () => Promise.all(awaiting),
   }
+}
+
+async function stream(
+  body: ReadableStream<Uint8Array> | null,
+  res: ServerResponse
+) {
+  if (!body) return
+
+  // If the client has already disconnected, then we don't need to pipe anything.
+  if (res.destroyed) return body.cancel()
+
+  const reader = body.getReader()
+
+  // When the server pushes more data than the client reads, then we need to
+  // wait for the client to catch up before writing more data. We register this
+  // generic handler once so that we don't incur constant register/unregister
+  // calls.
+  let drainResolve: () => void
+  res.on('drain', () => drainResolve?.())
+
+  // If the user aborts, then we'll receive a close event before the
+  // body closes. In that case, we want to end the streaming.
+  let open = true
+  res.on('close', () => {
+    open = false
+    drainResolve?.()
+  })
+
+  while (open) {
+    const { done, value } = await reader.read()
+    if (done) break
+
+    const bufferSpaceAvailable = res.write(value)
+
+    // If there's no more space in the buffer, then we need to wait on the
+    // client to read data before pushing again.
+    if (!bufferSpaceAvailable) {
+      await new Promise<void>((res) => {
+        drainResolve = res
+      })
+    }
+  }
+
+  // If the client disconnected early, then we need to cleanup the stream.
+  if (!open) return reader.cancel()
 }
 
 /**
