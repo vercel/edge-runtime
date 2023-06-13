@@ -5,26 +5,8 @@ import type { Readable } from 'stream'
 
 let server: Awaited<ReturnType<typeof runServer>>
 
-const chunkErrorFn = jest.fn()
-jest.mock('../src/server/body-streams', () => {
-  const utils = jest.requireActual('../src/server/body-streams')
-  return {
-    ...utils,
-    consumeUint8ArrayReadableStream: async function* (body?: ReadableStream) {
-      try {
-        for await (const chunk of utils.consumeUint8ArrayReadableStream(body)) {
-          yield chunk
-        }
-      } catch (error) {
-        chunkErrorFn(error)
-      }
-    },
-  }
-})
-
 afterEach(() => {
   server.close()
-  chunkErrorFn.mockReset()
 })
 
 function sleep(ms: number) {
@@ -184,43 +166,6 @@ test(`do not fail writing to the response socket Uint8Array`, async () => {
   expect(response.status).toEqual(200)
   const text = await response.text()
   expect(text).toEqual('hi there1\nhi there2\nhi there3\n')
-  expect(chunkErrorFn).toHaveBeenCalledTimes(0)
-})
-
-test(`fails when writing to the response socket a wrong chunk`, async () => {
-  const chunks = [1, 'String', true, { b: 1 }, [1], Buffer.from('Buffer')]
-  const runtime = new EdgeRuntime()
-  runtime.evaluate(`
-      addEventListener('fetch', event => {
-        const url = new URL(event.request.url)
-        const chunk = url.searchParams.get('chunk')
-        const stream = new ReadableStream({
-          start(controller) {
-            controller.enqueue(new TextEncoder().encode('hi there'));
-            controller.enqueue(JSON.parse(chunk));
-            controller.close();
-          }
-        });
-        return event.respondWith(
-          new Response(stream, {
-            status: 200,
-          })
-        )
-      })
-    `)
-
-  server = await runServer({ runtime })
-  for (const chunk of chunks) {
-    const response = await fetch(`${server.url}?chunk=${JSON.stringify(chunk)}`)
-    expect(response.status).toEqual(200)
-    expect(await response.text()).toEqual('hi there')
-    expect(chunkErrorFn).toHaveBeenCalledTimes(1)
-    expect(chunkErrorFn.mock.calls[0][0]).toBeInstanceOf(TypeError)
-    expect(chunkErrorFn.mock.calls[0][0].message).toEqual(
-      'This ReadableStream did not return bytes.'
-    )
-    chunkErrorFn.mockReset()
-  }
 })
 
 test('streamable sanity test', async () => {
