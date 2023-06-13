@@ -2,7 +2,7 @@
   "name": "edge-runtime",
   "description": "Run any Edge Function from CLI or Node.js module.",
   "homepage": "https://edge-runtime.vercel.app/packages/runtime",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "main": "dist/index.js",
   "bin": {
     "edge-runtime": "dist/cli/index.js"

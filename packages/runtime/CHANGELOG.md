@@ -1,5 +1,11 @@
 # edge-runtime
 
+## 2.4.1
+
+### Patch Changes
+
+- republish ([`6f83aed`](https://github.com/vercel/edge-runtime/commit/6f83aed75b003ed01628399cdc64b2c4ea0667fd))
+
 ## 2.4.0
 
 ### Minor Changes
