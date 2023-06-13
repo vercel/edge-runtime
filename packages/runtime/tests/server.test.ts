@@ -256,52 +256,6 @@ test('streamable sanity test', async () => {
   expect(data).toContain('9')
 })
 
-// Jest's process context is a nightmare. It's impossible to test for
-// unhandledrejection events, because they unregister all handlers in the main
-// process and tests are run in a child process that won't receive the event.
-// https://github.com/jestjs/jest/issues/10361
-test.skip('ends response when ReadableStream errors', async () => {
-  const runtime = new EdgeRuntime()
-
-  const handled = new Promise<{ error: Error; promise: Promise<any> }>(
-    (resolve) => {
-      runtime.context.handle = resolve
-    }
-  )
-  runtime.evaluate(`
-    addEventListener('fetch', event => {
-      return event.respondWith(new Response(new ReadableStream({
-        pull(controller) {
-          throw new Error('Boom')
-        }
-      })))
-    })
-
-    addEventListener("unhandledrejection", (error, promise) => {
-      self.handle({ error, promise })
-    })
-  `)
-
-  server = await runServer({ runtime })
-
-  const response = await fetch(server.url)
-
-  expect(response).toBeTruthy()
-  // The error happens _after_ we begin streaming data, so this should still be
-  // a 200 response.
-  expect(response.status).toEqual(200)
-
-  for await (const chunk of response.body) {
-    throw new Error(`should never read chunk "${chunk}"`)
-  }
-
-  const { error, promise } = await handled
-  expect(error.message).toBe('Boom')
-  promise.catch(() => {
-    // noop, this is just to "handle" to the rejection.
-  })
-})
-
 test('allows long-running streams to be cancelled immediately', async () => {
   const runtime = new EdgeRuntime()
 

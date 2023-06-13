@@ -18,3 +18,17 @@ it('handles correctly unhandled rejections', async () => {
     stderr: '',
   })
 })
+
+it('reports unhandled rejection for pull errors', async () => {
+  const result = await execAsync(
+    `ts-node --transpile-only ${resolve(
+      __dirname,
+      './fixtures/pull-error.ts'
+    )}`,
+    { encoding: 'utf8' }
+  )
+  expect(result).toMatchObject({
+    stdout: expect.stringContaining('TEST PASSED!'),
+    stderr: '',
+  })
+})
