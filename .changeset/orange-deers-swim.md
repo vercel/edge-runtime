@@ -1,0 +1,5 @@
+---
+'edge-runtime': patch
+---
+
+republish
