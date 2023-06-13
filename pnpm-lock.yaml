@@ -21,7 +21,7 @@ importers:
         version: 14.18.51
       c8:
         specifier: latest
-        version: 7.14.0
+        version: 8.0.0
       esbuild:
         specifier: 0.18.1
         version: 0.18.1
@@ -2604,9 +2604,9 @@ packages:
     dependencies:
       streamsearch: 1.1.0
 
-  /c8@7.14.0:
-    resolution: {integrity: sha512-i04rtkkcNcCf7zsQcSv/T9EbUn4RXQ6mropeMcjFOsQXQ0iGLAr/xT6TImQg4+U9hmNpN9XdvPkjUL1IzbgxJw==}
-    engines: {node: '>=10.12.0'}
+  /c8@8.0.0:
+    resolution: {integrity: sha512-XHA5vSfCLglAc0Xt8eLBZMv19lgiBSjnb1FLAQgnwkuhJYEonpilhEB4Ea3jPAbm0FhD6VVJrc0z73jPe7JyGQ==}
+    engines: {node: '>=12'}
     hasBin: true
     dependencies:
       '@bcoe/v8-coverage': 0.2.3
