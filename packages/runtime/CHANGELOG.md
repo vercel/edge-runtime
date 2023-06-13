@@ -1,5 +1,11 @@
 # edge-runtime
 
+## 2.4.0
+
+### Minor Changes
+
+- Lazily stream responses ([#396](https://github.com/vercel/edge-runtime/pull/396))
+
 ## 2.3.3
 
 ### Patch Changes
