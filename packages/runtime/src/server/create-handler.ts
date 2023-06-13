@@ -2,8 +2,7 @@ import type { EdgeRuntime } from '../edge-runtime'
 import type { IncomingMessage, ServerResponse } from 'http'
 import type { Logger, NodeHeaders } from '../types'
 import type { EdgeContext } from '@edge-runtime/vm'
-import { consumeUint8ArrayReadableStream } from './body-streams'
-import { getClonableBodyStream } from './body-streams'
+import { getClonableBodyStream, pipeBodyStreamToResponse } from './body-streams'
 import prettyMs from 'pretty-ms'
 import timeSpan from 'time-span'
 
@@ -68,13 +67,7 @@ export function createHandler<T extends EdgeContext>(options: Options<T>) {
           }
         }
 
-        if (response.body) {
-          for await (const chunk of consumeUint8ArrayReadableStream(
-            response.body
-          )) {
-            res.write(chunk)
-          }
-        }
+        await pipeBodyStreamToResponse(response.body, res)
 
         const subject = `${req.socket.remoteAddress} ${req.method} ${req.url}`
         const time = `${prettyMs(start())
