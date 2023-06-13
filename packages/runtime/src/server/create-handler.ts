@@ -2,7 +2,10 @@ import type { EdgeRuntime } from '../edge-runtime'
 import type { IncomingMessage, ServerResponse } from 'http'
 import type { Logger, NodeHeaders } from '../types'
 import type { EdgeContext } from '@edge-runtime/vm'
-import { getClonableBodyStream } from './body-streams'
+import {
+  consumeUint8ArrayReadableStream,
+  getClonableBodyStream,
+} from './body-streams'
 import prettyMs from 'pretty-ms'
 import timeSpan from 'time-span'
 
@@ -97,8 +100,6 @@ async function stream(
   // If the client has already disconnected, then we don't need to pipe anything.
   if (res.destroyed) return body.cancel()
 
-  const reader = body.getReader()
-
   // When the server pushes more data than the client reads, then we need to
   // wait for the client to catch up before writing more data. We register this
   // generic handler once so that we don't incur constant register/unregister
@@ -114,11 +115,9 @@ async function stream(
     drainResolve?.()
   })
 
-  while (open) {
-    const { done, value } = await reader.read()
-    if (done) break
-
-    const bufferSpaceAvailable = res.write(value)
+  const stream = consumeUint8ArrayReadableStream(body)
+  for await (const chunk of stream) {
+    const bufferSpaceAvailable = res.write(chunk)
 
     // If there's no more space in the buffer, then we need to wait on the
     // client to read data before pushing again.
@@ -127,10 +126,14 @@ async function stream(
         drainResolve = res
       })
     }
-  }
 
-  // If the client disconnected early, then we need to cleanup the stream.
-  if (!open) return reader.cancel()
+    // If the client disconnects, then we need to manually cleanup the stream
+    // iterator so the body can release its resources.
+    if (!open) {
+      stream.return()
+      break
+    }
+  }
 }
 
 /**

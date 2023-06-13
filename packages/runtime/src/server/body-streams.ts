@@ -100,19 +100,53 @@ function replaceRequestBody<T extends IncomingMessage>(
  * throw.
  */
 export async function* consumeUint8ArrayReadableStream(body?: ReadableStream) {
-  const reader = body?.getReader()
-  if (reader) {
+  if (!body) {
+    return
+  }
+
+  const reader = body.getReader()
+
+  // If the consumer calls `it.return()`, our generator code's `yield` will
+  // perform an AbruptCompletion and behave as if this was a `return` statement.
+  // To ensure we perform cleanup, we need to guard the yield statement and
+  // detect this condition with a try-finally.
+  let needsCleanup = false
+
+  // If we detect an invalid chunk, we store an error to be thrown as part of
+  // the cleanup phase.
+  let invalidChunkError
+
+  try {
     while (true) {
+      // If the read errors, or we are done reading, we do not need to cleanup
+      // further.
       const { done, value } = await reader.read()
       if (done) {
         return
       }
 
+      // We also need to cleanup if the user returned an invalid type. The loop
+      // isn't done yet, but we're not going to be reading any more.
+      needsCleanup = true
+
       if (value?.constructor?.name !== 'Uint8Array') {
-        throw new TypeError('This ReadableStream did not return bytes.')
+        invalidChunkError = new TypeError(
+          'This ReadableStream did not return bytes.'
+        )
+        break
       }
 
       yield value as Uint8Array
+      needsCleanup = false
+    }
+  } finally {
+    // The reader either returned an invalid chunk, or our consumer early
+    // exited. In either case, we need to cleanup the stream's resources.
+    if (needsCleanup) {
+      reader.cancel(invalidChunkError)
+    }
+    if (invalidChunkError) {
+      throw invalidChunkError
     }
   }
 }
