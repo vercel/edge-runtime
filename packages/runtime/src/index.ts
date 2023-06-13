@@ -1,5 +1,6 @@
 export {
   consumeUint8ArrayReadableStream,
+  pipeBodyStreamToResponse,
   createHandler,
   runServer,
 } from './server'
