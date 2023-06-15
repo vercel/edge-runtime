@@ -1,6 +1,8 @@
 import { EdgeVM } from '../../src'
 import { createHash } from 'crypto'
 
+const [NODE_MAJOR] = process.versions.node.split('.').map((v) => Number(v))
+
 test('crypto.subtle.digest returns an ArrayBuffer', async () => {
   const vm = new EdgeVM()
 
@@ -59,8 +61,7 @@ test('crypto.generateKey works with a Uint8Array from the VM', async () => {
   await vm.evaluate(`(${fn})()`)
 })
 
-const nodeMajorVersion = parseInt(process.versions.node.split('.')[0])
-if (nodeMajorVersion >= 16) {
+if (NODE_MAJOR >= 16) {
   test('Ed25519', async () => {
     const vm = new EdgeVM()
 

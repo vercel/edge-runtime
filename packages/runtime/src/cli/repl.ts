@@ -5,6 +5,8 @@ import { join } from 'path'
 
 import { EdgeRuntime } from '../edge-runtime'
 
+const [NODE_MAJOR] = process.versions.node.split('.').map((v) => Number(v))
+
 const format = createFormat()
 
 const writer: createRepl.REPLWriter = (output) => {
@@ -12,7 +14,7 @@ const writer: createRepl.REPLWriter = (output) => {
 }
 
 const repl = createRepl.start({ prompt: 'ƒ => ', writer })
-repl.setupHistory(join(homedir(), '.edge_runtime_repl_history'), () => {})
+repl.setupHistory(join(homedir(), '.edge_runtime_repl_history'), () => { })
 
 Object.getOwnPropertyNames(repl.context).forEach(
   (mod) => delete repl.context[mod]
@@ -33,8 +35,7 @@ Object.defineProperty(repl.context, 'EdgeRuntime', {
   value: runtime.context.EdgeRuntime,
 })
 
-const nodeMajorVersion = parseInt(process.versions.node.split('.')[0])
-if (nodeMajorVersion < 16) {
+if (NODE_MAJOR < 16) {
   repl.context.util = {
     inspect: (...args: any[]) => {
       const stack = new Error().stack ?? ''
