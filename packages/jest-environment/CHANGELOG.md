@@ -1,5 +1,14 @@
 # @edge-runtime/jest-environment
 
+## 2.2.3
+
+### Patch Changes
+
+- build: remove duplicate dependency ([#407](https://github.com/vercel/edge-runtime/pull/407))
+
+- Updated dependencies [[`91b4abd`](https://github.com/vercel/edge-runtime/commit/91b4abdd5623c1e26fc990936f649af3f9fb8b1a)]:
+  - @edge-runtime/vm@3.0.3
+
 ## 2.2.2
 
 ### Patch Changes

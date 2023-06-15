@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 3.0.3
+
+### Patch Changes
+
+- fix: new Request has consider second argument ([#411](https://github.com/vercel/edge-runtime/pull/411))
+
 ## 3.0.2
 
 ### Patch Changes
