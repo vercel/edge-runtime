@@ -1,5 +1,11 @@
 # @edge-runtime/jest-expect
 
+## 1.1.1
+
+### Patch Changes
+
+- build: remove duplicate dependency ([#407](https://github.com/vercel/edge-runtime/pull/407))
+
 ## 1.1.0
 
 ### Minor Changes
