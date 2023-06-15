@@ -1,4 +1,5 @@
-import type { IncomingMessage, ServerResponse } from 'http'
+import type { IncomingMessage } from 'http'
+import type { Writable } from 'stream'
 import { Readable } from 'stream'
 
 type BodyStream = ReadableStream<Uint8Array>
@@ -127,7 +128,7 @@ export async function* consumeUint8ArrayReadableStream(body?: ReadableStream) {
  */
 export async function pipeBodyStreamToResponse(
   body: BodyStream | null,
-  res: ServerResponse
+  res: Writable
 ) {
   if (!body) return
 
