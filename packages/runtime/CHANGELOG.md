@@ -1,5 +1,11 @@
 # edge-runtime
 
+## 2.4.2
+
+### Patch Changes
+
+- Loosen pipeBodyStreamToResponse param type ([#404](https://github.com/vercel/edge-runtime/pull/404))
+
 ## 2.4.1
 
 ### Patch Changes
