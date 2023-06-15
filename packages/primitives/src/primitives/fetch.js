@@ -146,10 +146,10 @@ export function setGlobalDispatcher(agent) {
  * Add `duplex: 'half'` by default to all requests
  */
 function addDuplexToInit(init) {
-  if (typeof init === 'undefined' || typeof init === 'object') {
-    return { duplex: 'half', ...init }
-  }
-  return init
+  return typeof init === 'undefined' ||
+    (typeof init === 'object' && init.duplex === undefined)
+    ? { duplex: 'half', ...init }
+    : init
 }
 
 /**
