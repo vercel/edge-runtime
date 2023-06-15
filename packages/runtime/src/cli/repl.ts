@@ -14,7 +14,7 @@ const writer: createRepl.REPLWriter = (output) => {
 }
 
 const repl = createRepl.start({ prompt: 'ƒ => ', writer })
-repl.setupHistory(join(homedir(), '.edge_runtime_repl_history'), () => { })
+repl.setupHistory(join(homedir(), '.edge_runtime_repl_history'), () => {})
 
 Object.getOwnPropertyNames(repl.context).forEach(
   (mod) => delete repl.context[mod]
