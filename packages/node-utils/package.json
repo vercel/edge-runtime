@@ -27,7 +27,7 @@
     "@edge-runtime/primitives": "workspace:3.0.3",
     "@types/test-listen": "1.1.0",
     "test-listen": "1.1.0",
-    "tsup": "6"
+    "tsup": "7"
   },
   "engines": {
     "node": ">=14"

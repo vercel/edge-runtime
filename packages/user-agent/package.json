@@ -27,7 +27,7 @@
   "devDependencies": {
     "@edge-runtime/jest-environment": "workspace:2.2.3",
     "@types/ua-parser-js": "0.7.36",
-    "tsup": "6",
+    "tsup": "7",
     "ua-parser-js": "1.0.35"
   },
   "engines": {
