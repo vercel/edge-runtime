@@ -1,5 +1,11 @@
 # @edge-runtime/jest-environment
 
+## 2.2.4
+
+### Patch Changes
+
+- fix: exclude react-server ([#413](https://github.com/vercel/edge-runtime/pull/413))
+
 ## 2.2.3
 
 ### Patch Changes

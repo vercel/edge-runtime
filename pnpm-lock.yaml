@@ -299,7 +299,7 @@ importers:
   packages/user-agent:
     devDependencies:
       '@edge-runtime/jest-environment':
-        specifier: workspace:2.2.3
+        specifier: workspace:2.2.4
         version: link:../jest-environment
       '@types/ua-parser-js':
         specifier: 0.7.36
