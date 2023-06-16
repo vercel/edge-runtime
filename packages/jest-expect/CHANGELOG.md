@@ -1,5 +1,11 @@
 # @edge-runtime/jest-expect
 
+## 1.1.2
+
+### Patch Changes
+
+- fix: exclude react-server ([#413](https://github.com/vercel/edge-runtime/pull/413))
+
 ## 1.1.1
 
 ### Patch Changes
