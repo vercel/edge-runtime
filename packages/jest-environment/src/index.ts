@@ -8,7 +8,7 @@ import { ModuleMocker } from 'jest-mock'
 interface Context {
   [key: string | number]: any
 }
-export = class EdgeEnvironment implements JestEnvironment<number> {
+class EdgeEnvironment implements JestEnvironment<number> {
   context: Context | null
   fakeTimers: LegacyFakeTimers<number> | null
   fakeTimersModern: ModernFakeTimers | null
@@ -68,7 +68,7 @@ export = class EdgeEnvironment implements JestEnvironment<number> {
   }
 
   exportConditions(): string[] {
-    return ['edge', 'edge-light', 'react-server']
+    return ['edge', 'edge-light']
   }
 
   getVmContext(): Context | null {
@@ -145,3 +145,5 @@ function revealPrimitives(vm: EdgeVM<any>) {
     `)
   })
 }
+
+export default EdgeEnvironment
