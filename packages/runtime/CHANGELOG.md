@@ -1,5 +1,11 @@
 # edge-runtime
 
+## 2.4.4
+
+### Patch Changes
+
+- Ensure we cancel `consumeUint8ArrayReadableStream` if iteration breaks ([#428](https://github.com/vercel/edge-runtime/pull/428))
+
 ## 2.4.3
 
 ### Patch Changes
