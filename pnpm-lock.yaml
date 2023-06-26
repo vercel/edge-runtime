@@ -289,6 +289,9 @@ importers:
       node-fetch:
         specifier: '2'
         version: 2.6.11
+      web-streams-polyfill:
+        specifier: 4.0.0-beta.3
+        version: 4.0.0-beta.3
 
   packages/types:
     dependencies:
@@ -1806,7 +1809,7 @@ packages:
   /@types/graceful-fs@4.1.6:
     resolution: {integrity: sha512-Sig0SNORX9fdW+bQuTEovKj3uHcUL6LQKbCrrqb1X7J6/ReAbhCXRAhc+SMejhLELFj2QcyuxmUooZ4bt5ReSw==}
     dependencies:
-      '@types/node': 14.18.51
+      '@types/node': 14.18.48
 
   /@types/hast@2.3.4:
     resolution: {integrity: sha512-wLEm0QvaoawEDoTRwzTXp4b4jpwiJDvR5KMnFnVodm3scufTlBOWRD6N1OBf9TZMhjlNsSfcO5V+7AF4+Vy+9g==}
@@ -1896,6 +1899,9 @@ packages:
   /@types/node@12.20.55:
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
     dev: true
+
+  /@types/node@14.18.48:
+    resolution: {integrity: sha512-iL0PIMwejpmuVHgfibHpfDwOdsbmB50wr21X71VnF5d7SsBF7WK+ZvP/SCcFm7Iwb9iiYSap9rlrdhToNAWdxg==}
 
   /@types/node@14.18.51:
     resolution: {integrity: sha512-P9bsdGFPpVtofEKlhWMVS2qqx1A/rt9QBfihWlklfHHpUpjtYse5AzFz6j4DWrARLYh6gRnw9+5+DJcrq3KvBA==}
@@ -4640,7 +4646,7 @@ packages:
       '@jest/expect': 29.5.0
       '@jest/test-result': 29.5.0
       '@jest/types': 29.5.0
-      '@types/node': 14.18.51
+      '@types/node': 14.18.48
       chalk: 4.1.2
       co: 4.6.0
       dedent: 0.7.0
@@ -4762,7 +4768,7 @@ packages:
       '@jest/environment': 29.5.0
       '@jest/fake-timers': 29.5.0
       '@jest/types': 29.5.0
-      '@types/node': 14.18.51
+      '@types/node': 14.18.48
       jest-mock: 29.5.0
       jest-util: 29.5.0
     dev: true
@@ -5015,7 +5021,7 @@ packages:
     resolution: {integrity: sha512-NcrQnevGoSp4b5kg+akIpthoAFHxPBcb5P6mYPY0fUNT+sSvmtu6jlkEle3anczUKIKEbMxFimk9oTP/tpIPgA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@types/node': 14.18.51
+      '@types/node': 14.18.48
       jest-util: 29.5.0
       merge-stream: 2.0.0
       supports-color: 8.1.1

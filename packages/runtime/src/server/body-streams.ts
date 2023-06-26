@@ -107,16 +107,27 @@ function isUint8ArrayChunk(value: any): value is Uint8Array {
 export async function* consumeUint8ArrayReadableStream(body?: ReadableStream) {
   const reader = body?.getReader()
   if (reader) {
-    while (true) {
-      const { done, value } = await reader.read()
-      if (done) {
-        return
-      }
+    let error
+    try {
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) {
+          return
+        }
 
-      if (!isUint8ArrayChunk(value)) {
-        throw new TypeError('This ReadableStream did not return bytes.')
+        if (!isUint8ArrayChunk(value)) {
+          error = new TypeError('This ReadableStream did not return bytes.')
+          break
+        }
+        yield value
       }
-      yield value
+    } finally {
+      if (error) {
+        reader.cancel(error)
+        throw error
+      } else {
+        reader.cancel()
+      }
     }
   }
 }
