@@ -159,8 +159,8 @@ importers:
         specifier: 29.6.0
         version: 29.6.0
       expect:
-        specifier: 29.5.0
-        version: 29.5.0
+        specifier: 29.6.0
+        version: 29.6.0
     devDependencies:
       '@edge-runtime/jest-environment':
         specifier: workspace:*
@@ -1163,12 +1163,6 @@ packages:
       '@types/node': 14.18.53
       jest-mock: 29.6.0
 
-  /@jest/expect-utils@29.5.0:
-    resolution: {integrity: sha512-fmKzsidoXQT2KwnrwE0SQq3uj8Z763vzR8LnLBwC2qYWEFpjX8daRsk6rHUM1QvNlEW/UJXNXm59ztmJJWs2Mg==}
-    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
-    dependencies:
-      jest-get-type: 29.4.3
-
   /@jest/expect-utils@29.6.0:
     resolution: {integrity: sha512-LLSQQN7oypMSETKoPWpsWYVKJd9LQWmSDDAc4hUQ4JocVC7LAMy9R3ZMhlnLwbcFvQORZnZR7HM893Px6cJhvA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -1886,7 +1880,7 @@ packages:
   /@types/jest@29.5.2:
     resolution: {integrity: sha512-mSoZVJF5YzGVCk+FsDxzDuH7s+SCkzrgKZzf0Z0T2WudhBUPoF6ktoTPC4R0ZoCPCV5xUvuU6ias5NvxcBcMMg==}
     dependencies:
-      expect: 29.5.0
+      expect: 29.6.0
       pretty-format: 29.5.0
     dev: true
 
@@ -3612,16 +3606,6 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
-  /expect@29.5.0:
-    resolution: {integrity: sha512-yM7xqUrCO2JdpFo4XpM82t+PJBFybdqoQuJLDGeDX2ij8NZzqRHyu3Hp188/JX7SWqud+7t4MUdvcgGBICMHZg==}
-    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
-    dependencies:
-      '@jest/expect-utils': 29.5.0
-      jest-get-type: 29.4.3
-      jest-matcher-utils: 29.5.0
-      jest-message-util: 29.5.0
-      jest-util: 29.5.0
-
   /expect@29.6.0:
     resolution: {integrity: sha512-AV+HaBtnDJ2YEUhPPo25HyUHBLaetM+y/Dq6pEC8VPQyt1dK+k8MfGkMy46djy2bddcqESc1kl4/K1uLWSfk9g==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -4856,15 +4840,6 @@ packages:
       jest-get-type: 29.4.3
       pretty-format: 29.6.0
     dev: true
-
-  /jest-matcher-utils@29.5.0:
-    resolution: {integrity: sha512-lecRtgm/rjIK0CQ7LPQwzCs2VwW6WAahA55YBuI+xqmhm7LAaxokSB8C97yJeYyT+HvQkH741StzpU41wohhWw==}
-    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
-    dependencies:
-      chalk: 4.1.2
-      jest-diff: 29.6.0
-      jest-get-type: 29.4.3
-      pretty-format: 29.6.0
 
   /jest-matcher-utils@29.6.0:
     resolution: {integrity: sha512-oSlqfGN+sbkB2Q5um/zL7z80w84FEAcLKzXBZIPyRk2F2Srg1ubhrHVKW68JCvb2+xKzAeGw35b+6gciS24PHw==}
