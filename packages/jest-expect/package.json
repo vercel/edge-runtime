@@ -27,7 +27,7 @@
     "@jest/environment": "29.5.0",
     "@jest/fake-timers": "29.5.0",
     "@jest/globals": "29.6.1",
-    "expect": "29.6.0"
+    "expect": "29.6.1"
   },
   "devDependencies": {
     "@edge-runtime/jest-environment": "workspace:*"
