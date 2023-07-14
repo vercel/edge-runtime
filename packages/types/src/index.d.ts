@@ -11,7 +11,6 @@ declare global {
   ): void
   const EdgeRuntime: Record<never, never>
   const globalThis: typeof Edge
-  const createCaches: typeof Edge.createCaches
   const FetchEvent: typeof Edge.FetchEvent
   const URLPattern: typeof Edge.URLPattern
 }
