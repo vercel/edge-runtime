@@ -1,5 +1,11 @@
 # @edge-runtime/types
 
+## 2.1.4
+
+### Patch Changes
+
+- fix: remove createCaches type ([#470](https://github.com/vercel/edge-runtime/pull/470))
+
 ## 2.1.3
 
 ### Patch Changes
