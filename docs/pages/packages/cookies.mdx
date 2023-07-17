@@ -11,22 +11,10 @@ The main difference is that the methods are not asynchronous so they do not retu
 
 ## Installation
 
-<Tabs items={['npm', 'yarn', 'pnpm']} storageKey="selected-pkg-manager">
-  <Tab>
-    ```sh
-    npm install @edge-runtime/cookies --save
-    ```
-  </Tab>
-  <Tab>
-    ```sh
-    yarn add @edge-runtime/cookies
-    ```
-  </Tab>
-  <Tab>
-    ```sh
-    pnpm install @edge-runtime/cookies --save
-    ```
-  </Tab>
+<Tabs items={['npm', 'yarn', 'pnpm']} storageKey='selected-pkg-manager'>
+  <Tab>```sh npm install @edge-runtime/cookies --save ```</Tab>
+  <Tab>```sh yarn add @edge-runtime/cookies ```</Tab>
+  <Tab>```sh pnpm install @edge-runtime/cookies --save ```</Tab>
 </Tabs>
 
 ## Usage
@@ -72,18 +60,19 @@ use the exported `ResponseCookies` constructor:
 import { ResponseCookies } from '@edge-runtime/cookies'
 
 function handleRequest(req: Request) {
-  // do something
-  const cookies = new ResponseCookies(new Headers())
+  const headers = new Headers()
+
+  const cookies = new ResponseCookies()
   cookies.set('cookie-name', 'cookie-value', { maxAge: 1000 }) // make cookie persistent for 1000 seconds
   cookies.delete('old-cookie')
-  return response
+
+  return new Response('', {
+    headers: {
+      'set-cookie': headers.getAll?.('set-cookie'),
+    },
+  })
 }
 ```
-
-Notes:
-
-- All mutations are performed in-place and will update the `Set-Cookie` headers
-  in the provided `Response` object.
 
 #### Available methods
 

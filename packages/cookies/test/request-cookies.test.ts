@@ -1,6 +1,6 @@
 import { RequestCookies } from '../src/request-cookies'
 import { createFormat } from '@edge-runtime/format'
-import { parseCookieString } from '../src/serialize'
+import { parseCookie } from '../src/serialize'
 
 describe('input parsing', () => {
   test('empty cookie header element', () => {
@@ -83,7 +83,7 @@ test('formatting with @edge-runtime/format', () => {
   const format = createFormat()
   const result = format(cookies)
   expect(result).toMatchInlineSnapshot(
-    `"RequestCookies {"a":{"name":"a","value":"1"},"b":{"name":"b","value":"2"}}"`
+    `"RequestCookies {"a":{"name":"a","value":"1"},"b":{"name":"b","value":"2"}}"`,
   )
 })
 
@@ -102,12 +102,12 @@ function mapToCookieString(map: Map<string, string>) {
 describe('parse cookie string', () => {
   it('with a plain value', async () => {
     const input = new Map([['foo', 'bar']])
-    const result = parseCookieString(mapToCookieString(input))
+    const result = parseCookie(mapToCookieString(input))
     expect(result).toEqual(input)
   })
   it('with multiple `=`', async () => {
     const input = new Map([['foo', 'bar=']])
-    const result = parseCookieString(mapToCookieString(input))
+    const result = parseCookie(mapToCookieString(input))
     expect(result).toEqual(input)
   })
   it('with multiple plain values', async () => {
@@ -115,7 +115,7 @@ describe('parse cookie string', () => {
       ['foo', 'bar'],
       ['baz', 'qux'],
     ])
-    const result = parseCookieString(mapToCookieString(input))
+    const result = parseCookie(mapToCookieString(input))
     expect(result).toEqual(input)
   })
   it('with multiple values with `=`', async () => {
@@ -123,7 +123,7 @@ describe('parse cookie string', () => {
       ['foo', 'bar=='],
       ['baz', '=qux'],
     ])
-    const result = parseCookieString(mapToCookieString(input))
+    const result = parseCookie(mapToCookieString(input))
     expect(result).toEqual(input)
   })
 })
