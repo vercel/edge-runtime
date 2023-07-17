@@ -1,5 +1,11 @@
 # @edge-runtime/user-agent
 
+## 1.3.1
+
+### Patch Changes
+
+- chore(cookies): expose `.splitCookiesString` ([#473](https://github.com/vercel/edge-runtime/pull/473))
+
 ## 1.3.0
 
 ### Minor Changes
