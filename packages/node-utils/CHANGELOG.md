@@ -1,5 +1,14 @@
 # @edge-runtime/node-utils
 
+## 2.1.1
+
+### Patch Changes
+
+- chore(cookies): expose `.splitCookiesString` ([#473](https://github.com/vercel/edge-runtime/pull/473))
+
+- Updated dependencies [[`8d21ddc`](https://github.com/vercel/edge-runtime/commit/8d21ddc0dd9d37abb02a902f69c3902469a22a68)]:
+  - @edge-runtime/cookies@3.2.2
+
 ## 2.1.0
 
 ### Minor Changes

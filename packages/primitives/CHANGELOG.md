@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 3.0.4
+
+### Patch Changes
+
+- chore(cookies): expose `.splitCookiesString` ([#473](https://github.com/vercel/edge-runtime/pull/473))
+
 ## 3.0.3
 
 ### Patch Changes
