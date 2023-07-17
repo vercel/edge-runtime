@@ -1,5 +1,5 @@
 import type { RequestCookie } from './types'
-import { parseCookieString, serialize } from './serialize'
+import { parseCookie, stringifyCookie } from './serialize'
 
 /**
  * A class for manipulating {@link Request} cookies (`Cookie` header).
@@ -14,7 +14,7 @@ export class RequestCookies {
     this._headers = requestHeaders
     const header = requestHeaders.get('cookie')
     if (header) {
-      const parsed = parseCookieString(header)
+      const parsed = parseCookie(header)
       for (const [name, value] of parsed) {
         this._parsed.set(name, { name, value })
       }
@@ -61,8 +61,8 @@ export class RequestCookies {
     this._headers.set(
       'cookie',
       Array.from(map)
-        .map(([_, value]) => serialize(value))
-        .join('; ')
+        .map(([_, value]) => stringifyCookie(value))
+        .join('; '),
     )
     return this
   }
@@ -72,7 +72,7 @@ export class RequestCookies {
    */
   delete(
     /** Name or names of the cookies to be deleted  */
-    names: string | string[]
+    names: string | string[],
   ): boolean | boolean[] {
     const map = this._parsed
     const result = !Array.isArray(names)
@@ -81,8 +81,8 @@ export class RequestCookies {
     this._headers.set(
       'cookie',
       Array.from(map)
-        .map(([_, value]) => serialize(value))
-        .join('; ')
+        .map(([_, value]) => stringifyCookie(value))
+        .join('; '),
     )
     return result
   }
