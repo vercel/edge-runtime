@@ -4,7 +4,6 @@
 "@edge-runtime/primitives": patch
 "@edge-runtime/types": patch
 "@edge-runtime/user-agent": patch
-"@edge-runtime/docs": patch
 ---
 
 chore(cookies): expose `.splitCookiesString`
