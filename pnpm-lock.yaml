@@ -167,9 +167,13 @@ importers:
         version: link:../jest-environment
 
   packages/node-utils:
+    dependencies:
+      '@edge-runtime/cookies':
+        specifier: workspace:*
+        version: link:../cookies
     devDependencies:
       '@edge-runtime/primitives':
-        specifier: workspace:3.0.3
+        specifier: workspace:*
         version: link:../primitives
       '@types/test-listen':
         specifier: 1.1.0
@@ -205,7 +209,7 @@ importers:
   packages/primitives:
     devDependencies:
       '@edge-runtime/format':
-        specifier: workspace:2.1.0
+        specifier: workspace:*
         version: link:../format
       '@peculiar/webcrypto':
         specifier: 1.4.3
@@ -296,13 +300,13 @@ importers:
   packages/types:
     dependencies:
       '@edge-runtime/primitives':
-        specifier: workspace:3.0.3
+        specifier: workspace:*
         version: link:../primitives
 
   packages/user-agent:
     devDependencies:
       '@edge-runtime/jest-environment':
-        specifier: workspace:2.2.4
+        specifier: workspace:*
         version: link:../jest-environment
       '@types/ua-parser-js':
         specifier: 0.7.36
