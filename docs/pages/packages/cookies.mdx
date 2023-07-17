@@ -78,7 +78,7 @@ function handleRequest(req: Request) {
   cookies.set('cookie-name', 'cookie-value', { maxAge: 1000 }) // make cookie persistent for 1000 seconds
   cookies.delete('old-cookie')
 
-  return new Response('', {
+  return new Response(null, {
     headers: {
       'set-cookie': headers.getAll?.('set-cookie'),
     },
