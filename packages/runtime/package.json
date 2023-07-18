@@ -26,7 +26,7 @@
   "dependencies": {
     "@edge-runtime/format": "workspace:*",
     "@edge-runtime/vm": "workspace:*",
-    "async-listen": "3.0.0",
+    "async-listen": "3.0.1",
     "mri": "1.2.0",
     "picocolors": "1.0.0",
     "pretty-bytes": "5.6.0",
