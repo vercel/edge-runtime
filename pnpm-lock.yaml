@@ -248,8 +248,8 @@ importers:
         specifier: '7'
         version: 7.0.0(ts-node@10.9.1)(typescript@5.1.6)
       undici:
-        specifier: 5.22.1
-        version: 5.22.1
+        specifier: 5.23.0
+        version: 5.23.0
       urlpattern-polyfill:
         specifier: 9.0.0
         version: 9.0.0
@@ -8211,8 +8211,8 @@ packages:
     resolution: {integrity: sha512-z4o1fvKUojIWh9XuaVLUDdf86RQiq13AC1dmHbTpoyuu+bquHms76v16CjycCbec87J7z0k//SiQVk0sMdFmpQ==}
     dev: true
 
-  /undici@5.22.1:
-    resolution: {integrity: sha512-Ji2IJhFXZY0x/0tVBXeQwgPlLWw13GVzpsWPQ3rV50IFMMof2I55PZZxtm4P6iNq+L5znYN9nSTAq0ZyE6lSJw==}
+  /undici@5.23.0:
+    resolution: {integrity: sha512-1D7w+fvRsqlQ9GscLBwcAJinqcZGHUKjbOmXdlE/v8BvEGXjeWAax+341q44EuTcHXXnfyKNbKRq4Lg7OzhMmg==}
     engines: {node: '>=14.0'}
     dependencies:
       busboy: 1.6.0
