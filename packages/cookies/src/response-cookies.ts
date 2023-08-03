@@ -79,9 +79,16 @@ export class ResponseCookies {
   /**
    * {@link https://wicg.github.io/cookie-store/#CookieStore-delete CookieStore#delete} without the Promise.
    */
-  delete(...args: [key: string] | [options: ResponseCookie]): this {
-    const name = typeof args[0] === 'string' ? args[0] : args[0].name
-    return this.set({ name, value: '', expires: new Date(0) })
+  delete(
+    ...args:
+      | [key: string]
+      | [options: Omit<ResponseCookie, 'value' | 'expires'>]
+  ): this {
+    const [name, path, domain] =
+      typeof args[0] === 'string'
+        ? [args[0]]
+        : [args[0].name, args[0].path, args[0].domain]
+    return this.set({ name, path, domain, value: '', expires: new Date(0) })
   }
 
   [Symbol.for('edge-runtime.inspect.custom')]() {

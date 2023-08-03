@@ -60,7 +60,7 @@ test('reflect .set into `set-cookie`', async () => {
   })
 
   expect(Object.fromEntries(headers.entries())['set-cookie']).toBe(
-    'foo=bar; Path=/test, fooz=barz; Path=/test2, fooHttpOnly=barHttpOnly; Path=/; HttpOnly, fooExpires=barExpires; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooExpiresDate=barExpiresDate; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooMaxAge=; Path=/; Max-Age=0'
+    'foo=bar; Path=/test, fooz=barz; Path=/test2, fooHttpOnly=barHttpOnly; Path=/; HttpOnly, fooExpires=barExpires; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooExpiresDate=barExpiresDate; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooMaxAge=; Path=/; Max-Age=0',
   )
 })
 
@@ -94,7 +94,7 @@ test('reflect .delete into `set-cookie`', async () => {
 
   cookies.set('foo', 'bar')
   expect(Object.fromEntries(headers.entries())['set-cookie']).toBe(
-    'foo=bar; Path=/'
+    'foo=bar; Path=/',
   )
 
   expect(cookies.get('foo')?.value).toBe('bar')
@@ -106,7 +106,7 @@ test('reflect .delete into `set-cookie`', async () => {
 
   cookies.set('fooz', 'barz')
   expect(Object.fromEntries(headers)['set-cookie']).toBe(
-    'foo=bar; Path=/, fooz=barz; Path=/'
+    'foo=bar; Path=/, fooz=barz; Path=/',
   )
 
   expect(cookies.get('fooz')?.value).toBe('barz')
@@ -118,7 +118,7 @@ test('reflect .delete into `set-cookie`', async () => {
 
   cookies.delete('foo')
   expect(Object.fromEntries(headers.entries())['set-cookie']).toBe(
-    'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooz=barz; Path=/'
+    'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooz=barz; Path=/',
   )
 
   expect(cookies.get('foo')).toEqual({
@@ -131,7 +131,7 @@ test('reflect .delete into `set-cookie`', async () => {
   cookies.delete('fooz')
 
   expect(Object.fromEntries(headers.entries())['set-cookie']).toBe(
-    'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooz=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT'
+    'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT, fooz=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
   )
 
   expect(cookies.get('fooz')).toEqual({
@@ -140,6 +140,26 @@ test('reflect .delete into `set-cookie`', async () => {
     value: '',
     path: '/',
   })
+})
+
+test('delete cookie with domain and path', async () => {
+  const headers = new Headers()
+  const cookies = new ResponseCookies(headers)
+
+  cookies.delete({ name: 'foo', domain: 'example.com' })
+  expect(Object.fromEntries(headers.entries())['set-cookie']).toBe(
+    'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Domain=example.com',
+  )
+
+  cookies.delete({ name: 'bar', path: '/bar' })
+  expect(Object.fromEntries(headers.entries())['set-cookie']).toBe(
+    'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Domain=example.com, bar=; Path=/bar; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
+  )
+
+  cookies.delete({ name: 'baz', path: '/bar', domain: 'example.com' })
+  expect(Object.fromEntries(headers.entries())['set-cookie']).toBe(
+    'foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Domain=example.com, bar=; Path=/bar; Expires=Thu, 01 Jan 1970 00:00:00 GMT, baz=; Path=/bar; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Domain=example.com',
+  )
 })
 
 test('options are not modified', async () => {
@@ -170,7 +190,7 @@ test('formatting with @edge-runtime/format', () => {
   const format = createFormat()
   const result = format(cookies)
   expect(result).toMatchInlineSnapshot(
-    `"ResponseCookies {"a":{"name":"a","value":"1","httpOnly":true,"path":"/"},"b":{"name":"b","value":"2","sameSite":"lax","path":"/"}}"`
+    `"ResponseCookies {"a":{"name":"a","value":"1","httpOnly":true,"path":"/"},"b":{"name":"b","value":"2","sameSite":"lax","path":"/"}}"`,
   )
 })
 
