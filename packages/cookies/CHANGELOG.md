@@ -1,5 +1,11 @@
 # @edge-runtime/cookies
 
+## 3.2.3
+
+### Patch Changes
+
+- Honor domain and path when deleting cookies ([#507](https://github.com/vercel/edge-runtime/pull/507))
+
 ## 3.2.2
 
 ### Patch Changes
