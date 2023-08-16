@@ -69,6 +69,13 @@ test('adding a cookie', () => {
   ])
 })
 
+test('cookies.has()', () => {
+  const headers = requestHeadersWithCookies('a=1; b=2')
+  const cookies = new RequestCookies(headers)
+  cookies.set('foo', 'bar')
+  expect(cookies.has('foo')).toBe(true)
+})
+
 test('cookies.toString()', () => {
   const headers = requestHeadersWithCookies('a=1; b=2')
   const cookies = new RequestCookies(headers)
