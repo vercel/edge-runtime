@@ -1,5 +1,5 @@
 ---
-'@edge-runtime/cookies': minor
+'@edge-runtime/cookies': fix
 ---
 
-feat(cookies): add has in response cookies
+fix(cookies): add `.has` in `ResponseCookies`
