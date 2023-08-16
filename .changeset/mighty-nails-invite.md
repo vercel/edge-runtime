@@ -1,5 +1,5 @@
 ---
-'@edge-runtime/cookies': fix
+'@edge-runtime/cookies': patch
 ---
 
-fix(cookies): add `.has` in `ResponseCookies`
+add `.has` in `ResponseCookies`
