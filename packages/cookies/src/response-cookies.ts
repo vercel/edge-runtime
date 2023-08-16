@@ -59,6 +59,10 @@ export class ResponseCookies {
     return all.filter((c) => c.name === key)
   }
 
+  has(name: string) {
+    return this._parsed.has(name)
+  }
+
   /**
    * {@link https://wicg.github.io/cookie-store/#CookieStore-set CookieStore#set} without the Promise.
    */

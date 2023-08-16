@@ -170,6 +170,13 @@ test('options are not modified', async () => {
   expect(options).toEqual({ maxAge: 10000 })
 })
 
+test('cookies.has()', () => {
+  const headers = new Headers()
+  const cookies = new ResponseCookies(headers)
+  cookies.set('foo', 'bar')
+  expect(cookies.has('foo')).toBe(true)
+})
+
 test('cookies.toString()', () => {
   const cookies = new ResponseCookies(new Headers())
   cookies.set({
