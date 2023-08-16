@@ -1,5 +1,12 @@
 # @edge-runtime/node-utils
 
+## 2.1.3
+
+### Patch Changes
+
+- Updated dependencies [[`a4a7dc0`](https://github.com/vercel/edge-runtime/commit/a4a7dc09e4ba2debc9d336ca5fca03fea0c60248), [`dc587c2`](https://github.com/vercel/edge-runtime/commit/dc587c27e71cc9f717c9c58de85663156eab914b)]:
+  - @edge-runtime/cookies@3.3.0
+
 ## 2.1.2
 
 ### Patch Changes

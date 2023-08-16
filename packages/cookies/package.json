@@ -2,7 +2,7 @@
   "name": "@edge-runtime/cookies",
   "description": "Cookie helpers compatible with Edge Runtime",
   "homepage": "https://edge-runtime.vercel.app/packages/cookies",
-  "version": "3.2.3",
+  "version": "3.3.0",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "repository": {
