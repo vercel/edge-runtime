@@ -1,5 +1,15 @@
 # @edge-runtime/cookies
 
+## 3.3.0
+
+### Minor Changes
+
+- expose serialization functions ([`dc587c2`](https://github.com/vercel/edge-runtime/commit/dc587c27e71cc9f717c9c58de85663156eab914b))
+
+### Patch Changes
+
+- add `.has` in `ResponseCookies` ([#533](https://github.com/vercel/edge-runtime/pull/533))
+
 ## 3.2.3
 
 ### Patch Changes
