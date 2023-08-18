@@ -1,6 +1,3 @@
-import { AbortController } from './abort-controller'
-import { AbortSignal } from './abort-controller'
-
 import * as FetchSymbols from 'undici/lib/fetch/symbols'
 import * as HeadersModule from 'undici/lib/fetch/headers'
 import * as ResponseModule from 'undici/lib/fetch/response'
@@ -10,9 +7,6 @@ import { Request as BaseRequest } from 'undici/lib/fetch/request'
 
 import { fetch as fetchImpl } from 'undici/lib/fetch'
 import Agent from 'undici/lib/agent'
-
-global.AbortController = AbortController
-global.AbortSignal = AbortSignal
 
 // undici uses `process.nextTick`,
 // but process APIs doesn't exist in a runtime context.

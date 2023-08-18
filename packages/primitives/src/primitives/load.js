@@ -131,7 +131,7 @@ export function load(scopedContext = {}) {
     context,
     id: 'abort-controller.js',
     sourceCode: injectSourceCode('./abort-controller.js'),
-    scopedContext: { ...eventsImpl, ...scopedContext },
+    scopedContext: { ...scopedContext },
   })
   assign(context, {
     AbortController: abortControllerImpl.AbortController,
