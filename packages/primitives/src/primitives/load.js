@@ -16,7 +16,7 @@ import nodeCrypto from 'crypto'
  */
 function requireWithFakeGlobalScope(params) {
   const getModuleCode = `(function(module,exports,require,globalThis,${Object.keys(
-    params.scopedContext
+    params.scopedContext,
   ).join(',')}) {${params.sourceCode}\n})`
   const module = {
     exports: {},
@@ -26,7 +26,7 @@ function requireWithFakeGlobalScope(params) {
 
   // @ts-ignore
   const moduleRequire = (Module.createRequire || Module.createRequireFromPath)(
-    __filename
+    __filename,
   )
 
   /** @param {string} pathToRequire */
@@ -48,7 +48,7 @@ function requireWithFakeGlobalScope(params) {
     module.exports,
     throwingRequire,
     params.context,
-    ...Object.values(params.scopedContext)
+    ...Object.values(params.scopedContext),
   )
 
   return module.exports
@@ -66,7 +66,7 @@ export function load(scopedContext = {}) {
     context,
     id: 'encoding.js',
     sourceCode: injectSourceCode('./encoding.js'),
-    scopedContext: scopedContext,
+    scopedContext,
   })
   assign(context, {
     TextDecoder,
@@ -80,7 +80,7 @@ export function load(scopedContext = {}) {
     context,
     id: 'console.js',
     sourceCode: injectSourceCode('./console.js'),
-    scopedContext: scopedContext,
+    scopedContext,
   })
   assign(context, { console: consoleImpl.console })
 
@@ -89,11 +89,11 @@ export function load(scopedContext = {}) {
     context,
     id: 'events.js',
     sourceCode: injectSourceCode('./events.js'),
-    scopedContext: scopedContext,
+    scopedContext,
   })
   assign(context, {
-    Event: eventsImpl.Event,
-    EventTarget: eventsImpl.EventTarget,
+    Event,
+    EventTarget,
     FetchEvent: eventsImpl.FetchEvent,
     // @ts-expect-error we need to add this to the type definitions maybe
     PromiseRejectionEvent: eventsImpl.PromiseRejectionEvent,
