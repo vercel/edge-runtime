@@ -91,6 +91,7 @@ export function load(scopedContext = {}) {
     sourceCode: injectSourceCode('./events.js'),
     scopedContext,
   })
+
   assign(context, {
     Event,
     EventTarget,
@@ -99,31 +100,23 @@ export function load(scopedContext = {}) {
     PromiseRejectionEvent: eventsImpl.PromiseRejectionEvent,
   })
 
-  /** @type {import('../../type-definitions/streams')} */
-  const streamsImpl = requireWithFakeGlobalScope({
-    context,
-    id: 'streams.js',
-    sourceCode: injectSourceCode('./streams.js'),
-    scopedContext: { ...scopedContext },
-  })
+  const streamsImpl = {
+    ReadableStream: require('node:stream/web').ReadableStream,
+    ReadableStreamBYOBReader:
+      require('node:stream/web').ReadableStreamBYOBReader,
+    ReadableStreamDefaultReader:
+      require('node:stream/web').ReadableStreamDefaultReader,
+    TransformStream: require('node:stream/web').TransformStream,
+    WritableStream: require('node:stream/web').WritableStream,
+    WritableStreamDefaultWriter:
+      require('node:stream/web').WritableStreamDefaultWriter,
+  }
 
-  /** @type {import('../../type-definitions/text-encoding-streams')} */
-  const textEncodingStreamImpl = requireWithFakeGlobalScope({
-    context,
-    id: 'text-encoding-streams.js',
-    sourceCode: injectSourceCode('./text-encoding-streams.js'),
-    scopedContext: { ...streamsImpl, ...scopedContext },
-  })
+  assign(context, streamsImpl)
 
   assign(context, {
-    ReadableStream: streamsImpl.ReadableStream,
-    ReadableStreamBYOBReader: streamsImpl.ReadableStreamBYOBReader,
-    ReadableStreamDefaultReader: streamsImpl.ReadableStreamDefaultReader,
-    TextDecoderStream: textEncodingStreamImpl.TextDecoderStream,
-    TextEncoderStream: textEncodingStreamImpl.TextEncoderStream,
-    TransformStream: streamsImpl.TransformStream,
-    WritableStream: streamsImpl.WritableStream,
-    WritableStreamDefaultWriter: streamsImpl.WritableStreamDefaultWriter,
+    TextEncoderStream: require('node:stream/web').TextEncoderStream,
+    TextDecoderStream: require('node:stream/web').TextDecoderStream
   })
 
   /** @type {import('../../type-definitions/abort-controller')} */
@@ -163,10 +156,7 @@ export function load(scopedContext = {}) {
     }
 
     /** @type {any} */
-    const global = {
-      ...streamsImpl,
-      ...scopedContext,
-    }
+    const global = { ...streamsImpl, ...scopedContext }
 
     const globalGlobal = { ...global, Blob: undefined }
     Object.setPrototypeOf(globalGlobal, globalThis)
@@ -206,10 +196,10 @@ export function load(scopedContext = {}) {
     scopedContext: {
       global: { ...scopedContext },
       ...scopedContext,
-      ...streamsImpl,
       ...urlImpl,
       ...abortControllerImpl,
       ...eventsImpl,
+      ...streamsImpl,
       structuredClone: context.structuredClone,
     },
   })
