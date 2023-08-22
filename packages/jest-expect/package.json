@@ -33,7 +33,7 @@
     "@edge-runtime/jest-environment": "workspace:*"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=16"
   },
   "files": [
     "dist",
