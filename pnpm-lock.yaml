@@ -214,9 +214,6 @@ importers:
       '@peculiar/webcrypto':
         specifier: 1.4.3
         version: 1.4.3
-      '@stardazed/streams-text-encoding':
-        specifier: 1.0.2
-        version: 1.0.2
       '@ungap/structured-clone':
         specifier: 1.2.0
         version: 1.2.0
@@ -1912,10 +1909,6 @@ packages:
     resolution: {integrity: sha512-SwUDyjWnah1AaNl7kxsa7cfLhlTYoiyhDAIgyh+El30YvXs/o7OLXpYH88Zdhyx9JExKrmHDJ+10bwIcY80Jmw==}
     dependencies:
       '@sinonjs/commons': 2.0.0
-
-  /@stardazed/streams-text-encoding@1.0.2:
-    resolution: {integrity: sha512-f2Z15BId3t44a/u21yYSGXFAkCyKocmAyduoAy7swnZ4xIfbaZlOWsgly/jDNNOuj6hYQN72UaBRe3Z/tOHfqg==}
-    dev: true
 
   /@svitejs/changesets-changelog-github-compact@1.1.0:
     resolution: {integrity: sha512-qhUGGDHcpbY2zpjW3SwqchuW8J/5EzlPFud7xNntHKA7f3a/mx5+g+ruJKFHSAiVZYo30PALt+AyhmPUNKH/Og==}

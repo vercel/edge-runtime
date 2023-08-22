@@ -1,5 +1,2 @@
 // Must import after web-streams-polyfill
-export {
-  TextEncoderStream,
-  TextDecoderStream,
-} from '@stardazed/streams-text-encoding'
+export { TextEncoderStream, TextDecoderStream } from 'node:stream/web'
