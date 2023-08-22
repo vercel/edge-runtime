@@ -24,7 +24,6 @@
   ],
   "devDependencies": {
     "@edge-runtime/format": "workspace:*",
-    "@peculiar/webcrypto": "1.4.3",
     "@ungap/structured-clone": "1.2.0",
     "aggregate-error-ponyfill": "1.1.0",
     "blob-polyfill": "7.0.20220408",
