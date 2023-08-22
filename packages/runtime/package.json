@@ -36,8 +36,7 @@
   },
   "devDependencies": {
     "@types/node-fetch": "2",
-    "node-fetch": "2",
-    "web-streams-polyfill": "4.0.0-beta.3"
+    "node-fetch": "2"
   },
   "engines": {
     "node": ">=16"

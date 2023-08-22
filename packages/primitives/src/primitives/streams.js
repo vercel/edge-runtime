@@ -5,4 +5,4 @@ export {
   TransformStream,
   WritableStream,
   WritableStreamDefaultWriter,
-} from 'web-streams-polyfill'
+} from 'node:stream/web'

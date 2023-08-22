@@ -250,9 +250,6 @@ importers:
       urlpattern-polyfill:
         specifier: 9.0.0
         version: 9.0.0
-      web-streams-polyfill:
-        specifier: 4.0.0-beta.3
-        version: 4.0.0-beta.3
 
   packages/runtime:
     dependencies:
@@ -290,9 +287,6 @@ importers:
       node-fetch:
         specifier: '2'
         version: 2.6.11
-      web-streams-polyfill:
-        specifier: 4.0.0-beta.3
-        version: 4.0.0-beta.3
 
   packages/types:
     dependencies:
