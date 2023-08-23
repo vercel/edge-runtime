@@ -1,5 +1,11 @@
 # @edge-runtime/format
 
+## 2.2.0
+
+### Minor Changes
+
+- drop node14 support ([`7cc92cc`](https://github.com/vercel/edge-runtime/commit/7cc92ccd190c2d96483202d9f2e1a523778d1f48))
+
 ## 2.1.0
 
 ### Minor Changes

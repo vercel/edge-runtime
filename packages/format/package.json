@@ -2,7 +2,7 @@
   "name": "@edge-runtime/format",
   "description": "A printf-like string formatter for Edge Runtime",
   "homepage": "https://github.com/vercel/edge-runtime#readme",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "main": "dist/index.js",
   "repository": {
     "directory": "packages/format",

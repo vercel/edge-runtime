@@ -1,5 +1,17 @@
 # edge-runtime
 
+## 2.5.0
+
+### Minor Changes
+
+- drop node14 support ([`7cc92cc`](https://github.com/vercel/edge-runtime/commit/7cc92ccd190c2d96483202d9f2e1a523778d1f48))
+
+### Patch Changes
+
+- Updated dependencies [[`7cc92cc`](https://github.com/vercel/edge-runtime/commit/7cc92ccd190c2d96483202d9f2e1a523778d1f48)]:
+  - @edge-runtime/format@2.2.0
+  - @edge-runtime/vm@3.1.0
+
 ## 2.4.5
 
 ### Patch Changes
