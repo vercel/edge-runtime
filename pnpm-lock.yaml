@@ -214,9 +214,6 @@ importers:
       '@ungap/structured-clone':
         specifier: 1.2.0
         version: 1.2.0
-      aggregate-error-ponyfill:
-        specifier: 1.1.0
-        version: 1.1.0
       blob-polyfill:
         specifier: 7.0.20220408
         version: 7.0.20220408
@@ -2258,13 +2255,6 @@ packages:
     resolution: {integrity: sha512-F0SAmZ8iUtS//m8DmCTA0jlh6TDKkHQyK6xc6V4KDTyZKA9dnvX9/3sRTVQrWm79glUAZbnmmNcdYwUIHWVybw==}
     engines: {node: '>=0.4.0'}
     hasBin: true
-
-  /aggregate-error-ponyfill@1.1.0:
-    resolution: {integrity: sha512-YLd9SK8Sl4mjwSqU+NA26d/fTE33dIrvC4XedrNj/SkRlz5ropjpwrihWX7WvIkIatGjt4JjU/qSVcdZ1T145g==}
-    engines: {node: '>=10'}
-    dependencies:
-      is-iterable: 1.1.1
-    dev: true
 
   /ansi-align@3.0.1:
     resolution: {integrity: sha512-IOfwwBF5iczOjp/WeY4YxyjqAFMQoZufdQWDd19SEExbVLNXqvpzSJ/M7Za4/sCPmQ0+GRquoA7bGcINcxew6w==}
@@ -4661,11 +4651,6 @@ packages:
     dependencies:
       global-dirs: 3.0.1
       is-path-inside: 3.0.3
-    dev: true
-
-  /is-iterable@1.1.1:
-    resolution: {integrity: sha512-EdOZCr0NsGE00Pot+x1ZFx9MJK3C6wy91geZpXwvwexDLJvA4nzYyZf7r+EIwSeVsOLDdBz7ATg9NqKTzuNYuQ==}
-    engines: {node: '>= 4'}
     dev: true
 
   /is-negative-zero@2.0.2:
