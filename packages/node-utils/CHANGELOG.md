@@ -1,5 +1,16 @@
 # @edge-runtime/node-utils
 
+## 2.2.0
+
+### Minor Changes
+
+- drop node14 support ([`7cc92cc`](https://github.com/vercel/edge-runtime/commit/7cc92ccd190c2d96483202d9f2e1a523778d1f48))
+
+### Patch Changes
+
+- Updated dependencies [[`7cc92cc`](https://github.com/vercel/edge-runtime/commit/7cc92ccd190c2d96483202d9f2e1a523778d1f48), [`89039c3`](https://github.com/vercel/edge-runtime/commit/89039c3680f9fbef9b83af4b56d94bd3d1cf4253)]:
+  - @edge-runtime/cookies@3.4.0
+
 ## 2.1.3
 
 ### Patch Changes
