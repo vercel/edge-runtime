@@ -72,16 +72,16 @@ use the exported `ResponseCookies` constructor:
 import { ResponseCookies } from '@edge-runtime/cookies'
 
 function handleRequest(req: Request) {
+  const cookieKey = 'cookie-name'
   const headers = new Headers()
+  const responseCookies = new ResponseCookies(headers)
 
-  const cookies = new ResponseCookies()
   cookies.set('cookie-name', 'cookie-value', { maxAge: 1000 }) // make cookie persistent for 1000 seconds
   cookies.delete('old-cookie')
 
   return new Response(null, {
-    headers: {
-      'set-cookie': headers.getAll?.('set-cookie'),
-    },
+    headers,
+    status: 200
   })
 }
 ```
