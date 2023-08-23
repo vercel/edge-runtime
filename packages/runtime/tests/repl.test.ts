@@ -86,6 +86,7 @@ describe('contains all required primitives', () => {
     { api: 'Promise' },
     { api: 'PromiseRejectionEvent' },
     { api: 'Proxy' },
+    { api: 'queueMicrotask' },
     { api: 'RangeError' },
     { api: 'ReadableStream' },
     { api: 'ReadableStreamBYOBReader' },
@@ -125,6 +126,7 @@ describe('contains all required primitives', () => {
     { api: 'WeakMap' },
     { api: 'WeakSet' },
     { api: 'WebAssembly' },
+    { api: 'WebSocket' },
     { api: 'WritableStream' },
     { api: 'WritableStreamDefaultWriter' },
   ])('`$api` is defined in global scope', async ({ api }) => {
@@ -140,7 +142,7 @@ describe('contains all required primitives', () => {
       `JSON.stringify(${assertion})`,
     ])
 
-    const { stdout, stderr, code } = await childPromise(cli)
+    const { stdout, code } = await childPromise(cli)
     expect(code).toBe(0)
     expect(JSON.parse(stdout)).toBe(true)
   })

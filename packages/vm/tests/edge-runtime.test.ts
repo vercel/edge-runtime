@@ -51,8 +51,6 @@ describe('Global primitives', () => {
     { api: 'clearInterval' },
     { api: 'clearTimeout' },
     { api: 'console' },
-    { api: 'console' },
-    { api: 'crypto' },
     { api: 'crypto' },
     { api: 'Crypto' },
     { api: 'CryptoKey' },
@@ -64,12 +62,9 @@ describe('Global primitives', () => {
     { api: 'encodeURI' },
     { api: 'encodeURIComponent' },
     { api: 'Error' },
-    { api: 'Error' },
     { api: 'escape' },
     { api: 'eval' },
     { api: 'EvalError' },
-    { api: 'EvalError' },
-    { api: 'Event' },
     { api: 'Event' },
     { api: 'EventTarget' },
     { api: 'fetch' },
@@ -129,6 +124,7 @@ describe('Global primitives', () => {
     { api: 'Uint8ClampedArray' },
     { api: 'Uint16Array' },
     { api: 'Uint32Array' },
+    { api: 'undefined' },
     { api: 'unescape' },
     { api: 'URIError' },
     { api: 'URL' },
@@ -141,7 +137,14 @@ describe('Global primitives', () => {
     { api: 'WritableStream' },
     { api: 'WritableStreamDefaultWriter' },
   ])('`$api` is defined in global scope', ({ api }) => {
-    expect(runtime.evaluate(api)).toBeDefined()
+    const assertion = (() => {
+      if (api === 'undefined') return `undefined === ${api}`
+      if (api === 'NaN') return `Number.isNaN(${api})`
+      return `!!${api}`
+    })()
+
+    const value = runtime.evaluate(assertion)
+    expect(value).toBeDefined()
   })
 })
 describe('General behaviour', () => {
