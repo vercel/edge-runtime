@@ -74,8 +74,8 @@ importers:
         specifier: ~2.11.0
         version: 2.11.0(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
       nextra-theme-docs:
-        specifier: ~2.11.0
-        version: 2.11.0(next@13.4.19)(nextra@2.11.0)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ~2.11.1
+        version: 2.11.1(next@13.4.19)(nextra@2.11.0)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ~18.2.0
         version: 18.2.0
@@ -6499,11 +6499,11 @@ packages:
       - babel-plugin-macros
     dev: false
 
-  /nextra-theme-docs@2.11.0(next@13.4.19)(nextra@2.11.0)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-kNBVNB/NPW/3MI8Em7KFWjfX5Mtf5xY0UPhDveF5+aEvVUlrViS8Q0hfAdcbxq+0sUEc0hdr4KehU4H36cCkqg==}
+  /nextra-theme-docs@2.11.1(next@13.4.19)(nextra@2.11.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-tMgoD9mqLBgZqZiZTcnw5UgBtXfTWfKK0qa233sTxpZSR7CquK+BH1D4ADdJ/mXOndqCBowJ4r3tyfQovXIlzQ==}
     peerDependencies:
       next: '>=9.5.3'
-      nextra: 2.11.0
+      nextra: 2.11.1
       react: '>=16.13.1'
       react-dom: '>=16.13.1'
     dependencies:
