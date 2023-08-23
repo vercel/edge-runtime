@@ -4,6 +4,30 @@
 
 import { EdgeVM } from '../src'
 
+it('DOMException', async () => {
+  const runtime = new EdgeVM()
+
+  const fn = async () => {
+    const error = new DOMException()
+
+    return {
+      '.constructor.name': error.constructor.name,
+      'instanceof DOMException': error instanceof DOMException,
+      'instanceof Error': error instanceof Error,
+    }
+  }
+
+  const v: Awaited<ReturnType<typeof fn>> = await runtime.evaluate(
+    `(${fn.toString()})()`,
+  )
+
+  expect(v).toEqual<typeof v>({
+    '.constructor.name': 'DOMException',
+    'instanceof DOMException': true,
+    'instanceof Error': true,
+  })
+})
+
 it('AbortController', async () => {
   const runtime = new EdgeVM()
 
@@ -14,7 +38,7 @@ it('AbortController', async () => {
       signal: controller.signal,
     }).then(
       () => Promise.reject('should not resolve'),
-      (e) => e
+      (e) => e,
     )
 
     return {
@@ -26,7 +50,7 @@ it('AbortController', async () => {
   }
 
   const v: Awaited<ReturnType<typeof fn>> = await runtime.evaluate(
-    `(${fn.toString()})()`
+    `(${fn.toString()})()`,
   )
 
   expect(v).toEqual<typeof v>({

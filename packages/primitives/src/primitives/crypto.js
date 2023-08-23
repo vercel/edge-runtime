@@ -1,4 +1,6 @@
-import { Crypto, CryptoKey } from '@peculiar/webcrypto'
+import { webcrypto } from 'node:crypto'
+
+const { Crypto, CryptoKey } = webcrypto
 
 function SubtleCrypto() {
   if (!(this instanceof SubtleCrypto)) return new SubtleCrypto()

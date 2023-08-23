@@ -3,7 +3,7 @@ import alias from 'esbuild-plugin-alias'
 import { Options, build } from 'tsup'
 import fs from 'fs'
 
-const TARGET = 'node14.6'
+const TARGET = 'node16.8'
 
 const BUNDLE_OPTIONS: Options = {
   bundle: true,
@@ -110,12 +110,12 @@ async function bundlePackage() {
               return {
                 contents: Buffer.concat([
                   Buffer.from(
-                    `global.FinalizationRegistry = function () { return { register: function () {} } }`
+                    `global.FinalizationRegistry = function () { return { register: function () {} } }`,
                   ),
                   await fs.promises.readFile(args.path),
                 ]),
               }
-            }
+            },
           )
         },
       },
@@ -135,8 +135,8 @@ async function bundlePackage() {
             types: `../types/${file}.d.ts`,
           },
           null,
-          2
-        )
+          2,
+        ),
       )
     }
   }
@@ -145,7 +145,7 @@ async function bundlePackage() {
 async function generateTextFiles() {
   const loadSource = fs.promises.readFile(
     resolve(__dirname, '../dist/load.js'),
-    'utf8'
+    'utf8',
   )
   const files = new Set<string>()
   const loadSourceWithPolyfills = (await loadSource).replace(
@@ -153,20 +153,20 @@ async function generateTextFiles() {
     (_, filename) => {
       files.add(filename)
       return `require(${JSON.stringify(`${filename}.text.js`)})`
-    }
+    },
   )
   await fs.promises.writeFile(
     resolve(__dirname, '../dist/load.js'),
-    loadSourceWithPolyfills
+    loadSourceWithPolyfills,
   )
   for (const file of files) {
     const contents = await fs.promises.readFile(
       resolve(__dirname, '../dist', file),
-      'utf8'
+      'utf8',
     )
     await fs.promises.writeFile(
       resolve(__dirname, '../dist', `${file}.text.js`),
-      `module.exports = ${JSON.stringify(contents)}`
+      `module.exports = ${JSON.stringify(contents)}`,
     )
     // remove the original file
     await fs.promises.unlink(resolve(__dirname, '../dist', file))

@@ -24,10 +24,7 @@
   ],
   "devDependencies": {
     "@edge-runtime/format": "workspace:*",
-    "@peculiar/webcrypto": "1.4.3",
-    "@stardazed/streams-text-encoding": "1.0.2",
     "@ungap/structured-clone": "1.2.0",
-    "aggregate-error-ponyfill": "1.1.0",
     "blob-polyfill": "7.0.20220408",
     "esbuild-plugin-alias": "latest",
     "event-target-shim": "6.0.2",
@@ -37,11 +34,10 @@
     "test-listen": "1.1.0",
     "tsup": "7",
     "undici": "5.23.0",
-    "urlpattern-polyfill": "9.0.0",
-    "web-streams-polyfill": "4.0.0-beta.3"
+    "urlpattern-polyfill": "9.0.0"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=16"
   },
   "files": [
     "dist",
