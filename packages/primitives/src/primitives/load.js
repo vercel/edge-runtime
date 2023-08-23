@@ -4,6 +4,17 @@
 import Module from 'module'
 import nodeCrypto from 'crypto'
 
+import {
+  ReadableStream,
+  ReadableStreamBYOBReader,
+  ReadableStreamDefaultReader,
+  TextDecoderStream,
+  TextEncoderStream,
+  TransformStream,
+  WritableStream,
+  WritableStreamDefaultWriter,
+} from 'node:stream/web'
+
 /**
  * @param {Object} params
  * @param {unknown} params.context
@@ -71,6 +82,8 @@ export function load(scopedContext = {}) {
   assign(context, {
     TextDecoder,
     TextEncoder,
+    TextEncoderStream,
+    TextDecoderStream,
     atob: encodingImpl.atob,
     btoa: encodingImpl.btoa,
   })
@@ -101,23 +114,15 @@ export function load(scopedContext = {}) {
   })
 
   const streamsImpl = {
-    ReadableStream: require('node:stream/web').ReadableStream,
-    ReadableStreamBYOBReader:
-      require('node:stream/web').ReadableStreamBYOBReader,
-    ReadableStreamDefaultReader:
-      require('node:stream/web').ReadableStreamDefaultReader,
-    TransformStream: require('node:stream/web').TransformStream,
-    WritableStream: require('node:stream/web').WritableStream,
-    WritableStreamDefaultWriter:
-      require('node:stream/web').WritableStreamDefaultWriter,
+    ReadableStream,
+    ReadableStreamBYOBReader,
+    ReadableStreamDefaultReader,
+    TransformStream,
+    WritableStream,
+    WritableStreamDefaultWriter,
   }
 
   assign(context, streamsImpl)
-
-  assign(context, {
-    TextEncoderStream: require('node:stream/web').TextEncoderStream,
-    TextDecoderStream: require('node:stream/web').TextDecoderStream
-  })
 
   /** @type {import('../../type-definitions/abort-controller')} */
   const abortControllerImpl = requireWithFakeGlobalScope({
