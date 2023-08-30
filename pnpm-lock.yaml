@@ -294,8 +294,8 @@ importers:
         specifier: workspace:*
         version: link:../jest-environment
       '@types/ua-parser-js':
-        specifier: 0.7.36
-        version: 0.7.36
+        specifier: 0.7.37
+        version: 0.7.37
       tsup:
         specifier: '7'
         version: 7.0.0(ts-node@10.9.1)(typescript@5.2.2)
@@ -2190,8 +2190,8 @@ packages:
       '@types/node': 14.18.54
     dev: true
 
-  /@types/ua-parser-js@0.7.36:
-    resolution: {integrity: sha512-N1rW+njavs70y2cApeIw1vLMYXRwfBy+7trgavGuuTfOd7j1Yh7QTRc/yqsPl6ncokt72ZXuxEU0PiCp9bSwNQ==}
+  /@types/ua-parser-js@0.7.37:
+    resolution: {integrity: sha512-4sOxS3ZWXC0uHJLYcWAaLMxTvjRX3hT96eF4YWUh1ovTaenvibaZOE5uXtIp4mksKMLRwo7YDiCBCw6vBiUPVg==}
     dev: true
 
   /@types/unist@2.0.6:
