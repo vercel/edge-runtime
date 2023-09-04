@@ -1,5 +1,15 @@
 # @edge-runtime/cookies
 
+## 3.4.0
+
+### Minor Changes
+
+- drop node14 support ([`7cc92cc`](https://github.com/vercel/edge-runtime/commit/7cc92ccd190c2d96483202d9f2e1a523778d1f48))
+
+### Patch Changes
+
+- Fixes documentation for ResponseCookies ([#547](https://github.com/vercel/edge-runtime/pull/547))
+
 ## 3.3.0
 
 ### Minor Changes

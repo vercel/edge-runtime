@@ -46,7 +46,7 @@ describe('AbortController', () => {
     expect(controller.signal).toBeInstanceOf(AbortSignal)
     // @ts-expect-error
     expect(() => (controller.signal = 'not-supported')).toThrow(
-      /Cannot set property signal of .* which has only a getter/
+      /Cannot set property signal of .* which has only a getter/,
     )
   })
 })
@@ -56,7 +56,7 @@ describe('AbortSignal', () => {
     it('automatically aborts after some time', async () => {
       const reason = new DOMException(
         'The operation timed out.',
-        'TimeoutError'
+        'TimeoutError',
       )
       const signal = AbortSignal.timeout(100)
       const promise = runAbortedProcess({ signal })
@@ -78,7 +78,7 @@ describe('AbortSignal', () => {
     it('creates signal with no reason', async () => {
       const reason = new DOMException(
         'The operation was aborted.',
-        'AbortError'
+        'AbortError',
       )
       const signal = AbortSignal.abort()
       expect(signal.aborted).toBe(true)
@@ -93,7 +93,7 @@ describe('AbortSignal', () => {
     expect(signal.reason).toBe(reason)
     // @ts-expect-error
     expect(() => (signal.reason = 'not-supported')).toThrow(
-      /Cannot set property reason of .* which has only a getter/
+      /Cannot set property reason of .* which has only a getter/,
     )
   })
 
@@ -103,13 +103,13 @@ describe('AbortSignal', () => {
     expect(signal.aborted).toBe(aborted)
     // @ts-expect-error
     expect(() => (signal.aborted = true)).toThrow(
-      /Cannot set property aborted of .* which has only a getter/
+      /Cannot set property aborted of .* which has only a getter/,
     )
   })
 
   it('can not be created with constructor', () => {
     expect(() => new AbortSignal()).toThrow(
-      new TypeError('Illegal constructor.')
+      new TypeError('Illegal constructor.'),
     )
   })
 
@@ -121,11 +121,11 @@ describe('AbortSignal', () => {
     await new Promise((resolve) => setTimeout(resolve, 200))
     expect(signal.aborted).toBe(true)
     expect(signal.reason).toEqual(
-      new DOMException('The operation timed out.', 'TimeoutError')
+      new DOMException('The operation timed out.', 'TimeoutError'),
     )
     expect(onabort).toHaveBeenCalledTimes(1)
     expect(onabort).toHaveBeenCalledWith(
-      expect.objectContaining({ type: 'abort' })
+      expect.objectContaining({ type: 'abort' }),
     )
   })
 })

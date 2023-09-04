@@ -17,5 +17,5 @@ export declare class FetchEvent {
 export {
   EventConstructor as Event,
   EventTargetConstructor as EventTarget,
-  EventTarget as PromiseRejectionEvent
+  EventTarget as PromiseRejectionEvent,
 }

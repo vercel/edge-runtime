@@ -1,7 +1,3 @@
-import { EventTarget, Event } from 'event-target-shim'
-
-export { EventTarget, Event }
-
 export class FetchEvent extends Event {
   constructor(request) {
     super('fetch')

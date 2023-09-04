@@ -1,5 +1,11 @@
 # @edge-runtime/user-agent
 
+## 1.4.0
+
+### Minor Changes
+
+- drop node14 support ([`7cc92cc`](https://github.com/vercel/edge-runtime/commit/7cc92ccd190c2d96483202d9f2e1a523778d1f48))
+
 ## 1.3.1
 
 ### Patch Changes

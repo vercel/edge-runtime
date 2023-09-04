@@ -51,8 +51,6 @@ describe('Global primitives', () => {
     { api: 'clearInterval' },
     { api: 'clearTimeout' },
     { api: 'console' },
-    { api: 'console' },
-    { api: 'crypto' },
     { api: 'crypto' },
     { api: 'Crypto' },
     { api: 'CryptoKey' },
@@ -64,12 +62,9 @@ describe('Global primitives', () => {
     { api: 'encodeURI' },
     { api: 'encodeURIComponent' },
     { api: 'Error' },
-    { api: 'Error' },
     { api: 'escape' },
     { api: 'eval' },
     { api: 'EvalError' },
-    { api: 'EvalError' },
-    { api: 'Event' },
     { api: 'Event' },
     { api: 'EventTarget' },
     { api: 'fetch' },
@@ -129,6 +124,7 @@ describe('Global primitives', () => {
     { api: 'Uint8ClampedArray' },
     { api: 'Uint16Array' },
     { api: 'Uint32Array' },
+    { api: 'undefined' },
     { api: 'unescape' },
     { api: 'URIError' },
     { api: 'URL' },
@@ -141,7 +137,14 @@ describe('Global primitives', () => {
     { api: 'WritableStream' },
     { api: 'WritableStreamDefaultWriter' },
   ])('`$api` is defined in global scope', ({ api }) => {
-    expect(runtime.evaluate(api)).toBeDefined()
+    const assertion = (() => {
+      if (api === 'undefined') return `undefined === ${api}`
+      if (api === 'NaN') return `Number.isNaN(${api})`
+      return `!!${api}`
+    })()
+
+    const value = runtime.evaluate(assertion)
+    expect(value).toBeDefined()
   })
 })
 describe('General behaviour', () => {
@@ -170,7 +173,7 @@ describe('General behaviour', () => {
             typeof input === 'string' && !input.startsWith('https://')
               ? `https://${input}`
               : String(input),
-            init
+            init,
           )
 
         return context
@@ -180,7 +183,7 @@ describe('General behaviour', () => {
     const promises = await Promise.all([
       edgeVM.evaluate<Promise<Response>>("fetch('edge-ping.vercel.app')"),
       edgeVM.evaluate<Promise<Response>>(
-        "globalThis.fetch('edge-ping.vercel.app')"
+        "globalThis.fetch('edge-ping.vercel.app')",
       ),
     ])
 
@@ -195,7 +198,7 @@ describe('Behaviour of some pre-defined APIs', () => {
   describe('`fetch`', () => {
     it('works when parsing a response as text', async () => {
       const html = await new EdgeVM().evaluate(
-        `fetch('https://example.vercel.sh').then(res => res.text())`
+        `fetch('https://example.vercel.sh').then(res => res.text())`,
       )
       expect(html.startsWith('<!doctype html>')).toBe(true)
     })
@@ -204,13 +207,13 @@ describe('Behaviour of some pre-defined APIs', () => {
       const edgeVM = new EdgeVM()
       edgeVM.evaluate('this.headers = new Headers()')
       edgeVM.evaluate(
-        "this.request = new Request('https://edge-ping.vercel.app', { headers: new Headers({ 'Content-Type': 'text/xml' }) })"
+        "this.request = new Request('https://edge-ping.vercel.app', { headers: new Headers({ 'Content-Type': 'text/xml' }) })",
       )
 
       expect(edgeVM.context.headers).toBeTruthy()
       expect(edgeVM.context.request).toBeTruthy()
       expect(edgeVM.context.request.headers.get('Content-Type')).toEqual(
-        'text/xml'
+        'text/xml',
       )
     })
 
@@ -229,7 +232,7 @@ describe('Behaviour of some pre-defined APIs', () => {
     it('allows to run within the VM reading outside of it', async () => {
       const edgeVM = new EdgeVM()
       const promise = edgeVM.evaluate<Promise<Response>>(
-        "fetch('https://edge-ping.vercel.app')"
+        "fetch('https://edge-ping.vercel.app')",
       )
 
       expect(promise).toBeTruthy()
@@ -244,7 +247,7 @@ describe('Behaviour of some pre-defined APIs', () => {
     it('works when using Uint8Array', () => {
       const edgeVM = new EdgeVM()
       edgeVM.evaluate(
-        "this.decode = new TextDecoder('utf-8', { ignoreBOM: true }).decode(new Uint8Array([101,100,103,101,45,112,105,110,103,46,118,101,114,99,101,108,46,97,112,112 ]))"
+        "this.decode = new TextDecoder('utf-8', { ignoreBOM: true }).decode(new Uint8Array([101,100,103,101,45,112,105,110,103,46,118,101,114,99,101,108,46,97,112,112 ]))",
       )
       expect(edgeVM.context.decode).toBe('edge-ping.vercel.app')
     })
@@ -352,7 +355,7 @@ describe('Behaviour of some pre-defined APIs', () => {
           'windows-1257',
           'windows-1258',
           'x-mac-cyrillic',
-        ])
+        ]),
       )
     })
   })
@@ -362,75 +365,75 @@ describe('Using `instanceof`', () => {
   it('uses the correct builtins for dependent APIs', () => {
     expect(
       new EdgeVM().evaluate(
-        `(new TextEncoder().encode('abc')) instanceof Uint8Array`
-      )
+        `(new TextEncoder().encode('abc')) instanceof Uint8Array`,
+      ),
     ).toBe(true)
     expect(
       new EdgeVM().evaluate(
-        `(new TextEncoder().encode('abc')) instanceof Object`
-      )
+        `(new TextEncoder().encode('abc')) instanceof Object`,
+      ),
     ).toBe(true)
     expect(
       new EdgeVM().evaluate(
-        `(new TextEncoder().encode('abc')) instanceof Object`
-      )
+        `(new TextEncoder().encode('abc')) instanceof Object`,
+      ),
     ).toBe(true)
     expect(
       new EdgeVM().evaluate(`
           class Foo {};
           const cls = Foo;
           cls instanceof Function;
-        `)
+        `),
     ).toEqual(true)
     expect(
       new EdgeVM().evaluate(
-        `(new TextEncoderStream()).writable instanceof WritableStream`
-      )
+        `(new TextEncoderStream()).writable instanceof WritableStream`,
+      ),
     ).toBe(true)
     expect(new EdgeVM().evaluate(`(new Uint8Array()) instanceof Object`)).toBe(
-      true
+      true,
     )
     expect(
-      new EdgeVM().evaluate(`(new AbortController()) instanceof Object`)
+      new EdgeVM().evaluate(`(new AbortController()) instanceof Object`),
     ).toBe(true)
     expect(
       new EdgeVM().evaluate(
-        `(new URL('https://example.vercel.sh')) instanceof Object`
-      )
+        `(new URL('https://example.vercel.sh')) instanceof Object`,
+      ),
     ).toBe(true)
     expect(
-      new EdgeVM().evaluate(`(new URLSearchParams()) instanceof Object`)
+      new EdgeVM().evaluate(`(new URLSearchParams()) instanceof Object`),
     ).toBe(true)
     expect(new EdgeVM().evaluate(`(new URLPattern()) instanceof Object`)).toBe(
-      true
+      true,
     )
   })
 
   it('does not alter instanceof for literals and objects', async () => {
     expect(new EdgeVM().evaluate('new Float32Array() instanceof Object')).toBe(
-      true
+      true,
     )
     expect(
-      new EdgeVM().evaluate('new Float32Array() instanceof Float32Array')
+      new EdgeVM().evaluate('new Float32Array() instanceof Float32Array'),
     ).toBe(true)
     expect(new EdgeVM().evaluate('[] instanceof Array')).toBe(true)
     expect(new EdgeVM().evaluate('new Array() instanceof Array')).toBe(true)
     expect(new EdgeVM().evaluate('/^hello$/gi instanceof RegExp')).toBe(true)
     expect(
-      new EdgeVM().evaluate('new RegExp("^hello$", "gi") instanceof RegExp')
+      new EdgeVM().evaluate('new RegExp("^hello$", "gi") instanceof RegExp'),
     ).toBe(true)
     expect(new EdgeVM().evaluate('({ foo: "bar" }) instanceof Object')).toBe(
-      true
+      true,
     )
     expect(
-      new EdgeVM().evaluate('Object.create({ foo: "bar" }) instanceof Object')
+      new EdgeVM().evaluate('Object.create({ foo: "bar" }) instanceof Object'),
     ).toBe(true)
     expect(
-      new EdgeVM().evaluate('new Object({ foo: "bar" }) instanceof Object')
+      new EdgeVM().evaluate('new Object({ foo: "bar" }) instanceof Object'),
     ).toBe(true)
     expect(new EdgeVM().evaluate('(() => {}) instanceof Function')).toBe(true)
     expect(new EdgeVM().evaluate('(function () {}) instanceof Function')).toBe(
-      true
+      true,
     )
   })
 })
@@ -614,7 +617,7 @@ describe('Event handlers', () => {
     expect(runtime.context.unhandled).toHaveBeenCalledTimes(1)
 
     runtime.evaluate(
-      `removeEventListener("unhandledrejection", self.unhandled)`
+      `removeEventListener("unhandledrejection", self.unhandled)`,
     )
     expect((runtime as any).__rejectionHandlers).toBeUndefined()
   })

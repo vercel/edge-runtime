@@ -4,6 +4,17 @@
 import Module from 'module'
 import nodeCrypto from 'crypto'
 
+import {
+  ReadableStream,
+  ReadableStreamBYOBReader,
+  ReadableStreamDefaultReader,
+  TextDecoderStream,
+  TextEncoderStream,
+  TransformStream,
+  WritableStream,
+  WritableStreamDefaultWriter,
+} from 'node:stream/web'
+
 /**
  * @param {Object} params
  * @param {unknown} params.context
@@ -16,7 +27,7 @@ import nodeCrypto from 'crypto'
  */
 function requireWithFakeGlobalScope(params) {
   const getModuleCode = `(function(module,exports,require,globalThis,${Object.keys(
-    params.scopedContext
+    params.scopedContext,
   ).join(',')}) {${params.sourceCode}\n})`
   const module = {
     exports: {},
@@ -26,7 +37,7 @@ function requireWithFakeGlobalScope(params) {
 
   // @ts-ignore
   const moduleRequire = (Module.createRequire || Module.createRequireFromPath)(
-    __filename
+    __filename,
   )
 
   /** @param {string} pathToRequire */
@@ -48,7 +59,7 @@ function requireWithFakeGlobalScope(params) {
     module.exports,
     throwingRequire,
     params.context,
-    ...Object.values(params.scopedContext)
+    ...Object.values(params.scopedContext),
   )
 
   return module.exports
@@ -66,11 +77,13 @@ export function load(scopedContext = {}) {
     context,
     id: 'encoding.js',
     sourceCode: injectSourceCode('./encoding.js'),
-    scopedContext: scopedContext,
+    scopedContext,
   })
   assign(context, {
     TextDecoder,
     TextEncoder,
+    TextEncoderStream,
+    TextDecoderStream,
     atob: encodingImpl.atob,
     btoa: encodingImpl.btoa,
   })
@@ -80,7 +93,7 @@ export function load(scopedContext = {}) {
     context,
     id: 'console.js',
     sourceCode: injectSourceCode('./console.js'),
-    scopedContext: scopedContext,
+    scopedContext,
   })
   assign(context, { console: consoleImpl.console })
 
@@ -89,49 +102,34 @@ export function load(scopedContext = {}) {
     context,
     id: 'events.js',
     sourceCode: injectSourceCode('./events.js'),
-    scopedContext: scopedContext,
+    scopedContext,
   })
+
   assign(context, {
-    Event: eventsImpl.Event,
-    EventTarget: eventsImpl.EventTarget,
+    Event,
+    EventTarget,
     FetchEvent: eventsImpl.FetchEvent,
     // @ts-expect-error we need to add this to the type definitions maybe
     PromiseRejectionEvent: eventsImpl.PromiseRejectionEvent,
   })
 
-  /** @type {import('../../type-definitions/streams')} */
-  const streamsImpl = requireWithFakeGlobalScope({
-    context,
-    id: 'streams.js',
-    sourceCode: injectSourceCode('./streams.js'),
-    scopedContext: { ...scopedContext },
-  })
+  const streamsImpl = {
+    ReadableStream,
+    ReadableStreamBYOBReader,
+    ReadableStreamDefaultReader,
+    TransformStream,
+    WritableStream,
+    WritableStreamDefaultWriter,
+  }
 
-  /** @type {import('../../type-definitions/text-encoding-streams')} */
-  const textEncodingStreamImpl = requireWithFakeGlobalScope({
-    context,
-    id: 'text-encoding-streams.js',
-    sourceCode: injectSourceCode('./text-encoding-streams.js'),
-    scopedContext: { ...streamsImpl, ...scopedContext },
-  })
-
-  assign(context, {
-    ReadableStream: streamsImpl.ReadableStream,
-    ReadableStreamBYOBReader: streamsImpl.ReadableStreamBYOBReader,
-    ReadableStreamDefaultReader: streamsImpl.ReadableStreamDefaultReader,
-    TextDecoderStream: textEncodingStreamImpl.TextDecoderStream,
-    TextEncoderStream: textEncodingStreamImpl.TextEncoderStream,
-    TransformStream: streamsImpl.TransformStream,
-    WritableStream: streamsImpl.WritableStream,
-    WritableStreamDefaultWriter: streamsImpl.WritableStreamDefaultWriter,
-  })
+  assign(context, streamsImpl)
 
   /** @type {import('../../type-definitions/abort-controller')} */
   const abortControllerImpl = requireWithFakeGlobalScope({
     context,
     id: 'abort-controller.js',
     sourceCode: injectSourceCode('./abort-controller.js'),
-    scopedContext: { ...eventsImpl, ...scopedContext },
+    scopedContext: { ...scopedContext },
   })
   assign(context, {
     AbortController: abortControllerImpl.AbortController,
@@ -163,10 +161,7 @@ export function load(scopedContext = {}) {
     }
 
     /** @type {any} */
-    const global = {
-      ...streamsImpl,
-      ...scopedContext,
-    }
+    const global = { ...streamsImpl, ...scopedContext }
 
     const globalGlobal = { ...global, Blob: undefined }
     Object.setPrototypeOf(globalGlobal, globalThis)
@@ -206,10 +201,10 @@ export function load(scopedContext = {}) {
     scopedContext: {
       global: { ...scopedContext },
       ...scopedContext,
-      ...streamsImpl,
       ...urlImpl,
       ...abortControllerImpl,
       ...eventsImpl,
+      ...streamsImpl,
       structuredClone: context.structuredClone,
     },
   })

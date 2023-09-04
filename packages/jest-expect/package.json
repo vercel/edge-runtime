@@ -2,7 +2,7 @@
   "name": "@edge-runtime/jest-expect",
   "description": "Custom matchers for Jest's expect to help test Request/Response instances",
   "homepage": "https://edge-runtime.vercel.app/packages/jest-expect",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "main": "dist/index.js",
   "repository": {
     "directory": "packages/jest-expect",
@@ -26,14 +26,14 @@
   "dependencies": {
     "@jest/environment": "29.5.0",
     "@jest/fake-timers": "29.5.0",
-    "@jest/globals": "29.6.2",
-    "expect": "29.6.2"
+    "@jest/globals": "29.6.4",
+    "expect": "29.6.4"
   },
   "devDependencies": {
     "@edge-runtime/jest-environment": "workspace:*"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=16"
   },
   "files": [
     "dist",

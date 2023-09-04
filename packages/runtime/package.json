@@ -2,7 +2,7 @@
   "name": "edge-runtime",
   "description": "Run any Edge Function from CLI or Node.js module.",
   "homepage": "https://edge-runtime.vercel.app/packages/runtime",
-  "version": "2.4.5",
+  "version": "2.5.0",
   "main": "dist/index.js",
   "bin": {
     "edge-runtime": "dist/cli/index.js"
@@ -36,11 +36,10 @@
   },
   "devDependencies": {
     "@types/node-fetch": "2",
-    "node-fetch": "2",
-    "web-streams-polyfill": "4.0.0-beta.3"
+    "node-fetch": "2"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=16"
   },
   "files": [
     "dist"
