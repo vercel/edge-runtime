@@ -3,4 +3,4 @@
 '@edge-runtime/cookies': patch
 ---
 
-expose `Headers#getSetCookie` type
+use `Headers#getSetCookie` when available
