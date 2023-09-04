@@ -19,9 +19,7 @@ export class ResponseCookies {
   constructor(responseHeaders: Headers) {
     this._headers = responseHeaders
 
-    const setCookie =
-      // @ts-expect-error See https://github.com/whatwg/fetch/issues/973
-      responseHeaders.getAll?.('set-cookie') ?? responseHeaders.getSetCookie?.()
+    const setCookie = responseHeaders.getSetCookie?.()
     responseHeaders.get('set-cookie') ?? []
 
     const cookieStrings = Array.isArray(setCookie)
