@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 3.1.1
+
+### Patch Changes
+
+- use `Headers#getSetCookie` when available ([#540](https://github.com/vercel/edge-runtime/pull/540))
+
 ## 3.1.0
 
 ### Minor Changes

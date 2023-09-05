@@ -1,5 +1,11 @@
 # @edge-runtime/cookies
 
+## 3.4.1
+
+### Patch Changes
+
+- use `Headers#getSetCookie` when available ([#540](https://github.com/vercel/edge-runtime/pull/540))
+
 ## 3.4.0
 
 ### Minor Changes
