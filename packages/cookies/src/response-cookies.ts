@@ -19,15 +19,14 @@ export class ResponseCookies {
   constructor(responseHeaders: Headers) {
     this._headers = responseHeaders
 
-    const setCookie =
-      // @ts-expect-error See https://github.com/whatwg/fetch/issues/973
-      responseHeaders.getAll?.('set-cookie') ??
-      responseHeaders.get('set-cookie') ??
-      []
+    const setCookie = responseHeaders.getSetCookie?.()
+    responseHeaders.get('set-cookie') ?? []
 
     const cookieStrings = Array.isArray(setCookie)
       ? setCookie
-      : splitCookiesString(setCookie)
+      : // TODO: remove splitCookiesString when `getSetCookie` adoption is high enough in Node.js
+        // https://developer.mozilla.org/en-US/docs/Web/API/Headers/getSetCookie#browser_compatibility
+        splitCookiesString(setCookie)
 
     for (const cookieString of cookieStrings) {
       const parsed = parseSetCookie(cookieString)
