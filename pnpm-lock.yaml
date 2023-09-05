@@ -105,8 +105,8 @@ importers:
         specifier: workspace:*
         version: link:../jest-environment
       '@types/cookie':
-        specifier: 0.5.1
-        version: 0.5.1
+        specifier: 0.5.2
+        version: 0.5.2
       tsup:
         specifier: '7'
         version: 7.0.0(ts-node@10.9.1)(typescript@5.2.2)
@@ -1987,8 +1987,8 @@ packages:
       '@types/node': 16.18.40
     dev: true
 
-  /@types/cookie@0.5.1:
-    resolution: {integrity: sha512-COUnqfB2+ckwXXSFInsFdOAWQzCCx+a5hq2ruyj+Vjund94RJQd4LG2u9hnvJrTgunKAaax7ancBYlDrNYxA0g==}
+  /@types/cookie@0.5.2:
+    resolution: {integrity: sha512-DBpRoJGKJZn7RY92dPrgoMew8xCWc2P71beqsjyhEI/Ds9mOyVmBwtekyfhpwFIVt1WrxTonFifiOZ62V8CnNA==}
     dev: true
 
   /@types/debug@4.1.7:
