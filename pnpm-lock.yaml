@@ -27,7 +27,7 @@ importers:
         version: 0.19.2
       finepack:
         specifier: latest
-        version: 2.11.0
+        version: 2.11.2
       git-authors-cli:
         specifier: latest
         version: 1.0.46
@@ -227,8 +227,8 @@ importers:
         specifier: 5.0.1
         version: 5.0.1
       http-body:
-        specifier: 1.0.6
-        version: 1.0.6
+        specifier: 1.0.7
+        version: 1.0.7
       multer:
         specifier: 1.4.5-lts.1
         version: 1.4.5-lts.1
@@ -3914,8 +3914,8 @@ packages:
       pkg-dir: 4.2.0
     dev: true
 
-  /finepack@2.11.0:
-    resolution: {integrity: sha512-E5N+iiO7VJBG25Mre+0mTD72vlDOipj7fu/47W6n5QsJyDabyrRoyzhEkaC4EN3TqxYvmIoL0OXM+oIp3KqNzg==}
+  /finepack@2.11.2:
+    resolution: {integrity: sha512-5oEOcNW9zUrGU2mUnZUDvsoOTlFsOh/drssR+r21bTTgrkz2DO/zq46SCEVaoMj9GFUbVlVgqr9P9vQ3vibRpA==}
     engines: {node: '>=4'}
     hasBin: true
     dependencies:
@@ -4496,8 +4496,8 @@ packages:
     resolution: {integrity: sha512-bEqo66MRXsUGxWHV5IP0PUiAWwoEjba4VCzg0LjFJBpchPaTfyfCKTG6bc5F8ucKec3q5y6qOdGyYTSBEvhCrg==}
     dev: false
 
-  /http-body@1.0.6:
-    resolution: {integrity: sha512-Qni0lztEt8pGYe6J+qLhl970NiUyuQEqMCjIT6rQ82Q5JYtyy1KETvOOurei6cGoCgb59hh/K1XJ0wRQ9jeRQQ==}
+  /http-body@1.0.7:
+    resolution: {integrity: sha512-hT/O2f5PGIGUuEtPvDjH140fJti11Zs1dKuOjuo6Mx0CUYBwkjhr0lEM7Iwg6OfkrxMCA9oXHzF1b+B0gaWtOw==}
     engines: {node: '>= 18'}
     dev: true
 
