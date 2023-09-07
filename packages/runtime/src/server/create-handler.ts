@@ -118,8 +118,7 @@ function toNodeHeaders(headers?: Headers): NodeHeaders {
   const result: NodeHeaders = {}
   if (headers) {
     for (const [key, value] of headers.entries()) {
-      result[key] =
-        key.toLowerCase() === 'set-cookie' ? headers.getSetCookie() : value
+      result[key] = key === 'set-cookie' ? headers.getSetCookie() : value
     }
   }
   return result
