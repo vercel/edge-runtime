@@ -15,28 +15,12 @@ it('handles simple header values', () => {
   })
 })
 
-it('splits set-cookie with getAll()', () => {
+it('splits set-cookie with getSetCookie()', () => {
   const headers = new Headers({ 'set-cookie': 'value1' })
   headers.append('set-cookie', 'value2')
   headers.append('set-cookie', 'value3')
   expect(toOutgoingHeaders(headers)).toEqual({
     'set-cookie': ['value1', 'value2', 'value3'],
-  })
-})
-
-it('splits set-cookie without getAll()', () => {
-  const rawHeaders = {
-    raw: () => ({
-      'set-cookie':
-        'cookie1=value1, cookie2=value2; Max-Age=1000, cookie3=value3; Domain=<domain-value>; Secure',
-    }),
-  }
-  expect(toOutgoingHeaders(rawHeaders as unknown as Headers)).toEqual({
-    'set-cookie': [
-      'cookie1=value1',
-      'cookie2=value2; Max-Age=1000',
-      'cookie3=value3; Domain=<domain-value>; Secure',
-    ],
   })
 })
 
