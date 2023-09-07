@@ -7,36 +7,20 @@ it('handles simple header values', () => {
       new Headers({
         'Content-Type': 'image/jpeg',
         'X-My-Custom-Header': 'Zeke are cool',
-      })
-    )
+      }),
+    ),
   ).toEqual({
     'content-type': 'image/jpeg',
     'x-my-custom-header': 'Zeke are cool',
   })
 })
 
-it('splits set-cookie with getAll()', () => {
+it('splits set-cookie with getSetCookie()', () => {
   const headers = new Headers({ 'set-cookie': 'value1' })
   headers.append('set-cookie', 'value2')
   headers.append('set-cookie', 'value3')
   expect(toOutgoingHeaders(headers)).toEqual({
     'set-cookie': ['value1', 'value2', 'value3'],
-  })
-})
-
-it('slits set-cookie without getAll()', () => {
-  const rawHeaders = {
-    raw: () => ({
-      'set-cookie':
-        'cookie1=value1, cookie2=value2; Max-Age=1000, cookie3=value3; Domain=<domain-value>; Secure',
-    }),
-  }
-  expect(toOutgoingHeaders(rawHeaders as unknown as Headers)).toEqual({
-    'set-cookie': [
-      'cookie1=value1',
-      'cookie2=value2; Max-Age=1000',
-      'cookie3=value3; Domain=<domain-value>; Secure',
-    ],
   })
 })
 

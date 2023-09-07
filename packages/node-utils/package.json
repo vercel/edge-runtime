@@ -23,9 +23,6 @@
     "utils",
     "web"
   ],
-  "dependencies": {
-    "@edge-runtime/cookies": "workspace:*"
-  },
   "devDependencies": {
     "@edge-runtime/primitives": "workspace:*",
     "@types/test-listen": "1.1.0",

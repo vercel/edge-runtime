@@ -1,6 +1,4 @@
-export class Headers extends globalThis.Headers {
-  getAll?(key: 'set-cookie'): string[]
-}
+export class Headers extends globalThis.Headers {}
 
 export class Request extends globalThis.Request {
   readonly headers: Headers
@@ -16,7 +14,7 @@ export type RequestInfo = string | Request | globalThis.Request
 export type RequestInit = globalThis.RequestInit
 declare const fetchImplementation: (
   info: RequestInfo,
-  init?: RequestInit
+  init?: RequestInit,
 ) => Promise<Response>
 
 declare const FileConstructor: typeof File

@@ -12,20 +12,20 @@ import { toToReadable } from './stream'
 
 export function buildToNodeHandler(
   dependencies: BuildDependencies,
-  options: RequestOptions
+  options: RequestOptions,
 ) {
   const toRequest = buildToRequest(dependencies)
   const toFetchEvent = buildToFetchEvent(dependencies)
   return function toNodeHandler(webHandler: WebHandler): NodeHandler {
     return (
       incomingMessage: IncomingMessage,
-      serverResponse: ServerResponse
+      serverResponse: ServerResponse,
     ) => {
       const request = toRequest(incomingMessage, options)
       const maybePromise = webHandler(request, toFetchEvent(request))
       if (maybePromise instanceof Promise) {
         maybePromise.then((response) =>
-          toServerResponse(response, serverResponse)
+          toServerResponse(response, serverResponse),
         )
       } else {
         toServerResponse(maybePromise, serverResponse)
@@ -36,16 +36,15 @@ export function buildToNodeHandler(
 
 function toServerResponse(
   webResponse: Response | null | undefined,
-  serverResponse: ServerResponse
+  serverResponse: ServerResponse,
 ) {
   if (!webResponse) {
     serverResponse.end()
     return
   }
   mergeIntoServerResponse(
-    // @ts-ignore getAll() is not standard https://fetch.spec.whatwg.org/#headers-class
     toOutgoingHeaders(webResponse.headers),
-    serverResponse
+    serverResponse,
   )
 
   serverResponse.statusCode = webResponse.status

@@ -1,9 +1,4 @@
-import {
-  stringifyCookie,
-  parseCookie,
-  parseSetCookie,
-  splitCookiesString,
-} from '../src'
+import { stringifyCookie, parseCookie, parseSetCookie } from '../src'
 
 test('.stringifyCookie is exported', async () => {
   expect(typeof stringifyCookie).toBe('function')
@@ -15,8 +10,4 @@ test('.parseCookie is exported', async () => {
 
 test('.parseSetCookie is exported', async () => {
   expect(typeof parseSetCookie).toBe('function')
-})
-
-test('.splitCookiesString is exported', async () => {
-  expect(typeof splitCookiesString).toBe('function')
 })
