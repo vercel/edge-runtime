@@ -7,8 +7,8 @@ it('handles simple header values', () => {
       new Headers({
         'Content-Type': 'image/jpeg',
         'X-My-Custom-Header': 'Zeke are cool',
-      })
-    )
+      }),
+    ),
   ).toEqual({
     'content-type': 'image/jpeg',
     'x-my-custom-header': 'Zeke are cool',
@@ -24,7 +24,7 @@ it('splits set-cookie with getAll()', () => {
   })
 })
 
-it('slits set-cookie without getAll()', () => {
+it('splits set-cookie without getAll()', () => {
   const rawHeaders = {
     raw: () => ({
       'set-cookie':
