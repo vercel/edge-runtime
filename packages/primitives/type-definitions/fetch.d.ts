@@ -1,4 +1,4 @@
-export type Headers = globalThis.Headers
+export class Headers extends globalThis.Headers {}
 
 export class Request extends globalThis.Request {
   readonly headers: Headers
