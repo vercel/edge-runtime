@@ -12,11 +12,6 @@ test('allow to append multiple `set-cookie` header', async () => {
   response.headers.append('set-cookie', 'bar=baz')
 
   expect(response.headers.getSetCookie()).toEqual(['foo=bar', 'bar=baz'])
-
-  expect(response.headers.getAll?.('set-cookie')).toEqual([
-    'foo=bar',
-    'bar=baz',
-  ])
 })
 
 test('disallow mutate response headers for redirects', async () => {

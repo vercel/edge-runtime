@@ -1,8 +1,6 @@
 import * as FetchSymbols from 'undici/lib/fetch/symbols'
 import * as HeadersModule from 'undici/lib/fetch/headers'
 import * as ResponseModule from 'undici/lib/fetch/response'
-import * as UtilModule from 'undici/lib/fetch/util'
-import * as WebIDLModule from 'undici/lib/fetch/webidl'
 import { Request as BaseRequest } from 'undici/lib/fetch/request'
 
 import { fetch as fetchImpl } from 'undici/lib/fetch'
@@ -46,21 +44,6 @@ HeadersModule.Headers.prototype.values = function* () {
 }
 
 /**
- * Add a new method for retrieving all independent `set-cookie` headers that
- * maybe have been appended. This will only work when getting `set-cookie`
- * headers.
- * @deprecated use [`Headers#getSetCookie()`](https://developer.mozilla.org/en-US/docs/Web/API/Headers/getSetCookie) instead
- */
-HeadersModule.Headers.prototype.getAll = function (name) {
-  const _name = normalizeAndValidateHeaderName(name, 'Headers.getAll')
-  if (_name !== 'set-cookie') {
-    throw new Error(`getAll can only be used with 'set-cookie'`)
-  }
-
-  return this.getSetCookie()
-}
-
-/**
  * We also must patch the error static method since it works just like
  * redirect and we need consistency.
  */
@@ -69,55 +52,6 @@ ResponseModule.Response.error = function (...args) {
   const response = __error.call(this, ...args)
   response[FetchSymbols.kHeaders][FetchSymbols.kGuard] = 'response'
   return response
-}
-
-/**
- * normalize header name per WHATWG spec, and validate
- *
- * @param {string} potentialName
- * @param {'Header.append' | 'Headers.delete' | 'Headers.get' | 'Headers.has' | 'Header.set'} errorPrefix
- */
-function normalizeAndValidateHeaderName(potentialName, errorPrefix) {
-  const normalizedName = potentialName.toLowerCase()
-
-  if (UtilModule.isValidHeaderName(normalizedName)) {
-    return normalizedName
-  }
-
-  // Generate an WHATWG fetch spec compliant error
-  WebIDLModule.errors.invalidArgument({
-    prefix: errorPrefix,
-    value: normalizedName,
-    type: 'header name',
-  })
-}
-
-/**
- * normalize header value per WHATWG spec, and validate
- *
- * @param {string} potentialValue
- * @param {'Header.append' | 'Header.set'} errorPrefix
- */
-function normalizeAndValidateHeaderValue(potentialValue, errorPrefix) {
-  /**
-   * To normalize a byte sequence potentialValue, remove
-   * any leading and trailing HTTP whitespace bytes from
-   *  potentialValue.
-   *
-   * See https://fetch.spec.whatwg.org/#concept-header-value-normalize
-   */
-  const normalizedValue = potentialValue.replace(/^[\r\n\t ]+|[\r\n\t ]+$/g, '')
-
-  if (UtilModule.isValidHeaderValue(normalizedValue)) {
-    return normalizedValue
-  }
-
-  // Generate an WHATWG fetch spec compliant error
-  WebIDLModule.errors.invalidArgument({
-    prefix: errorPrefix,
-    value: normalizedValue,
-    type: 'header value',
-  })
 }
 
 /**
