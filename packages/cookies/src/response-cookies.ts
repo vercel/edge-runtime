@@ -1,9 +1,5 @@
 import type { ResponseCookie } from './types'
-import {
-  splitCookiesString,
-  parseSetCookie,
-  stringifyCookie,
-} from './serialize'
+import { parseSetCookie, stringifyCookie } from './serialize'
 
 /**
  * A class for manipulating {@link Response} cookies (`Set-Cookie` header).
@@ -19,14 +15,7 @@ export class ResponseCookies {
   constructor(responseHeaders: Headers) {
     this._headers = responseHeaders
 
-    const setCookie = responseHeaders.getSetCookie?.()
-    responseHeaders.get('set-cookie') ?? []
-
-    const cookieStrings = Array.isArray(setCookie)
-      ? setCookie
-      : // TODO: remove splitCookiesString when `getSetCookie` adoption is high enough in Node.js
-        // https://developer.mozilla.org/en-US/docs/Web/API/Headers/getSetCookie#browser_compatibility
-        splitCookiesString(setCookie)
+    const cookieStrings = responseHeaders.getSetCookie()
 
     for (const cookieString of cookieStrings) {
       const parsed = parseSetCookie(cookieString)
