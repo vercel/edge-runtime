@@ -39,7 +39,7 @@ export function createHandler<T extends EdgeContext>(options: Options<T>) {
             ? getClonableBodyStream(
                 req,
                 options.runtime.evaluate('Uint8Array'),
-                options.runtime.context.TransformStream
+                options.runtime.context.TransformStream,
               )
             : undefined
 
@@ -49,7 +49,7 @@ export function createHandler<T extends EdgeContext>(options: Options<T>) {
             headers: toRequestInitHeaders(req),
             method: req.method,
             body: body?.cloneBodyStream(),
-          }
+          },
         )
 
         const waitUntil = response.waitUntil()
@@ -60,7 +60,7 @@ export function createHandler<T extends EdgeContext>(options: Options<T>) {
         res.statusMessage = response.statusText
 
         for (const [key, value] of Object.entries(
-          toNodeHeaders(response.headers)
+          toNodeHeaders(response.headers),
         )) {
           if (value !== undefined) {
             res.setHeader(key, value)
@@ -112,18 +112,14 @@ function toRequestInitHeaders(req: IncomingMessage): RequestInit['headers'] {
 
 /**
  * Transforms WHATWG Headers into a Node Headers shape. Copies all items but
- * does a special case for Set-Cookie using the hidden method getAll which
- * allows to get all cookies instead of a folded value.
+ * does a special case for Set-Cookie using the [`getSetCookie`](https://developer.mozilla.org/en-US/docs/Web/API/Headers/getSetCookie) method.
  */
 function toNodeHeaders(headers?: Headers): NodeHeaders {
   const result: NodeHeaders = {}
   if (headers) {
     for (const [key, value] of headers.entries()) {
       result[key] =
-        key.toLowerCase() === 'set-cookie'
-          ? // @ts-ignore getAll is hidden in Headers but exists.
-            headers.getAll('set-cookie')
-          : value
+        key.toLowerCase() === 'set-cookie' ? headers.getSetCookie() : value
     }
   }
   return result
