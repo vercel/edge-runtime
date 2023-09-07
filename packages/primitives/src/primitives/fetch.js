@@ -49,6 +49,7 @@ HeadersModule.Headers.prototype.values = function* () {
  * Add a new method for retrieving all independent `set-cookie` headers that
  * maybe have been appended. This will only work when getting `set-cookie`
  * headers.
+ * @deprecated use [`Headers#getSetCookie()`](https://developer.mozilla.org/en-US/docs/Web/API/Headers/getSetCookie) instead
  */
 HeadersModule.Headers.prototype.getAll = function (name) {
   const _name = normalizeAndValidateHeaderName(name, 'Headers.getAll')
