@@ -1,5 +1,14 @@
 # edge-runtime
 
+## 2.5.2
+
+### Patch Changes
+
+- Simplify `set-cookie` handling ([#586](https://github.com/vercel/edge-runtime/pull/586))
+
+- Updated dependencies []:
+  - @edge-runtime/vm@3.1.2
+
 ## 2.5.1
 
 ### Patch Changes
