@@ -296,8 +296,8 @@ importers:
         specifier: '7'
         version: 7.0.0(ts-node@10.9.1)(typescript@5.2.2)
       ua-parser-js:
-        specifier: 1.0.35
-        version: 1.0.35
+        specifier: 1.0.36
+        version: 1.0.36
 
   packages/vm:
     dependencies:
@@ -8498,8 +8498,8 @@ packages:
     hasBin: true
     dev: true
 
-  /ua-parser-js@1.0.35:
-    resolution: {integrity: sha512-fKnGuqmTBnIE+/KXSzCn4db8RTigUzw1AN0DmdU6hJovUTbYJKyqj+8Mt1c4VfRDnOVJnENmfYkIPZ946UrSAA==}
+  /ua-parser-js@1.0.36:
+    resolution: {integrity: sha512-znuyCIXzl8ciS3+y3fHJI/2OhQIXbXw9MWC/o3qwyR+RGppjZHrM27CGFSKCJXi2Kctiz537iOu2KnXs1lMQhw==}
     dev: true
 
   /unbox-primitive@1.0.2:
