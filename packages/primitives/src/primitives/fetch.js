@@ -44,8 +44,8 @@ HeadersModule.Headers.prototype.values = function* () {
 }
 
 /**
- * Add a new method for retrieving all independent `set-cookie` headers that
- * maybe have been appended. This will only work when getting `set-cookie`
+ * Method for retrieving all independent `set-cookie` headers that
+ * may have been appended. This will only work when getting `set-cookie`
  * headers.
  *
  * @deprecated Use [`.getSetCookie()`](https://developer.mozilla.org/en-US/docs/Web/API/Headers/getSetCookie) instead.
