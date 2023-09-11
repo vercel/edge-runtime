@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 4.0.1
+
+### Patch Changes
+
+- Reverts the removal of `Headers#getAll` introduced in #586 for compatibility reasons. It is still marked as deprecated, as `Headers.getSetCookie` is the preferred method now. ([#597](https://github.com/vercel/edge-runtime/pull/597))
+
 ## 4.0.0
 
 ### Major Changes
