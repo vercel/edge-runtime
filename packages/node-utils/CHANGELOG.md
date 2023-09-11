@@ -1,5 +1,11 @@
 # @edge-runtime/node-utils
 
+## 2.2.2
+
+### Patch Changes
+
+- Simplify `set-cookie` handling ([#586](https://github.com/vercel/edge-runtime/pull/586))
+
 ## 2.2.1
 
 ### Patch Changes

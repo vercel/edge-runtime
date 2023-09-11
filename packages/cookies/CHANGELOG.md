@@ -1,5 +1,11 @@
 # @edge-runtime/cookies
 
+## 4.0.0
+
+### Major Changes
+
+- Simplify `set-cookie` handling ([#586](https://github.com/vercel/edge-runtime/pull/586))
+
 ## 3.4.1
 
 ### Patch Changes
