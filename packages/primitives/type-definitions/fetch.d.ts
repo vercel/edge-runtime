@@ -1,4 +1,7 @@
-export class Headers extends globalThis.Headers {}
+export class Headers extends globalThis.Headers {
+  /** @deprecated Use [`.getSetCookie()`](https://developer.mozilla.org/en-US/docs/Web/API/Headers/getSetCookie) instead. */
+  getAll?(key: 'set-cookie'): string[]
+}
 
 export class Request extends globalThis.Request {
   readonly headers: Headers
