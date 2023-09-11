@@ -1,6 +1,8 @@
 import * as FetchSymbols from 'undici/lib/fetch/symbols'
 import * as HeadersModule from 'undici/lib/fetch/headers'
 import * as ResponseModule from 'undici/lib/fetch/response'
+import * as UtilModule from 'undici/lib/fetch/util'
+import * as WebIDLModule from 'undici/lib/fetch/webidl'
 import { Request as BaseRequest } from 'undici/lib/fetch/request'
 
 import { fetch as fetchImpl } from 'undici/lib/fetch'
