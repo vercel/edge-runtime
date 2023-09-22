@@ -33,7 +33,7 @@
     "multer": "1.4.5-lts.1",
     "test-listen": "1.1.0",
     "tsup": "7",
-    "undici": "5.23.0",
+    "undici": "5.25.2",
     "urlpattern-polyfill": "9.0.0"
   },
   "engines": {
