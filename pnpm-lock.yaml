@@ -83,8 +83,8 @@ importers:
         specifier: ~18.2.0
         version: 18.2.0(react@18.2.0)
       swr:
-        specifier: ~2.2.2
-        version: 2.2.2(react@18.2.0)
+        specifier: ~2.2.4
+        version: 2.2.4(react@18.2.0)
     devDependencies:
       autoprefixer:
         specifier: ~10.4.16
@@ -8258,8 +8258,8 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /swr@2.2.2(react@18.2.0):
-    resolution: {integrity: sha512-CbR41AoMD4TQBQw9ic3GTXspgfM9Y8Mdhb5Ob4uIKXhWqnRLItwA5fpGvB7SmSw3+zEjb0PdhiEumtUvYoQ+bQ==}
+  /swr@2.2.4(react@18.2.0):
+    resolution: {integrity: sha512-njiZ/4RiIhoOlAaLYDqwz5qH/KZXVilRLvomrx83HjzCWTfa+InyfAjv05PSFxnmLzZkNO9ZfvgoqzAaEI4sGQ==}
     peerDependencies:
       react: ^16.11.0 || ^17.0.0 || ^18.0.0
     dependencies:
