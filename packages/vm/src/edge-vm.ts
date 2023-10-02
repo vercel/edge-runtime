@@ -140,7 +140,7 @@ function patchInstanceOf(item: string, ctx: any) {
         }
       })
     `,
-    ctx
+    ctx,
   )
 }
 
@@ -155,9 +155,9 @@ function registerUnhandledRejectionHandlers(handlers: RejectionHandler[]) {
       'unhandledRejection',
       function invokeRejectionHandlers(reason, promise) {
         unhandledRejectionHandlers.forEach((handler) =>
-          handler({ reason, promise })
+          handler({ reason, promise }),
         )
-      }
+      },
     )
   }
   unhandledRejectionHandlers = handlers
@@ -294,6 +294,8 @@ export type EdgeContext = VMContext & {
   ReadableStreamDefaultReader: typeof EdgePrimitives.ReadableStreamDefaultReader
   Request: typeof EdgePrimitives.Request
   Response: typeof EdgePrimitives.Response
+  setTimeout: typeof EdgePrimitives.setTimeout
+  setInterval: typeof EdgePrimitives.setInterval
   structuredClone: typeof EdgePrimitives.structuredClone
   SubtleCrypto: typeof EdgePrimitives.SubtleCrypto
   TextDecoder: typeof EdgePrimitives.TextDecoder
@@ -315,8 +317,6 @@ function addPrimitives(context: VMContext) {
   defineProperty(context, 'Symbol', { value: Symbol })
   defineProperty(context, 'clearInterval', { value: clearInterval })
   defineProperty(context, 'clearTimeout', { value: clearTimeout })
-  defineProperty(context, 'setInterval', { value: setInterval })
-  defineProperty(context, 'setTimeout', { value: setTimeout })
   defineProperty(context, 'queueMicrotask', { value: queueMicrotask })
   defineProperty(context, 'EdgeRuntime', { value: 'edge-runtime' })
 
@@ -383,6 +383,10 @@ function addPrimitives(context: VMContext) {
 
       // Console
       'console',
+
+      // Timer
+      'setTimeout',
+      'setInterval',
     ],
   })
 
@@ -404,7 +408,7 @@ function defineProperties(
     exports: Record<string, any>
     enumerable?: string[]
     nonenumerable?: string[]
-  }
+  },
 ) {
   for (const property of options.enumerable ?? []) {
     if (!options.exports[property]) {
@@ -433,7 +437,7 @@ function defineProperties(
  * implemented in the provided context.
  */
 function getTransferablePrimitivesFromContext(
-  context: Context
+  context: Context,
 ): Record<(typeof transferableConstructors)[number], unknown> {
   const keys = transferableConstructors.join(',')
   const stringifedObject = `({${keys}})`

@@ -622,3 +622,21 @@ describe('Event handlers', () => {
     expect((runtime as any).__rejectionHandlers).toBeUndefined()
   })
 })
+
+describe('`Timers`', () => {
+  it.each(['setTimeout', 'setInterval'])(
+    '%s function should return integer',
+    async (f) => {
+      const runtime = new EdgeVM()
+      expect(() => {
+        runtime.evaluate(`
+        const timer = ${f}(() => {}, 1000);
+        timer.unref();
+      `)
+      }).toThrow({
+        name: 'Error',
+        message: `timer.unref is not a function`,
+      })
+    },
+  )
+})
