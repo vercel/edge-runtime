@@ -3,17 +3,17 @@
   "version": "0.0.0",
   "dependencies": {
     "@heroicons/react": "~2.0.18",
-    "next": "~13.5.2",
+    "next": "~13.5.3",
     "next-themes": "~0.2.1",
-    "nextra": "~2.12.3",
-    "nextra-theme-docs": "~2.12.3",
+    "nextra": "~2.13.1",
+    "nextra-theme-docs": "~2.13.1",
     "react": "~18.2.0",
     "react-dom": "~18.2.0",
-    "swr": "~2.2.2"
+    "swr": "~2.2.4"
   },
   "devDependencies": {
     "autoprefixer": "~10.4.16",
-    "postcss": "~8.4.30",
+    "postcss": "~8.4.31",
     "tailwindcss": "~3.3.3"
   },
   "engines": {
