@@ -384,7 +384,7 @@ function addPrimitives(context: VMContext) {
       // Console
       'console',
 
-      // Timer
+      // Timers
       'setTimeout',
       'setInterval',
     ],
