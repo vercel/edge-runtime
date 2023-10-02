@@ -97,16 +97,16 @@ export function load(scopedContext = {}) {
   })
   assign(context, { console: consoleImpl.console })
 
-  /** @type {import('../../type-definitions/timer')} */
-  const timeoutImpl = requireWithFakeGlobalScope({
+  /** @type {import('../../type-definitions/timers')} */
+  const timersImpl = requireWithFakeGlobalScope({
     context,
-    id: 'timeout.js',
-    sourceCode: injectSourceCode('./timer.js'),
+    id: 'timers.js',
+    sourceCode: injectSourceCode('./timers.js'),
     scopedContext,
   })
   assign(context, {
-    setTimeout: timeoutImpl.setTimeout,
-    setInterval: timeoutImpl.setInterval,
+    setTimeout: timersImpl.setTimeout,
+    setInterval: timersImpl.setInterval,
   })
 
   /** @type {import('../../type-definitions/events')} */
