@@ -628,15 +628,14 @@ describe('`Timers`', () => {
     '%s function should return integer',
     async (f) => {
       const runtime = new EdgeVM()
-      expect(() => {
-        runtime.evaluate(`
+      runtime.evaluate(`
+        this.funcName = ${f}.name;
         const timer = ${f}(() => {}, 1000);
-        timer.unref();
+        this.isNumber = (typeof timer === 'number');
+        clearTimeout(timer);
       `)
-      }).toThrow({
-        name: 'Error',
-        message: `timer.unref is not a function`,
-      })
+      expect(runtime.context.funcName).toBe(f)
+      expect(runtime.context.isNumber).toBe(true)
     },
   )
 })
