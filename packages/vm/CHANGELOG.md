@@ -1,5 +1,14 @@
 # @edge-runtime/vm
 
+## 3.1.4
+
+### Patch Changes
+
+- Don't return `NodeJS.Timer` from `setTimeout` and `setInterval` ([#622](https://github.com/vercel/edge-runtime/pull/622))
+
+- Updated dependencies [[`21fa983`](https://github.com/vercel/edge-runtime/commit/21fa9835d345359bc9ee1bff2a171a4dc4af46a8)]:
+  - @edge-runtime/primitives@4.0.2
+
 ## 3.1.3
 
 ### Patch Changes
