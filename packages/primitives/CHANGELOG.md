@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 4.0.2
+
+### Patch Changes
+
+- Don't return `NodeJS.Timer` from `setTimeout` and `setInterval` ([#622](https://github.com/vercel/edge-runtime/pull/622))
+
 ## 4.0.1
 
 ### Patch Changes

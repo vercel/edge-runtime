@@ -1,5 +1,11 @@
 # @edge-runtime/ponyfill
 
+## 2.4.1
+
+### Patch Changes
+
+- Don't return `NodeJS.Timer` from `setTimeout` and `setInterval` ([#622](https://github.com/vercel/edge-runtime/pull/622))
+
 ## 2.4.0
 
 ### Minor Changes
