@@ -3817,6 +3817,7 @@ packages:
   /exists-file@3.0.2:
     resolution: {integrity: sha512-0mO5ZIWiJl35mTCkyyh/cU1ucn+17fOn7/P+QzNCby+/OLKOKKH9fR5kh+riKlNutxYTbZG+OHyYqFfQfpweGw==}
     engines: {node: '>= 4'}
+    deprecated: This package is a perf sacrilege. Use `fs.existsSync()` instead
     dependencies:
       cb2promise: 1.1.1
     dev: true
