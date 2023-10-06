@@ -74,8 +74,8 @@ importers:
         specifier: ~2.13.2
         version: 2.13.2(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
       nextra-theme-docs:
-        specifier: ~2.13.1
-        version: 2.13.1(next@13.5.4)(nextra@2.13.2)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ~2.13.2
+        version: 2.13.2(next@13.5.4)(nextra@2.13.2)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ~18.2.0
         version: 18.2.0
@@ -6613,11 +6613,11 @@ packages:
       - babel-plugin-macros
     dev: false
 
-  /nextra-theme-docs@2.13.1(next@13.5.4)(nextra@2.13.2)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-mckNuKa0AmBbRdPCJ/OQ55KZx5MGH8moomMHYB3XVGXQqmXimOq1/2WZQiBdFx9u43KtfEvqZbQE8oGDIrfIsQ==}
+  /nextra-theme-docs@2.13.2(next@13.5.4)(nextra@2.13.2)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-yE4umXaImp1/kf/sFciPj2+EFrNSwd9Db26hi98sIIiujzGf3+9eUgAz45vF9CwBw50FSXxm1QGRcY+slQ4xQQ==}
     peerDependencies:
       next: '>=9.5.3'
-      nextra: 2.13.1
+      nextra: 2.13.2
       react: '>=16.13.1'
       react-dom: '>=16.13.1'
     dependencies:
@@ -6637,7 +6637,7 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       scroll-into-view-if-needed: 3.0.6
-      zod: 3.22.2
+      zod: 3.22.4
     dev: false
 
   /nextra@2.13.2(next@13.5.4)(react-dom@18.2.0)(react@18.2.0):
@@ -9046,10 +9046,6 @@ packages:
   /yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
-
-  /zod@3.22.2:
-    resolution: {integrity: sha512-wvWkphh5WQsJbVk1tbx1l1Ly4yg+XecD+Mq280uBGt9wa5BKSWf4Mhp6GmrkPixhMxmabYY7RbzlwVP32pbGCg==}
-    dev: false
 
   /zod@3.22.4:
     resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
