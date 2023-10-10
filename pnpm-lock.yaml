@@ -30,7 +30,7 @@ importers:
         version: 2.11.2
       git-authors-cli:
         specifier: latest
-        version: 1.0.46
+        version: 1.0.47
       jest:
         specifier: 29.7.0
         version: 29.7.0(@types/node@16.18.40)(ts-node@10.9.1)
@@ -3814,14 +3814,6 @@ packages:
     engines: {node: '>= 0.10.0', npm: '>= 1.4.0'}
     dev: true
 
-  /exists-file@3.0.2:
-    resolution: {integrity: sha512-0mO5ZIWiJl35mTCkyyh/cU1ucn+17fOn7/P+QzNCby+/OLKOKKH9fR5kh+riKlNutxYTbZG+OHyYqFfQfpweGw==}
-    engines: {node: '>= 4'}
-    deprecated: This package is a perf sacrilege. Use `fs.existsSync()` instead
-    dependencies:
-      cb2promise: 1.1.1
-    dev: true
-
   /exit@0.1.2:
     resolution: {integrity: sha512-Zk/eNKV2zbjpKzrsQ+n1G6poVbErQxJ0LBOJXaKZ1EViLzH+hrLu9cdXI4zw9dBQJslwBEpbQ2P1oS7nDxs6jQ==}
     engines: {node: '>= 0.8.0'}
@@ -4101,14 +4093,13 @@ packages:
       get-intrinsic: 1.2.0
     dev: true
 
-  /git-authors-cli@1.0.46:
-    resolution: {integrity: sha512-aRByRbF2GjHzlc58AQDFzg5kvZoTyzUAmDRyAfU7jkR/R4hUP/hlxq4mfh+m9cXFSqSv6LUl5HJmJY97+d6AFg==}
+  /git-authors-cli@1.0.47:
+    resolution: {integrity: sha512-7Hc3cp6eUJGvUsul5yfYBhnJBH8CrhKA/5STjYJ0FAgn+EIc4oTpx8zkWJMC2zxiioK1qW4jfH7vS4vpu6hBDA==}
     engines: {node: '>= 8'}
     hasBin: true
     dependencies:
       email-regex: 4.0.0
       execa: 5.1.1
-      exists-file: 3.0.2
       json-future: 2.2.18
       mri: 1.2.0
       picocolors: 1.0.0
