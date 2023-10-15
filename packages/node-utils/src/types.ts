@@ -20,10 +20,10 @@ export interface RequestOptions {
 
 export type NodeHandler = (
   req: IncomingMessage,
-  res: ServerResponse
+  res: ServerResponse,
 ) => Promise<void> | void
 
 export type WebHandler = (
   req: Request,
-  event: FetchEvent
+  event: FetchEvent,
 ) => Promise<Response> | Response | null | undefined

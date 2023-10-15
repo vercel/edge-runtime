@@ -11,22 +11,10 @@ The main difference is that the methods are not asynchronous so they do not retu
 
 ## Installation
 
-<Tabs items={['npm', 'yarn', 'pnpm']} storageKey="selected-pkg-manager">
-  <Tab>
-    ```sh
-    npm install @edge-runtime/cookies --save
-    ```
-  </Tab>
-  <Tab>
-    ```sh
-    yarn add @edge-runtime/cookies
-    ```
-  </Tab>
-  <Tab>
-    ```sh
-    pnpm install @edge-runtime/cookies --save
-    ```
-  </Tab>
+<Tabs items={['npm', 'yarn', 'pnpm']} storageKey='selected-pkg-manager'>
+  <Tab>```sh npm install @edge-runtime/cookies --save ```</Tab>
+  <Tab>```sh yarn add @edge-runtime/cookies ```</Tab>
+  <Tab>```sh pnpm install @edge-runtime/cookies --save ```</Tab>
 </Tabs>
 
 ## Usage
@@ -81,7 +69,7 @@ function handleRequest(req: Request) {
 
   return new Response(null, {
     headers,
-    status: 200
+    status: 200,
   })
 }
 ```

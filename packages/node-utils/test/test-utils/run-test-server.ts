@@ -7,7 +7,7 @@ import listen from 'test-listen'
 interface ServerOptions {
   handler: (
     request: IncomingMessage,
-    response: ServerResponse
+    response: ServerResponse,
   ) => Promise<void> | void
   port?: number
 }
@@ -19,7 +19,7 @@ export interface TestServer {
 }
 
 export async function runTestServer(
-  options: ServerOptions
+  options: ServerOptions,
 ): Promise<TestServer> {
   const server = createServer((req, res) => {
     try {

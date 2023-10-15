@@ -31,7 +31,7 @@ export class VM<T extends Record<string | number, any>> {
           strings: false,
           wasm: true,
         },
-      }
+      },
     ) as VMContext
 
     this.context = options.extend?.(context) ?? (context as VMContext & T)

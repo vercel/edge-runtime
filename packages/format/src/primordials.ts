@@ -26,7 +26,7 @@ export const SymbolIterator = Symbol.iterator
 export const SymbolPrototypeToString = Symbol.prototype.toString
 export const TypedArrayPrototypeGetLength = GetOwnGetter(
   (TypedArray as any).prototype,
-  'length'
+  'length',
 )!
 
 export type TypedArray =
@@ -63,7 +63,7 @@ export const enum PropertyFilter {
 
 export function getOwnNonIndexProperties(
   object: object,
-  filter: PropertyFilter
+  filter: PropertyFilter,
 ): Array<string | symbol> {
   const indexes =
     Array.isArray(object) || isTypedArray(object)
@@ -96,7 +96,7 @@ export function kind(value: unknown, type: 'string'): value is string
 export function kind(value: unknown, type: 'symbol'): value is symbol
 export function kind(
   value: unknown,
-  type: 'object'
+  type: 'object',
 ): value is Record<string | number | symbol, unknown>
 export function kind(value: unknown, type: string): value is unknown {
   return typeof value === type

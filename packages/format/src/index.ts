@@ -124,7 +124,7 @@ export function createFormat(opts: FormatterOptions = {}) {
   function formatValue(
     ctx: Context,
     value: unknown,
-    recurseTimes: number | null | undefined
+    recurseTimes: number | null | undefined,
   ): string {
     if (hasCustomSymbol(value, customInspectSymbol)) {
       return format(value[customInspectSymbol]({ format }))
@@ -158,7 +158,7 @@ export function createFormat(opts: FormatterOptions = {}) {
   function formatRaw(
     ctx: Context,
     value: unknown,
-    recurseTimes: number | null | undefined
+    recurseTimes: number | null | undefined,
   ): string {
     let keys: Array<string | symbol> = []
 
@@ -169,7 +169,7 @@ export function createFormat(opts: FormatterOptions = {}) {
       value: any,
       recurseTimes: number | null | undefined,
       visibleKeys: Set<string | symbol>,
-      keys: Array<string | symbol>
+      keys: Array<string | symbol>,
     ) => string[] = () => []
     let braces: [string, string] = ['', '']
     let noIterator = true
@@ -288,8 +288,8 @@ export function createFormat(opts: FormatterOptions = {}) {
           recurseTimes,
           visibleKeys,
           keys[i],
-          false
-        )
+          false,
+        ),
       )
     }
 
@@ -308,7 +308,7 @@ export function createFormat(opts: FormatterOptions = {}) {
 
   function inspect(
     value: unknown,
-    opts?: InspectOptions & { customInspectSymbol: symbol }
+    opts?: InspectOptions & { customInspectSymbol: symbol },
   ) {
     opts = Object.assign({ seen: [], depth: 2 }, opts)
     return formatValue(opts as Context, value, opts.depth)
@@ -320,7 +320,7 @@ export function createFormat(opts: FormatterOptions = {}) {
     recurseTimes: number | null | undefined,
     visibleKeys: Set<string | symbol>,
     key: string | symbol,
-    isArray: boolean
+    isArray: boolean,
   ) {
     let name: string | undefined
     let str: string | undefined
@@ -357,7 +357,7 @@ export function createFormat(opts: FormatterOptions = {}) {
     ctx: Context,
     value: unknown[],
     recurseTimes: number | null | undefined,
-    visibleKeys: Set<string | symbol>
+    visibleKeys: Set<string | symbol>,
   ) {
     const output: string[] = []
 
@@ -370,8 +370,8 @@ export function createFormat(opts: FormatterOptions = {}) {
             recurseTimes,
             visibleKeys,
             String(index),
-            true
-          )
+            true,
+          ),
         )
       } else {
         output.push('')
@@ -385,7 +385,7 @@ export function createFormat(opts: FormatterOptions = {}) {
     length: number,
     ctx: Context,
     value: TypedArray,
-    recurseTimes: number | null | undefined
+    recurseTimes: number | null | undefined,
   ) {
     const output = new Array(length)
     for (let i = 0; i < length; ++i) {
@@ -414,7 +414,7 @@ export function createFormat(opts: FormatterOptions = {}) {
   function formatSet(
     ctx: Context,
     value: Set<unknown>,
-    recurseTimes: number | null | undefined
+    recurseTimes: number | null | undefined,
   ) {
     const output: string[] = []
     for (const v of value) {
@@ -426,7 +426,7 @@ export function createFormat(opts: FormatterOptions = {}) {
   function formatMap(
     ctx: Context,
     value: Map<unknown, unknown>,
-    recurseTimes: number | null | undefined
+    recurseTimes: number | null | undefined,
   ) {
     const output: string[] = []
     for (const { 0: k, 1: v } of value) {
@@ -434,8 +434,8 @@ export function createFormat(opts: FormatterOptions = {}) {
         `${formatValue(ctx, k, recurseTimes)} => ${formatValue(
           ctx,
           v,
-          recurseTimes
-        )}`
+          recurseTimes,
+        )}`,
       )
     }
     return output
@@ -463,7 +463,7 @@ function formatPrimitive(value: unknown) {
 
 function hasCustomSymbol<CustomSymbol extends symbol>(
   value: unknown,
-  customInspectSymbol: CustomSymbol
+  customInspectSymbol: CustomSymbol,
 ): value is Record<
   CustomSymbol,
   (options: { format: (...args: unknown[]) => string }) => unknown
@@ -515,7 +515,7 @@ function isSet(value: unknown): value is Map<unknown, unknown> {
 function isBelowBreakLength(
   output: string[],
   start: number,
-  base: string
+  base: string,
 ): boolean {
   const breakLength = 80
   // Each entry is separated by at least a comma. Thus, we start with a total
@@ -541,7 +541,7 @@ function isBelowBreakLength(
 function reduceToSingleString(
   output: string[],
   base: string,
-  braces: string[]
+  braces: string[],
 ) {
   const start = output.length + braces[0].length + base.length + 10
   if (!isBelowBreakLength(output, start, base)) {
@@ -568,7 +568,7 @@ function reduceToSingleString(
 function safeStringify(input: unknown) {
   if (Array.isArray(input)) {
     input = input.map((element) =>
-      JSON.parse(JSON.stringify(element, makeCircularReplacer()))
+      JSON.parse(JSON.stringify(element, makeCircularReplacer())),
     )
   }
   return JSON.stringify(input, makeCircularReplacer())
@@ -588,7 +588,7 @@ function makeCircularReplacer() {
 // Look up the keys of the object.
 function getKeys(
   value: object,
-  showHidden: boolean = false
+  showHidden: boolean = false,
 ): Array<string | symbol> {
   let keys: Array<string | symbol>
 

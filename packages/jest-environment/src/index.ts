@@ -30,7 +30,7 @@ class EdgeEnvironment implements JestEnvironment<number> {
 
     const global = (this.global = Object.assign(
       this.context,
-      config.testEnvironmentOptions
+      config.testEnvironmentOptions,
     ) as any)
 
     installCommonGlobals(global, config.globals)

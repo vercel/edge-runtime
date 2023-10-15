@@ -16,7 +16,7 @@ it('throws when the body was directly consumed', async () => {
   const response = new Response(formData)
 
   async function* streamToIterator<T>(
-    readable: ReadableStream<T>
+    readable: ReadableStream<T>,
   ): AsyncIterableIterator<T> {
     const reader = readable.getReader()
     while (true) {

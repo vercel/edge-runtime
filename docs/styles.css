@@ -5,7 +5,8 @@ code {
 }
 
 body {
-  background: linear-gradient(
+  background:
+    linear-gradient(
       to bottom,
       rgba(255, 255, 255, 0) 0%,
       rgba(255, 255, 255, 1) 300px
@@ -31,7 +32,7 @@ body {
 
 #__next article :not(pre) > code::before,
 #__next article :not(pre) > code::after {
-  content: "\`";
+  content: '\`';
 }
 
 .dark body article pre {
@@ -51,26 +52,27 @@ body {
   --shiki-token-constant: var(--shiki-color-text);
   --shiki-token-comment: #999;
   --shiki-token-keyword: #ff0078;
-  --shiki-token-function: #0077FF;
+  --shiki-token-function: #0077ff;
   --shiki-token-string-expression: #028265;
   --shiki-token-punctuation: var(--shiki-color-text);
 }
 
 .dark body {
-  --shiki-color-text: #EAEAEA;
+  --shiki-color-text: #eaeaea;
   --shiki-token-constant: var(--shiki-color-text);
   --shiki-token-comment: #666;
   --shiki-token-keyword: #ff0078;
-  --shiki-token-function: #0099FF;
+  --shiki-token-function: #0099ff;
   --shiki-token-string-expression: #50e3c2;
   --shiki-token-punctuation: var(--shiki-color-text);
 
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #111 300px),
+  background:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #111 300px),
     fixed 0 0 / 20px 20px radial-gradient(#313131 1px, transparent 0),
     fixed 10px 10px / 20px 20px radial-gradient(#313131 1px, transparent 0);
 }
 
-code[data-language="sh"] {
+code[data-language='sh'] {
   --shiki-token-string: var(--shiki-color-text);
 }
 
@@ -91,9 +93,9 @@ code[data-language="sh"] {
 }
 
 #__next article.nextra-body h5 {
-  font-size: .875em;
+  font-size: 0.875em;
 }
 
 #__next article.nextra-body h5 {
-  font-size: .85em;
+  font-size: 0.85em;
 }

@@ -49,7 +49,7 @@ async function main() {
       const event = await deferred
       assert.strictEqual(
         event.reason.message,
-        'This ReadableStream did not return bytes.'
+        'This ReadableStream did not return bytes.',
       )
     }
     return 'TEST PASSED!'

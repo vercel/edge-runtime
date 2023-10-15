@@ -69,7 +69,7 @@ it('maps the request headers`', async () => {
   expect(request?.headers.get('user-agent')).toEqual('undici')
   expect(request?.headers.get('x-hi')).toEqual(headers.get('x-hi'))
   expect(request?.headers.get('vercel-is-awesome')).toEqual(
-    headers.get('vercel-is-awesome')
+    headers.get('vercel-is-awesome'),
   )
 })
 
@@ -81,13 +81,13 @@ it(`uses default origin as request url origin when there are no host header`, as
 it(`uses request host header as request url origin`, async () => {
   const host = 'vercel.com'
   await expect(
-    mapRequest(server.url, { headers: { host } })
+    mapRequest(server.url, { headers: { host } }),
   ).resolves.toHaveProperty('url', `http://${host}/`)
   await expect(
-    mapRequest(server.url, { headers: { host: `${host}:6000` } })
+    mapRequest(server.url, { headers: { host: `${host}:6000` } }),
   ).resolves.toHaveProperty('url', `http://${host}:6000/`)
   await expect(
-    mapRequest(server.url, { headers: { host: `${host}:443` } })
+    mapRequest(server.url, { headers: { host: `${host}:443` } }),
   ).resolves.toHaveProperty('url', `https://${host}/`)
 })
 

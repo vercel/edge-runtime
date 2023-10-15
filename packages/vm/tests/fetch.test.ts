@@ -63,7 +63,7 @@ test('perform a POST as application/x-www-form-urlencoded', async () => {
       const text = await httpBody.text(req)
       const urlSearchParam = new URLSearchParams(text)
       const urlEncoded = JSON.stringify(
-        Object.fromEntries(urlSearchParam.entries())
+        Object.fromEntries(urlSearchParam.entries()),
       )
       res.statusCode = 200
       res.end(urlEncoded)

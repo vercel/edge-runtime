@@ -33,7 +33,7 @@ function print(
     color = 'white',
     withHeader = true,
     withBreakline = false,
-  }: LoggerOptions = {}
+  }: LoggerOptions = {},
 ) {
   if (!isEnabled) return
   const colorize = pico[color] as Formatter

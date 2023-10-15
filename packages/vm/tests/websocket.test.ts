@@ -27,7 +27,7 @@ test(`makes a WebSocket connection`, async () => {
 
   try {
     const v: Awaited<ReturnType<typeof userCode>> = await vm.evaluate(
-      `(${userCode})(${JSON.stringify(websocketServer.url)})`
+      `(${userCode})(${JSON.stringify(websocketServer.url)})`,
     )
     expect(v).toBe(`pong: ping`)
   } finally {
@@ -53,7 +53,7 @@ function createWebsocketServer(callback: (ws: Socket) => void): {
 
   const closeServer = promisify(server.close.bind(server))
   const closeWebsocketServer = promisify(
-    websocketServer.close.bind(websocketServer)
+    websocketServer.close.bind(websocketServer),
   )
 
   return {

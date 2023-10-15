@@ -33,7 +33,7 @@ test('sends a Uint8Array', async () => {
     const vm = new EdgeVM()
 
     const result = await vm.evaluate(
-      `fetch("${url}/foo", { method: "POST", body: new Uint8Array([104, 105, 33]) })`
+      `fetch("${url}/foo", { method: "POST", body: new Uint8Array([104, 105, 33]) })`,
     )
     expect(await result.text()).toBe(`Hello from /foo with body hi!`)
   } finally {

@@ -24,7 +24,7 @@ expect.extend({
         actual.status.toString()[0] as HttpStatusCodeRange
       const matchedRange = HTTP_STATUS_CODE_RANGES[httpStatusCodeRange]
       const statusRange = Object.keys(httpStatusCodeRange).find(
-        (k) => httpStatusCodeRange[k as HttpStatusCodeRange] === status
+        (k) => httpStatusCodeRange[k as HttpStatusCodeRange] === status,
       )
 
       const pass = matchedRange === status

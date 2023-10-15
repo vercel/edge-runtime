@@ -12,7 +12,7 @@ const transformToNode = buildToNodeHandler(
     Uint8Array: Uint8Array,
     FetchEvent: Edge.FetchEvent,
   },
-  { defaultOrigin: 'http://example.com' }
+  { defaultOrigin: 'http://example.com' },
 )
 
 let server: TestServer
@@ -52,7 +52,7 @@ it('returns an empty response', async () => {
 it('can change response text and status', async () => {
   server = await runTestServer({
     handler: transformToNode(
-      () => new Edge.Response(null, { status: 204, statusText: 'MY STATUS' })
+      () => new Edge.Response(null, { status: 204, statusText: 'MY STATUS' }),
     ),
   })
 
@@ -143,8 +143,8 @@ it('returns a streams of data', async () => {
               }
               write()
             },
-          })
-        )
+          }),
+        ),
     ),
   })
 
@@ -219,7 +219,7 @@ it('consumes incoming headers', async () => {
   }
   server = await runTestServer({
     handler: transformToNode(
-      (req) => new Edge.Response(null, { headers: req.headers })
+      (req) => new Edge.Response(null, { headers: req.headers }),
     ),
   })
 

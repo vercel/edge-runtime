@@ -10,22 +10,10 @@ Under the hood, this package is orchestrating the use of the rest of the package
 
 ## Installation
 
-<Tabs items={['npm', 'yarn', 'pnpm']} storageKey="selected-pkg-manager">
-  <Tab>
-    ```sh
-    npm install edge-runtime --save
-    ```
-  </Tab>
-  <Tab>
-    ```sh
-    yarn add edge-runtime
-    ```
-  </Tab>
-  <Tab>
-    ```sh
-    pnpm install edge-runtime --save
-    ```
-  </Tab>
+<Tabs items={['npm', 'yarn', 'pnpm']} storageKey='selected-pkg-manager'>
+  <Tab>```sh npm install edge-runtime --save ```</Tab>
+  <Tab>```sh yarn add edge-runtime ```</Tab>
+  <Tab>```sh pnpm install edge-runtime --save ```</Tab>
 </Tabs>
 
 This package includes built-in TypeScript support.
@@ -49,7 +37,7 @@ addEventListener('fetch', event => {
 const runtime = new EdgeRuntime({ initialCode })
 
 const response = await runtime.dispatchFetch(
-  'http://vercel.com?url=https://example.vercel.sh'
+  'http://vercel.com?url=https://example.vercel.sh',
 )
 
 // If your code logic performs asynchronous tasks, you should await them.

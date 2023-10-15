@@ -9,9 +9,9 @@ it('handles correctly uncaught exceptions', async () => {
   const result = await execAsync(
     `ts-node --transpile-only ${resolve(
       __dirname,
-      './fixtures/uncaught-exception.ts'
+      './fixtures/uncaught-exception.ts',
     )}`,
-    { encoding: 'utf8' }
+    { encoding: 'utf8' },
   )
   expect(result).toMatchObject({
     stdout: expect.stringContaining('TEST PASSED!'),
@@ -25,10 +25,10 @@ it('does not swallow uncaught exceptions outside of evaluation', async () => {
     execAsync(
       `ts-node --transpile-only ${resolve(
         __dirname,
-        './fixtures/legit-uncaught-exception.ts'
+        './fixtures/legit-uncaught-exception.ts',
       )}`,
-      { encoding: 'utf8' }
-    )
+      { encoding: 'utf8' },
+    ),
   ).rejects.toThrow(/intentional break/)
 })
 
@@ -38,7 +38,7 @@ it('does not swallow unhandled rejections outside of evaluation', async () => {
     execAsync(
       `ts-node --transpile-only ${resolve(
         __dirname,
-        './fixtures/legit-unhandled-rejection.ts'
+        './fixtures/legit-unhandled-rejection.ts',
       )}`,
       {
         encoding: 'utf8',
@@ -49,7 +49,7 @@ it('does not swallow unhandled rejections outside of evaluation', async () => {
               'NODE_OPTIONS': '--unhandled-rejections=strict',
             }
           : undefined,
-      }
-    )
+      },
+    ),
   ).rejects.toThrow(/intentional break/)
 })

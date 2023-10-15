@@ -14,8 +14,8 @@ it('first argument', () => {
         const o = Object.create(null)
         o.name = 'name'
         return o
-      })()
-    )
+      })(),
+    ),
   ).toBe(`{ name: 'name' }`)
   expect(format(null)).toBe('null')
   expect(format(true)).toBe('true')
@@ -36,8 +36,8 @@ it('first argument', () => {
         const fn = function () {}
         fn[Symbol.for('a')] = 'foo'
         return fn
-      })()
-    )
+      })(),
+    ),
   ).toBe("[Function: fn] { [Symbol(a)]: 'foo' }")
 
   expect(
@@ -47,8 +47,8 @@ it('first argument', () => {
         fn[Symbol.for('a')] = 'foo'
         fn[Symbol.for('b')] = 'bar'
         return fn
-      })()
-    )
+      })(),
+    ),
   ).toBe("[Function: fn] { [Symbol(a)]: 'foo', [Symbol(b)]: 'bar' }")
 
   expect(
@@ -58,8 +58,8 @@ it('first argument', () => {
         fn[Symbol.for('aaaaaaaaaaaa')] = 'foo'
         fn[Symbol.for('bbbbbbbbbbbbbbb')] = 'bar'
         return fn
-      })()
-    )
+      })(),
+    ),
   ).toBe(`[Function: fn] {
   [Symbol(aaaaaaaaaaaa)]: 'foo',
   [Symbol(bbbbbbbbbbbbbbb)]: 'bar'
@@ -95,7 +95,7 @@ it('first argument', () => {
         `  [length]: ${length},\n` +
         `  [byteLength]: ${byteLength},\n` +
         '  [byteOffset]: 0,\n' +
-        `  [buffer]: ArrayBuffer {  }\n]`
+        `  [buffer]: ArrayBuffer {  }\n]`,
     )
     expect(format(array)).toBe(`${constructor.name}(${length}) [ 65, 97 ]`)
   })
@@ -107,7 +107,7 @@ it('first argument', () => {
         get readonly() {
           return 1
         },
-      })
+      }),
     ).toBe('{ readonly: [Getter] }')
     expect(
       format({
@@ -115,7 +115,7 @@ it('first argument', () => {
           return 1
         },
         set readwrite(val) {},
-      })
+      }),
     ).toBe('{ readwrite: [Getter/Setter] }')
     expect(format({ set writeonly(val) {} })).toBe('{ writeonly: [Setter] }')
 
@@ -146,8 +146,8 @@ it('first argument', () => {
           [1, 'a'],
           [2, 'b'],
           [3, 'c'],
-        ])
-      )
+        ]),
+      ),
     ).toBe("Map(3) { 1 => 'a', 2 => 'b', 3 => 'c' }")
   }
 
@@ -158,7 +158,7 @@ it('first argument', () => {
     expect(format(map)).toBe("<ref *1> Map(1) { [Circular *1] => 'map' }")
     map.set(map, map)
     expect(format(map)).toBe(
-      '<ref *1> Map(1) { [Circular *1] => [Circular *1] }'
+      '<ref *1> Map(1) { [Circular *1] => [Circular *1] }',
     )
     map.delete(map)
     map.set('map', map)
@@ -177,7 +177,7 @@ it('first argument', () => {
       '<ref *1> {\n' +
         '  a: [ [Circular *1] ],\n' +
         '  b: <ref *2> { inner: [Circular *2], obj: [Circular *1] }\n' +
-        '}'
+        '}',
     )
   }
 })
@@ -214,7 +214,7 @@ it('string (%s)', () => {
       readonly name = 'CustomError'
     }
     expect(format(new CustomError('bar'))).toBe(
-      "[CustomError: bar] { name: 'CustomError' }"
+      "[CustomError: bar] { name: 'CustomError' }",
     )
   })()
   ;(() => {
@@ -222,7 +222,7 @@ it('string (%s)', () => {
       readonly name = 'CustomObject'
     }
     expect(format(new CustomObject())).toBe(
-      "CustomObject { name: 'CustomObject' }"
+      "CustomObject { name: 'CustomObject' }",
     )
   })()
 })
@@ -260,10 +260,10 @@ it('object generic (%O)', () => {
   expect(format('%O', { foo: 'bar' })).toBe("{ foo: 'bar' }")
   expect(format('%O', [1, 2, 3])).toBe('[ 1, 2, 3 ]')
   expect(format('%O', { error: new Error('oh no') })).toBe(
-    '{ error: [Error: oh no] }'
+    '{ error: [Error: oh no] }',
   )
   expect(format('%O', { date: new Date(123) })).toBe(
-    '{ date: 1970-01-01T00:00:00.123Z }'
+    '{ date: 1970-01-01T00:00:00.123Z }',
   )
 })
 
@@ -275,13 +275,13 @@ it('object (%o)', () => {
   expect(format('%o', Symbol('mysymbol'))).toBe('Symbol(mysymbol)')
   expect(format('%o', { foo: 'bar' })).toBe("{ foo: 'bar' }")
   expect(format('%o', { foo: 'bar', fooz: 'barz' })).toBe(
-    "{ foo: 'bar', fooz: 'barz' }"
+    "{ foo: 'bar', fooz: 'barz' }",
   )
   ;(function () {
     const error = new Error('mock error')
     delete error.stack
     expect(format('%o', error)).toBe(
-      "[Error: mock error] { message: 'mock error' }"
+      "[Error: mock error] { message: 'mock error' }",
     )
   })()
 
@@ -452,19 +452,19 @@ it('custom inspect symbol', () => {
     }
 
     expect(format(new Password('r0sebud'))).toBe(
-      `<ref *1> {\n  name: 'name',\n  a: { o: [Circular *1] },\n  b: { a: { o: [Circular *1] } },\n  c: [Circular *1]\n}`
+      `<ref *1> {\n  name: 'name',\n  a: { o: [Circular *1] },\n  b: { a: { o: [Circular *1] } },\n  c: [Circular *1]\n}`,
     )
     expect(format('%s', new Password('r0sebud'))).toBe(
-      `<ref *1> {\n  name: 'name',\n  a: { o: [Circular *1] },\n  b: { a: { o: [Circular *1] } },\n  c: [Circular *1]\n}`
+      `<ref *1> {\n  name: 'name',\n  a: { o: [Circular *1] },\n  b: { a: { o: [Circular *1] } },\n  c: [Circular *1]\n}`,
     )
     expect(format('%o', new Password('r0sebud'))).toBe(
-      `<ref *1> {\n  name: 'name',\n  a: { o: [Circular *1] },\n  b: { a: { o: [Circular *1] } },\n  c: [Circular *1]\n}`
+      `<ref *1> {\n  name: 'name',\n  a: { o: [Circular *1] },\n  b: { a: { o: [Circular *1] } },\n  c: [Circular *1]\n}`,
     )
     expect(format('%O', new Password('r0sebud'))).toBe(
-      `<ref *1> {\n  name: 'name',\n  a: { o: [Circular *1] },\n  b: { a: { o: [Circular *1] } },\n  c: [Circular *1]\n}`
+      `<ref *1> {\n  name: 'name',\n  a: { o: [Circular *1] },\n  b: { a: { o: [Circular *1] } },\n  c: [Circular *1]\n}`,
     )
     expect(format('%j', new Password('r0sebud'))).toBe(
-      `{"deepObject":{"name":"name","a":{"o":"[Circular]"},"b":{"a":"[Circular]"},"c":"[Circular]"}}`
+      `{"deepObject":{"name":"name","a":{"o":"[Circular]"},"b":{"a":"[Circular]"},"c":"[Circular]"}}`,
     )
   })()
 })

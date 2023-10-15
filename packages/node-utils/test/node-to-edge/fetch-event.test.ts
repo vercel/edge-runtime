@@ -20,6 +20,6 @@ it('throws when accessing waitUntil', () => {
   const request = new EdgeRuntime.Request('https://vercel.com')
   const event = toFetchEvent(request)
   expect(() => event.waitUntil(Promise.resolve())).toThrow(
-    'waitUntil is not supported yet.'
+    'waitUntil is not supported yet.',
   )
 })

@@ -1,5 +1,8 @@
 export interface DispatchFetch {
-  (input: string, init?: RequestInit): Promise<
+  (
+    input: string,
+    init?: RequestInit,
+  ): Promise<
     Response & {
       waitUntil: () => Promise<any>
     }
