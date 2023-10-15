@@ -2,7 +2,7 @@
 /// <reference path="../injectSourceCode.d.ts" />
 
 import Module from 'module'
-import nodeCrypto from 'crypto'
+import nodeCrypto from 'node:crypto'
 
 import {
   ReadableStream,
@@ -14,6 +14,7 @@ import {
   WritableStream,
   WritableStreamDefaultWriter,
 } from 'node:stream/web'
+import { File } from 'node:buffer'
 
 /**
  * @param {Object} params
@@ -125,14 +126,15 @@ export function load(scopedContext = {}) {
     PromiseRejectionEvent: eventsImpl.PromiseRejectionEvent,
   })
 
-  assign(context, {
+  const streamsImpl = {
     ReadableStream,
     ReadableStreamBYOBReader,
     ReadableStreamDefaultReader,
     TransformStream,
     WritableStream,
     WritableStreamDefaultWriter,
-  })
+  }
+  assign(context, streamsImpl)
 
   assign(context, { AbortController, AbortSignal, DOMException })
 
@@ -153,6 +155,22 @@ export function load(scopedContext = {}) {
 
   assign(context, { structuredClone })
 
+  /** @type {import('../../type-definitions/fetch')} */
+  const fetchImpl = requireWithFakeGlobalScope({
+    context,
+    id: 'fetch.js',
+    sourceCode: injectSourceCode('./fetch.js'),
+    cache: new Map([
+      [
+        'abort-controller',
+        { exports: { AbortController, AbortSignal, DOMException } },
+      ],
+      ['streams', { exports: streamsImpl }],
+    ]),
+    scopedContext: {
+      global: { ...scopedContext },
+    },
+  })
   assign(context, {
     fetch,
     File,
@@ -160,7 +178,7 @@ export function load(scopedContext = {}) {
     Headers,
     Request,
     Response,
-    WebSocket,
+    WebSocket: fetchImpl.WebSocket,
   })
 
   const cryptoImpl = getCrypto(context, scopedContext)

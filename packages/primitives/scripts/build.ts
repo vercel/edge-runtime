@@ -3,13 +3,14 @@ import alias from 'esbuild-plugin-alias'
 import { Options, build } from 'tsup'
 import fs from 'fs'
 
-const TARGET = 'node16.8'
+const TARGET = 'node18'
 
 const BUNDLE_OPTIONS: Options = {
   bundle: true,
   keepNames: true,
   format: ['cjs'],
   platform: 'node',
+  target: TARGET,
 }
 
 async function bundlePackage() {
@@ -49,27 +50,13 @@ async function bundlePackage() {
       opts.legalComments = 'external'
     },
     define: {
-      process: JSON.stringify({ env: {}, versions: { node: '16.6.0' } }),
+      process: JSON.stringify({ env: {}, versions: { node: '18.18.2' } }),
     },
     esbuildPlugins: [
       // @ts-ignore
       alias({
         'util/types': resolve('src/patches/util-types.js'),
       }),
-      {
-        name: 'alias-undici-core-request',
-        setup: (build) => {
-          build.onResolve({ filter: /^\.\/core\/request$/ }, async (args) => {
-            // validate it's resolved by the expected path
-            if (args.importer.endsWith('node_modules/undici/lib/client.js')) {
-              return {
-                path: resolve('src/patches/undici-core-request.js'),
-              }
-            }
-          })
-        },
-      },
-
       /**
        * Make sure that depdendencies between primitives are consumed
        * externally instead of being bundled. Also polyfills stream/web
