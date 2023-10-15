@@ -1,4 +1,3 @@
-import { Headers } from '@edge-runtime/primitives'
 import type { OutgoingHttpHeaders, ServerResponse } from 'node:http'
 
 export function toOutgoingHeaders(headers?: Headers): OutgoingHttpHeaders {

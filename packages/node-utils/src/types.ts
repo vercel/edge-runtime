@@ -1,11 +1,5 @@
 import type { IncomingMessage, ServerResponse } from 'http'
-import type {
-  Request,
-  Response,
-  Headers,
-  ReadableStream,
-  FetchEvent,
-} from '@edge-runtime/primitives'
+import type { FetchEvent } from '@edge-runtime/primitives'
 export interface BuildDependencies {
   Headers: typeof Headers
   ReadableStream: typeof ReadableStream
@@ -20,10 +14,10 @@ export interface RequestOptions {
 
 export type NodeHandler = (
   req: IncomingMessage,
-  res: ServerResponse
+  res: ServerResponse,
 ) => Promise<void> | void
 
 export type WebHandler = (
   req: Request,
-  event: FetchEvent
+  event: FetchEvent,
 ) => Promise<Response> | Response | null | undefined

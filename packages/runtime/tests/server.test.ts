@@ -1,6 +1,5 @@
 import { EdgeRuntime } from '../src/edge-runtime'
 import { runServer } from '../src/server'
-import fetch from 'node-fetch'
 import type { Readable } from 'stream'
 
 let server: Awaited<ReturnType<typeof runServer>>

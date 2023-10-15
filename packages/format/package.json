@@ -27,7 +27,7 @@
     "tsup": "7"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "files": [
     "dist"

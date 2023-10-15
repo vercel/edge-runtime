@@ -124,7 +124,7 @@
     "@jest/types": "29.5.0",
     "@svitejs/changesets-changelog-github-compact": "latest",
     "@types/jest": "29.5.5",
-    "@types/node": "16",
+    "@types/node": "18",
     "c8": "latest",
     "esbuild": "0.19.4",
     "finepack": "latest",
@@ -140,7 +140,7 @@
     "typescript": "latest"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "scripts": {
     "build": "turbo run build",
@@ -167,7 +167,7 @@
       "finepack"
     ]
   },
-  "packageManager": "pnpm@8.4.0",
+  "packageManager": "pnpm@8.9.0",
   "simple-git-hooks": {
     "pre-commit": "./node_modules/.bin/nano-staged"
   }

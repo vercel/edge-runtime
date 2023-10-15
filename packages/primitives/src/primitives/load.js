@@ -2,7 +2,7 @@
 /// <reference path="../injectSourceCode.d.ts" />
 
 import Module from 'module'
-import nodeCrypto from 'crypto'
+import nodeCrypto from 'node:crypto'
 
 import {
   ReadableStream,
@@ -14,6 +14,7 @@ import {
   WritableStream,
   WritableStreamDefaultWriter,
 } from 'node:stream/web'
+import { File } from 'node:buffer'
 
 /**
  * @param {Object} params
@@ -133,23 +134,11 @@ export function load(scopedContext = {}) {
     WritableStream,
     WritableStreamDefaultWriter,
   }
-
   assign(context, streamsImpl)
 
-  /** @type {import('../../type-definitions/abort-controller')} */
-  const abortControllerImpl = requireWithFakeGlobalScope({
-    context,
-    id: 'abort-controller.js',
-    sourceCode: injectSourceCode('./abort-controller.js'),
-    scopedContext: { ...scopedContext },
-  })
-  assign(context, {
-    AbortController: abortControllerImpl.AbortController,
-    AbortSignal: abortControllerImpl.AbortSignal,
-    DOMException: abortControllerImpl.DOMException,
-  })
+  assign(context, { AbortController, AbortSignal, DOMException })
 
-  /** @type {import('../../type-definitions/url')} */
+  /** @type {{URLPattern: import('../../type-definitions/url').URLPattern}} */
   const urlImpl = requireWithFakeGlobalScope({
     context,
     id: 'url.js',
@@ -162,44 +151,9 @@ export function load(scopedContext = {}) {
     URLPattern: urlImpl.URLPattern,
   })
 
-  /** @type {import('../../type-definitions/blob')} */
-  const blobImpl = (() => {
-    if (typeof scopedContext.Blob === 'function') {
-      return { Blob: scopedContext.Blob }
-    }
+  assign(context, { Blob })
 
-    if (typeof Blob === 'function') {
-      return { Blob }
-    }
-
-    /** @type {any} */
-    const global = { ...streamsImpl, ...scopedContext }
-
-    const globalGlobal = { ...global, Blob: undefined }
-    Object.setPrototypeOf(globalGlobal, globalThis)
-
-    global.global = globalGlobal
-    return requireWithFakeGlobalScope({
-      context,
-      id: 'blob.js',
-      sourceCode: injectSourceCode('./blob.js'),
-      scopedContext: global,
-    })
-  })()
-  assign(context, {
-    Blob: blobImpl.Blob,
-  })
-
-  /** @type {import('../../type-definitions/structured-clone')} */
-  const structuredCloneImpl = requireWithFakeGlobalScope({
-    id: 'structured-clone.js',
-    context,
-    sourceCode: injectSourceCode('./structured-clone.js'),
-    scopedContext: { ...streamsImpl, ...scopedContext },
-  })
-  assign(context, {
-    structuredClone: structuredCloneImpl.structuredClone,
-  })
+  assign(context, { structuredClone })
 
   /** @type {import('../../type-definitions/fetch')} */
   const fetchImpl = requireWithFakeGlobalScope({
@@ -207,26 +161,23 @@ export function load(scopedContext = {}) {
     id: 'fetch.js',
     sourceCode: injectSourceCode('./fetch.js'),
     cache: new Map([
-      ['abort-controller', { exports: abortControllerImpl }],
+      [
+        'abort-controller',
+        { exports: { AbortController, AbortSignal, DOMException } },
+      ],
       ['streams', { exports: streamsImpl }],
     ]),
     scopedContext: {
       global: { ...scopedContext },
-      ...scopedContext,
-      ...urlImpl,
-      ...abortControllerImpl,
-      ...eventsImpl,
-      ...streamsImpl,
-      structuredClone: context.structuredClone,
     },
   })
   assign(context, {
-    fetch: fetchImpl.fetch,
-    File: fetchImpl.File,
-    FormData: fetchImpl.FormData,
-    Headers: fetchImpl.Headers,
-    Request: fetchImpl.Request,
-    Response: fetchImpl.Response,
+    fetch,
+    File,
+    FormData,
+    Headers,
+    Request,
+    Response,
     WebSocket: fetchImpl.WebSocket,
   })
 

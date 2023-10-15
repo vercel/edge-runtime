@@ -271,43 +271,43 @@ function getDispatchFetchCode() {
 export type EdgeContext = VMContext & {
   self: EdgeContext
   globalThis: EdgeContext
-  AbortController: typeof EdgePrimitives.AbortController
-  AbortSignal: typeof EdgePrimitives.AbortSignal
+  AbortController: typeof AbortController
+  AbortSignal: typeof AbortSignal
   atob: typeof EdgePrimitives.atob
-  Blob: typeof EdgePrimitives.Blob
+  Blob: typeof Blob
   btoa: typeof EdgePrimitives.btoa
   console: typeof EdgePrimitives.console
   crypto: typeof EdgePrimitives.crypto
   Crypto: typeof EdgePrimitives.Crypto
   CryptoKey: typeof EdgePrimitives.CryptoKey
-  DOMException: typeof EdgePrimitives.DOMException
+  DOMException: typeof DOMException
   Event: typeof EdgePrimitives.Event
   EventTarget: typeof EdgePrimitives.EventTarget
-  fetch: typeof EdgePrimitives.fetch
+  fetch: typeof fetch
   FetchEvent: typeof EdgePrimitives.FetchEvent
-  File: typeof EdgePrimitives.File
-  FormData: typeof EdgePrimitives.FormData
-  Headers: typeof EdgePrimitives.Headers
+  File: typeof File
+  FormData: typeof FormData
+  Headers: typeof Headers
   PromiseRejectionEvent: typeof EdgePrimitives.PromiseRejectionEvent
-  ReadableStream: typeof EdgePrimitives.ReadableStream
-  ReadableStreamBYOBReader: typeof EdgePrimitives.ReadableStreamBYOBReader
-  ReadableStreamDefaultReader: typeof EdgePrimitives.ReadableStreamDefaultReader
-  Request: typeof EdgePrimitives.Request
-  Response: typeof EdgePrimitives.Response
+  ReadableStream: typeof ReadableStream
+  ReadableStreamBYOBReader: typeof ReadableStreamBYOBReader
+  ReadableStreamDefaultReader: typeof ReadableStreamDefaultReader
+  Request: typeof Request
+  Response: typeof Response
   setTimeout: typeof EdgePrimitives.setTimeout
   setInterval: typeof EdgePrimitives.setInterval
-  structuredClone: typeof EdgePrimitives.structuredClone
+  structuredClone: typeof structuredClone
   SubtleCrypto: typeof EdgePrimitives.SubtleCrypto
   TextDecoder: typeof EdgePrimitives.TextDecoder
   TextDecoderStream: typeof EdgePrimitives.TextDecoderStream
   TextEncoder: typeof EdgePrimitives.TextEncoder
   TextEncoderStream: typeof EdgePrimitives.TextEncoderStream
-  TransformStream: typeof EdgePrimitives.TransformStream
-  URL: typeof EdgePrimitives.URL
+  TransformStream: typeof TransformStream
+  URL: typeof URL
   URLPattern: typeof EdgePrimitives.URLPattern
-  URLSearchParams: typeof EdgePrimitives.URLSearchParams
-  WritableStream: typeof EdgePrimitives.WritableStream
-  WritableStreamDefaultWriter: typeof EdgePrimitives.WritableStreamDefaultWriter
+  URLSearchParams: typeof URLSearchParams
+  WritableStream: typeof WritableStream
+  WritableStreamDefaultWriter: typeof WritableStreamDefaultWriter
   EdgeRuntime: string
 }
 
