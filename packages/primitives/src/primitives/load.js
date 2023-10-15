@@ -125,31 +125,18 @@ export function load(scopedContext = {}) {
     PromiseRejectionEvent: eventsImpl.PromiseRejectionEvent,
   })
 
-  const streamsImpl = {
+  assign(context, {
     ReadableStream,
     ReadableStreamBYOBReader,
     ReadableStreamDefaultReader,
     TransformStream,
     WritableStream,
     WritableStreamDefaultWriter,
-  }
-
-  assign(context, streamsImpl)
-
-  /** @type {import('../../type-definitions/abort-controller')} */
-  const abortControllerImpl = requireWithFakeGlobalScope({
-    context,
-    id: 'abort-controller.js',
-    sourceCode: injectSourceCode('./abort-controller.js'),
-    scopedContext: { ...scopedContext },
-  })
-  assign(context, {
-    AbortController: abortControllerImpl.AbortController,
-    AbortSignal: abortControllerImpl.AbortSignal,
-    DOMException: abortControllerImpl.DOMException,
   })
 
-  /** @type {import('../../type-definitions/url')} */
+  assign(context, { AbortController, AbortSignal, DOMException })
+
+  /** @type {{URLPattern: import('../../type-definitions/url').URLPattern}} */
   const urlImpl = requireWithFakeGlobalScope({
     context,
     id: 'url.js',
@@ -160,6 +147,20 @@ export function load(scopedContext = {}) {
     URL,
     URLSearchParams,
     URLPattern: urlImpl.URLPattern,
+  })
+
+  assign(context, { Blob })
+
+  assign(context, { structuredClone })
+
+  assign(context, {
+    fetch,
+    File,
+    FormData,
+    Headers,
+    Request,
+    Response,
+    WebSocket,
   })
 
   const cryptoImpl = getCrypto(context, scopedContext)
