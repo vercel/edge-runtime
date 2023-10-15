@@ -67,17 +67,16 @@ test('reflect .set into `set-cookie`', async () => {
 it('reflect .set all options attributes into `set-cookie`', async () => {
   const headers = new Headers()
   const cookies = new ResponseCookies(headers)
-  const options = {
+  cookies.set('first-name', 'first-value', {
     domain: 'custom-domain',
     path: 'custom-path',
     secure: true,
-    sameSite: 'strict' as 'strict' | 'lax' | 'none',
+    sameSite: 'strict',
     expires: new Date(2100, 0, 1, 12, 0, 0),
     httpOnly: true,
     maxAge: 0,
-    priority: 'high' as 'low' | 'medium' | 'high',
-  }
-  cookies.set('first-name', 'first-value', options)
+    priority: 'high',
+  })
   const cookiesInHeaders = Object.fromEntries(headers.entries())['set-cookie']
   expect(cookiesInHeaders).toBe(
     'first-name=first-value; Path=custom-path; Expires=Fri, 01 Jan 2100 12:00:00 GMT; Max-Age=0; Domain=custom-domain; Secure; HttpOnly; SameSite=strict; Priority=high',
