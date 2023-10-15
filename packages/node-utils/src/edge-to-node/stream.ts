@@ -19,7 +19,6 @@ export function toToReadable(
   let closed = false
   const { highWaterMark, encoding, objectMode = false, signal } = options
 
-  Readable.fromWeb = toToReadable
   const readable = new Readable({
     objectMode,
     highWaterMark,
