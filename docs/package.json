@@ -17,7 +17,7 @@
     "tailwindcss": "~3.3.3"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "scripts": {
     "build": "next build ",

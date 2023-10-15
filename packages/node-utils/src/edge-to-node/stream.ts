@@ -13,12 +13,13 @@ interface FromWebOptions {
  */
 export function toToReadable(
   webStream: ReadableStream,
-  options: FromWebOptions = {}
+  options: FromWebOptions = {},
 ) {
   const reader = webStream.getReader()
   let closed = false
   const { highWaterMark, encoding, objectMode = false, signal } = options
 
+  Readable.fromWeb = toToReadable
   const readable = new Readable({
     objectMode,
     highWaterMark,
@@ -34,7 +35,7 @@ export function toToReadable(
             readable.push(chunk.value)
           }
         },
-        (error: any) => readable.destroy(error)
+        (error: any) => readable.destroy(error),
       )
     },
 
@@ -69,7 +70,7 @@ export function toToReadable(
     (error: any) => {
       closed = true
       readable.destroy(error)
-    }
+    },
   )
 
   return readable

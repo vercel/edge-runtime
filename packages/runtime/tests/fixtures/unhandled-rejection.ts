@@ -1,6 +1,5 @@
 import { EdgeRuntime, runServer } from '../../src'
 import assert from 'assert'
-import fetch from 'node-fetch'
 
 async function main() {
   const runtime = new EdgeRuntime()
@@ -49,7 +48,7 @@ async function main() {
       const event = await deferred
       assert.strictEqual(
         event.reason.message,
-        'This ReadableStream did not return bytes.'
+        'This ReadableStream did not return bytes.',
       )
     }
     return 'TEST PASSED!'

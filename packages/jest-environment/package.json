@@ -30,7 +30,7 @@
     "jest-util": "29.5.0"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "files": [
     "dist"

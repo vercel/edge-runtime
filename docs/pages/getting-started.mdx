@@ -11,22 +11,10 @@ import { Tabs, Tab } from '../components/tabs'
 
 The **Edge Runtime** is available as Node.js package. You can install it with your favorite package manager:
 
-<Tabs items={['npm', 'yarn', 'pnpm']} storageKey="selected-pkg-manager">
-  <Tab>
-    ```sh
-    npm install edge-runtime
-    ```
-  </Tab>
-  <Tab>
-    ```sh
-    yarn add edge-runtime
-    ```
-  </Tab>
-  <Tab>
-    ```sh
-    pnpm install edge-runtime
-    ```
-  </Tab>
+<Tabs items={['npm', 'yarn', 'pnpm']} storageKey='selected-pkg-manager'>
+  <Tab>```sh npm install edge-runtime ```</Tab>
+  <Tab>```sh yarn add edge-runtime ```</Tab>
+  <Tab>```sh pnpm install edge-runtime ```</Tab>
 </Tabs>
 
 ## Usage
@@ -92,7 +80,6 @@ and expose it locally to be used via HTTP:
 ```js
 import { EdgeRuntime, runServer } from 'edge-runtime'
 import { onExit } from 'signal-exit'
-import fetch from 'node-fetch'
 
 const initialCode = `
 addEventListener('fetch', event => {
