@@ -1,5 +1,11 @@
 # @edge-runtime/cookies
 
+## 4.0.1
+
+### Patch Changes
+
+- fix cookies() .set() to reflect the priority attribute into set-cookie ([#640](https://github.com/vercel/edge-runtime/pull/640))
+
 ## 4.0.0
 
 ### Major Changes
