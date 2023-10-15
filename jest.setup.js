@@ -18,7 +18,7 @@ global.Object = new Proxy(Object, {
   get(target, prop, receiver) {
     if (prop === Symbol.hasInstance) {
       const ObjectConstructor = Object.getPrototypeOf(
-        Object.getPrototypeOf(Uint8Array.prototype)
+        Object.getPrototypeOf(Uint8Array.prototype),
       ).constructor
 
       return function (instance) {

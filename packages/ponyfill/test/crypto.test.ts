@@ -7,7 +7,7 @@ test('crypto.randomUUID', async () => {
 test('crypto.subtle.digest', async () => {
   const digest = await crypto.subtle.digest(
     'SHA-256',
-    new TextEncoder().encode('Hello, world')
+    new TextEncoder().encode('Hello, world'),
   )
 
   // convert to hex

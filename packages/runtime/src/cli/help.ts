@@ -28,7 +28,7 @@ function getSectionSummary(options: HelpOptions) {
   const summary = Object.entries(options)
     .map(
       ([key, description]) =>
-        `    --${key.padEnd(summaryPadLength)} ${dim(description)}`
+        `    --${key.padEnd(summaryPadLength)} ${dim(description)}`,
     )
     .join('\n')
 

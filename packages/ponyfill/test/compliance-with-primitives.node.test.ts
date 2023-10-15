@@ -12,7 +12,7 @@ test('exports all primitives in Edge Runtime', async () => {
       acc[name] = expect.anything()
       return acc
     },
-    {}
+    {},
   )
 
   const runtime = new EdgeVM({
@@ -40,7 +40,7 @@ test('exports all primitives in Node.js', async () => {
       acc[name] = expect.anything()
       return acc
     },
-    {}
+    {},
   )
 
   const result = { ...require('..') }

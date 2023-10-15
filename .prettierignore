@@ -26,4 +26,5 @@ LICENSE
 *.patch
 *.toml
 *.prisma
-
+packages/primitives/load
+pnpm-lock.yaml

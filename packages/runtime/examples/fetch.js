@@ -45,15 +45,15 @@ async function fetchRequest(url) {
   const banners = [
     appendMarquee(
       'Served by Edge Runtime, check: https://github.com/vercel/edge-runtime.',
-      '#111'
+      '#111',
     ),
     appendMarquee(
       'Breaking news Next.js is powered by Edge Runtime. fetch is here. Polyfills are the lesser evil. ',
-      '#333'
+      '#333',
     ),
     appendMarquee(
       `Congrats you are the winner #${++globalCounter}!!! YOU WON A TESLA!! Talk to @rauchg`,
-      '#444'
+      '#444',
     ),
   ]
   return new Response(`${banners.join()}\n${content}`, {

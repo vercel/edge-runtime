@@ -1,35 +1,35 @@
-const colors = require("tailwindcss/colors");
+const colors = require('tailwindcss/colors')
 
 module.exports = {
   content: [
-    "./components/**/*.js",
-    "./components/**/*.tsx",
-    "./nextra-theme-docs/**/*.js",
-    "./nextra-theme-docs/**/*.tsx",
-    "./nextra-theme-docs/**/*.css",
-    "./pages/**/*.md",
-    "./pages/**/*.mdx",
-    "./pages/**/*.tsx",
-    "./theme.config.js",
-    "./styles.css",
+    './components/**/*.js',
+    './components/**/*.tsx',
+    './nextra-theme-docs/**/*.js',
+    './nextra-theme-docs/**/*.tsx',
+    './nextra-theme-docs/**/*.css',
+    './pages/**/*.md',
+    './pages/**/*.mdx',
+    './pages/**/*.tsx',
+    './theme.config.js',
+    './styles.css',
   ],
   theme: {
     extend: {
       fontFamily: {
-        sans: [`"Inter"`, "sans-serif"],
+        sans: [`"Inter"`, 'sans-serif'],
         mono: [
-          "Menlo",
-          "Monaco",
-          "Lucida Console",
-          "Liberation Mono",
-          "DejaVu Sans Mono",
-          "Bitstream Vera Sans Mono",
-          "Courier New",
-          "monospace",
+          'Menlo',
+          'Monaco',
+          'Lucida Console',
+          'Liberation Mono',
+          'DejaVu Sans Mono',
+          'Bitstream Vera Sans Mono',
+          'Courier New',
+          'monospace',
         ],
       },
       colors: {
-        dark: "#000",
+        dark: '#000',
         gray: colors.neutral,
         blue: colors.blue,
         orange: colors.orange,
@@ -38,12 +38,12 @@ module.exports = {
         yellow: colors.yellow,
       },
       screens: {
-        sm: "640px",
-        md: "768px",
-        lg: "1024px",
-        betterhover: { raw: "(hover: hover)" },
+        sm: '640px',
+        md: '768px',
+        lg: '1024px',
+        betterhover: { raw: '(hover: hover)' },
       },
     },
   },
-  darkMode: "class",
-};
+  darkMode: 'class',
+}

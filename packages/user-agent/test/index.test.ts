@@ -31,7 +31,7 @@ describe('userAgent()', () => {
 
   it('handles no user-agent header', () => {
     expect(userAgent(new Request('https://example.vercel.sh'))).toEqual(
-      emptyParsedUA
+      emptyParsedUA,
     )
   })
 })

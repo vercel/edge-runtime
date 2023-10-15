@@ -27,7 +27,7 @@ export interface EdgeRuntimeServer {
  * server will use a random one.
  */
 export async function runServer<T extends EdgeContext>(
-  options: ListenOptions & ServerOptions<T>
+  options: ListenOptions & ServerOptions<T>,
 ): Promise<EdgeRuntimeServer> {
   if (options.port === undefined) options.port = 0
   const { handler, waitUntil } = createHandler(options)

@@ -18,5 +18,5 @@
  * ```
  */
 export function load(
-  scopedContext: Record<string, unknown>
+  scopedContext: Record<string, unknown>,
 ): typeof import('./index')

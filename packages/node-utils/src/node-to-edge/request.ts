@@ -10,14 +10,14 @@ export function buildToRequest(dependencies: BuildDependencies) {
   const { Request } = dependencies
   return function toRequest(
     request: IncomingMessage,
-    options: RequestOptions
+    options: RequestOptions,
   ): Request {
     return new Request(
       String(
         new URL(
           request.url || '/',
-          computeOrigin(request, options.defaultOrigin)
-        )
+          computeOrigin(request, options.defaultOrigin),
+        ),
       ),
       {
         method: request.method,
@@ -25,7 +25,7 @@ export function buildToRequest(dependencies: BuildDependencies) {
         body: !['HEAD', 'GET'].includes(request.method ?? '')
           ? toReadableStream(request)
           : null,
-      }
+      },
     )
   }
 }

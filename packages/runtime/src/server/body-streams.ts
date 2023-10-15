@@ -11,7 +11,7 @@ type BodyStream = ReadableStream<Uint8Array>
 export function getClonableBodyStream<T extends IncomingMessage>(
   incomingMessage: T,
   KUint8Array: typeof Uint8Array,
-  KTransformStream: typeof TransformStream
+  KTransformStream: typeof TransformStream,
 ) {
   let bufferedBodyStream: BodyStream | null = null
 
@@ -25,7 +25,7 @@ export function getClonableBodyStream<T extends IncomingMessage>(
       if (bufferedBodyStream) {
         replaceRequestBody(
           incomingMessage,
-          bodyStreamToNodeStream(bufferedBodyStream)
+          bodyStreamToNodeStream(bufferedBodyStream),
         )
       }
     },
@@ -50,12 +50,12 @@ export function getClonableBodyStream<T extends IncomingMessage>(
 function requestToBodyStream(
   request: IncomingMessage,
   KUint8Array: typeof Uint8Array,
-  KTransformStream: typeof TransformStream
+  KTransformStream: typeof TransformStream,
 ): BodyStream {
   const transform = new KTransformStream<Uint8Array, Uint8Array>({
     start(controller) {
       request.on('data', (chunk) =>
-        controller.enqueue(new KUint8Array([...new Uint8Array(chunk)]))
+        controller.enqueue(new KUint8Array([...new Uint8Array(chunk)])),
       )
       request.on('end', () => controller.terminate())
       request.on('error', (err) => controller.error(err))
@@ -76,13 +76,13 @@ function bodyStreamToNodeStream(bodyStream: BodyStream): Readable {
         }
         yield value
       }
-    })()
+    })(),
   )
 }
 
 function replaceRequestBody<T extends IncomingMessage>(
   base: T,
-  stream: Readable
+  stream: Readable,
 ): T {
   for (const key in stream) {
     let v = stream[key as keyof Readable] as any
@@ -139,7 +139,7 @@ export async function* consumeUint8ArrayReadableStream(body?: ReadableStream) {
  */
 export async function pipeBodyStreamToResponse(
   body: BodyStream | null,
-  res: Writable
+  res: Writable,
 ) {
   if (!body) return
 

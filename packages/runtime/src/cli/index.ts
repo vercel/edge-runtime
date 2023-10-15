@@ -54,20 +54,20 @@ async function main() {
 
   const initialCode = readFileSync(
     path.resolve(process.cwd(), scriptPath),
-    'utf-8'
+    'utf-8',
   )
 
   const runtime = new EdgeRuntime({ initialCode })
   if (!flags.listen) return runtime.evaluate('')
 
   const logger = await import('./logger').then(({ createLogger }) =>
-    createLogger()
+    createLogger(),
   )
 
   logger.debug(
     `v${String(require('../../package.json').version)} at Node.js ${
       process.version
-    }`
+    }`,
   )
 
   /**

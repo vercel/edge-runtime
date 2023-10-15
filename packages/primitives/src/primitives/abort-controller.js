@@ -97,7 +97,7 @@ export class AbortSignal extends EventTarget {
     setTimeout(() => {
       abortSignalAbort(
         signal,
-        new DOMException('The operation timed out.', 'TimeoutError')
+        new DOMException('The operation timed out.', 'TimeoutError'),
       )
     }, milliseconds)
     return signal

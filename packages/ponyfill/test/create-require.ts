@@ -6,7 +6,7 @@ export function createRequire(
   context: Context,
   cache: Map<string, any>,
   references?: Set<string>,
-  scopedContext: Record<any, any> = {}
+  scopedContext: Record<any, any> = {},
 ) {
   return function requireFn(referrer: string, specifier: string) {
     const resolved = require.resolve(specifier, {
@@ -28,9 +28,9 @@ export function createRequire(
     references?.add(resolved)
     const fn = runInContext(
       `(function(module,exports,require,__dirname,__filename,${Object.keys(
-        scopedContext
+        scopedContext,
       ).join(',')}) {${readFileSync(resolved, 'utf-8')}\n})`,
-      context
+      context,
     )
 
     try {
@@ -40,7 +40,7 @@ export function createRequire(
         requireFn.bind(null, resolved),
         dirname(resolved),
         resolved,
-        ...Object.values(scopedContext)
+        ...Object.values(scopedContext),
       )
     } catch (error) {
       cache.delete(resolved)

@@ -1,7 +1,7 @@
 import { JSONBodyParams } from './types'
 
 export function assertRequestOrResponse(
-  actual: unknown
+  actual: unknown,
 ): asserts actual is Request | Response {
   if (actual instanceof Request || actual instanceof Response) return
   throw new Error('Expected a Request or Response instance')
@@ -20,7 +20,7 @@ expect.extend({
           [
             `${this.utils.matcherHint('toHaveJSONBody')}\n`,
             `Expected ${type} to have "Content-Type": ${this.utils.printExpected(
-              'application/json'
+              'application/json',
             )}`,
             `Received: ${this.utils.printReceived(contentType)}`,
           ].join('\n'),
@@ -38,7 +38,7 @@ expect.extend({
     return {
       message: () =>
         `expected JSON body '${JSON.stringify(json)}' to be '${JSON.stringify(
-          body
+          body,
         )}'`,
       pass: false,
     }

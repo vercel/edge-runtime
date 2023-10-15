@@ -14,9 +14,9 @@ describe('Request matchers', () => {
   test('`expect.toHaveTextBody` available', async () => {
     const request1 = new Request('http://n', { body: '', method: 'POST' })
     await expect(
-      expect(request1).toHaveTextBody('Does not have this text')
+      expect(request1).toHaveTextBody('Does not have this text'),
     ).rejects.toThrowErrorMatchingInlineSnapshot(
-      `"expected text body '' to be 'Does not have this text'"`
+      `"expected text body '' to be 'Does not have this text'"`,
     )
 
     const text = 'Does have this text'
@@ -36,13 +36,13 @@ describe('Response matchers', () => {
     expect(okResponse).not.toHaveStatus(201)
 
     expect(new Response('Internal Server Error', { status: 500 })).toHaveStatus(
-      'Server Error'
+      'Server Error',
     )
   })
 
   test('`expect.toHaveJSONBody` available', async () => {
     await expect(
-      expect(new Response('Without Content-Type')).toHaveJSONBody(null)
+      expect(new Response('Without Content-Type')).toHaveJSONBody(null),
     ).rejects.toThrowErrorMatchingInlineSnapshot(`
       "expect(received).toHaveJSONBody(expected)
 

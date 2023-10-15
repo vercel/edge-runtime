@@ -7,6 +7,6 @@ export default function Nextra({ Component, pageProps }) {
   return getLayout(
     <>
       <Component {...pageProps} />
-    </>
+    </>,
   )
 }

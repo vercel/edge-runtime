@@ -37,7 +37,7 @@ test('create a Request instance using second argument', () => {
   expect(
     new Request(
       'https://example.vercel.sh',
-      new Request('https://example.vercel.sh', { method: 'POST' })
-    ).method
+      new Request('https://example.vercel.sh', { method: 'POST' }),
+    ).method,
   ).toBe('POST')
 })

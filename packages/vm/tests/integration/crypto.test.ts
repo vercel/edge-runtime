@@ -9,7 +9,7 @@ test('crypto.subtle.digest returns an ArrayBuffer', async () => {
   async function fn() {
     const digest = await crypto.subtle.digest(
       'SHA-256',
-      crypto.getRandomValues(new Uint8Array(32))
+      crypto.getRandomValues(new Uint8Array(32)),
     )
     return digest
   }
@@ -26,14 +26,14 @@ test('crypto.subtle.digest returns a SHA-256 hash', async () => {
   async function fn() {
     const digest = await crypto.subtle.digest(
       'SHA-256',
-      new Uint8Array([104, 105, 33])
+      new Uint8Array([104, 105, 33]),
     )
     return digest
   }
 
   const digest = await vm.evaluate(`(${fn})()`)
   expect(toHex(digest)).toEqual(
-    createHash('sha256').update('hi!').digest('hex')
+    createHash('sha256').update('hi!').digest('hex'),
   )
 })
 
@@ -53,7 +53,7 @@ test('crypto.generateKey works with a Uint8Array from the VM', async () => {
         modulusLength: 2048,
       },
       false,
-      ['sign', 'verify']
+      ['sign', 'verify'],
     )
   }
 

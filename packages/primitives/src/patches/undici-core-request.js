@@ -66,7 +66,7 @@ class Request {
       reset,
       throwOnError,
     },
-    handler
+    handler,
   ) {
     if (typeof path !== 'string') {
       throw new InvalidArgumentError('path must be a string')
@@ -76,7 +76,7 @@ class Request {
       method !== 'CONNECT'
     ) {
       throw new InvalidArgumentError(
-        'path must be an absolute URL or start with a slash'
+        'path must be an absolute URL or start with a slash',
       )
     } else if (invalidPathRegex.exec(path) !== null) {
       throw new InvalidArgumentError('invalid request path')
@@ -140,7 +140,7 @@ class Request {
       this.body = body
     } else {
       throw new InvalidArgumentError(
-        'body must be a string, a Buffer, a Readable stream, an iterable, or an async iterable'
+        'body must be a string, a Buffer, a Readable stream, an iterable, or an async iterable',
       )
     }
 
@@ -192,7 +192,7 @@ class Request {
         (util.nodeMajor === 16 && util.nodeMinor < 8)
       ) {
         throw new InvalidArgumentError(
-          'Form-Data bodies are only supported in node v16.8 and newer.'
+          'Form-Data bodies are only supported in node v16.8 and newer.',
         )
       }
 
