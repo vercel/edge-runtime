@@ -14,6 +14,7 @@ export function stringifyCookie(c: ResponseCookie | RequestCookie): string {
     'secure' in c && c.secure && 'Secure',
     'httpOnly' in c && c.httpOnly && 'HttpOnly',
     'sameSite' in c && c.sameSite && `SameSite=${c.sameSite}`,
+    'priority' in c && c.priority && `Priority=${c.priority}`,
   ].filter(Boolean)
 
   return `${c.name}=${encodeURIComponent(c.value ?? '')}; ${attrs.join('; ')}`
@@ -54,10 +55,18 @@ export function parseSetCookie(setCookie: string): undefined | ResponseCookie {
   }
 
   const [[name, value], ...attributes] = parseCookie(setCookie)
-  const { domain, expires, httponly, maxage, path, samesite, secure } =
-    Object.fromEntries(
-      attributes.map(([key, value]) => [key.toLowerCase(), value]),
-    )
+  const {
+    domain,
+    expires,
+    httponly,
+    maxage,
+    path,
+    samesite,
+    secure,
+    priority,
+  } = Object.fromEntries(
+    attributes.map(([key, value]) => [key.toLowerCase(), value]),
+  )
   const cookie: ResponseCookie = {
     name,
     value: decodeURIComponent(value),
@@ -68,6 +77,7 @@ export function parseSetCookie(setCookie: string): undefined | ResponseCookie {
     path,
     ...(samesite && { sameSite: parseSameSite(samesite) }),
     ...(secure && { secure: true }),
+    ...(priority && { priority: parsePriority(priority) }),
   }
 
   return compact(cookie)
@@ -89,5 +99,14 @@ function parseSameSite(string: string): ResponseCookie['sameSite'] {
   string = string.toLowerCase()
   return SAME_SITE.includes(string as any)
     ? (string as ResponseCookie['sameSite'])
+    : undefined
+}
+
+const PRIORITY: ResponseCookie['priority'][] = ['low', 'medium', 'high']
+
+function parsePriority(string: string): ResponseCookie['priority'] {
+  string = string.toLowerCase()
+  return PRIORITY.includes(string as any)
+    ? (string as ResponseCookie['priority'])
     : undefined
 }
