@@ -42,13 +42,6 @@ it('does not swallow unhandled rejections outside of evaluation', async () => {
       )}`,
       {
         encoding: 'utf8',
-        env: process.version.startsWith('v14')
-          ? {
-              ...process.env,
-              // node 14 does not throw on unhandled rejections, so this test would resolve without the flag
-              'NODE_OPTIONS': '--unhandled-rejections=strict',
-            }
-          : undefined,
       },
     ),
   ).rejects.toThrow(/intentional break/)
