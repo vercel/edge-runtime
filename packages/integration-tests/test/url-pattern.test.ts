@@ -1,6 +1,4 @@
-/**
- * @jest-environment ../jest-environment/dist
- */
+import { URLPattern } from '@edge-runtime/ponyfill'
 
 test('URLPattern', () => {
   const urlPattern = new URLPattern('/:foo/:bar', 'https://example.vercel.sh')

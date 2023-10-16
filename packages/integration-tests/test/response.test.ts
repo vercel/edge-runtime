@@ -1,6 +1,10 @@
-/**
- * @jest-environment ../jest-environment/dist
- */
+import {
+  fetch,
+  Response,
+  TextDecoder,
+  TextEncoder,
+  TransformStream,
+} from '@edge-runtime/ponyfill'
 
 test('create a response', async () => {
   const res1 = new Response('Hello world!')

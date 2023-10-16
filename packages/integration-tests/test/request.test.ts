@@ -1,6 +1,5 @@
-/**
- * @jest-environment ../jest-environment/dist
- */
+import { fetch, Request, Headers } from '@edge-runtime/ponyfill'
+
 test('evaluate promise', () => {
   const url = 'https://vercel.com/foo/bar?one=value'
   const req = new Request(url)

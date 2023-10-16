@@ -1,6 +1,4 @@
-/**
- * @jest-environment ../jest-environment/dist
- */
+import { atob, btoa, TextDecoder } from '@edge-runtime/ponyfill'
 
 test('TextDecoder', () => {
   const input = new Uint8Array([

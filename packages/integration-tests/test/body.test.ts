@@ -1,6 +1,14 @@
-/**
- * @jest-environment ../jest-environment/dist
- */
+import {
+  Blob,
+  fetch,
+  FormData,
+  ReadableStream,
+  Response,
+  TextDecoder,
+  TextEncoder,
+  TransformStream,
+  URLSearchParams,
+} from '@edge-runtime/ponyfill'
 
 it('throws when the body was directly consumed', async () => {
   const object = { hello: 'world' }

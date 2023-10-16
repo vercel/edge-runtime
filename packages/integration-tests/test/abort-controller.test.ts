@@ -1,6 +1,9 @@
-/**
- * @jest-environment ../jest-environment/dist
- */
+import {
+  AbortController,
+  AbortSignal,
+  fetch,
+  DOMException,
+} from '@edge-runtime/ponyfill'
 
 describe('AbortController', () => {
   it('allows to abort fetch', async () => {

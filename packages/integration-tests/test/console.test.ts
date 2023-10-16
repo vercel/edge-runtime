@@ -1,6 +1,4 @@
-/**
- * @jest-environment ../jest-environment/dist
- */
+import { console } from '@edge-runtime/ponyfill'
 
 it.each([
   { method: 'assert' },
