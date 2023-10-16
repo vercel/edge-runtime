@@ -1,4 +1,4 @@
-import { TextDecoder } from '@edge-runtime/ponyfill'
+import { atob, btoa, TextDecoder } from '@edge-runtime/ponyfill'
 
 test('TextDecoder', () => {
   const input = new Uint8Array([
@@ -21,4 +21,13 @@ test('TextDecoder with stream', () => {
   let result = textDecoder.decode(input, { stream: true })
 
   expect(result).toBe('{"greeting":"hello"}')
+})
+
+test('btoa', async () => {
+  expect(btoa('Hello, world')).toBe('SGVsbG8sIHdvcmxk')
+  expect(btoa(new Uint8Array([1, 2, 3]).toString())).toBe('MSwyLDM=')
+})
+
+test('atob', async () => {
+  expect(atob('SGVsbG8sIHdvcmxk')).toBe('Hello, world')
 })
