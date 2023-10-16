@@ -5,8 +5,6 @@ import { join } from 'path'
 
 import { EdgeRuntime } from '../edge-runtime'
 
-const [NODE_MAJOR] = process.versions.node.split('.').map((v) => Number(v))
-
 const format = createFormat()
 
 const writer: createRepl.REPLWriter = (output) => {
@@ -34,18 +32,5 @@ Object.defineProperty(repl.context, 'EdgeRuntime', {
   writable: false,
   value: runtime.context.EdgeRuntime,
 })
-
-if (NODE_MAJOR < 16) {
-  repl.context.util = {
-    inspect: (...args: any[]) => {
-      const stack = new Error().stack ?? ''
-      if (!stack.includes('internal/repl/utils.js')) {
-        throw new Error('util.inspect is not available in Edge Runtime')
-      }
-
-      return format(...args).replace(/\n */g, ' ')
-    },
-  }
-}
 
 export { repl }
