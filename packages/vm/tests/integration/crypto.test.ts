@@ -1,6 +1,23 @@
 import { EdgeVM } from '../../src'
 import { createHash } from 'crypto'
 
+function toHex(buffer: ArrayBuffer) {
+  return Array.from(new Uint8Array(buffer))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('')
+}
+
+test('crypto.randomUUID', async () => {
+  const vm = new EdgeVM()
+
+  async function fn() {
+    return crypto.randomUUID()
+  }
+
+  const uuid = await vm.evaluate(`(${fn})()`)
+  expect(uuid).toEqual(expect.stringMatching(/^[a-f0-9-]+$/))
+})
+
 test('crypto.subtle.digest returns an ArrayBuffer', async () => {
   const vm = new EdgeVM()
 
@@ -34,12 +51,6 @@ test('crypto.subtle.digest returns a SHA-256 hash', async () => {
     createHash('sha256').update('hi!').digest('hex'),
   )
 })
-
-function toHex(buffer: ArrayBuffer) {
-  return Array.from(new Uint8Array(buffer))
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('')
-}
 
 test('crypto.generateKey works with a Uint8Array from the VM', async () => {
   async function fn() {

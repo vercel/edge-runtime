@@ -1,4 +1,6 @@
-import { URL } from '@edge-runtime/ponyfill'
+/**
+ * @jest-environment ../jest-environment/dist
+ */
 
 test('URL', async () => {
   const url = new URL('https://edge-ping.vercel.app/')

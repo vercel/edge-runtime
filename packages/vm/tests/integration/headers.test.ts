@@ -1,4 +1,6 @@
-import { Headers } from '@edge-runtime/ponyfill'
+/**
+ * @jest-environment ../jest-environment/dist
+ */
 
 test('sets header calling Headers constructor', async () => {
   const headers = new Headers({ cookie: 'hello=world' })

@@ -1,24 +1,32 @@
+/**
+ * @jest-environment ../jest-environment/dist
+ */
+
 import { Server, createServer, IncomingMessage, ServerResponse } from 'http'
 // @ts-ignore package `http-body` doesn't export type
 import * as httpBody from 'http-body'
 import listen from 'test-listen'
 import multer from 'multer'
 
-import { EdgeVM } from '../src/edge-vm'
-
-const fromVm = ((): {
-  fetch: typeof fetch
-  Headers: typeof Headers
-  FormData: typeof FormData
-  URL: typeof URL
-} => {
-  return new EdgeVM().evaluate(`({ fetch, Headers, FormData, URL })`)
-})()
-
-const { fetch, Headers, FormData, URL } = fromVm
-
 let server: Server
 afterEach(() => new Promise((resolve) => server.close(resolve)))
+
+test('perform a GET', async () => {
+  server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
+    if (req.method !== 'GET') {
+      res.statusCode = 400
+      res.end()
+    }
+    res.end('Example Domain')
+  })
+
+  const serverUrl = await listen(server)
+  const response = await fetch(serverUrl)
+  const text = await response.text()
+
+  expect(response.status).toBe(200)
+  expect(text).toBe('Example Domain')
+})
 
 test('perform a POST as application/json', async () => {
   server = createServer(async (req: IncomingMessage, res: ServerResponse) => {

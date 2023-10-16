@@ -1,4 +1,6 @@
-import { URLPattern } from '..'
+/**
+ * @jest-environment ../jest-environment/dist
+ */
 
 test('URLPattern', () => {
   const urlPattern = new URLPattern('/:foo/:bar', 'https://example.vercel.sh')
