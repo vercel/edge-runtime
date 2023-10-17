@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 4.0.3
+
+### Patch Changes
+
+- fix(btoa): it accepts any as argument ([`6372f52`](https://github.com/vercel/edge-runtime/commit/6372f52911f40a39d7801c55a8af5066e4eee9c8))
+
 ## 4.0.2
 
 ### Patch Changes
