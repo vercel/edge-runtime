@@ -26,6 +26,10 @@ test('TextDecoder with stream', () => {
 test('btoa', async () => {
   expect(btoa('Hello, world')).toBe('SGVsbG8sIHdvcmxk')
   expect(btoa(new Uint8Array([1, 2, 3]).toString())).toBe('MSwyLDM=')
+  expect(btoa(new Uint8Array([1, 2, 3]))).toBe('MSwyLDM=')
+  expect(btoa([1, 2, 3])).toBe('MSwyLDM=')
+  expect(btoa(123)).toBe('MTIz')
+  expect(btoa('123')).toBe('MTIz')
 })
 
 test('atob', async () => {
