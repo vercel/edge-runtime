@@ -77,14 +77,14 @@ it('reflect .set all options attributes into `set-cookie`', async () => {
     path: 'custom-path',
     secure: true,
     sameSite: 'strict',
-    expires: new Date(2100, 0, 1, 12, 0, 0),
+    expires: new Date(0),
     httpOnly: true,
     maxAge: 0,
     priority: 'high',
   })
   const cookiesInHeaders = headers.getSetCookie()
   expect(cookiesInHeaders).toEqual([
-    'first-name=first-value; Path=custom-path; Expires=Fri, 01 Jan 2100 11:00:00 GMT; Max-Age=0; Domain=custom-domain; Secure; HttpOnly; SameSite=strict; Priority=high',
+    'first-name=first-value; Path=custom-path; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Max-Age=0; Domain=custom-domain; Secure; HttpOnly; SameSite=strict; Priority=high',
   ])
 })
 
