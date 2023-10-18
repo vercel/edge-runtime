@@ -14,7 +14,6 @@
     "test-listen": "1.1.0",
     "@types/test-listen": "1.1.0",
     "@edge-runtime/jest-environment": "workspace:*",
-    "@edge-runtime/ponyfill": "workspace:*",
-    "@edge-runtime/primitives": "workspace:*"
+    "@edge-runtime/ponyfill": "workspace:*"
   }
 }
