@@ -26,9 +26,7 @@ export class ResponseCookies {
 
     const cookieStrings = Array.isArray(setCookie)
       ? setCookie
-      : // TODO: remove splitCookiesString when `getSetCookie` adoption is high enough in Node.js
-        // https://developer.mozilla.org/en-US/docs/Web/API/Headers/getSetCookie#browser_compatibility
-        splitCookiesString(setCookie)
+      : splitCookiesString(setCookie)
 
     for (const cookieString of cookieStrings) {
       const parsed = parseSetCookie(cookieString)
