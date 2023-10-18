@@ -1,4 +1,5 @@
-import { ReadableStream } from 'web-streams-polyfill'
+import { ReadableStream } from 'node:stream/web'
+
 import { consumeUint8ArrayReadableStream } from '../src/server/body-streams'
 
 describe('consumeUint8ArrayReadableStream', () => {
@@ -7,7 +8,7 @@ describe('consumeUint8ArrayReadableStream', () => {
       controller.enqueue(new Uint8Array(pull.mock.calls.length))
     })
     const cancel = jest.fn()
-    const readable = new ReadableStream({
+    const readable: any = new ReadableStream({
       pull,
       cancel,
     })
