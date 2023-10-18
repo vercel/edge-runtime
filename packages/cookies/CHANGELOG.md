@@ -1,5 +1,11 @@
 # @edge-runtime/cookies
 
+## 4.0.2
+
+### Patch Changes
+
+- Add fallback implementation for `Headers#getSetCookie` ([#650](https://github.com/vercel/edge-runtime/pull/650))
+
 ## 4.0.1
 
 ### Patch Changes
