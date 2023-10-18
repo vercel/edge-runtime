@@ -19,8 +19,10 @@ export class ResponseCookies {
   constructor(responseHeaders: Headers) {
     this._headers = responseHeaders
 
-    const setCookie = responseHeaders.getSetCookie?.()
-    responseHeaders.get('set-cookie') ?? []
+    const setCookie =
+      responseHeaders.getSetCookie?.() ??
+      responseHeaders.get('set-cookie') ??
+      []
 
     const cookieStrings = Array.isArray(setCookie)
       ? setCookie
