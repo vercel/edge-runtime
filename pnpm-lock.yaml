@@ -306,8 +306,8 @@ importers:
         version: link:../primitives
     devDependencies:
       '@types/multer':
-        specifier: 1.4.8
-        version: 1.4.8
+        specifier: 1.4.9
+        version: 1.4.9
       '@types/test-listen':
         specifier: 1.1.0
         version: 1.1.0
@@ -2105,8 +2105,8 @@ packages:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
     dev: false
 
-  /@types/multer@1.4.8:
-    resolution: {integrity: sha512-VMZOW6mnmMMhA5m3fsCdXBwFwC+a+27/8gctNMuQC4f7UtWcF79KAFGoIfKZ4iqrElgWIa3j5vhMJDp0iikQ1g==}
+  /@types/multer@1.4.9:
+    resolution: {integrity: sha512-9NSvPJ2E8bNTc8XtJq1Cimx2Wrn2Ah48F15B2Du/hM8a8CHLhVbJMlF3ZCqhvMdht7Sa+YdP0aKP7N4fxDcrrg==}
     dependencies:
       '@types/express': 4.17.17
     dev: true
