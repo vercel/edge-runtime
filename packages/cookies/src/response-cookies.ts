@@ -1,5 +1,9 @@
 import type { ResponseCookie } from './types'
-import { parseSetCookie, stringifyCookie } from './serialize'
+import {
+  parseSetCookie,
+  splitCookiesString,
+  stringifyCookie,
+} from './serialize'
 
 /**
  * A class for manipulating {@link Response} cookies (`Set-Cookie` header).
@@ -15,7 +19,14 @@ export class ResponseCookies {
   constructor(responseHeaders: Headers) {
     this._headers = responseHeaders
 
-    const cookieStrings = responseHeaders.getSetCookie()
+    const setCookie =
+      responseHeaders.getSetCookie?.() ??
+      responseHeaders.get('set-cookie') ??
+      []
+
+    const cookieStrings = Array.isArray(setCookie)
+      ? setCookie
+      : splitCookiesString(setCookie)
 
     for (const cookieString of cookieStrings) {
       const parsed = parseSetCookie(cookieString)
