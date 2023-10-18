@@ -9,6 +9,10 @@
   },
   "license": "MPL-2.0",
   "devDependencies": {
+    "http-body": "1.0.7",
+    "multer": "1.4.5-lts.1",
+    "test-listen": "1.1.0",
+    "@types/test-listen": "1.1.0",
     "@edge-runtime/jest-environment": "workspace:*",
     "@edge-runtime/ponyfill": "workspace:*",
     "@edge-runtime/primitives": "workspace:*"

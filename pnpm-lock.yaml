@@ -128,6 +128,18 @@ importers:
       '@edge-runtime/primitives':
         specifier: workspace:*
         version: link:../primitives
+      '@types/test-listen':
+        specifier: 1.1.0
+        version: 1.1.0
+      http-body:
+        specifier: 1.0.7
+        version: 1.0.7
+      multer:
+        specifier: 1.4.5-lts.1
+        version: 1.4.5-lts.1
+      test-listen:
+        specifier: 1.1.0
+        version: 1.1.0
 
   packages/jest-environment:
     dependencies:
@@ -219,18 +231,6 @@ importers:
       event-target-shim:
         specifier: 6.0.2
         version: 6.0.2
-      formdata-node:
-        specifier: 5.0.1
-        version: 5.0.1
-      http-body:
-        specifier: 1.0.7
-        version: 1.0.7
-      multer:
-        specifier: 1.4.5-lts.1
-        version: 1.4.5-lts.1
-      test-listen:
-        specifier: 1.1.0
-        version: 1.1.0
       tsup:
         specifier: '7'
         version: 7.0.0(ts-node@10.9.1)(typescript@5.2.2)
@@ -3977,14 +3977,6 @@ packages:
       mime-types: 2.1.35
     dev: true
 
-  /formdata-node@5.0.1:
-    resolution: {integrity: sha512-8xnIjMYGKPj+rY2BTbAmpqVpi8der/2FT4d9f7J32FlsCpO5EzZPq3C/N56zdv8KweHzVF6TGijsS1JT6r1H2g==}
-    engines: {node: '>= 14.17'}
-    dependencies:
-      node-domexception: 1.0.0
-      web-streams-polyfill: 4.0.0-beta.3
-    dev: true
-
   /fraction.js@4.3.6:
     resolution: {integrity: sha512-n2aZ9tNfYDwaHhvFTkhFErqOMIb8uyzSQ+vGJBjZyanAKZVbGUQ1sngfk9FdkBw7G26O7AgNjLcecLffD1c7eg==}
     dev: true
@@ -6672,11 +6664,6 @@ packages:
       - supports-color
     dev: false
 
-  /node-domexception@1.0.0:
-    resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
-    engines: {node: '>=10.5.0'}
-    dev: true
-
   /node-fetch@2.6.11:
     resolution: {integrity: sha512-4I6pdBY1EthSqDmJkiNk3JIT8cswwR9nfeW/cPdUagJYEQG7R95WRH74wpz7ma8Gh/9dI9FP+OU+0E4FvtA55w==}
     engines: {node: 4.x || >=6.0.0}
@@ -8798,11 +8785,6 @@ packages:
   /web-namespaces@2.0.1:
     resolution: {integrity: sha512-bKr1DkiNa2krS7qxNtdrtHAmzuYGFQLiQ13TsorsdT6ULTkPLKuu5+GsFpDlg6JFjUTwX2DyhMPG2be8uPrqsQ==}
     dev: false
-
-  /web-streams-polyfill@4.0.0-beta.3:
-    resolution: {integrity: sha512-QW95TCTaHmsYfHDybGMwO5IJIM93I/6vTRk+daHTWFPhwh+C8Cg7j7XyKrwrj8Ib6vYXe0ocYNrmzY4xAAN6ug==}
-    engines: {node: '>= 14'}
-    dev: true
 
   /web-worker@1.2.0:
     resolution: {integrity: sha512-PgF341avzqyx60neE9DD+XS26MMNMoUQRz9NOZwW32nPQrF6p77f1htcnjBSEV8BGMKZ16choqUG4hyI0Hx7mA==}

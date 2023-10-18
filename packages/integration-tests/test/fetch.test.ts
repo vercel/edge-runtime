@@ -1,7 +1,9 @@
-/**
- * @jest-environment ../jest-environment/dist
- */
-
+import {
+  fetch,
+  Headers,
+  FormData,
+  URLSearchParams,
+} from '@edge-runtime/ponyfill'
 import { Server, createServer, IncomingMessage, ServerResponse } from 'http'
 // @ts-ignore package `http-body` doesn't export type
 import * as httpBody from 'http-body'
