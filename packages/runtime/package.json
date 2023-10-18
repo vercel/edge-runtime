@@ -25,6 +25,7 @@
   ],
   "dependencies": {
     "@edge-runtime/format": "workspace:*",
+    "@edge-runtime/ponyfill": "workspace:*",
     "@edge-runtime/vm": "workspace:*",
     "async-listen": "3.0.1",
     "mri": "1.2.0",

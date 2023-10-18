@@ -125,9 +125,6 @@ importers:
       '@edge-runtime/ponyfill':
         specifier: workspace:*
         version: link:../ponyfill
-      '@edge-runtime/primitives':
-        specifier: workspace:*
-        version: link:../primitives
       '@types/test-listen':
         specifier: 1.1.0
         version: 1.1.0
@@ -247,6 +244,9 @@ importers:
       '@edge-runtime/format':
         specifier: workspace:*
         version: link:../format
+      '@edge-runtime/ponyfill':
+        specifier: workspace:*
+        version: link:../ponyfill
       '@edge-runtime/vm':
         specifier: workspace:*
         version: link:../vm
