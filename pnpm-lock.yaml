@@ -172,8 +172,8 @@ importers:
         specifier: workspace:*
         version: link:../primitives
       '@types/test-listen':
-        specifier: 1.1.0
-        version: 1.1.0
+        specifier: 1.1.1
+        version: 1.1.1
       test-listen:
         specifier: 1.1.0
         version: 1.1.0
@@ -309,8 +309,8 @@ importers:
         specifier: 1.4.9
         version: 1.4.9
       '@types/test-listen':
-        specifier: 1.1.0
-        version: 1.1.0
+        specifier: 1.1.1
+        version: 1.1.1
       '@types/ws':
         specifier: 8.5.7
         version: 8.5.7
@@ -2176,10 +2176,10 @@ packages:
   /@types/stack-utils@2.0.1:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
 
-  /@types/test-listen@1.1.0:
-    resolution: {integrity: sha512-y6ZfbSzYHniCeY6ZAzsQjSAdJInNVoEz4Uhsb81W+RCoNYA59yoG/+XbqPqCPj2KCU3Wa6RFWSozutkGIHIsNQ==}
+  /@types/test-listen@1.1.1:
+    resolution: {integrity: sha512-uACBFBzLkUtMfVYyIDjX+AoQddGbgr/ldAhRSTKzgO8FqqtWhmG+UXqpfr+EZjlHCahg6g0JUmk33feF/ymlWQ==}
     dependencies:
-      '@types/node': 14.18.54
+      '@types/node': 16.18.40
     dev: true
 
   /@types/ua-parser-js@0.7.37:
