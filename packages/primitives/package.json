@@ -28,7 +28,7 @@
     "blob-polyfill": "7.0.20220408",
     "esbuild-plugin-alias": "latest",
     "event-target-shim": "6.0.2",
-    "formdata-node": "5.0.1",
+    "formdata-node": "6.0.3",
     "http-body": "1.0.7",
     "multer": "1.4.5-lts.1",
     "test-listen": "1.1.0",

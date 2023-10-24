@@ -27,7 +27,7 @@ importers:
         version: 0.19.5
       finepack:
         specifier: latest
-        version: 2.11.2
+        version: 2.11.3
       git-authors-cli:
         specifier: latest
         version: 1.0.47
@@ -220,8 +220,8 @@ importers:
         specifier: 6.0.2
         version: 6.0.2
       formdata-node:
-        specifier: 5.0.1
-        version: 5.0.1
+        specifier: 6.0.3
+        version: 6.0.3
       http-body:
         specifier: 1.0.7
         version: 1.0.7
@@ -3918,8 +3918,8 @@ packages:
       pkg-dir: 4.2.0
     dev: true
 
-  /finepack@2.11.2:
-    resolution: {integrity: sha512-5oEOcNW9zUrGU2mUnZUDvsoOTlFsOh/drssR+r21bTTgrkz2DO/zq46SCEVaoMj9GFUbVlVgqr9P9vQ3vibRpA==}
+  /finepack@2.11.3:
+    resolution: {integrity: sha512-mAqWhVZod+H4PnPvdCYWkE9dA9dT8zalKaHxqF2115eDPIdSPCDBANXWog5M5pg8SIS1WhkQxjd3F73MoYi1pw==}
     engines: {node: '>=4'}
     hasBin: true
     dependencies:
@@ -3977,12 +3977,9 @@ packages:
       mime-types: 2.1.35
     dev: true
 
-  /formdata-node@5.0.1:
-    resolution: {integrity: sha512-8xnIjMYGKPj+rY2BTbAmpqVpi8der/2FT4d9f7J32FlsCpO5EzZPq3C/N56zdv8KweHzVF6TGijsS1JT6r1H2g==}
-    engines: {node: '>= 14.17'}
-    dependencies:
-      node-domexception: 1.0.0
-      web-streams-polyfill: 4.0.0-beta.3
+  /formdata-node@6.0.3:
+    resolution: {integrity: sha512-8e1++BCiTzUno9v5IZ2J6bv4RU+3UKDmqWUQD0MIMVCd9AdhWkO1gw57oo1mNEX1dMq2EGI+FbWz4B92pscSQg==}
+    engines: {node: '>= 18'}
     dev: true
 
   /fraction.js@4.3.6:
@@ -6672,11 +6669,6 @@ packages:
       - supports-color
     dev: false
 
-  /node-domexception@1.0.0:
-    resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
-    engines: {node: '>=10.5.0'}
-    dev: true
-
   /node-fetch@2.6.11:
     resolution: {integrity: sha512-4I6pdBY1EthSqDmJkiNk3JIT8cswwR9nfeW/cPdUagJYEQG7R95WRH74wpz7ma8Gh/9dI9FP+OU+0E4FvtA55w==}
     engines: {node: 4.x || >=6.0.0}
@@ -8798,11 +8790,6 @@ packages:
   /web-namespaces@2.0.1:
     resolution: {integrity: sha512-bKr1DkiNa2krS7qxNtdrtHAmzuYGFQLiQ13TsorsdT6ULTkPLKuu5+GsFpDlg6JFjUTwX2DyhMPG2be8uPrqsQ==}
     dev: false
-
-  /web-streams-polyfill@4.0.0-beta.3:
-    resolution: {integrity: sha512-QW95TCTaHmsYfHDybGMwO5IJIM93I/6vTRk+daHTWFPhwh+C8Cg7j7XyKrwrj8Ib6vYXe0ocYNrmzY4xAAN6ug==}
-    engines: {node: '>= 14'}
-    dev: true
 
   /web-worker@1.2.0:
     resolution: {integrity: sha512-PgF341avzqyx60neE9DD+XS26MMNMoUQRz9NOZwW32nPQrF6p77f1htcnjBSEV8BGMKZ16choqUG4hyI0Hx7mA==}
