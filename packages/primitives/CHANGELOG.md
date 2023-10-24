@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 4.0.4
+
+### Patch Changes
+
+- fix timers primitive types ([#664](https://github.com/vercel/edge-runtime/pull/664))
+
 ## 4.0.3
 
 ### Patch Changes
