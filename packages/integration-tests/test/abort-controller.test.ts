@@ -1,3 +1,6 @@
+if (!globalThis.DOMException) {
+  globalThis.DOMException = require('@edge-runtime/ponyfill').DOMException
+}
 describe('AbortController', () => {
   it('allows to abort fetch', async () => {
     expect.assertions(1)
