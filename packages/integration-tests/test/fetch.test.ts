@@ -144,14 +144,16 @@ testOrSkip('sets header calling Headers constructor', async () => {
   const text = await response.text()
   expect(text).toBe('vercel/edge-runtime')
 })
-
-testOrSkip('sets headers unsupported in undici', async () => {
-  const url = new URL('/', 'https://example.vercel.sh')
-  const response = await fetch(url, {
-    headers: {
-      Connection: 'keep-alive',
-      'Keep-Alive': 'timeout=5, max=1000',
-    },
-  })
-  expect(response.status).toBe(200)
-})
+;(globalThis.EdgeRuntime !== undefined ? testOrSkip : test.skip)(
+  'sets headers unsupported in undici',
+  async () => {
+    const url = new URL('/', 'https://example.vercel.sh')
+    const response = await fetch(url, {
+      headers: {
+        Connection: 'keep-alive',
+        'Keep-Alive': 'timeout=5, max=1000',
+      },
+    })
+    expect(response.status).toBe(200)
+  },
+)
