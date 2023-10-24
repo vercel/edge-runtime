@@ -226,7 +226,7 @@ describe('Behaviour of some pre-defined APIs', () => {
       });
       `)
 
-      await expect(promise).rejects.toThrowError('The operation was aborted.')
+      await expect(promise).rejects.toThrowError('This operation was aborted')
     })
 
     it('allows to run within the VM reading outside of it', async () => {
