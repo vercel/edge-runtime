@@ -7,7 +7,10 @@ import multer from 'multer'
 let server: Server
 afterEach(() => new Promise((resolve) => server.close(resolve)))
 
-test('perform a GET', async () => {
+const testOrSkip =
+  process.versions.node.split('.').map(Number)[0] > 16 ? test : test.skip
+
+testOrSkip('perform a GET', async () => {
   server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
     if (req.method !== 'GET') {
       res.statusCode = 400
@@ -24,7 +27,7 @@ test('perform a GET', async () => {
   expect(text).toBe('Example Domain')
 })
 
-test('perform a POST as application/json', async () => {
+testOrSkip('perform a POST as application/json', async () => {
   server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
     if (req.method !== 'POST') {
       res.statusCode = 400
@@ -56,7 +59,7 @@ test('perform a POST as application/json', async () => {
   expect(await response.json()).toEqual({ foo: 'bar' })
 })
 
-test('perform a POST as application/x-www-form-urlencoded', async () => {
+testOrSkip('perform a POST as application/x-www-form-urlencoded', async () => {
   server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
     if (req.method !== 'POST') {
       res.statusCode = 400
@@ -91,7 +94,7 @@ test('perform a POST as application/x-www-form-urlencoded', async () => {
   expect(json).toEqual({ foo: 'bar' })
 })
 
-test('perform a POST as multipart/form-data', async () => {
+testOrSkip('perform a POST as multipart/form-data', async () => {
   const upload = multer({ storage: multer.memoryStorage() })
   server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
     if (
@@ -127,7 +130,7 @@ test('perform a POST as multipart/form-data', async () => {
   })
 })
 
-test('sets header calling Headers constructor', async () => {
+testOrSkip('sets header calling Headers constructor', async () => {
   server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
     res.end(req.headers['user-agent'])
   })
@@ -140,7 +143,7 @@ test('sets header calling Headers constructor', async () => {
   expect(text).toBe('vercel/edge-runtime')
 })
 
-test('sets headers unsupported in undici', async () => {
+testOrSkip('sets headers unsupported in undici', async () => {
   const url = new URL('/', 'https://example.vercel.sh')
   const response = await fetch(url, {
     headers: {

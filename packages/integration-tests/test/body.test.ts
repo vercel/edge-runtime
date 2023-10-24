@@ -1,4 +1,7 @@
-it('throws when the body was directly consumed', async () => {
+const testOrSkip =
+  process.versions.node.split('.').map(Number)[0] > 16 ? test : test.skip
+
+testOrSkip('throws when the body was directly consumed', async () => {
   expect.assertions(9)
 
   const object = { hello: 'world' }
@@ -44,7 +47,7 @@ it('throws when the body was directly consumed', async () => {
   expect(error.message).toEqual('Body is unusable')
 })
 
-test('throws when the body was indirectly consumed', async () => {
+testOrSkip('throws when the body was indirectly consumed', async () => {
   expect.assertions(3)
 
   const object = { hello: 'world' }
@@ -68,7 +71,7 @@ test('throws when the body was indirectly consumed', async () => {
   expect(error.message).toEqual('Body is unusable')
 })
 
-test('allows to read a FormData body as text', async () => {
+testOrSkip('allows to read a FormData body as text', async () => {
   const object = { hello: 'world' }
   const blob = new Blob([JSON.stringify(object, null, 2)], {
     type: 'application/json',
@@ -103,14 +106,14 @@ test('allows to read a FormData body as text', async () => {
   `)
 })
 
-test('allows to read a null body as ArrayBuffer', async () => {
+testOrSkip('allows to read a null body as ArrayBuffer', async () => {
   const response = new Response(null)
   const buffer = await response.arrayBuffer()
   expect(buffer.byteLength).toEqual(0)
   expect(new Uint8Array(buffer).byteLength).toEqual(0)
 })
 
-test('allows to read a text body as ArrayBuffer', async () => {
+testOrSkip('allows to read a text body as ArrayBuffer', async () => {
   const response = new Response('Hello world')
   const encoder = new TextEncoder()
   const decoder = new TextDecoder()
@@ -122,7 +125,7 @@ test('allows to read a text body as ArrayBuffer', async () => {
   expect(value).toEqual(encoder.encode('Hello world').buffer)
 })
 
-test('allows to read a chunked body as ArrayBuffer', async () => {
+testOrSkip('allows to read a chunked body as ArrayBuffer', async () => {
   const { readable, writable } = new TransformStream()
   const encoder = new TextEncoder()
   const writer = writable.getWriter()
@@ -140,7 +143,7 @@ test('allows to read a chunked body as ArrayBuffer', async () => {
   expect(value).toEqual(encoder.encode('Hello world!').buffer)
 })
 
-test('should pend stream data before getReader is called', async () => {
+testOrSkip('should pend stream data before getReader is called', async () => {
   let startPulling = false
   const encoder = new TextEncoder()
   const decoder = new TextDecoder()
@@ -173,14 +176,14 @@ test('should pend stream data before getReader is called', async () => {
   expect(decoder.decode(result.value)).toBe('world')
 })
 
-test('allows to read a URLSearchParams body as FormData', async () => {
+testOrSkip('allows to read a URLSearchParams body as FormData', async () => {
   const params = new URLSearchParams('q=URLUtils.searchParams&topic=api')
   const response = new Response(params)
   const formData = await response.formData()
   expect(formData.get('topic')).toEqual('api')
 })
 
-test('allows to read a Blob body as Blob', async () => {
+testOrSkip('allows to read a Blob body as Blob', async () => {
   const object = { hello: 'world' }
   const str = JSON.stringify(object, null, 2)
   const response = new Response(new Blob([str]))
@@ -189,21 +192,24 @@ test('allows to read a Blob body as Blob', async () => {
   expect(txt).toEqual(str)
 })
 
-test('allows to read a text body as JSON', async () => {
+testOrSkip('allows to read a text body as JSON', async () => {
   const response = new Response(JSON.stringify({ message: 'hi', value: 10 }))
   const value = await response.json()
   expect(value).toEqual({ message: 'hi', value: 10 })
 })
 
-test('throws when reading a text body as JSON but it is invalid', async () => {
-  expect.assertions(2)
-  const response = new Response('{ hi: "there", ')
-  const error = await response.json().catch((err) => err)
-  expectErrorInstanceOf(error, SyntaxError)
-  expect(error.message).toContain(' in JSON at position 2')
-})
+testOrSkip(
+  'throws when reading a text body as JSON but it is invalid',
+  async () => {
+    expect.assertions(2)
+    const response = new Response('{ hi: "there", ')
+    const error = await response.json().catch((err) => err)
+    expectErrorInstanceOf(error, SyntaxError)
+    expect(error.message).toContain(' in JSON at position 2')
+  },
+)
 
-test('streams Uint8Array that can be decoded into a string', async () => {
+testOrSkip('streams Uint8Array that can be decoded into a string', async () => {
   const response = await fetch('https://example.vercel.sh')
   const reader = response.body!.getReader()
   let value: string = ''

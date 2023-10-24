@@ -1,9 +1,12 @@
-test('create a response', async () => {
+const testOrSkip =
+  process.versions.node.split('.').map(Number)[0] > 16 ? test : test.skip
+
+testOrSkip('create a response', async () => {
   const res1 = new Response('Hello world!')
   expect(await res1.text()).toEqual('Hello world!')
 })
 
-test('clones responses', async () => {
+testOrSkip('clones responses', async () => {
   const { readable, writable } = new TransformStream()
   const encoder = new TextEncoder()
   const writer = writable.getWriter()
@@ -19,7 +22,7 @@ test('clones responses', async () => {
   expect(await res2.text()).toEqual('Hello world!')
 })
 
-test('reads response body as buffer', async () => {
+testOrSkip('reads response body as buffer', async () => {
   const response = await fetch('https://example.vercel.sh')
   const arrayBuffer = await response.arrayBuffer()
   const text = new TextDecoder().decode(arrayBuffer)
@@ -31,13 +34,13 @@ test('reads response body as buffer', async () => {
   expect([...partial]).toEqual([...new Uint8Array(doctype)])
 })
 
-test('allow to set `set-cookie` header', async () => {
+testOrSkip('allow to set `set-cookie` header', async () => {
   const response = new Response(null)
   response.headers.set('set-cookie', 'foo=bar')
   expect(response.headers.get('set-cookie')).toEqual('foo=bar')
 })
 
-test('allow to append multiple `set-cookie` header', async () => {
+testOrSkip('allow to append multiple `set-cookie` header', async () => {
   const response = new Response(null)
   response.headers.append('set-cookie', 'foo=bar')
   response.headers.append('set-cookie', 'bar=baz')
@@ -50,18 +53,18 @@ test('allow to append multiple `set-cookie` header', async () => {
   ])
 })
 
-test('disallow mutate response headers for redirects', async () => {
+testOrSkip('disallow mutate response headers for redirects', async () => {
   const response = Response.redirect('https://edge-ping.vercel.app/')
   expect(() => response.headers.set('foo', 'bar')).toThrow('immutable')
 })
 
-test('allow to mutate response headers for error', async () => {
+testOrSkip('allow to mutate response headers for error', async () => {
   const response = Response.error()
   response.headers.set('foo', 'bar')
   expect(response.headers.get('foo')).toEqual('bar')
 })
 
-test('allow to mutate response headers', async () => {
+testOrSkip('allow to mutate response headers', async () => {
   const response = await fetch('https://edge-ping.vercel.app/')
   response.headers.set('foo', 'bar')
   expect(response.headers.get('foo')).toEqual('bar')

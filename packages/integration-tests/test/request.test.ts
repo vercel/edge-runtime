@@ -1,16 +1,19 @@
-test('evaluate promise', () => {
+const testOrSkip =
+  process.versions.node.split('.').map(Number)[0] > 16 ? test : test.skip
+
+testOrSkip('evaluate promise', () => {
   const url = 'https://vercel.com/foo/bar?one=value'
   const req = new Request(url)
   expect(req.url).toEqual(url)
 })
 
-test('parses and reconstructs the URL alone', () => {
+testOrSkip('parses and reconstructs the URL alone', () => {
   const url = 'https://vercel.com/foo/bar?one=value'
   const req = new Request(url)
   expect(req.url).toEqual(url)
 })
 
-test('throws when the URL is malformed', () => {
+testOrSkip('throws when the URL is malformed', () => {
   try {
     void new Request('meeeh')
   } catch (error: any) {
@@ -18,19 +21,19 @@ test('throws when the URL is malformed', () => {
   }
 })
 
-test('Request.referrer is `about:client` by default', () => {
+testOrSkip('Request.referrer is `about:client` by default', () => {
   const request = new Request('https://example.vercel.sh')
   expect(request.referrer).toEqual('about:client')
 })
 
-test('Request.referrer can be customized', () => {
+testOrSkip('Request.referrer can be customized', () => {
   const request = new Request('https://example.vercel.sh', {
     referrer: 'https://vercel.com/home',
   })
   expect(request.referrer).toEqual('https://vercel.com/home')
 })
 
-test('create a Request instance using second argument', () => {
+testOrSkip('create a Request instance using second argument', () => {
   expect(
     new Request(
       'https://example.vercel.sh',
@@ -39,14 +42,14 @@ test('create a Request instance using second argument', () => {
   ).toBe('POST')
 })
 
-test('combine with fetch', async () => {
+testOrSkip('combine with fetch', async () => {
   const request = new Request('https://example.vercel.sh')
   const response = await fetch(request)
   const body = await response.text()
   expect(typeof body === 'string').toBe(true)
 })
 
-test('combine with Headers', async () => {
+testOrSkip('combine with Headers', async () => {
   const headers = new Headers({ cookie: 'hello=world' })
   const request = new Request('https://example.vercel.sh', {
     headers,
@@ -54,7 +57,7 @@ test('combine with Headers', async () => {
   expect(request.headers.get('cookie')).toBe('hello=world')
 })
 
-test('serialize body into JSON', async () => {
+testOrSkip('serialize body into JSON', async () => {
   const obj = { hello: 'world' }
   const request = new Request('https://example.vercel.sh', {
     method: 'POST',
@@ -65,12 +68,12 @@ test('serialize body into JSON', async () => {
   expect(data).toEqual(obj)
 })
 
-test('adds duplex: half to all requests', () => {
+testOrSkip('adds duplex: half to all requests', () => {
   const request = new Request('https://example.vercel.sh')
   expect(request.duplex).toBe('half')
 })
 
-test('can be extended', async () => {
+testOrSkip('can be extended', async () => {
   class SubRequest extends Request {
     constructor(input: Request | string, init?: RequestInit) {
       super(input, init)
