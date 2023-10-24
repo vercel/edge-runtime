@@ -1,6 +1,8 @@
 import { createHash } from 'crypto'
-import { crypto } from '@edge-runtime/ponyfill'
-import { EdgeVM } from '@edge-runtime/vm'
+
+if (!globalThis.crypto) {
+  globalThis.crypto = require('crypto')
+}
 
 function toHex(buffer: ArrayBuffer) {
   return Array.from(new Uint8Array(buffer))

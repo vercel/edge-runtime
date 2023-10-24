@@ -1,10 +1,3 @@
-import {
-  AbortController,
-  AbortSignal,
-  fetch,
-  DOMException,
-} from '@edge-runtime/ponyfill'
-
 describe('AbortController', () => {
   it('allows to abort fetch', async () => {
     expect.assertions(1)
@@ -16,7 +9,7 @@ describe('AbortController', () => {
         signal: controller.signal,
       })
     } catch (error: any) {
-      expect(error.message).toEqual('The operation was aborted.')
+      expect(error.message).toEqual('This operation was aborted')
     }
   })
 
@@ -55,7 +48,7 @@ describe('AbortSignal', () => {
   describe('timeout()', () => {
     it('automatically aborts after some time', async () => {
       const reason = new DOMException(
-        'The operation timed out.',
+        'The operation was aborted due to timeout',
         'TimeoutError',
       )
       const signal = AbortSignal.timeout(100)
@@ -77,7 +70,7 @@ describe('AbortSignal', () => {
 
     it('creates signal with no reason', async () => {
       const reason = new DOMException(
-        'The operation was aborted.',
+        'This operation was aborted',
         'AbortError',
       )
       const signal = AbortSignal.abort()
@@ -109,7 +102,7 @@ describe('AbortSignal', () => {
 
   it('can not be created with constructor', () => {
     expect(() => new AbortSignal()).toThrow(
-      new TypeError('Illegal constructor.'),
+      new TypeError('Illegal constructor'),
     )
   })
 
@@ -121,7 +114,10 @@ describe('AbortSignal', () => {
     await new Promise((resolve) => setTimeout(resolve, 200))
     expect(signal.aborted).toBe(true)
     expect(signal.reason).toEqual(
-      new DOMException('The operation timed out.', 'TimeoutError'),
+      new DOMException(
+        'The operation was aborted due to timeout',
+        'TimeoutError',
+      ),
     )
     expect(onabort).toHaveBeenCalledTimes(1)
     expect(onabort).toHaveBeenCalledWith(

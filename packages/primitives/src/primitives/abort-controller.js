@@ -28,7 +28,7 @@ function createAbortSignal() {
 
 function abortSignalAbort(signal, reason) {
   if (typeof reason === 'undefined') {
-    reason = new DOMException('The operation was aborted.', 'AbortError')
+    reason = new DOMException('This operation was aborted', 'AbortError')
   }
   if (signal.aborted) {
     return
@@ -55,7 +55,7 @@ export class AbortController {
 
 export class AbortSignal extends EventTarget {
   constructor() {
-    throw new TypeError('Illegal constructor.')
+    throw new TypeError('Illegal constructor')
   }
 
   get aborted() {
@@ -97,7 +97,10 @@ export class AbortSignal extends EventTarget {
     setTimeout(() => {
       abortSignalAbort(
         signal,
-        new DOMException('The operation timed out.', 'TimeoutError'),
+        new DOMException(
+          'The operation was aborted due to timeout',
+          'TimeoutError',
+        ),
       )
     }, milliseconds)
     return signal

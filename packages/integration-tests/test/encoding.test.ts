@@ -1,5 +1,3 @@
-import { atob, btoa, TextDecoder } from '@edge-runtime/ponyfill'
-
 test('TextDecoder', () => {
   const input = new Uint8Array([
     101, 100, 103, 101, 45, 112, 105, 110, 103, 46, 118, 101, 114, 99, 101, 108,

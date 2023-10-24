@@ -1,16 +1,6 @@
-import {
-  Blob,
-  fetch,
-  FormData,
-  ReadableStream,
-  Response,
-  TextDecoder,
-  TextEncoder,
-  TransformStream,
-  URLSearchParams,
-} from '@edge-runtime/ponyfill'
-
 it('throws when the body was directly consumed', async () => {
+  expect.assertions(9)
+
   const object = { hello: 'world' }
   const blob = new Blob([JSON.stringify(object, null, 2)], {
     type: 'application/json',
@@ -50,11 +40,13 @@ it('throws when the body was directly consumed', async () => {
 
   const error = await response.text().catch((err) => err)
 
-  expect(error).toBeInstanceOf(TypeError)
+  expectErrorInstanceOf(error, TypeError)
   expect(error.message).toEqual('Body is unusable')
 })
 
 test('throws when the body was indirectly consumed', async () => {
+  expect.assertions(3)
+
   const object = { hello: 'world' }
   const blob = new Blob([JSON.stringify(object, null, 2)], {
     type: 'application/json',
@@ -72,7 +64,7 @@ test('throws when the body was indirectly consumed', async () => {
 
   const error = await response.text().catch((err) => err)
 
-  expect(error).toBeInstanceOf(TypeError)
+  expectErrorInstanceOf(error, TypeError)
   expect(error.message).toEqual('Body is unusable')
 })
 
@@ -204,9 +196,10 @@ test('allows to read a text body as JSON', async () => {
 })
 
 test('throws when reading a text body as JSON but it is invalid', async () => {
+  expect.assertions(2)
   const response = new Response('{ hi: "there", ')
   const error = await response.json().catch((err) => err)
-  expect(error).toBeInstanceOf(SyntaxError)
+  expectErrorInstanceOf(error, SyntaxError)
   expect(error.message).toContain(' in JSON at position 2')
 })
 
@@ -224,3 +217,12 @@ test('streams Uint8Array that can be decoded into a string', async () => {
   }
   expect(value).toContain('Example Domain')
 })
+
+const expectErrorInstanceOf = (error: Error, ctx: any) => {
+  if (globalThis.EdgeRuntime !== undefined) {
+    expect(error).toBeInstanceOf(ctx)
+  } else {
+    // https://github.com/jestjs/jest/issues/2549
+    expect(error.name).toBe(ctx.name)
+  }
+}
