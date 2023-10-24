@@ -1,8 +1,12 @@
 if (!globalThis.DOMException) {
   globalThis.DOMException = require('@edge-runtime/ponyfill').DOMException
 }
+
+const testOrSkip =
+  process.versions.node.split('.').map(Number)[0] > 16 ? test : test.skip
+
 describe('AbortController', () => {
-  it('allows to abort fetch', async () => {
+  testOrSkip('allows to abort fetch', async () => {
     expect.assertions(1)
     const controller = new AbortController()
     controller.abort()
