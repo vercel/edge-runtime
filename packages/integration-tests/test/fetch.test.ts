@@ -5,7 +5,9 @@ import listen from 'test-listen'
 import multer from 'multer'
 
 let server: Server
-afterEach(() => new Promise((resolve) => server.close(resolve)))
+afterEach(
+  () => new Promise((resolve) => server?.close(resolve) ?? resolve(undefined)),
+)
 
 const testOrSkip =
   process.versions.node.split('.').map(Number)[0] > 16 ? test : test.skip
