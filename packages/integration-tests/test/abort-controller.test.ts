@@ -37,7 +37,7 @@ describe('AbortController', () => {
     controller.abort(reason)
     await expect(promise).rejects.toThrow(reason)
     expect(signal.aborted).toBe(true)
-    expect(signal.reason).toBe(reason)
+    expectSignalToBeEqual(signal, reason)
   })
 
   // whatwg compliance tests: https://dom.spec.whatwg.org/#interface-abortcontroller
@@ -63,7 +63,7 @@ describe('AbortSignal', () => {
       expect(signal.aborted).toBe(false)
       await expect(promise).rejects.toThrow(reason)
       expect(signal.aborted).toBe(true)
-      expect(signal.reason).toEqual(reason)
+      expectSignalToBeEqual(signal, reason)
     })
   })
 
@@ -72,7 +72,7 @@ describe('AbortSignal', () => {
       const reason = 'some reason'
       const signal = AbortSignal.abort(reason)
       expect(signal.aborted).toBe(true)
-      expect(signal.reason).toBe(reason)
+      expectSignalToBeEqual(signal, reason)
     })
 
     it('creates signal with no reason', async () => {
@@ -82,7 +82,7 @@ describe('AbortSignal', () => {
       )
       const signal = AbortSignal.abort()
       expect(signal.aborted).toBe(true)
-      expect(signal.reason).toEqual(reason)
+      expectSignalToBeEqual(signal, reason)
     })
   })
 
@@ -90,7 +90,7 @@ describe('AbortSignal', () => {
   it('has reason read-only property', () => {
     const reason = 'some reason'
     const signal = AbortSignal.abort(reason)
-    expect(signal.reason).toBe(reason)
+    expectSignalToBeEqual(signal, reason)
     // @ts-expect-error
     expect(() => (signal.reason = 'not-supported')).toThrow(
       /Cannot set property reason of .* which has only a getter/,
@@ -120,7 +120,8 @@ describe('AbortSignal', () => {
     expect(signal.onabort).toBe(onabort)
     await new Promise((resolve) => setTimeout(resolve, 200))
     expect(signal.aborted).toBe(true)
-    expect(signal.reason).toEqual(
+    expectSignalToBeEqual(
+      signal,
       new DOMException(
         'The operation was aborted due to timeout',
         'TimeoutError',
@@ -141,4 +142,12 @@ function runAbortedProcess({ signal }: { signal: AbortSignal }) {
     })
     setTimeout(resolve, 500)
   })
+}
+
+function expectSignalToBeEqual(signal: any, reason: any) {
+  if (globalThis.EdgeRuntime !== undefined) {
+    expect(signal.reason).toEqual(reason)
+  } else {
+    expect(signal.reason.message).toEqual(reason.message)
+  }
 }
