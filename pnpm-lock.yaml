@@ -27,7 +27,7 @@ importers:
         version: 0.19.5
       finepack:
         specifier: latest
-        version: 2.11.2
+        version: 2.11.3
       git-authors-cli:
         specifier: latest
         version: 1.0.47
@@ -3918,8 +3918,8 @@ packages:
       pkg-dir: 4.2.0
     dev: true
 
-  /finepack@2.11.2:
-    resolution: {integrity: sha512-5oEOcNW9zUrGU2mUnZUDvsoOTlFsOh/drssR+r21bTTgrkz2DO/zq46SCEVaoMj9GFUbVlVgqr9P9vQ3vibRpA==}
+  /finepack@2.11.3:
+    resolution: {integrity: sha512-mAqWhVZod+H4PnPvdCYWkE9dA9dT8zalKaHxqF2115eDPIdSPCDBANXWog5M5pg8SIS1WhkQxjd3F73MoYi1pw==}
     engines: {node: '>=4'}
     hasBin: true
     dependencies:
