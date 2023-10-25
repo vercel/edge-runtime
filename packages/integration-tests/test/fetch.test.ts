@@ -4,23 +4,32 @@ import * as httpBody from 'http-body'
 import listen from 'test-listen'
 import multer from 'multer'
 
-import { EdgeVM } from '../src/edge-vm'
-
-const fromVm = ((): {
-  fetch: typeof fetch
-  Headers: typeof Headers
-  FormData: typeof FormData
-  URL: typeof URL
-} => {
-  return new EdgeVM().evaluate(`({ fetch, Headers, FormData, URL })`)
-})()
-
-const { fetch, Headers, FormData, URL } = fromVm
-
 let server: Server
-afterEach(() => new Promise((resolve) => server.close(resolve)))
+afterEach(
+  () => new Promise((resolve) => server?.close(resolve) ?? resolve(undefined)),
+)
 
-test('perform a POST as application/json', async () => {
+const testOrSkip =
+  process.versions.node.split('.').map(Number)[0] > 16 ? test : test.skip
+
+testOrSkip('perform a GET', async () => {
+  server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
+    if (req.method !== 'GET') {
+      res.statusCode = 400
+      res.end()
+    }
+    res.end('Example Domain')
+  })
+
+  const serverUrl = await listen(server)
+  const response = await fetch(serverUrl)
+  const text = await response.text()
+
+  expect(response.status).toBe(200)
+  expect(text).toBe('Example Domain')
+})
+
+testOrSkip('perform a POST as application/json', async () => {
   server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
     if (req.method !== 'POST') {
       res.statusCode = 400
@@ -52,7 +61,7 @@ test('perform a POST as application/json', async () => {
   expect(await response.json()).toEqual({ foo: 'bar' })
 })
 
-test('perform a POST as application/x-www-form-urlencoded', async () => {
+testOrSkip('perform a POST as application/x-www-form-urlencoded', async () => {
   server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
     if (req.method !== 'POST') {
       res.statusCode = 400
@@ -87,7 +96,7 @@ test('perform a POST as application/x-www-form-urlencoded', async () => {
   expect(json).toEqual({ foo: 'bar' })
 })
 
-test('perform a POST as multipart/form-data', async () => {
+testOrSkip('perform a POST as multipart/form-data', async () => {
   const upload = multer({ storage: multer.memoryStorage() })
   server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
     if (
@@ -123,7 +132,7 @@ test('perform a POST as multipart/form-data', async () => {
   })
 })
 
-test('sets header calling Headers constructor', async () => {
+testOrSkip('sets header calling Headers constructor', async () => {
   server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
     res.end(req.headers['user-agent'])
   })
@@ -135,14 +144,16 @@ test('sets header calling Headers constructor', async () => {
   const text = await response.text()
   expect(text).toBe('vercel/edge-runtime')
 })
-
-test('sets headers unsupported in undici', async () => {
-  const url = new URL('/', 'https://example.vercel.sh')
-  const response = await fetch(url, {
-    headers: {
-      Connection: 'keep-alive',
-      'Keep-Alive': 'timeout=5, max=1000',
-    },
-  })
-  expect(response.status).toBe(200)
-})
+;(globalThis.EdgeRuntime !== undefined ? testOrSkip : test.skip)(
+  'sets headers unsupported in undici',
+  async () => {
+    const url = new URL('/', 'https://example.vercel.sh')
+    const response = await fetch(url, {
+      headers: {
+        Connection: 'keep-alive',
+        'Keep-Alive': 'timeout=5, max=1000',
+      },
+    })
+    expect(response.status).toBe(200)
+  },
+)

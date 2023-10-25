@@ -1,4 +1,5 @@
-import { ReadableStream } from 'web-streams-polyfill'
+import { ReadableStream } from '@edge-runtime/ponyfill'
+
 import { consumeUint8ArrayReadableStream } from '../src/server/body-streams'
 
 describe('consumeUint8ArrayReadableStream', () => {

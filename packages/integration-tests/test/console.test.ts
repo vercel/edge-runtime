@@ -1,5 +1,3 @@
-import { console } from '@edge-runtime/ponyfill'
-
 it.each([
   { method: 'assert' },
   { method: 'count' },

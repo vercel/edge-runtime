@@ -1,4 +1,11 @@
-import { URLPattern } from '..'
+/**
+ * URLPattern is missing in Node.js
+ * TODO: remove this when this issue is addressed
+ * https://github.com/nodejs/node/issues/40844
+ */
+if (!globalThis.URLPattern) {
+  globalThis.URLPattern = require('@edge-runtime/ponyfill').URLPattern
+}
 
 test('URLPattern', () => {
   const urlPattern = new URLPattern('/:foo/:bar', 'https://example.vercel.sh')

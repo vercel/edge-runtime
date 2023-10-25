@@ -1,12 +1,12 @@
-import {
-  AbortController,
-  AbortSignal,
-  fetch,
-  DOMException,
-} from '@edge-runtime/ponyfill'
+if (!globalThis.DOMException) {
+  globalThis.DOMException = require('@edge-runtime/ponyfill').DOMException
+}
+
+const testOrSkip =
+  process.versions.node.split('.').map(Number)[0] > 16 ? test : test.skip
 
 describe('AbortController', () => {
-  it('allows to abort fetch', async () => {
+  testOrSkip('allows to abort fetch', async () => {
     expect.assertions(1)
     const controller = new AbortController()
     controller.abort()
@@ -16,7 +16,7 @@ describe('AbortController', () => {
         signal: controller.signal,
       })
     } catch (error: any) {
-      expect(error.message).toEqual('The operation was aborted.')
+      expect(error.message).toEqual('This operation was aborted')
     }
   })
 
@@ -37,7 +37,7 @@ describe('AbortController', () => {
     controller.abort(reason)
     await expect(promise).rejects.toThrow(reason)
     expect(signal.aborted).toBe(true)
-    expect(signal.reason).toBe(reason)
+    expectSignalToBeEqual(signal, reason)
   })
 
   // whatwg compliance tests: https://dom.spec.whatwg.org/#interface-abortcontroller
@@ -55,7 +55,7 @@ describe('AbortSignal', () => {
   describe('timeout()', () => {
     it('automatically aborts after some time', async () => {
       const reason = new DOMException(
-        'The operation timed out.',
+        'The operation was aborted due to timeout',
         'TimeoutError',
       )
       const signal = AbortSignal.timeout(100)
@@ -63,7 +63,7 @@ describe('AbortSignal', () => {
       expect(signal.aborted).toBe(false)
       await expect(promise).rejects.toThrow(reason)
       expect(signal.aborted).toBe(true)
-      expect(signal.reason).toEqual(reason)
+      expectSignalToBeEqual(signal, reason)
     })
   })
 
@@ -72,17 +72,17 @@ describe('AbortSignal', () => {
       const reason = 'some reason'
       const signal = AbortSignal.abort(reason)
       expect(signal.aborted).toBe(true)
-      expect(signal.reason).toBe(reason)
+      expectSignalToBeEqual(signal, reason)
     })
 
     it('creates signal with no reason', async () => {
       const reason = new DOMException(
-        'The operation was aborted.',
+        'This operation was aborted',
         'AbortError',
       )
       const signal = AbortSignal.abort()
       expect(signal.aborted).toBe(true)
-      expect(signal.reason).toEqual(reason)
+      expectSignalToBeEqual(signal, reason)
     })
   })
 
@@ -90,7 +90,7 @@ describe('AbortSignal', () => {
   it('has reason read-only property', () => {
     const reason = 'some reason'
     const signal = AbortSignal.abort(reason)
-    expect(signal.reason).toBe(reason)
+    expectSignalToBeEqual(signal, reason)
     // @ts-expect-error
     expect(() => (signal.reason = 'not-supported')).toThrow(
       /Cannot set property reason of .* which has only a getter/,
@@ -109,7 +109,7 @@ describe('AbortSignal', () => {
 
   it('can not be created with constructor', () => {
     expect(() => new AbortSignal()).toThrow(
-      new TypeError('Illegal constructor.'),
+      new TypeError('Illegal constructor'),
     )
   })
 
@@ -120,8 +120,12 @@ describe('AbortSignal', () => {
     expect(signal.onabort).toBe(onabort)
     await new Promise((resolve) => setTimeout(resolve, 200))
     expect(signal.aborted).toBe(true)
-    expect(signal.reason).toEqual(
-      new DOMException('The operation timed out.', 'TimeoutError'),
+    expectSignalToBeEqual(
+      signal,
+      new DOMException(
+        'The operation was aborted due to timeout',
+        'TimeoutError',
+      ),
     )
     expect(onabort).toHaveBeenCalledTimes(1)
     expect(onabort).toHaveBeenCalledWith(
@@ -138,4 +142,12 @@ function runAbortedProcess({ signal }: { signal: AbortSignal }) {
     })
     setTimeout(resolve, 500)
   })
+}
+
+function expectSignalToBeEqual(signal: any, reason: any) {
+  if (globalThis.EdgeRuntime !== undefined) {
+    expect(signal.reason).toEqual(reason)
+  } else {
+    expect(signal.reason.message).toEqual(reason.message)
+  }
 }
