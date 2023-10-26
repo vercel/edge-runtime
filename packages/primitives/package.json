@@ -29,7 +29,7 @@
     "esbuild-plugin-alias": "latest",
     "event-target-shim": "6.0.2",
     "tsup": "7",
-    "undici": "5.23.0",
+    "undici": "5.27.0",
     "urlpattern-polyfill": "9.0.0"
   },
   "engines": {
