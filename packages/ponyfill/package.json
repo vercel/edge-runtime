@@ -31,7 +31,7 @@
     "@edge-runtime/primitives": "workspace:*",
     "@edge-runtime/vm": "workspace:*",
     "acorn": "8.11.1",
-    "acorn-loose": "8.3.0",
+    "acorn-loose": "8.4.0",
     "acorn-walk": "8.3.0"
   },
   "engines": {
