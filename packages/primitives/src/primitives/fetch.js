@@ -136,7 +136,7 @@ export async function fetch(info, init) {
     init.body ??= info.body
     init.credentials ??= info.credentials
   }
-
+  const res = await fetchImpl.call(getGlobalDispatcher(), info, init)
   const response = new Response(res.body, res)
   Object.defineProperty(response, 'url', { value: res.url })
   return response
