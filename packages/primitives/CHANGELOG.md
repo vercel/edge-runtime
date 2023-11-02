@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 4.0.5
+
+### Patch Changes
+
+- feat(primitives): remove atob/btoa implementation, use native implementation. ([#689](https://github.com/vercel/edge-runtime/pull/689))
+
 ## 4.0.4
 
 ### Patch Changes
