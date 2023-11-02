@@ -125,10 +125,18 @@ function addDuplexToInit(init) {
  * Export fetch with an implementation that uses a default global dispatcher.
  * It also re-cretates a new Response object in order to allow mutations on
  * the Response headers.
+ * @param {RequestInfo} info
+ * @param {RequestInit} init
  */
 export async function fetch(info, init) {
   init = addDuplexToInit(init)
-  const res = await fetchImpl.call(getGlobalDispatcher(), info, init)
+  if (info instanceof Request) {
+    init.method ??= info.method
+    init.headers ??= info.headers
+    init.body ??= info.body
+    init.credentials ??= info.credentials
+  }
+
   const response = new Response(res.body, res)
   Object.defineProperty(response, 'url', { value: res.url })
   return response
