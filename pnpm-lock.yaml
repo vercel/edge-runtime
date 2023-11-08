@@ -105,8 +105,8 @@ importers:
         specifier: workspace:*
         version: link:../jest-environment
       '@types/cookie':
-        specifier: 0.5.3
-        version: 0.5.3
+        specifier: 0.5.4
+        version: 0.5.4
       tsup:
         specifier: '7'
         version: 7.0.0(ts-node@10.9.1)(typescript@5.2.2)
@@ -126,8 +126,8 @@ importers:
         specifier: workspace:*
         version: link:../ponyfill
       '@types/test-listen':
-        specifier: 1.1.1
-        version: 1.1.1
+        specifier: 1.1.2
+        version: 1.1.2
       http-body:
         specifier: 1.0.9
         version: 1.0.9
@@ -182,8 +182,8 @@ importers:
         specifier: workspace:*
         version: link:../primitives
       '@types/test-listen':
-        specifier: 1.1.1
-        version: 1.1.1
+        specifier: 1.1.2
+        version: 1.1.2
       test-listen:
         specifier: 1.1.0
         version: 1.1.0
@@ -288,8 +288,8 @@ importers:
         specifier: workspace:*
         version: link:../jest-environment
       '@types/ua-parser-js':
-        specifier: 0.7.38
-        version: 0.7.38
+        specifier: 0.7.39
+        version: 0.7.39
       tsup:
         specifier: '7'
         version: 7.0.0(ts-node@10.9.1)(typescript@5.2.2)
@@ -304,8 +304,8 @@ importers:
         version: link:../primitives
     devDependencies:
       '@types/test-listen':
-        specifier: 1.1.1
-        version: 1.1.1
+        specifier: 1.1.2
+        version: 1.1.2
       '@types/ws':
         specifier: 8.5.9
         version: 8.5.9
@@ -2034,8 +2034,8 @@ packages:
       '@babel/types': 7.21.0
     dev: true
 
-  /@types/cookie@0.5.3:
-    resolution: {integrity: sha512-SLg07AS9z1Ab2LU+QxzU8RCmzsja80ywjf/t5oqw+4NSH20gIGlhLOrBDm1L3PBWzPa4+wkgFQVZAjE6Ioj2ug==}
+  /@types/cookie@0.5.4:
+    resolution: {integrity: sha512-7z/eR6O859gyWIAjuvBWFzNURmf2oPBmJlfVWkwehU5nzIyjwBsTh7WMmEEV4JFnHuQ3ex4oyTvfKzcyJVDBNA==}
     dev: true
 
   /@types/debug@4.1.7:
@@ -2173,14 +2173,14 @@ packages:
   /@types/stack-utils@2.0.1:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
 
-  /@types/test-listen@1.1.1:
-    resolution: {integrity: sha512-uACBFBzLkUtMfVYyIDjX+AoQddGbgr/ldAhRSTKzgO8FqqtWhmG+UXqpfr+EZjlHCahg6g0JUmk33feF/ymlWQ==}
+  /@types/test-listen@1.1.2:
+    resolution: {integrity: sha512-1z4+FBjfjHOu9d3dXUWE5yD/iwVe3OrHALX6Y2Qsv3CAL1+U2lvsIgbrIyHifi8HH1CUkHTYNDUFuUNXk1gusA==}
     dependencies:
       '@types/node': 16.18.40
     dev: true
 
-  /@types/ua-parser-js@0.7.38:
-    resolution: {integrity: sha512-59CA5oavBEWSNLtS/BChj9xntiWMsIf9IytjxmBo9OuZEYuRzRf3K1ARzFPlXTOz5Zm2wXI38AP9RlLqDYMToQ==}
+  /@types/ua-parser-js@0.7.39:
+    resolution: {integrity: sha512-P/oDfpofrdtF5xw433SPALpdSchtJmY7nsJItf8h3KXqOslkbySh8zq4dSWXH2oTjRvJ5PczVEoCZPow6GicLg==}
     dev: true
 
   /@types/unist@2.0.6:
