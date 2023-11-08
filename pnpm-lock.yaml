@@ -126,8 +126,8 @@ importers:
         specifier: workspace:*
         version: link:../ponyfill
       '@types/test-listen':
-        specifier: 1.1.1
-        version: 1.1.1
+        specifier: 1.1.2
+        version: 1.1.2
       http-body:
         specifier: 1.0.9
         version: 1.0.9
@@ -182,8 +182,8 @@ importers:
         specifier: workspace:*
         version: link:../primitives
       '@types/test-listen':
-        specifier: 1.1.1
-        version: 1.1.1
+        specifier: 1.1.2
+        version: 1.1.2
       test-listen:
         specifier: 1.1.0
         version: 1.1.0
@@ -304,8 +304,8 @@ importers:
         version: link:../primitives
     devDependencies:
       '@types/test-listen':
-        specifier: 1.1.1
-        version: 1.1.1
+        specifier: 1.1.2
+        version: 1.1.2
       '@types/ws':
         specifier: 8.5.8
         version: 8.5.8
@@ -2173,8 +2173,8 @@ packages:
   /@types/stack-utils@2.0.1:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
 
-  /@types/test-listen@1.1.1:
-    resolution: {integrity: sha512-uACBFBzLkUtMfVYyIDjX+AoQddGbgr/ldAhRSTKzgO8FqqtWhmG+UXqpfr+EZjlHCahg6g0JUmk33feF/ymlWQ==}
+  /@types/test-listen@1.1.2:
+    resolution: {integrity: sha512-1z4+FBjfjHOu9d3dXUWE5yD/iwVe3OrHALX6Y2Qsv3CAL1+U2lvsIgbrIyHifi8HH1CUkHTYNDUFuUNXk1gusA==}
     dependencies:
       '@types/node': 16.18.40
     dev: true
