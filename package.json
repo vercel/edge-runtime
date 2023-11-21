@@ -123,7 +123,7 @@
     "@changesets/cli": "latest",
     "@jest/types": "29.5.0",
     "@svitejs/changesets-changelog-github-compact": "latest",
-    "@types/jest": "29.5.8",
+    "@types/jest": "29.5.9",
     "@types/node": "16",
     "c8": "latest",
     "esbuild": "0.19.6",
