@@ -15,7 +15,8 @@ process.emitWarning = () => {}
 
 class Request extends BaseRequest {
   constructor(input, init) {
-    super(input, addDuplexToInit(init))
+    super(input, init);
+    this.duplex = 'half';
   }
 }
 
