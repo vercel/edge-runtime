@@ -313,8 +313,8 @@ importers:
         specifier: 1.1.0
         version: 1.1.0
       ws:
-        specifier: 8.14.2
-        version: 8.14.2
+        specifier: 8.15.0
+        version: 8.15.0
 
 packages:
 
@@ -8530,8 +8530,8 @@ packages:
       write-file-atomic: 3.0.3
     dev: true
 
-  /ws@8.14.2:
-    resolution: {integrity: sha512-wEBG1ftX4jcglPxgFCMJmZ2PLtSbJ2Peg6TmpJFTbe9GZYOQCDPdMYu/Tm0/bGZkw8paZnJY45J4K2PZrLYq8g==}
+  /ws@8.15.0:
+    resolution: {integrity: sha512-H/Z3H55mrcrgjFwI+5jKavgXvwQLtfPCUEp6pi35VhoB0pfcHnSoyuTzkBEZpzq49g1193CUEwIvmsjcotenYw==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
