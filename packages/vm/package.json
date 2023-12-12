@@ -47,6 +47,6 @@
     "@types/test-listen": "1.1.2",
     "@types/ws": "8.5.10",
     "test-listen": "1.1.0",
-    "ws": "8.14.2"
+    "ws": "8.15.0"
   }
 }
