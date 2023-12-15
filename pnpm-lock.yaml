@@ -30,7 +30,7 @@ importers:
         version: 2.12.2
       git-authors-cli:
         specifier: latest
-        version: 1.0.47
+        version: 1.0.48
       jest:
         specifier: 29.7.0
         version: 29.7.0(@types/node@16.18.40)(ts-node@10.9.2)
@@ -3956,16 +3956,16 @@ packages:
       get-intrinsic: 1.2.0
     dev: true
 
-  /git-authors-cli@1.0.47:
-    resolution: {integrity: sha512-7Hc3cp6eUJGvUsul5yfYBhnJBH8CrhKA/5STjYJ0FAgn+EIc4oTpx8zkWJMC2zxiioK1qW4jfH7vS4vpu6hBDA==}
+  /git-authors-cli@1.0.48:
+    resolution: {integrity: sha512-Nf6NYoWJAhi9mp837PrLCagqcg7R7Y9iRsy2ve93q0fc9QZjO68UL2B3VwOu26q0+r4L6hqvMhTDRWOPbLOqjQ==}
     engines: {node: '>= 8'}
     hasBin: true
     dependencies:
       email-regex: 4.0.0
-      execa: 5.1.1
       json-future: 2.2.18
       mri: 1.2.0
       picocolors: 1.0.0
+      tinyspawn: 1.2.2
     dev: true
 
   /git-up@7.0.0:
@@ -7773,6 +7773,11 @@ packages:
     dependencies:
       convert-hrtime: 3.0.0
     dev: false
+
+  /tinyspawn@1.2.2:
+    resolution: {integrity: sha512-QInaMwwUk/Vr+pbM5ZwqoUcS7zRZz/hQkCBMQf4N2miI4TqIbh7OyI6dSgSPTdseeafvpmZjWWlUJx9s+pk/zA==}
+    engines: {node: '>= 18'}
+    dev: true
 
   /title@3.5.3:
     resolution: {integrity: sha512-20JyowYglSEeCvZv3EZ0nZ046vLarO37prvV0mbtQV7C8DJPGgN967r8SJkqd3XK3K3lD3/Iyfp3avjfil8Q2Q==}
