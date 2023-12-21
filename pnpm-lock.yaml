@@ -93,8 +93,8 @@ importers:
         specifier: ~8.4.32
         version: 8.4.32
       tailwindcss:
-        specifier: ~3.3.7
-        version: 3.3.7(ts-node@10.9.2)
+        specifier: ~3.4.0
+        version: 3.4.0(ts-node@10.9.2)
 
   packages/cookies:
     devDependencies:
@@ -7716,8 +7716,8 @@ packages:
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
-  /tailwindcss@3.3.7(ts-node@10.9.2):
-    resolution: {integrity: sha512-pjgQxDZPvyS/nG3ZYkyCvsbONJl7GdOejfm24iMt2ElYQQw8Jc4p0m8RdMp7mznPD0kUhfzwV3zAwa80qI0zmQ==}
+  /tailwindcss@3.4.0(ts-node@10.9.2):
+    resolution: {integrity: sha512-VigzymniH77knD1dryXbyxR+ePHihHociZbXnLZHUyzf2MMs2ZVqlUrZ3FvpXP8pno9JzmILt1sZPD19M3IxtA==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
