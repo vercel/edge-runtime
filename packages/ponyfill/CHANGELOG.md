@@ -1,5 +1,11 @@
 # @edge-runtime/ponyfill
 
+## 2.4.2
+
+### Patch Changes
+
+- fix: expose `performance` constructor ([#772](https://github.com/vercel/edge-runtime/pull/772))
+
 ## 2.4.1
 
 ### Patch Changes
