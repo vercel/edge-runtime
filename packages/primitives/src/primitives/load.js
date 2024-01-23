@@ -79,6 +79,7 @@ export function load(scopedContext = {}) {
     TextDecoderStream,
     atob,
     btoa,
+    performance,
   })
 
   /** @type {import('../../type-definitions/console')} */
