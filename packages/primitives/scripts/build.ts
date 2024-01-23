@@ -1,4 +1,4 @@
-import { basename, join, parse, resolve } from 'path'
+import { basename, join, resolve } from 'path'
 import alias from 'esbuild-plugin-alias'
 import { Options, build } from 'tsup'
 import fs from 'fs'
@@ -23,9 +23,9 @@ async function bundlePackage() {
     bundle: true,
     dts: {
       resolve: true,
+      only: true,
     },
     splitting: false,
-    format: [],
     target: TARGET,
     entry: filesExt
       .map((f) => f.replace(/\.(js|ts)$/, '.d.ts'))
