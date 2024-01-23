@@ -28,7 +28,7 @@
     "@edge-runtime/format": "workspace:*",
     "@edge-runtime/jest-environment": "workspace:*",
     "@types/cookie": "0.6.0",
-    "tsup": "6"
+    "tsup": "8"
   },
   "engines": {
     "node": ">=16"
