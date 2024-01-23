@@ -1,5 +1,13 @@
 # @edge-runtime/cookies
 
+## 4.0.3
+
+### Patch Changes
+
+- build: upgrade tsup ([#773](https://github.com/vercel/edge-runtime/pull/773))
+
+- fix: expose `performance` constructor ([#772](https://github.com/vercel/edge-runtime/pull/772))
+
 ## 4.0.2
 
 ### Patch Changes
