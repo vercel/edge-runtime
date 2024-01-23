@@ -30,7 +30,7 @@
     "event-target-shim": "6.0.2",
     "tsup": "8",
     "undici": "5.23.0",
-    "urlpattern-polyfill": "9.0.0"
+    "urlpattern-polyfill": "10.0.0"
   },
   "engines": {
     "node": ">=16"
