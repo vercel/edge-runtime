@@ -12,12 +12,12 @@ export function buildToRequest(dependencies: BuildDependencies) {
     request: IncomingMessage,
     options: RequestOptions,
   ): Request {
+    const base = computeOrigin(request, options.defaultOrigin)
     return new Request(
       String(
-        new URL(
-          request.url || '/',
-          computeOrigin(request, options.defaultOrigin),
-        ),
+        request.url?.startsWith('//')
+          ? new URL(base + request.url)
+          : new URL(request.url || '/', base),
       ),
       {
         method: request.method,

@@ -78,6 +78,12 @@ it(`uses default origin as request url origin when there are no host header`, as
   expect(request.url).toEqual(`${server.url}/`)
 })
 
+it(`paths starting with double slashes should not reset the origin`, async () => {
+  const slashes = '//foo'
+  const request = await mapRequest(`${server.url}${slashes}`)
+  expect(request.url).toEqual(`${server.url}${slashes}`)
+})
+
 it(`uses request host header as request url origin`, async () => {
   const host = 'vercel.com'
   await expect(
