@@ -1,5 +1,11 @@
 # @edge-runtime/node-utils
 
+## 2.2.4
+
+### Patch Changes
+
+- fix(buildToRequest): double slash path ([`6c683522a2e7f637ed55eaec5891794605235f54`](https://github.com/vercel/edge-runtime/commit/6c683522a2e7f637ed55eaec5891794605235f54))
+
 ## 2.2.3
 
 ### Patch Changes
