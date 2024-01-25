@@ -30,7 +30,7 @@ importers:
         version: 2.12.2
       git-authors-cli:
         specifier: latest
-        version: 1.0.48
+        version: 1.0.49
       jest:
         specifier: 29.7.0
         version: 29.7.0(@types/node@16.18.40)(ts-node@10.9.2)
@@ -3848,8 +3848,8 @@ packages:
       get-intrinsic: 1.2.0
     dev: true
 
-  /git-authors-cli@1.0.48:
-    resolution: {integrity: sha512-Nf6NYoWJAhi9mp837PrLCagqcg7R7Y9iRsy2ve93q0fc9QZjO68UL2B3VwOu26q0+r4L6hqvMhTDRWOPbLOqjQ==}
+  /git-authors-cli@1.0.49:
+    resolution: {integrity: sha512-aodJH0A8DPxS4s2AyBhX3Z00Oz20PSJnff6JOC7AnfAQ0F8XEOmbQQNVSQW3pAzwW6os/RlTiNc9pDFWAQsk/Q==}
     engines: {node: '>= 8'}
     hasBin: true
     dependencies:
