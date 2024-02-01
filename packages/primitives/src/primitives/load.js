@@ -72,13 +72,20 @@ function requireWithFakeGlobalScope(params) {
 export function load(scopedContext = {}) {
   /** @type Record<string, any> */
   const context = {}
+  /** @type {import('../../type-definitions/encoding')} */
+  const encodingImpl = requireWithFakeGlobalScope({
+    context,
+    id: 'encoding.js',
+    sourceCode: injectSourceCode('./encoding.js'),
+    scopedContext,
+  })
   assign(context, {
     TextDecoder,
     TextEncoder,
     TextEncoderStream,
     TextDecoderStream,
-    atob,
-    btoa,
+    atob: encodingImpl.atob,
+    btoa: encodingImpl.btoa,
     performance,
   })
 
