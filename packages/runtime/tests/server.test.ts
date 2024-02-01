@@ -44,6 +44,26 @@ test('run fetch events through http', async () => {
   expect(response.statusText).toEqual('OK')
 })
 
+test('works with cookies header', async () => {
+  const runtime = new EdgeRuntime()
+  runtime.evaluate(`
+    addEventListener('fetch', event => {
+      const headers = new Headers()
+      headers.append('set-cookie', 'foo=chocochip')
+      headers.append('set-cookie', 'bar=chocochip')
+      return event.respondWith(new Response(null, { headers }))
+    })
+  `)
+
+  server = await runServer({ runtime })
+  const url = new URL(server.url)
+  url.searchParams.set('url', 'https://edge-ping.vercel.app')
+  const response = await fetch(String(url))
+
+  const cookies = response.headers.get('set-cookie')
+  expect(cookies).toEqual('foo=chocochip, bar=chocochip')
+})
+
 test('works with json', async () => {
   const runtime = new EdgeRuntime()
   runtime.evaluate(`
