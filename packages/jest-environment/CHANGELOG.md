@@ -1,5 +1,11 @@
 # @edge-runtime/jest-environment
 
+## 2.3.9
+
+### Patch Changes
+
+- Fix dependency conflict with Next.js package ([#795](https://github.com/vercel/edge-runtime/pull/795))
+
 ## 2.3.8
 
 ### Patch Changes
