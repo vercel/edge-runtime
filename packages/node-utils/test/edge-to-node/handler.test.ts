@@ -260,8 +260,10 @@ it('interacts with waitUntil', async () => {
   })
 
   const start = Date.now()
-  await server.fetch('/')
+  const response = await server.fetch('/')
   const end = (await deferred.promise) as number
   expect(emitted).toBe(true)
   expect(end - start).toBeGreaterThanOrEqual(1000)
+  expect(response.status).toBe(200)
+  expect(await response.text()).toBe('Hello world')
 })
