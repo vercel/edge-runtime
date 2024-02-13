@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 4.1.0
+
+### Minor Changes
+
+- Expose `context.waitUntil` for Node.js ([#805](https://github.com/vercel/edge-runtime/pull/805))
+
 ## 4.0.6
 
 ### Patch Changes
