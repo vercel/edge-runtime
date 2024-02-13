@@ -475,6 +475,25 @@ describe('Event handlers', () => {
     expect(promises).toEqual([50, 500])
   })
 
+  it('allows to destructure `waitUntil` and `respondWith', async () => {
+    const runtime = new EdgeVM({
+      initialCode: `
+        const delay = ms => new Promise(resolve => {
+          setTimeout(() => resolve(ms), ms)
+        });
+
+        addEventListener('fetch', ({ waitUntil, respondWith }) => {
+          waitUntil(Promise.resolve(delay(50)))
+          waitUntil(Promise.resolve(delay(500)))
+          respondWith(new Response())
+        });
+      `,
+    })
+
+    const res = await runtime.dispatchFetch('https://edge-ping.vercel.app')
+    expect(res.status).toBe(200)
+  })
+
   it('allows to add a `fetch` event handler that responds without leaking server headers on a 200', async () => {
     const runtime = new EdgeVM()
 
