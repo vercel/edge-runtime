@@ -4,6 +4,15 @@ import { runTestServer } from '../test-utils/run-test-server'
 import { serializeResponse } from '../test-utils/serialize-response'
 import * as Edge from '@edge-runtime/primitives'
 
+function createDeferred() {
+  let resolve, reject
+  const promise = new Promise((_resolve, _reject) => {
+    resolve = _resolve
+    reject = _reject
+  })
+  return { promise, resolve, reject }
+}
+
 const transformToNode = buildToNodeHandler(
   {
     Headers: Edge.Headers,
@@ -229,4 +238,30 @@ it('consumes incoming headers', async () => {
     statusText: 'OK',
     headers,
   })
+})
+
+it('interacts with waitUntil', async () => {
+  let emitted = false
+  const deferred = createDeferred()
+  server = await runTestServer({
+    handler: transformToNode((_, { waitUntil }) => {
+      waitUntil(
+        new Promise((resolve) =>
+          setTimeout(() => {
+            emitted = true
+            // @ts-expect-error
+            deferred.resolve(Date.now())
+            resolve()
+          }, 1000),
+        ),
+      )
+      return new Edge.Response('Hello world')
+    }),
+  })
+
+  const start = Date.now()
+  await server.fetch('/')
+  const end = (await deferred.promise) as number
+  expect(emitted).toBe(true)
+  expect(end - start).toBeGreaterThanOrEqual(1000)
 })
