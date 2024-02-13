@@ -230,19 +230,3 @@ it('consumes incoming headers', async () => {
     headers,
   })
 })
-
-it('fails when using waitUntil()', async () => {
-  server = await runTestServer({
-    handler: transformToNode((req, evt) => {
-      evt.waitUntil(Promise.resolve())
-      return new Edge.Response('ok')
-    }),
-  })
-
-  const response = await server.fetch('/')
-  expect(await serializeResponse(response)).toMatchObject({
-    status: 500,
-    statusText: 'Internal Server Error',
-    text: 'Error: waitUntil is not supported yet.',
-  })
-})

@@ -16,10 +16,12 @@ it('returns a fetch event with a request', () => {
   expect(event.request).toBe(request)
 })
 
-it('throws when accessing waitUntil', () => {
+it('interacts with waitUntil', async () => {
   const request = new EdgeRuntime.Request('https://vercel.com')
   const event = toFetchEvent(request)
-  expect(() => event.waitUntil(Promise.resolve())).toThrow(
-    'waitUntil is not supported yet.',
-  )
+  let duration = Date.now()
+  event.waitUntil(new Promise((resolve) => setTimeout(resolve, 1000)))
+  await Promise.all(event.awaiting)
+  duration = Date.now() - duration
+  expect(duration).toBeGreaterThanOrEqual(1000)
 })
