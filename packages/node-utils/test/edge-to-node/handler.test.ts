@@ -4,12 +4,21 @@ import { runTestServer } from '../test-utils/run-test-server'
 import { serializeResponse } from '../test-utils/serialize-response'
 import * as Edge from '@edge-runtime/primitives'
 
+function createDeferred() {
+  let resolve, reject
+  const promise = new Promise((_resolve, _reject) => {
+    resolve = _resolve
+    reject = _reject
+  })
+  return { promise, resolve, reject }
+}
+
 const transformToNode = buildToNodeHandler(
   {
     Headers: Edge.Headers,
     ReadableStream: Edge.ReadableStream,
     Request: Edge.Request,
-    Uint8Array: Uint8Array,
+    Uint8Array,
     FetchEvent: Edge.FetchEvent,
   },
   { defaultOrigin: 'http://example.com' },
@@ -231,18 +240,30 @@ it('consumes incoming headers', async () => {
   })
 })
 
-it('fails when using waitUntil()', async () => {
+it('interacts with waitUntil', async () => {
+  let emitted = false
+  const deferred = createDeferred()
   server = await runTestServer({
-    handler: transformToNode((req, evt) => {
-      evt.waitUntil(Promise.resolve())
-      return new Edge.Response('ok')
+    handler: transformToNode((_, { waitUntil }) => {
+      waitUntil(
+        new Promise((resolve) =>
+          setTimeout(() => {
+            emitted = true
+            // @ts-expect-error
+            deferred.resolve(Date.now())
+            resolve()
+          }, 1000),
+        ),
+      )
+      return new Edge.Response('Hello world')
     }),
   })
 
+  const start = Date.now()
   const response = await server.fetch('/')
-  expect(await serializeResponse(response)).toMatchObject({
-    status: 500,
-    statusText: 'Internal Server Error',
-    text: 'Error: waitUntil is not supported yet.',
-  })
+  const end = (await deferred.promise) as number
+  expect(emitted).toBe(true)
+  expect(end - start).toBeGreaterThanOrEqual(1000)
+  expect(response.status).toBe(200)
+  expect(await response.text()).toBe('Hello world')
 })

@@ -6,11 +6,11 @@ export class FetchEvent extends Event {
     this.awaiting = new Set()
   }
 
-  respondWith(response) {
+  respondWith = (response) => {
     this.response = response
   }
 
-  waitUntil(promise) {
+  waitUntil = (promise) => {
     this.awaiting.add(promise)
     promise.finally(() => this.awaiting.delete(promise))
   }
