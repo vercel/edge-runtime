@@ -1,5 +1,16 @@
 # @edge-runtime/vm
 
+## 3.2.0
+
+### Minor Changes
+
+- Expose `context.waitUntil` for Node.js ([#805](https://github.com/vercel/edge-runtime/pull/805))
+
+### Patch Changes
+
+- Updated dependencies [[`2403ac27653a40bdaf9329a46f967d6e54f9c457`](https://github.com/vercel/edge-runtime/commit/2403ac27653a40bdaf9329a46f967d6e54f9c457)]:
+  - @edge-runtime/primitives@4.1.0
+
 ## 3.1.8
 
 ### Patch Changes

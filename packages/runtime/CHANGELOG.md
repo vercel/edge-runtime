@@ -1,5 +1,13 @@
 # edge-runtime
 
+## 2.5.9
+
+### Patch Changes
+
+- Updated dependencies [[`2403ac27653a40bdaf9329a46f967d6e54f9c457`](https://github.com/vercel/edge-runtime/commit/2403ac27653a40bdaf9329a46f967d6e54f9c457)]:
+  - @edge-runtime/vm@3.2.0
+  - @edge-runtime/ponyfill@2.4.2
+
 ## 2.5.8
 
 ### Patch Changes
