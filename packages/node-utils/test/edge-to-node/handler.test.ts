@@ -9,7 +9,7 @@ const transformToNode = buildToNodeHandler(
     Headers: Edge.Headers,
     ReadableStream: Edge.ReadableStream,
     Request: Edge.Request,
-    Uint8Array: Uint8Array,
+    Uint8Array,
     FetchEvent: Edge.FetchEvent,
   },
   { defaultOrigin: 'http://example.com' },
