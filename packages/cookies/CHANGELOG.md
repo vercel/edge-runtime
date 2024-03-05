@@ -1,5 +1,11 @@
 # @edge-runtime/cookies
 
+## 4.1.0
+
+### Minor Changes
+
+- Add cookies partitioned attribute ([#825](https://github.com/vercel/edge-runtime/pull/825))
+
 ## 4.0.3
 
 ### Patch Changes
