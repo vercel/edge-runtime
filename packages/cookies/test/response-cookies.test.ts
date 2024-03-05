@@ -15,6 +15,11 @@ test('reflect .set into `set-cookie`', async () => {
     .set('fooExpires', 'barExpires', { expires: 0 })
     .set('fooExpiresDate', 'barExpiresDate', { expires: new Date(0) })
     .set('fooMaxAge', '', { maxAge: 0 })
+    .set('fooSameSite', 'barSameSite', {
+      sameSite: 'none',
+      partitioned: true,
+      secure: true,
+    })
 
   expect(cookies.get('foo')?.value).toBe('bar')
   expect(cookies.get('fooz')?.value).toBe('barz')
@@ -22,6 +27,7 @@ test('reflect .set into `set-cookie`', async () => {
   expect(cookies.get('fooExpires')?.value).toBe('barExpires')
   expect(cookies.get('fooExpiresDate')?.value).toBe('barExpiresDate')
   expect(cookies.get('fooMaxAge')?.value).toBe('')
+  expect(cookies.get('fooSameSite')?.value).toBe('barSameSite')
 
   const opt1 = cookies.get('foo')
   expect(opt1).toEqual<typeof opt1>({
@@ -58,6 +64,14 @@ test('reflect .set into `set-cookie`', async () => {
     path: '/',
     maxAge: 0,
   })
+  expect(cookies.get('fooSameSite')).toEqual({
+    name: 'fooSameSite',
+    value: 'barSameSite',
+    path: '/',
+    sameSite: 'none',
+    secure: true,
+    partitioned: true,
+  })
 
   expect(headers.getSetCookie()).toEqual([
     'foo=bar; Path=/test',
@@ -66,6 +80,7 @@ test('reflect .set into `set-cookie`', async () => {
     'fooExpires=barExpires; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
     'fooExpiresDate=barExpiresDate; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
     'fooMaxAge=; Path=/; Max-Age=0',
+    'fooSameSite=barSameSite; Path=/; Secure; SameSite=none; Partitioned',
   ])
 })
 
@@ -81,19 +96,22 @@ it('reflect .set all options attributes into `set-cookie`', async () => {
     httpOnly: true,
     maxAge: 0,
     priority: 'high',
+    partitioned: true,
   })
   const cookiesInHeaders = headers.getSetCookie()
   expect(cookiesInHeaders).toEqual([
-    'first-name=first-value; Path=custom-path; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Max-Age=0; Domain=custom-domain; Secure; HttpOnly; SameSite=strict; Priority=high',
+    'first-name=first-value; Path=custom-path; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Max-Age=0; Domain=custom-domain; Secure; HttpOnly; SameSite=strict; Partitioned; Priority=high',
   ])
 })
 
 describe('`set-cookie` into .get and .getAll', () => {
   test.each([
-    'name=value; Secure; HttpOnly',
-    'name=value; Secure; HttpOnly;',
-    'name=value; HttpOnly; Secure',
-    'name=value; HttpOnly; Secure;',
+    'name=value; Partitioned; Secure; HttpOnly',
+    'name=value; Secure; Partitioned; HttpOnly;',
+    'name=value; Secure; HttpOnly; Partitioned',
+    'name=value; HttpOnly; Partitioned; Secure;',
+    'name=value; Partitioned; Secure; HttpOnly',
+    'name=value; HttpOnly; Partitioned; Secure;',
   ])('parses %s header correctly', (value) => {
     const headers = new Headers()
     headers.set('set-cookie', value)
@@ -106,6 +124,7 @@ describe('`set-cookie` into .get and .getAll', () => {
       value: 'value',
       httpOnly: true,
       secure: true,
+      partitioned: true,
     })
 
     expect(cookies.get('name')).toEqual(all[0])
