@@ -7,7 +7,7 @@ import type { CookieSerializeOptions } from 'cookie'
 export interface CookieListItem
   extends Pick<
     CookieSerializeOptions,
-    'domain' | 'path' | 'secure' | 'sameSite'
+    'domain' | 'path' | 'secure' | 'sameSite' | 'partitioned'
   > {
   /** A string with the name of a cookie. */
   name: string
@@ -22,7 +22,10 @@ export interface CookieListItem
  * the `httpOnly`, `maxAge` and `priority` properties.
  */
 export type ResponseCookie = CookieListItem &
-  Pick<CookieSerializeOptions, 'httpOnly' | 'maxAge' | 'priority'>
+  Pick<
+    CookieSerializeOptions,
+    'httpOnly' | 'maxAge' | 'priority' | 'partitioned'
+  >
 
 /**
  * Subset of {@link CookieListItem}, only containing `name` and `value`
