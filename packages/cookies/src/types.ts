@@ -7,7 +7,7 @@ import type { CookieSerializeOptions } from 'cookie'
 export interface CookieListItem
   extends Pick<
     CookieSerializeOptions,
-    'domain' | 'path' | 'secure' | 'sameSite'
+    'domain' | 'path' | 'secure' | 'sameSite' | 'partitioned'
   > {
   /** A string with the name of a cookie. */
   name: string

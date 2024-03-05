@@ -14,6 +14,7 @@ export function stringifyCookie(c: ResponseCookie | RequestCookie): string {
     'secure' in c && c.secure && 'Secure',
     'httpOnly' in c && c.httpOnly && 'HttpOnly',
     'sameSite' in c && c.sameSite && `SameSite=${c.sameSite}`,
+    'partitioned' in c && c.partitioned && 'Partitioned',
     'priority' in c && c.priority && `Priority=${c.priority}`,
   ].filter(Boolean)
 
@@ -63,6 +64,7 @@ export function parseSetCookie(setCookie: string): undefined | ResponseCookie {
     path,
     samesite,
     secure,
+    partitioned,
     priority,
   } = Object.fromEntries(
     attributes.map(([key, value]) => [key.toLowerCase(), value]),
@@ -78,6 +80,7 @@ export function parseSetCookie(setCookie: string): undefined | ResponseCookie {
     ...(samesite && { sameSite: parseSameSite(samesite) }),
     ...(secure && { secure: true }),
     ...(priority && { priority: parsePriority(priority) }),
+    ...(partitioned && { partitioned: true }),
   }
 
   return compact(cookie)
