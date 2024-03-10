@@ -20,6 +20,7 @@
         "console/**",
         "crypto/**",
         "dist/**",
+        "encoding/**",
         "events/**",
         "fetch/**",
         "streams/**",

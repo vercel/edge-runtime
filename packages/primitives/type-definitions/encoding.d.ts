@@ -4,8 +4,5 @@ declare const TextDecoderConstructor: typeof TextDecoder
 export { TextEncoderConstructor as TextEncoder }
 export { TextDecoderConstructor as TextDecoder }
 
-declare const _atob: typeof atob
-declare const _btoa: typeof btoa
-
-export { _atob as atob }
-export { _btoa as btoa }
+export const atob: (encoded: string) => string
+export const btoa: (input: any) => string
