@@ -40,6 +40,22 @@ describe('input parsing', () => {
   })
 })
 
+describe('output serializing', () => {
+  test('single element', () => {
+    const headers = new Headers()
+    const cookies = new RequestCookies(headers)
+    cookies.set('a', '1')
+    expect(headers.get('cookie')).toBe('a=1')
+  })
+  test('multiple elements', () => {
+    const headers = new Headers()
+    const cookies = new RequestCookies(headers)
+    cookies.set('a', '1')
+    cookies.set('b', '2')
+    expect(headers.get('cookie')).toBe('a=1; b=2')
+  })
+})
+
 test('updating a cookie', () => {
   const headers = requestHeadersWithCookies('a=1; b=2')
 
