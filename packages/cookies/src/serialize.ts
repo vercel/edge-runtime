@@ -18,10 +18,8 @@ export function stringifyCookie(c: ResponseCookie | RequestCookie): string {
     'priority' in c && c.priority && `Priority=${c.priority}`,
   ].filter(Boolean)
 
-  const s = `${c.name}=${encodeURIComponent(c.value ?? '')}`
-  if (attrs.length === 0) return s
-
-  return `${s}; ${attrs.join('; ')}`
+  const stringified = `${c.name}=${encodeURIComponent(c.value ?? '')}`
+  return attrs.length === 0 ? stringified : `${stringified}; ${attrs.join('; ')}`
 }
 
 /** Parse a `Cookie` header value */
