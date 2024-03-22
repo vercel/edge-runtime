@@ -1,5 +1,11 @@
 # @edge-runtime/cookies
 
+## 4.1.1
+
+### Patch Changes
+
+- Fix cookie header format ([#844](https://github.com/vercel/edge-runtime/pull/844))
+
 ## 4.1.0
 
 ### Minor Changes
