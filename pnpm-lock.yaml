@@ -48,7 +48,7 @@ importers:
         version: 3.2.5
       simple-git-hooks:
         specifier: latest
-        version: 2.11.0
+        version: 2.11.1
       ts-jest:
         specifier: 29.1.2
         version: 29.1.2(@babel/core@7.20.12)(@jest/types@29.5.0)(esbuild@0.20.2)(jest@29.7.0)(typescript@5.4.3)
@@ -7347,8 +7347,8 @@ packages:
     resolution: {integrity: sha512-MY2/qGx4enyjprQnFaZsHib3Yadh3IXyV2C321GY0pjGfVBu4un0uDJkwgdxqO+Rdx8JMT8IfJIRwbYVz3Ob3Q==}
     engines: {node: '>=14'}
 
-  /simple-git-hooks@2.11.0:
-    resolution: {integrity: sha512-Wab2uzjGJEL8Kx+2UY8waUSfkiolt2RbaAJWvPCjaAEXrrKoS7JqPk4STiIVl/yt3asZRUzFoK2ryhwvgh5rYw==}
+  /simple-git-hooks@2.11.1:
+    resolution: {integrity: sha512-tgqwPUMDcNDhuf1Xf6KTUsyeqGdgKMhzaH4PAZZuzguOgTl5uuyeYe/8mWgAr6IBxB5V06uqEf6Dy37gIWDtDg==}
     hasBin: true
     requiresBuild: true
     dev: true
