@@ -13,7 +13,7 @@ const testOrSkip =
   process.versions.node.split('.').map(Number)[0] > 16 ? test : test.skip
 
 testOrSkip('perform a GET', async () => {
-  server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
+  server = createServer(async (req, res) => {
     if (req.method !== 'GET') {
       res.statusCode = 400
       res.end()
@@ -30,7 +30,7 @@ testOrSkip('perform a GET', async () => {
 })
 
 testOrSkip('perform a POST as application/json', async () => {
-  server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
+  server = createServer(async (req, res) => {
     if (req.method !== 'POST') {
       res.statusCode = 400
       res.end()
@@ -62,7 +62,7 @@ testOrSkip('perform a POST as application/json', async () => {
 })
 
 testOrSkip('perform a POST as application/x-www-form-urlencoded', async () => {
-  server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
+  server = createServer(async (req, res) => {
     if (req.method !== 'POST') {
       res.statusCode = 400
       res.end()
@@ -98,7 +98,7 @@ testOrSkip('perform a POST as application/x-www-form-urlencoded', async () => {
 
 testOrSkip('perform a POST as multipart/form-data', async () => {
   const upload = multer({ storage: multer.memoryStorage() })
-  server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
+  server = createServer(async (req, res) => {
     if (
       req.method !== 'POST' ||
       !req.headers['content-type']?.startsWith('multipart/form-data')
@@ -133,7 +133,7 @@ testOrSkip('perform a POST as multipart/form-data', async () => {
 })
 
 testOrSkip('sets header calling Headers constructor', async () => {
-  server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
+  server = createServer(async (req, res) => {
     res.end(req.headers['user-agent'])
   })
   const serverUrl = await listen(server)
@@ -157,3 +157,34 @@ testOrSkip('sets header calling Headers constructor', async () => {
     expect(response.status).toBe(200)
   },
 )
+
+testOrSkip.only('respect Request instance options', async () => {
+  server = createServer(async (req, res) => {
+    if (req.method !== 'POST') {
+      res.statusCode = 400
+      res.end()
+    }
+
+    if (req.headers['content-type'] === 'application/json') {
+      const text = await httpBody.text(req)
+      res.statusCode = 200
+      res.setHeader('Content-Type', 'application/json')
+      res.setHeader('Content-Length', Buffer.byteLength(text))
+      res.end(text)
+      return
+    }
+    res.statusCode = 400
+    res.end()
+  })
+
+  const serverUrl = await listen(server)
+  const request = new Request(new Request(serverUrl), {
+    headers: { 'content-type': 'application/json' },
+  })
+  const response = await fetch(request, {
+    body: JSON.stringify({ foo: 'bar' }),
+  })
+
+  expect(response.status).toBe(200)
+  expect(await response.json()).toEqual({ foo: 'bar' })
+})
