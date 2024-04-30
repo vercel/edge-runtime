@@ -3,6 +3,7 @@ import type { EdgeContext } from '@edge-runtime/vm'
 import listen from 'async-listen'
 import http from 'http'
 import type { ListenOptions } from 'net'
+import { promisify } from 'util'
 
 interface ServerOptions<T extends EdgeContext> extends Options<T> {}
 
@@ -33,18 +34,10 @@ export async function runServer<T extends EdgeContext>(
   const { handler, waitUntil } = createHandler(options)
   const server = http.createServer(handler)
   const url = await listen(server, options)
-
+  const closeServer = promisify(server.close.bind(server))
   return {
     url: String(url),
-    close: async () => {
-      await waitUntil()
-      await new Promise<void>((resolve, reject) => {
-        return server.close((err) => {
-          if (err) reject(err)
-          resolve()
-        })
-      })
-    },
+    close: () => Promise.all([waitUntil(), closeServer()]).then(() => void 0),
     waitUntil,
   }
 }
