@@ -4,10 +4,6 @@ import { Callout } from 'nextra-theme-docs'
 
 The **@edge-runtime/node-utils** package contains utilities to run web compliant code into a Node.js environment.
 
-<Callout type='warning' emoji='⚠️'>
-  Please note this is an alpha version.
-</Callout>
-
 ## Installation
 
 ```sh npm2yarn
@@ -52,8 +48,17 @@ await server.close()
 
 ### buildToNodeHandler(dependencies, options): toNodeHandler(handler: WebHandler): NodeHandler
 
-Builds a transformer function to turn an web compliant request handler (`(req: Request) => Promise<Response> | Response | null | undefined`) into
-a Node.js compliant [request handler](https://nodejs.org/api/http.html#httpcreateserveroptions-requestlistener) (`(req: IncomingMessage, res: ServerResponse) => Promise<void> | void`).
+Builds a transformer function to turn an web compliant request handler:
+
+```
+(req: Request) => Promise<Response> | Response | null | undefined`
+```
+
+into a Node.js compliant [request handler](https://nodejs.org/api/http.html#httpcreateserveroptions-requestlistener):
+
+```
+(req: IncomingMessage, res: ServerResponse) => Promise<void> | void
+```
 
 **Limitation:** it does support the web handler second parameter, so `waitUntil` is not implemented yet.
 
