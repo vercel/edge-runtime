@@ -1,5 +1,11 @@
 # edge-runtime
 
+## 2.5.10
+
+### Patch Changes
+
+- perf: speed up server close ([#881](https://github.com/vercel/edge-runtime/pull/881))
+
 ## 2.5.9
 
 ### Patch Changes
