@@ -27,7 +27,7 @@ importers:
         version: 0.20.2
       finepack:
         specifier: latest
-        version: 2.12.4
+        version: 2.12.7
       git-authors-cli:
         specifier: latest
         version: 1.0.49
@@ -3850,8 +3850,8 @@ packages:
       pkg-dir: 4.2.0
     dev: true
 
-  /finepack@2.12.4:
-    resolution: {integrity: sha512-+d94HnqWDHYoLMlUeTOgQPVAXoJObHFrjPxewGDxLylYYtQ4jEowgaI96F6tzMKiEr3G85ukZP64OUhmLUhVxg==}
+  /finepack@2.12.7:
+    resolution: {integrity: sha512-eoLgsr4VFOHhp4VkUdhDkd+TG44Vg1whkYm/f88NmGTOwJZolHzGCKKsoeGKzFjBQoB7LrYkvmt+zZAQry8Ivw==}
     engines: {node: '>=4'}
     hasBin: true
     dependencies:
@@ -3864,8 +3864,8 @@ packages:
       jsonlint: 1.6.3
       lodash.omit: 4.5.0
       mri: 1.2.0
-      normalize-package-data: 4.0.1
-      sort-keys-recursive: 2.1.7
+      normalize-package-data: 6.0.1
+      sort-keys-recursive: 2.1.10
     dev: true
 
   /flexsearch@0.7.31:
@@ -4324,11 +4324,11 @@ packages:
     resolution: {integrity: sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==}
     dev: true
 
-  /hosted-git-info@5.2.1:
-    resolution: {integrity: sha512-xIcQYMnhcx2Nr4JTjsFmwwnr9vldugPy9uVm0o87bjqqWMv9GaqsTeT+i99wTl0mk1uLxJtHxLb8kymqTENQsw==}
-    engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
+  /hosted-git-info@7.0.2:
+    resolution: {integrity: sha512-puUZAUKT5m8Zzvs72XWy3HtvVbTWljRE66cP60bxJzAqf2DgICo7lYTY2IHUmLnNpjYvw5bvmoHvPc0QO2a62w==}
+    engines: {node: ^16.14.0 || >=18.0.0}
     dependencies:
-      lru-cache: 7.18.3
+      lru-cache: 10.2.2
     dev: true
 
   /html-escaper@2.0.2:
@@ -5454,6 +5454,11 @@ packages:
       meow: 3.7.0
     dev: true
 
+  /lru-cache@10.2.2:
+    resolution: {integrity: sha512-9hp3Vp2/hFQUiIwKo8XCeFVnrg8Pk3TYNPIR7tJADKi5YfcF7vEaK7avFHTlSy3kOKYaJQaalfEo6YuXdceBOQ==}
+    engines: {node: 14 || >=16.14}
+    dev: true
+
   /lru-cache@4.1.5:
     resolution: {integrity: sha512-sWZlbEP2OsHNkXrMl5GYk/jKk70MBng6UU4YI/qGDYbgf6YbP4EvmqISbXCoJiRKs+1bSpFHVgQxvJ17F2li5g==}
     dependencies:
@@ -5470,11 +5475,6 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: 4.0.0
-
-  /lru-cache@7.18.3:
-    resolution: {integrity: sha512-jumlc0BIUrS3qJGgIkWZsyfAM7NCWiBcCDhnd+3NNM5KbBmLTgHVfWBcg6W+rLUsIpzpERPsvwUP7CckAQSOoA==}
-    engines: {node: '>=12'}
-    dev: true
 
   /make-dir@3.1.0:
     resolution: {integrity: sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==}
@@ -6499,11 +6499,11 @@ packages:
       validate-npm-package-license: 3.0.4
     dev: true
 
-  /normalize-package-data@4.0.1:
-    resolution: {integrity: sha512-EBk5QKKuocMJhB3BILuKhmaPjI8vNRSpIfO9woLC6NyHVkKKdVEdAO1mrT0ZfxNR1lKwCcTkuZfmGIFdizZ8Pg==}
-    engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
+  /normalize-package-data@6.0.1:
+    resolution: {integrity: sha512-6rvCfeRW+OEZagAB4lMLSNuTNYZWLVtKccK79VSTf//yTY5VOCgcpH80O+bZK8Neps7pUnd5G+QlMg1yV/2iZQ==}
+    engines: {node: ^16.14.0 || >=18.0.0}
     dependencies:
-      hosted-git-info: 5.2.1
+      hosted-git-info: 7.0.2
       is-core-module: 2.12.1
       semver: 7.5.4
       validate-npm-package-license: 3.0.4
@@ -7390,8 +7390,8 @@ packages:
       yargs: 15.4.1
     dev: true
 
-  /sort-keys-recursive@2.1.7:
-    resolution: {integrity: sha512-WkQxbp66FhebZFiHDaISSUXdsYqBmW6loD9DE0NZsKRfUNwWfoXe+hmg8AajPG3KaNGTIwT7O7fNtHWqD1zyPw==}
+  /sort-keys-recursive@2.1.10:
+    resolution: {integrity: sha512-yRLJbEER/PjU7hSRwXvP+NyXiORufu8rbSbp+3wFRuJZXoi/AhuKczbjuipqn7Le0SsTXK4VUeri2+Ni6WS8Hg==}
     engines: {node: '>=4'}
     dependencies:
       kind-of: 6.0.3
