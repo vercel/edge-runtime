@@ -126,7 +126,7 @@
     "@types/jest": "29.5.12",
     "@types/node": "16",
     "c8": "latest",
-    "esbuild": "0.20.2",
+    "esbuild": "0.22.0",
     "finepack": "latest",
     "git-authors-cli": "latest",
     "jest": "29.7.0",
