@@ -132,8 +132,8 @@ importers:
         specifier: 1.1.2
         version: 1.1.2
       http-body:
-        specifier: 1.0.11
-        version: 1.0.11
+        specifier: 1.0.12
+        version: 1.0.12
       multer:
         specifier: 1.4.5-lts.1
         version: 1.4.5-lts.1
@@ -4339,8 +4339,8 @@ packages:
     resolution: {integrity: sha512-bEqo66MRXsUGxWHV5IP0PUiAWwoEjba4VCzg0LjFJBpchPaTfyfCKTG6bc5F8ucKec3q5y6qOdGyYTSBEvhCrg==}
     dev: false
 
-  /http-body@1.0.11:
-    resolution: {integrity: sha512-dWpKXOJ2Wz/f0Y0aOrf0o8UrtYkLCCkxiHtgf1OoZGgfoNMOr48+WPPeSm90s8NzY7XBqGQ/7w5erMvCQROJcg==}
+  /http-body@1.0.12:
+    resolution: {integrity: sha512-Od1kmXULmtr+avRyXD8EfsjlUeZ+pBLsykNDi63bHJZpjr1oQZEmJiTDtIZRfzppxZO+FljLMN4aROOzeQVpRQ==}
     engines: {node: '>= 18'}
     dev: true
 
