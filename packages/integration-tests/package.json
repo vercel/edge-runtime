@@ -7,7 +7,7 @@
     "test:edge": "jest --testEnvironment @edge-runtime/jest-environment",
     "test:node": "jest --testEnvironment node"
   },
-  "license": "MPL-2.0",
+  "license": "MIT",
   "devDependencies": {
     "http-body": "1.0.12",
     "multer": "1.4.5-lts.1",
