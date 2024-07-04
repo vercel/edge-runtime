@@ -1,7 +1,7 @@
 {
   "$schema": "https://turborepo.org/schema.json",
   "globalEnv": ["RUNNER_OS", "NODE_VERSION"],
-  "pipeline": {
+  "tasks": {
     "build": {
       "outputs": ["dist/**"],
       "dependsOn": ["^build"]
