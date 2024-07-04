@@ -40,7 +40,7 @@
     "prebuild": "pnpm run clean:build",
     "test": "TZ=UTC jest"
   },
-  "license": "MPL-2.0",
+  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
