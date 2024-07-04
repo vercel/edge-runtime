@@ -293,8 +293,8 @@ importers:
         specifier: '8'
         version: 8.0.1(ts-node@10.9.2)(typescript@5.5.3)
       ua-parser-js:
-        specifier: 1.0.37
-        version: 1.0.37
+        specifier: 1.0.38
+        version: 1.0.38
 
   packages/vm:
     dependencies:
@@ -7668,8 +7668,8 @@ packages:
     hasBin: true
     dev: true
 
-  /ua-parser-js@1.0.37:
-    resolution: {integrity: sha512-bhTyI94tZofjo+Dn8SN6Zv8nBDvyXTymAdM3LDI/0IboIUwTu1rEhW7v2TfiVsoYWgkQ4kOVqnI8APUFbIQIFQ==}
+  /ua-parser-js@1.0.38:
+    resolution: {integrity: sha512-Aq5ppTOfvrCMgAPneW1HfWj66Xi7XL+/mIy996R1/CLS/rcyJQm6QZdsKrUeivDFQ+Oc9Wyuwor8Ze8peEoUoQ==}
     dev: true
 
   /underscore@1.6.0:
