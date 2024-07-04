@@ -29,7 +29,7 @@
     "@edge-runtime/vm": "workspace:*",
     "async-listen": "3.0.1",
     "mri": "1.2.0",
-    "picocolors": "1.0.0",
+    "picocolors": "1.0.1",
     "pretty-ms": "7.0.1",
     "signal-exit": "4.0.2",
     "time-span": "4.0.0"
