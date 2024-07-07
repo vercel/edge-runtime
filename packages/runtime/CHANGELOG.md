@@ -1,5 +1,18 @@
 # edge-runtime
 
+## 3.0.0
+
+### Major Changes
+
+- use MIT license ([#909](https://github.com/vercel/edge-runtime/pull/909))
+
+### Patch Changes
+
+- Updated dependencies [[`892741faf806d5f5a201331fe31e8f26a4816ac6`](https://github.com/vercel/edge-runtime/commit/892741faf806d5f5a201331fe31e8f26a4816ac6)]:
+  - @edge-runtime/format@3.0.0
+  - @edge-runtime/ponyfill@3.0.0
+  - @edge-runtime/vm@4.0.0
+
 ## 2.5.10
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @edge-runtime/node-utils
 
+## 3.0.0
+
+### Major Changes
+
+- use MIT license ([#909](https://github.com/vercel/edge-runtime/pull/909))
+
 ## 2.3.0
 
 ### Minor Changes

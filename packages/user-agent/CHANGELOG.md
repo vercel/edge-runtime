@@ -1,5 +1,11 @@
 # @edge-runtime/user-agent
 
+## 2.0.0
+
+### Major Changes
+
+- use MIT license ([#909](https://github.com/vercel/edge-runtime/pull/909))
+
 ## 1.4.1
 
 ### Patch Changes
