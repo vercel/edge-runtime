@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 5.0.0
+
+### Major Changes
+
+- use MIT license ([#909](https://github.com/vercel/edge-runtime/pull/909))
+
 ## 4.1.0
 
 ### Minor Changes
