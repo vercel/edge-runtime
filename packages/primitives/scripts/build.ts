@@ -2,6 +2,7 @@ import { basename, join, resolve } from 'path'
 import alias from 'esbuild-plugin-alias'
 import { Options, build } from 'tsup'
 import fs from 'fs'
+import esbuild from 'esbuild'
 
 const TARGET = 'node16.8'
 
@@ -160,10 +161,18 @@ async function generateTextFiles() {
     loadSourceWithPolyfills,
   )
   for (const file of files) {
-    const contents = await fs.promises.readFile(
-      resolve(__dirname, '../dist', file),
-      'utf8',
-    )
+    const {
+      outputFiles: [minified],
+    } = await esbuild.build({
+      entryPoints: [resolve(__dirname, '../dist', file)],
+      write: false,
+      minify: true,
+
+      bundle: true,
+      platform: 'node',
+      external: ['./streams'],
+    })
+    const contents = minified.text
     await fs.promises.writeFile(
       resolve(__dirname, '../dist', `${file}.text.js`),
       `module.exports = ${JSON.stringify(contents)}`,
