@@ -65,8 +65,8 @@ importers:
   docs:
     dependencies:
       '@heroicons/react':
-        specifier: ~2.1.4
-        version: 2.1.4(react@18.3.1)
+        specifier: ~2.1.5
+        version: 2.1.5(react@18.3.1)
       next:
         specifier: ~14.2.4
         version: 14.2.4(@babel/core@7.20.12)(react-dom@18.3.1)(react@18.3.1)
@@ -1280,8 +1280,8 @@ packages:
       react-dom: 18.3.1(react@18.3.1)
     dev: false
 
-  /@heroicons/react@2.1.4(react@18.3.1):
-    resolution: {integrity: sha512-ju0wj0wwrUTMQ2Yceyrma7TKuI3BpSjp+qKqV81K9KGcUHdvTMdiwfRc2cwXBp3uXtKuDZkh0v03nWOQnJFv2Q==}
+  /@heroicons/react@2.1.5(react@18.3.1):
+    resolution: {integrity: sha512-FuzFN+BsHa+7OxbvAERtgBTNeZpUjgM/MIizfVkSCL2/edriN0Hx/DWRCR//aPYwO5QX/YlgLGXk+E3PcfZwjA==}
     peerDependencies:
       react: '>= 16'
     dependencies:
