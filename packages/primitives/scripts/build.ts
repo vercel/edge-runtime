@@ -167,7 +167,6 @@ async function generateTextFiles() {
       entryPoints: [resolve(__dirname, '../dist', file)],
       write: false,
       minify: true,
-
       bundle: true,
       platform: 'node',
       external: ['./streams'],
