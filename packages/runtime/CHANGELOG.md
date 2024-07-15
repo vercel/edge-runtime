@@ -1,5 +1,13 @@
 # edge-runtime
 
+## 3.0.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @edge-runtime/ponyfill@3.0.0
+  - @edge-runtime/vm@4.0.1
+
 ## 3.0.0
 
 ### Major Changes

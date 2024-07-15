@@ -2,7 +2,7 @@
   "name": "@edge-runtime/primitives",
   "description": "A set of primitives to build Vercel Edge Runtime.",
   "homepage": "https://edge-runtime.vercel.app/packages/primitives",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "main": "dist/index.js",
   "repository": {
     "directory": "packages/primitives",

@@ -1,5 +1,12 @@
 # @edge-runtime/jest-environment
 
+## 3.0.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @edge-runtime/vm@4.0.1
+
 ## 3.0.0
 
 ### Major Changes

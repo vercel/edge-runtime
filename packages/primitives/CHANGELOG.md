@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 5.0.1
+
+### Patch Changes
+
+- minify source texts ([#925](https://github.com/vercel/edge-runtime/pull/925))
+
 ## 5.0.0
 
 ### Major Changes
