@@ -1,11 +1,11 @@
-import { aboveNode16, guard } from './test-if'
+import { polyfilledOrNative, guard } from './test-if'
 
 if (!globalThis.DOMException) {
   globalThis.DOMException = require('@edge-runtime/ponyfill').DOMException
 }
 
 describe('AbortController', () => {
-  guard(it, aboveNode16)('allows to abort fetch', async () => {
+  guard(it, polyfilledOrNative)('allows to abort fetch', async () => {
     expect.assertions(1)
     const controller = new AbortController()
     controller.abort()

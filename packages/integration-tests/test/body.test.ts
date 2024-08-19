@@ -1,6 +1,6 @@
-import { aboveNode16, guard } from './test-if'
+import { polyfilledOrNative, guard } from './test-if'
 
-guard(describe, aboveNode16)('body', () => {
+guard(describe, polyfilledOrNative)('body', () => {
   test('throws when the body was directly consumed', async () => {
     expect.assertions(9)
 

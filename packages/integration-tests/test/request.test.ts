@@ -1,6 +1,6 @@
-import { aboveNode16, guard } from './test-if'
+import { polyfilledOrNative, guard } from './test-if'
 
-guard(describe, aboveNode16)('request', () => {
+guard(describe, polyfilledOrNative)('request', () => {
   test('evaluate promise', () => {
     const url = 'https://vercel.com/foo/bar?one=value'
     const req = new Request(url)

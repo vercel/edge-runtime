@@ -1,17 +1,23 @@
-import { aboveNode16, guard, isEdgeRuntime } from './test-if'
+import { guard, isEdgeRuntime, polyfilledOrNative } from './test-if'
 
-guard(it, aboveNode16)('sets header calling Headers constructor', async () => {
-  const headers = new Headers({ cookie: 'hello=world' })
-  expect(headers.get('cookie')).toBe('hello=world')
-})
+guard(it, polyfilledOrNative)(
+  'sets header calling Headers constructor',
+  async () => {
+    const headers = new Headers({ cookie: 'hello=world' })
+    expect(headers.get('cookie')).toBe('hello=world')
+  },
+)
 
-guard(it, aboveNode16)('sets header calling Headers constructor', async () => {
-  const headers = new Headers()
-  headers.set('cookie', 'hello=world')
-  expect(headers.get('cookie')).toBe('hello=world')
-})
+guard(it, polyfilledOrNative)(
+  'sets header calling Headers constructor',
+  async () => {
+    const headers = new Headers()
+    headers.set('cookie', 'hello=world')
+    expect(headers.get('cookie')).toBe('hello=world')
+  },
+)
 
-guard(it, aboveNode16)('multiple headers', async () => {
+guard(it, polyfilledOrNative)('multiple headers', async () => {
   const headers = new Headers()
   headers.append('set-cookie', 'foo=chocochip')
   headers.append('set-cookie', 'bar=chocochip')
@@ -37,7 +43,7 @@ guard(describe, isEdgeRuntime())('getAll', () => {
   })
 })
 
-guard(describe, aboveNode16)('iterators', () => {
+guard(describe, polyfilledOrNative)('iterators', () => {
   const generate = () => {
     const headers = new Headers()
     headers.append('a', '1')

@@ -1,6 +1,6 @@
-import { aboveNode16, guard, isEdgeRuntime } from './test-if'
+import { polyfilledOrNative, guard, isEdgeRuntime } from './test-if'
 
-guard(describe, aboveNode16)('response', () => {
+guard(describe, polyfilledOrNative)('response', () => {
   test('create a response', async () => {
     const res1 = new Response('Hello world!')
     expect(await res1.text()).toEqual('Hello world!')

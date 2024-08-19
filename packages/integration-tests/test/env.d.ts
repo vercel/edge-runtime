@@ -15,3 +15,8 @@ interface Headers {
    */
   getAll?(name: 'set-cookie' | (string & {})): string[]
 }
+
+class WeakRef<T> {
+  deref(): T | undefined
+  constructor(value: T)
+}
