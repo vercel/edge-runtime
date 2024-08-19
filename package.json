@@ -135,7 +135,7 @@
     "next": "latest",
     "prettier": "latest",
     "simple-git-hooks": "latest",
-    "ts-jest": "29.2.2",
+    "ts-jest": "29.2.4",
     "ts-node": "10.9.2",
     "turbo": "latest",
     "typescript": "latest"
