@@ -37,7 +37,7 @@ guard(describe, isEdgeRuntime())('getAll', () => {
   })
 })
 
-describe('iterators', () => {
+guard(describe, aboveNode16)('iterators', () => {
   const generate = () => {
     const headers = new Headers()
     headers.append('a', '1')
