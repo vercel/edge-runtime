@@ -1,5 +1,12 @@
 # @edge-runtime/vm
 
+## 4.0.2
+
+### Patch Changes
+
+- Updated dependencies [[`6a869f12121f80cc6490ec2b81484453672b7b6b`](https://github.com/vercel/edge-runtime/commit/6a869f12121f80cc6490ec2b81484453672b7b6b)]:
+  - @edge-runtime/primitives@5.1.0
+
 ## 4.0.1
 
 ### Patch Changes
