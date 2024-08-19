@@ -1,11 +1,9 @@
 import { createHash } from 'crypto'
+import { polyfilledOrNative, guard } from './test-if'
 
 if (!globalThis.crypto) {
   globalThis.crypto = require('crypto')
 }
-
-const testOrSkip =
-  process.versions.node.split('.').map(Number)[0] > 16 ? test : test.skip
 
 function toHex(buffer: ArrayBuffer) {
   return Array.from(new Uint8Array(buffer))
@@ -17,17 +15,20 @@ test('crypto.randomUUID', async () => {
   expect(crypto.randomUUID()).toEqual(expect.stringMatching(/^[a-f0-9-]+$/))
 })
 
-testOrSkip('crypto.subtle.digest returns a SHA-256 hash', async () => {
-  const digest = await crypto.subtle.digest(
-    'SHA-256',
-    new Uint8Array([104, 105, 33]),
-  )
-  expect(toHex(digest)).toEqual(
-    createHash('sha256').update('hi!').digest('hex'),
-  )
-})
+guard(test, polyfilledOrNative)(
+  'crypto.subtle.digest returns a SHA-256 hash',
+  async () => {
+    const digest = await crypto.subtle.digest(
+      'SHA-256',
+      new Uint8Array([104, 105, 33]),
+    )
+    expect(toHex(digest)).toEqual(
+      createHash('sha256').update('hi!').digest('hex'),
+    )
+  },
+)
 
-testOrSkip('Ed25519', async () => {
+guard(test, polyfilledOrNative)('Ed25519', async () => {
   const kp = await crypto.subtle.generateKey('Ed25519', false, [
     'sign',
     'verify',
@@ -36,7 +37,7 @@ testOrSkip('Ed25519', async () => {
   expect(kp).toHaveProperty('publicKey')
 })
 
-testOrSkip('X25519', async () => {
+guard(test, polyfilledOrNative)('X25519', async () => {
   const kp = await crypto.subtle.generateKey('X25519', false, [
     'deriveBits',
     'deriveKey',

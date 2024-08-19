@@ -19,33 +19,6 @@ class Request extends BaseRequest {
   }
 }
 
-const __entries = HeadersModule.Headers.prototype.entries
-HeadersModule.Headers.prototype.entries = function* () {
-  let sentSetCookie = false
-  for (const [key, value] of __entries.call(this)) {
-    if (key === 'set-cookie') {
-      if (sentSetCookie) {
-        continue
-      }
-      sentSetCookie = true
-      const cookies = this.getSetCookie()
-      yield [key, cookies.join(', ')]
-    } else {
-      yield [key, value]
-    }
-  }
-}
-
-HeadersModule.Headers[Symbol.iterator] = () => {
-  return HeadersModule.Headers.prototype.entries()
-}
-
-HeadersModule.Headers.prototype.values = function* () {
-  for (const [, value] of __entries.call(this)) {
-    yield value
-  }
-}
-
 /**
  * Method for retrieving all independent `set-cookie` headers that
  * may have been appended. This will only work when getting `set-cookie`
