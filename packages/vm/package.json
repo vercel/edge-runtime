@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@types/test-listen": "1.1.2",
-    "@types/ws": "8.5.10",
+    "@types/ws": "8.5.12",
     "test-listen": "1.1.0",
     "ws": "8.18.0"
   }
