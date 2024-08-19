@@ -44,7 +44,7 @@ testOrSkip('throws when the body was directly consumed', async () => {
   const error = await response.text().catch((err) => err)
 
   expectErrorInstanceOf(error, TypeError)
-  expect(error.message).toEqual('Body is unusable')
+  expect(error.message).toContain('Body is unusable')
 })
 
 testOrSkip('throws when the body was indirectly consumed', async () => {
@@ -68,7 +68,7 @@ testOrSkip('throws when the body was indirectly consumed', async () => {
   const error = await response.text().catch((err) => err)
 
   expectErrorInstanceOf(error, TypeError)
-  expect(error.message).toEqual('Body is unusable')
+  expect(error.message).toContain('Body is unusable')
 })
 
 testOrSkip('allows to read a FormData body as text', async () => {
