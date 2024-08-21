@@ -124,7 +124,7 @@
     "@jest/types": "29.5.0",
     "@svitejs/changesets-changelog-github-compact": "latest",
     "@types/jest": "29.5.12",
-    "@types/node": "16",
+    "@types/node": "22",
     "c8": "latest",
     "esbuild": "0.23.0",
     "finepack": "latest",
