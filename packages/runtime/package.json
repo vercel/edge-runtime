@@ -30,7 +30,7 @@
     "async-listen": "3.0.1",
     "mri": "1.2.0",
     "picocolors": "1.0.1",
-    "pretty-ms": "7.0.1",
+    "pretty-ms": "9.1.0",
     "signal-exit": "4.0.2",
     "time-span": "4.0.0"
   },
