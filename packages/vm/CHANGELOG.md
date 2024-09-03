@@ -1,5 +1,11 @@
 # @edge-runtime/vm
 
+## 4.0.3
+
+### Patch Changes
+
+- fix: don't expose \_\_conditionallyUpdatesHandlerList ([#959](https://github.com/vercel/edge-runtime/pull/959))
+
 ## 4.0.2
 
 ### Patch Changes
