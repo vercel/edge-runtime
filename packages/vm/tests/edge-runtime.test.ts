@@ -33,6 +33,7 @@ describe('Global primitives', () => {
     const keys = runtime.evaluate<string[]>(`(Object.keys(globalThis))`)
     expect(keys).not.toHaveLength(0)
     expect(keys).not.toContain('EdgeRuntime')
+    expect(keys).not.toContain('__conditionallyUpdatesHandlerList')
   })
 
   it.each([
