@@ -32,7 +32,7 @@
     "@edge-runtime/vm": "workspace:*",
     "acorn": "8.12.1",
     "acorn-loose": "8.4.0",
-    "acorn-walk": "8.3.3"
+    "acorn-walk": "8.3.4"
   },
   "engines": {
     "node": ">=16"

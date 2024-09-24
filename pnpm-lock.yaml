@@ -205,8 +205,8 @@ importers:
         specifier: 8.4.0
         version: 8.4.0
       acorn-walk:
-        specifier: 8.3.3
-        version: 8.3.3
+        specifier: 8.3.4
+        version: 8.3.4
 
   packages/primitives:
     devDependencies:
@@ -2397,8 +2397,8 @@ packages:
       acorn: 8.12.1
     dev: true
 
-  /acorn-walk@8.3.3:
-    resolution: {integrity: sha512-MxXdReSRhGO7VlFe1bRG/oI7/mdLV9B9JJT0N8vZOhF7gFRR5l3M8W9G8JxmKV+JC5mGqJ0QvqfSOLsCPa4nUw==}
+  /acorn-walk@8.3.4:
+    resolution: {integrity: sha512-ueEepnujpqee2o5aIYnvHU6C0A42MNdsIDeqy5BydrkuC5R1ZuUFnm27EeFJGoEHJQgn3uleRvmTXaJgfXbt4g==}
     engines: {node: '>=0.4.0'}
     dependencies:
       acorn: 8.12.1
@@ -7644,7 +7644,7 @@ packages:
       '@tsconfig/node16': 1.0.3
       '@types/node': 16.18.40
       acorn: 8.12.1
-      acorn-walk: 8.3.3
+      acorn-walk: 8.3.4
       arg: 4.1.3
       create-require: 1.1.1
       diff: 4.0.2
