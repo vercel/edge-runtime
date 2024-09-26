@@ -3,14 +3,6 @@ import { guard, isEdgeRuntime, polyfilledOrNative } from './test-if'
 guard(it, polyfilledOrNative)(
   'sets header calling Headers constructor',
   async () => {
-    const headers = new Headers({ cookie: 'hello=world' })
-    expect(headers.get('cookie')).toBe('hello=world')
-  },
-)
-
-guard(it, polyfilledOrNative)(
-  'sets header calling Headers constructor',
-  async () => {
     const headers = new Headers()
     headers.set('cookie', 'hello=world')
     expect(headers.get('cookie')).toBe('hello=world')
