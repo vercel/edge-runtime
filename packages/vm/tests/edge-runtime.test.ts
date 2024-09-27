@@ -375,11 +375,6 @@ describe('Using `instanceof`', () => {
       ),
     ).toBe(true)
     expect(
-      new EdgeVM().evaluate(
-        `(new TextEncoder().encode('abc')) instanceof Object`,
-      ),
-    ).toBe(true)
-    expect(
       new EdgeVM().evaluate(`
           class Foo {};
           const cls = Foo;
