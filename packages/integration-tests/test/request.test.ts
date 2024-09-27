@@ -8,9 +8,9 @@ guard(describe, polyfilledOrNative)('request', () => {
   })
 
   test('parses and reconstructs the URL alone', () => {
-    const url = 'https://vercel.com/foo/bar?one=value'
+    const url = new URL('https://vercel.com/foo/bar?one=value')
     const req = new Request(url)
-    expect(req.url).toEqual(url)
+    expect(req.url.toString()).toEqual('https://vercel.com/foo/bar?one=value')
   })
 
   test('throws when the URL is malformed', () => {
