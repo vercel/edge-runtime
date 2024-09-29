@@ -1,5 +1,13 @@
 import type { RequestCookie, ResponseCookie } from './types'
 
+function maybeDecodeURIComponent(s: string) {
+  try {
+    return decodeURIComponent(s)
+  } catch {
+    return s
+  }
+}
+
 export function stringifyCookie(c: ResponseCookie | RequestCookie): string {
   const attrs = [
     'path' in c && c.path && `Path=${c.path}`,
@@ -19,7 +27,9 @@ export function stringifyCookie(c: ResponseCookie | RequestCookie): string {
   ].filter(Boolean)
 
   const stringified = `${c.name}=${encodeURIComponent(c.value ?? '')}`
-  return attrs.length === 0 ? stringified : `${stringified}; ${attrs.join('; ')}`
+  return attrs.length === 0
+    ? stringified
+    : `${stringified}; ${attrs.join('; ')}`
 }
 
 /** Parse a `Cookie` header value */
@@ -72,7 +82,9 @@ export function parseSetCookie(setCookie: string): undefined | ResponseCookie {
   )
   const cookie: ResponseCookie = {
     name,
-    value: decodeURIComponent(value),
+    // parseCookie already decoded the value, so if the value contains special chars
+    // decoding it again will cause problems
+    value: maybeDecodeURIComponent(value),
     domain,
     ...(expires && { expires: new Date(expires) }),
     ...(httponly && { httpOnly: true }),
