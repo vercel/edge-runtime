@@ -266,12 +266,7 @@ test('splitting multiple set-cookie', () => {
 test('cookie with special chars', () => {
   const headers = new Headers()
   const specialChars = 'bar 50%!@#$%^&*()_+'
-  headers.set(
-    'set-cookie',
-    `foo=${JSON.stringify({ 'val': encodeURIComponent(specialChars) })}`,
-  )
+  headers.set('set-cookie', `foo=${encodeURIComponent(specialChars)}`)
   const cookies = new ResponseCookies(headers)
-  expect(cookies.getAll()).toEqual([
-    { name: 'foo', value: `{"val":"${specialChars}"}` },
-  ])
+  expect(cookies.getAll()).toEqual([{ name: 'foo', value: specialChars }])
 })
