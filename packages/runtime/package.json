@@ -24,6 +24,7 @@
     "web"
   ],
   "dependencies": {
+    "@edge-runtime/cookies": "workspace:*",
     "@edge-runtime/format": "workspace:*",
     "@edge-runtime/ponyfill": "workspace:*",
     "@edge-runtime/vm": "workspace:*",
