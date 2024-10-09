@@ -2,7 +2,7 @@
   "name": "edge-runtime",
   "description": "Run any Edge Function from CLI or Node.js module.",
   "homepage": "https://edge-runtime.vercel.app/packages/runtime",
-  "version": "2.5.10",
+  "version": "3.0.3",
   "main": "dist/index.js",
   "bin": {
     "edge-runtime": "dist/cli/index.js"
@@ -29,7 +29,7 @@
     "@edge-runtime/vm": "workspace:*",
     "async-listen": "3.0.1",
     "mri": "1.2.0",
-    "picocolors": "1.0.0",
+    "picocolors": "1.1.0",
     "pretty-ms": "7.0.1",
     "signal-exit": "4.0.2",
     "time-span": "4.0.0"
@@ -53,7 +53,7 @@
     "prebuild": "pnpm run clean:build",
     "test": "jest"
   },
-  "license": "MPL-2.0",
+  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },

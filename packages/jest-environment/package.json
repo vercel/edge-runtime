@@ -2,7 +2,7 @@
   "name": "@edge-runtime/jest-environment",
   "description": "A Jest integration to run assertions in Edge Runtime context.",
   "homepage": "https://edge-runtime.vercel.app/packages/jest-environment",
-  "version": "2.3.10",
+  "version": "3.0.3",
   "main": "dist/index.js",
   "repository": {
     "directory": "packages/jest-environment",
@@ -43,7 +43,7 @@
     "prebuild": "pnpm run clean:build",
     "test": "jest"
   },
-  "license": "MPL-2.0",
+  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },

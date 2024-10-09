@@ -2,7 +2,7 @@
   "name": "@edge-runtime/primitives",
   "description": "A set of primitives to build Vercel Edge Runtime.",
   "homepage": "https://edge-runtime.vercel.app/packages/primitives",
-  "version": "4.1.0",
+  "version": "5.1.0",
   "main": "dist/index.js",
   "repository": {
     "directory": "packages/primitives",
@@ -26,6 +26,7 @@
     "@edge-runtime/format": "workspace:*",
     "@ungap/structured-clone": "1.2.0",
     "blob-polyfill": "7.0.20220408",
+    "esbuild": "0.24.0",
     "esbuild-plugin-alias": "latest",
     "event-target-shim": "6.0.2",
     "tsup": "8",
@@ -46,7 +47,7 @@
     "clean:node": "rm -rf node_modules",
     "prebuild": "pnpm run clean:build"
   },
-  "license": "MPL-2.0",
+  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },

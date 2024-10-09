@@ -1,5 +1,37 @@
 # @edge-runtime/jest-environment
 
+## 3.0.3
+
+### Patch Changes
+
+- Updated dependencies [[`44aaa5706fb45df468d72531e27930552e882701`](https://github.com/vercel/edge-runtime/commit/44aaa5706fb45df468d72531e27930552e882701)]:
+  - @edge-runtime/vm@4.0.3
+
+## 3.0.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @edge-runtime/vm@4.0.2
+
+## 3.0.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @edge-runtime/vm@4.0.1
+
+## 3.0.0
+
+### Major Changes
+
+- use MIT license ([#909](https://github.com/vercel/edge-runtime/pull/909))
+
+### Patch Changes
+
+- Updated dependencies [[`892741faf806d5f5a201331fe31e8f26a4816ac6`](https://github.com/vercel/edge-runtime/commit/892741faf806d5f5a201331fe31e8f26a4816ac6)]:
+  - @edge-runtime/vm@4.0.0
+
 ## 2.3.10
 
 ### Patch Changes

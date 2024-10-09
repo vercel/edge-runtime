@@ -1,5 +1,30 @@
 # @edge-runtime/types
 
+## 3.0.2
+
+### Patch Changes
+
+- Updated dependencies [[`6a869f12121f80cc6490ec2b81484453672b7b6b`](https://github.com/vercel/edge-runtime/commit/6a869f12121f80cc6490ec2b81484453672b7b6b)]:
+  - @edge-runtime/primitives@5.1.0
+
+## 3.0.1
+
+### Patch Changes
+
+- Updated dependencies [[`0ca58d72e7c6969fcee2287e9a3ee9d0a24d232a`](https://github.com/vercel/edge-runtime/commit/0ca58d72e7c6969fcee2287e9a3ee9d0a24d232a)]:
+  - @edge-runtime/primitives@5.0.1
+
+## 3.0.0
+
+### Major Changes
+
+- use MIT license ([#909](https://github.com/vercel/edge-runtime/pull/909))
+
+### Patch Changes
+
+- Updated dependencies [[`892741faf806d5f5a201331fe31e8f26a4816ac6`](https://github.com/vercel/edge-runtime/commit/892741faf806d5f5a201331fe31e8f26a4816ac6)]:
+  - @edge-runtime/primitives@5.0.0
+
 ## 2.2.9
 
 ### Patch Changes

@@ -188,13 +188,18 @@ function getDefineEventListenersCode() {
       writable: true,
     })
 
-    function __conditionallyUpdatesHandlerList(eventType) {
-      if (eventType === 'unhandledrejection') {
-        self.__onUnhandledRejectionHandlers = self.__listeners[eventType];
-      } else if (eventType === 'error') {
-        self.__onErrorHandlers = self.__listeners[eventType];
-      }
-    }
+    Object.defineProperty(self, '__conditionallyUpdatesHandlerList', {
+      configurable: false,
+      enumerable: false,
+      value: function(eventType) {
+        if (eventType === 'unhandledrejection') {
+          self.__onUnhandledRejectionHandlers = self.__listeners[eventType];
+        } else if (eventType === 'error') {
+          self.__onErrorHandlers = self.__listeners[eventType];
+        }
+      },
+      writable: false,
+    })
 
     function addEventListener(type, handler) {
       const eventType = type.toLowerCase();
@@ -204,7 +209,7 @@ function getDefineEventListenersCode() {
 
       self.__listeners[eventType] = self.__listeners[eventType] || [];
       self.__listeners[eventType].push(handler);
-      __conditionallyUpdatesHandlerList(eventType);
+      self.__conditionallyUpdatesHandlerList(eventType);
     }
 
     function removeEventListener(type, handler) {
@@ -218,7 +223,7 @@ function getDefineEventListenersCode() {
           delete self.__listeners[eventType];
         }
       }
-      __conditionallyUpdatesHandlerList(eventType);
+      self.__conditionallyUpdatesHandlerList(eventType);
     }
   `
 }

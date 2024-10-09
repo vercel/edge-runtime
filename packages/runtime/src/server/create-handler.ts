@@ -21,7 +21,7 @@ export interface Options<T extends EdgeContext> {
 }
 
 /**
- * Creates an HHTP handler that can be used to create a Node.js HTTP server.
+ * Creates an HTTP handler that can be used to create a Node.js HTTP server.
  * Whenever a request is handled it will transform it into a `dispatchFetch`
  * call for the given `EdgeRuntime`. Then it will transform the response
  * into an HTTP response.

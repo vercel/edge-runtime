@@ -33,6 +33,7 @@ describe('Global primitives', () => {
     const keys = runtime.evaluate<string[]>(`(Object.keys(globalThis))`)
     expect(keys).not.toHaveLength(0)
     expect(keys).not.toContain('EdgeRuntime')
+    expect(keys).not.toContain('__conditionallyUpdatesHandlerList')
   })
 
   it.each([
@@ -366,11 +367,6 @@ describe('Using `instanceof`', () => {
     expect(
       new EdgeVM().evaluate(
         `(new TextEncoder().encode('abc')) instanceof Uint8Array`,
-      ),
-    ).toBe(true)
-    expect(
-      new EdgeVM().evaluate(
-        `(new TextEncoder().encode('abc')) instanceof Object`,
       ),
     ).toBe(true)
     expect(

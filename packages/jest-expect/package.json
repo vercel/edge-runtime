@@ -2,7 +2,7 @@
   "name": "@edge-runtime/jest-expect",
   "description": "Custom matchers for Jest's expect to help test Request/Response instances",
   "homepage": "https://edge-runtime.vercel.app/packages/jest-expect",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "main": "dist/index.js",
   "repository": {
     "directory": "packages/jest-expect",
@@ -47,7 +47,7 @@
     "prebuild": "pnpm run clean:build",
     "test": "jest --no-colors"
   },
-  "license": "MPL-2.0",
+  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
