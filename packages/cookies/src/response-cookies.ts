@@ -88,7 +88,7 @@ export class ResponseCookies {
       | [options: Omit<ResponseCookie, 'value' | 'expires'>]
   ): this {
     const [name, options] =
-      typeof args[0] === 'string' ? [args[0]] : [args[0].name, args]
+      typeof args[0] === 'string' ? [args[0]] : [args[0].name, args[0]]
     return this.set({ ...options, name, value: '', expires: new Date(0) })
   }
 
