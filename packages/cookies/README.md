@@ -5,7 +5,7 @@
   <br>
   <br>
   <p align="center"><strong>@edge-runtime/cookies</strong>: An Edge Runtime compatible cookie helpers.</p>
-  <p align="center">See <a href="https://edge-runtime.vercel.app/packages/jest-environment" target='_blank' rel='noopener noreferrer'>@edge-runtime/cookies</a> section in our <a href="https://edge-runtime.vercel.app/" target='_blank' rel='noopener noreferrer'>website</a> for more information.</p>
+  <p align="center">See <a href="https://edge-runtime.vercel.app/packages/cookies" target='_blank' rel='noopener noreferrer'>@edge-runtime/cookies</a> section in our <a href="https://edge-runtime.vercel.app/" target='_blank' rel='noopener noreferrer'>website</a> for more information.</p>
   <br>
 </div>
 
