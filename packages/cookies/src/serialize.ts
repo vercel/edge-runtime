@@ -19,7 +19,9 @@ export function stringifyCookie(c: ResponseCookie | RequestCookie): string {
   ].filter(Boolean)
 
   const stringified = `${c.name}=${encodeURIComponent(c.value ?? '')}`
-  return attrs.length === 0 ? stringified : `${stringified}; ${attrs.join('; ')}`
+  return attrs.length === 0
+    ? stringified
+    : `${stringified}; ${attrs.join('; ')}`
 }
 
 /** Parse a `Cookie` header value */
@@ -68,7 +70,10 @@ export function parseSetCookie(setCookie: string): undefined | ResponseCookie {
     partitioned,
     priority,
   } = Object.fromEntries(
-    attributes.map(([key, value]) => [key.toLowerCase(), value]),
+    attributes.map(([key, value]) => [
+      key.toLowerCase().replace(/-/g, ''),
+      value,
+    ]),
   )
   const cookie: ResponseCookie = {
     name,
