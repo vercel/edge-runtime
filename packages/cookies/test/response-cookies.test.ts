@@ -209,6 +209,22 @@ test('delete cookie with domain and path', async () => {
   ])
 })
 
+test('delete cookie with Secure, HttpOnly, and SameSite=none', () => {
+  const headers = new Headers()
+  const cookies = new ResponseCookies(headers)
+
+  cookies.delete({
+    name: '__Secure-foo',
+    secure: true,
+    httpOnly: true,
+    sameSite: 'none',
+  })
+
+  expect(headers.getSetCookie()).toEqual([
+    '__Secure-foo=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; HttpOnly; SameSite=none',
+  ])
+})
+
 test('options are not modified', async () => {
   const options = { maxAge: 10000 }
   const headers = new Headers({ 'content-type': 'application/json' })

@@ -87,11 +87,9 @@ export class ResponseCookies {
       | [key: string]
       | [options: Omit<ResponseCookie, 'value' | 'expires'>]
   ): this {
-    const [name, path, domain] =
-      typeof args[0] === 'string'
-        ? [args[0]]
-        : [args[0].name, args[0].path, args[0].domain]
-    return this.set({ name, path, domain, value: '', expires: new Date(0) })
+    const [name, options] =
+      typeof args[0] === 'string' ? [args[0]] : [args[0].name, args[0]]
+    return this.set({ ...options, name, value: '', expires: new Date(0) })
   }
 
   [Symbol.for('edge-runtime.inspect.custom')]() {
