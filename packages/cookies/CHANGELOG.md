@@ -1,5 +1,11 @@
 # @edge-runtime/cookies
 
+## 5.0.1
+
+### Patch Changes
+
+- fix(cookies): set options when deleting cookies ([#890](https://github.com/vercel/edge-runtime/pull/890))
+
 ## 5.0.0
 
 ### Major Changes
