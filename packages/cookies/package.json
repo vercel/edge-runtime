@@ -27,7 +27,7 @@
   "devDependencies": {
     "@edge-runtime/format": "workspace:*",
     "@edge-runtime/jest-environment": "workspace:*",
-    "@types/cookie": "0.6.0",
+    "@types/cookie": "1.0.0",
     "tsup": "8"
   },
   "engines": {
