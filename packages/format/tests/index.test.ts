@@ -29,7 +29,7 @@ it('first argument', () => {
   expect(format({ [Symbol('a')]: 1 })).toBe('{ [Symbol(a)]: 1 }')
   expect(format(new Date(123))).toBe('1970-01-01T00:00:00.123Z')
   expect(format(new Date('asdf'))).toBe('Invalid Date')
-  expect(format(new Error('oh no'))).toBe('[Error: oh no]')
+  expect(format(new Error('oh no'))).toMatch(/^Error: oh no.+at Object\./ms)
   expect(
     format(
       (() => {
@@ -202,7 +202,7 @@ it('string (%s)', () => {
   expect(format('%s:%s', 'foo', 'bar')).toBe('foo:bar')
   expect(format('foo', 'bar', 'baz')).toBe('foo bar baz')
   expect(format('%s:%s', undefined)).toBe('undefined:%s')
-  expect(format('%s', new Error('oh no'))).toBe('[Error: oh no]')
+  expect(format('%s', new Error('oh no'))).toMatch(/^Error: oh no\n\s+at /)
   expect(format('%s:%s', 'foo', 'bar', 'baz')).toBe('foo:bar baz')
   expect(format('%s', function greetings() {})).toBe('function greetings() { }')
   ;(() => {
@@ -213,8 +213,8 @@ it('string (%s)', () => {
     class CustomError extends Error {
       readonly name = 'CustomError'
     }
-    expect(format(new CustomError('bar'))).toBe(
-      "[CustomError: bar] { name: 'CustomError' }",
+    expect(format(new CustomError('bar'))).toMatch(
+      /^CustomError: bar.+at .+\{.+name: 'CustomError'.+\}$/ms,
     )
   })()
   ;(() => {
@@ -259,8 +259,8 @@ it('object generic (%O)', () => {
   expect(format('%O', /foo/g)).toBe('/foo/g')
   expect(format('%O', { foo: 'bar' })).toBe("{ foo: 'bar' }")
   expect(format('%O', [1, 2, 3])).toBe('[ 1, 2, 3 ]')
-  expect(format('%O', { error: new Error('oh no') })).toBe(
-    '{ error: [Error: oh no] }',
+  expect(format('%O', { error: new Error('oh no') })).toMatch(
+    /\{.+error: Error: oh no\n.+\}/ms,
   )
   expect(format('%O', { date: new Date(123) })).toBe(
     '{ date: 1970-01-01T00:00:00.123Z }',
@@ -281,7 +281,7 @@ it('object (%o)', () => {
     const error = new Error('mock error')
     delete error.stack
     expect(format('%o', error)).toBe(
-      "[Error: mock error] { message: 'mock error' }",
+      "Error: mock error { message: 'mock error' }",
     )
   })()
 
