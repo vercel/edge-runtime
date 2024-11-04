@@ -214,7 +214,7 @@ it('string (%s)', () => {
       readonly name = 'CustomError'
     }
     expect(format(new CustomError('bar'))).toMatch(
-      /^CustomError: bar.+at .+\{.+name: 'CustomError'.+\}$/ms,
+      /^CustomError: bar.+at .+$/ms,
     )
   })()
   ;(() => {

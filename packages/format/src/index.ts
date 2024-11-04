@@ -257,6 +257,7 @@ export function createFormat(opts: FormatterOptions = {}) {
         base = ' ' + base
       } else if (isError(value)) {
         base = formatError(value)
+        keys = keys.filter((x) => x !== 'name')
       } else if (hasCustomSymbol(value, ctx.customInspectSymbol)) {
         base = format(value[ctx.customInspectSymbol]({ format }))
         if (keys.length === 0) {

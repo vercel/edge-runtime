@@ -40,9 +40,9 @@ test('additional error properties', async () => {
   expect(log).toHaveBeenCalledTimes(2)
   const [[withoutCause], [withCause]] = log.mock.calls
   expect(withoutCause).toMatch(
-    /^CustomError: without cause\s+at fn.+\{.+digest: 'digest1',.+cause: undefined,.+name: 'CustomError'.+\}/ms,
+    /^CustomError: without cause\s+at fn.+\{.+digest: 'digest1',.+cause: undefined.+\}/ms,
   )
   expect(withCause).toMatch(
-    /^CustomError: with cause\s+at fn.+\{.+digest: 'digest2',.+cause: Error: oh no.+,.+name: 'CustomError'.+\}/ms,
+    /^CustomError: with cause\s+at fn.+\{.+digest: 'digest2',.+cause: Error: oh no.+.+\}/ms,
   )
 })
