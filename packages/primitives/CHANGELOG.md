@@ -1,5 +1,11 @@
 # @edge-runtime/primitives
 
+## 5.1.1
+
+### Patch Changes
+
+- force bumping primitives as format changed and it didn't trigger a rebuild ([#1027](https://github.com/vercel/edge-runtime/pull/1027))
+
 ## 5.1.0
 
 ### Minor Changes
