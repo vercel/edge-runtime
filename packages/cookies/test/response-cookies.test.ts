@@ -278,3 +278,12 @@ test('splitting multiple set-cookie', () => {
   expect(cookies2.get('foo')?.value).toBe(undefined)
   expect(cookies2.get('fooz')?.value).toBe('barz')
 })
+
+test('parse max-age from set-cookie', () => {
+  const headers = new Headers()
+  headers.set('set-cookie', 'foo=bar; Max-Age=1000')
+
+  const cookies = new ResponseCookies(headers)
+  expect(cookies.get('foo')?.value).toBe('bar')
+  expect(cookies.get('foo')?.maxAge).toBe(1000)
+})
