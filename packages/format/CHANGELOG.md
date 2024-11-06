@@ -1,5 +1,11 @@
 # @edge-runtime/format
 
+## 3.0.1
+
+### Patch Changes
+
+- print stack trace by default when logging errors ([#1023](https://github.com/vercel/edge-runtime/pull/1023))
+
 ## 3.0.0
 
 ### Major Changes

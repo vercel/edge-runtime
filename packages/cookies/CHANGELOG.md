@@ -1,5 +1,11 @@
 # @edge-runtime/cookies
 
+## 5.0.2
+
+### Patch Changes
+
+- Fix parsing max-age in set cookie ([#995](https://github.com/vercel/edge-runtime/pull/995))
+
 ## 5.0.1
 
 ### Patch Changes
