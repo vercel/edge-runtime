@@ -43,8 +43,10 @@ export function createFormat(opts: FormatterOptions = {}) {
   }
 
   if (opts.formatError === undefined) {
-    opts.formatError = (error: Error) =>
-      `[${Error.prototype.toString.call(error)}]`
+    opts.formatError = (error: Error) => {
+      const stack = error.stack ?? Error.prototype.toString.call(error)
+      return String(stack)
+    }
   }
 
   const { formatError, customInspectSymbol } = opts
@@ -255,10 +257,7 @@ export function createFormat(opts: FormatterOptions = {}) {
         base = ' ' + base
       } else if (isError(value)) {
         base = formatError(value)
-        if (keys.length === 0) {
-          return base
-        }
-        base = ' ' + base
+        keys = keys.filter((x) => x !== 'name')
       } else if (hasCustomSymbol(value, ctx.customInspectSymbol)) {
         base = format(value[ctx.customInspectSymbol]({ format }))
         if (keys.length === 0) {
