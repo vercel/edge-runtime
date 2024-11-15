@@ -15,7 +15,11 @@ process.emitWarning = () => {}
 
 class Request extends BaseRequest {
   constructor(input, init) {
-    super(input, addDuplexToInit(init))
+    super(input, init);
+    // If the request has a body, ensure the duplex is set.
+    if (this.body) {
+      this.duplex = 'half';
+    }
   }
 }
 
