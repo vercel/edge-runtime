@@ -183,18 +183,7 @@ export function load(scopedContext = {}) {
   assign(context, {
     Blob: blobImpl.Blob,
   })
-
-  /** @type {import('../../type-definitions/structured-clone')} */
-  const structuredCloneImpl = requireWithFakeGlobalScope({
-    id: 'structured-clone.js',
-    context,
-    sourceCode: injectSourceCode('./structured-clone.js'),
-    scopedContext: { ...streamsImpl, ...scopedContext },
-  })
-  assign(context, {
-    structuredClone: structuredCloneImpl.structuredClone,
-  })
-
+  assign(context, { structuredClone })
   /** @type {import('../../type-definitions/fetch')} */
   const fetchImpl = requireWithFakeGlobalScope({
     context,

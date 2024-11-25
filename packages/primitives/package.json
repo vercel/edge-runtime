@@ -24,7 +24,6 @@
   ],
   "devDependencies": {
     "@edge-runtime/format": "workspace:*",
-    "@ungap/structured-clone": "1.2.0",
     "blob-polyfill": "7.0.20220408",
     "esbuild": "0.24.0",
     "esbuild-plugin-alias": "latest",
@@ -43,7 +42,7 @@
   ],
   "scripts": {
     "build": "ts-node scripts/build.ts",
-    "clean:build": "rm -rf dist abort-controller blob console crypto events fetch streams structured-clone url",
+    "clean:build": "rm -rf dist abort-controller blob console crypto events fetch streams url",
     "clean:node": "rm -rf node_modules",
     "prebuild": "pnpm run clean:build"
   },

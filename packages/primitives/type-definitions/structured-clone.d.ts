@@ -1,1 +1,2 @@
-export const structuredClone: <T>(any: T, options?: { lossy?: boolean }) => T
+declare const structuredCloneConstructor: typeof structuredClone
+export { structuredCloneConstructor as structuredClone }

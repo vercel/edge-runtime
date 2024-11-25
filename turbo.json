@@ -23,7 +23,6 @@
         "events/**",
         "fetch/**",
         "streams/**",
-        "structured-clone/**",
         "types/**",
         "url/**"
       ]
