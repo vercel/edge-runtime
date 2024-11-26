@@ -50,26 +50,30 @@ async function bundlePackage() {
       opts.legalComments = 'external'
     },
     define: {
-      process: JSON.stringify({ env: {}, versions: { node: '16.6.0' } }),
+      process: JSON.stringify({
+        version: 'v18.20.5',
+        env: {},
+        versions: { node: ' 18.20.5' },
+      }),
     },
     esbuildPlugins: [
       // @ts-ignore
       alias({
         'util/types': resolve('src/patches/util-types.js'),
       }),
-      {
-        name: 'alias-undici-core-request',
-        setup: (build) => {
-          build.onResolve({ filter: /^\.\/core\/request$/ }, async (args) => {
-            // validate it's resolved by the expected path
-            if (args.importer.endsWith('node_modules/undici/lib/client.js')) {
-              return {
-                path: resolve('src/patches/undici-core-request.js'),
-              }
-            }
-          })
-        },
-      },
+      // {
+      //   name: 'alias-undici-core-request',
+      //   setup: (build) => {
+      //     build.onResolve({ filter: /^\.\/core\/request$/ }, async (args) => {
+      //       // validate it's resolved by the expected path
+      //       if (args.importer.endsWith('node_modules/undici/lib/client.js')) {
+      //         return {
+      //           path: resolve('src/patches/undici-core-request.js'),
+      //         }
+      //       }
+      //     })
+      //   },
+      // },
 
       /**
        * Make sure that depdendencies between primitives are consumed

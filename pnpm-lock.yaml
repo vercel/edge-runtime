@@ -230,8 +230,8 @@ importers:
         specifier: '8'
         version: 8.0.1(postcss@8.4.47)(ts-node@10.9.2(@types/node@18.19.65)(typescript@5.6.3))(typescript@5.6.3)
       undici:
-        specifier: 5.23.0
-        version: 5.23.0
+        specifier: 6.21.0
+        version: 6.21.0
       urlpattern-polyfill:
         specifier: 10.0.0
         version: 10.0.0
@@ -4351,9 +4351,9 @@ packages:
   undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
 
-  undici@5.23.0:
-    resolution: {integrity: sha512-1D7w+fvRsqlQ9GscLBwcAJinqcZGHUKjbOmXdlE/v8BvEGXjeWAax+341q44EuTcHXXnfyKNbKRq4Lg7OzhMmg==}
-    engines: {node: '>=14.0'}
+  undici@6.21.0:
+    resolution: {integrity: sha512-BUgJXc752Kou3oOIuU1i+yZZypyZRqNPW0vqoMPl8VaoalSfeR0D8/t4iAS3yirs79SSMTxTag+ZC86uswv+Cw==}
+    engines: {node: '>=18.17'}
 
   unified@10.1.2:
     resolution: {integrity: sha512-pUSWAi/RAnVy1Pif2kAoeWNBa3JVrx0MId2LASj8G+7AiHWoKZNTomq6LG326T68U7/e263X6fTdcXIy7XnF7Q==}
@@ -9270,9 +9270,7 @@ snapshots:
 
   undici-types@5.26.5: {}
 
-  undici@5.23.0:
-    dependencies:
-      busboy: 1.6.0
+  undici@6.21.0: {}
 
   unified@10.1.2:
     dependencies:

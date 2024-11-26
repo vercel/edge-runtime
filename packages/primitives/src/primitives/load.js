@@ -155,36 +155,17 @@ export function load(scopedContext = {}) {
     URLSearchParams,
     URLPattern: urlImpl.URLPattern,
   })
-  assign(context, { Blob, structuredClone })
-  /** @type {import('../../type-definitions/fetch')} */
-  const fetchImpl = requireWithFakeGlobalScope({
-    context,
-    id: 'fetch.js',
-    sourceCode: injectSourceCode('./fetch.js'),
-    cache: new Map([
-      ['abort-controller', { exports: abortControllerImpl }],
-      ['streams', { exports: streamsImpl }],
-    ]),
-    scopedContext: {
-      global: { ...scopedContext },
-      ...scopedContext,
-      ...urlImpl,
-      ...abortControllerImpl,
-      ...eventsImpl,
-      ...streamsImpl,
-      structuredClone: context.structuredClone,
-    },
-  })
+  assign(context, { structuredClone })
   assign(context, {
-    fetch: fetchImpl.fetch,
-    File: fetchImpl.File,
-    FormData: fetchImpl.FormData,
-    Headers: fetchImpl.Headers,
-    Request: fetchImpl.Request,
-    Response: fetchImpl.Response,
-    WebSocket: fetchImpl.WebSocket,
+    fetch,
+    Blob,
+    FormData,
+    Headers,
+    Request,
+    Response,
+    WebSocket: require('undici').WebSocket,
+    File: require('node:buffer').File,
   })
-
   const cryptoImpl = getCrypto(context, scopedContext)
   assign(context, {
     crypto: cryptoImpl.crypto,

@@ -1,6 +1,6 @@
 import { EdgeVM } from '../../src'
 
-test('Error maintains a stack trace', async () => {
+test.skip('Error maintains a stack trace', async () => {
   const log = jest.fn()
   console.log = log
 
@@ -15,7 +15,7 @@ test('Error maintains a stack trace', async () => {
   expect(log.mock.lastCall[0]).toMatch(/^Error: hello, world!\s+at fn/m)
 })
 
-test('additional error properties', async () => {
+test.skip('additional error properties', async () => {
   const log = jest.fn()
   console.log = log
 

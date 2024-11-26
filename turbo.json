@@ -20,7 +20,6 @@
         "crypto/**",
         "dist/**",
         "events/**",
-        "fetch/**",
         "streams/**",
         "types/**",
         "url/**"
