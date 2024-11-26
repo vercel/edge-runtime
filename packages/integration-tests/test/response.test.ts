@@ -47,10 +47,6 @@ guard(describe, polyfilledOrNative)('response', () => {
       response.headers.append('set-cookie', 'foo=bar')
       response.headers.append('set-cookie', 'bar=baz')
       expect(response.headers.getSetCookie()).toEqual(['foo=bar', 'bar=baz'])
-      expect(response.headers.getAll?.('set-cookie')).toEqual([
-        'foo=bar',
-        'bar=baz',
-      ])
     },
   )
 

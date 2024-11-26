@@ -1,4 +1,4 @@
-import { guard, isEdgeRuntime, polyfilledOrNative } from './test-if'
+import { guard, polyfilledOrNative } from './test-if'
 
 guard(it, polyfilledOrNative)(
   'sets header calling Headers constructor',
@@ -18,21 +18,6 @@ guard(it, polyfilledOrNative)('multiple headers', async () => {
     ['set-cookie', 'foo=chocochip'],
     ['set-cookie', 'bar=chocochip'],
   ])
-})
-
-guard(describe, isEdgeRuntime())('getAll', () => {
-  test('on set-cookie', () => {
-    const headers = new Headers()
-    headers.append('set-cookie', 'a=1')
-    headers.append('set-cookie', 'b=2')
-    expect(headers.getSetCookie()).toEqual(['a=1', 'b=2'])
-    expect(headers.getAll?.('set-cookie')).toEqual(['a=1', 'b=2'])
-  })
-
-  test('on any other name', () => {
-    const headers = new Headers()
-    expect(() => headers.getAll?.('other')).toThrow(/getAll can only be used/)
-  })
 })
 
 guard(describe, polyfilledOrNative)('iterators', () => {
