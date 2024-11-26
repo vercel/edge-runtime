@@ -15,7 +15,6 @@
       "dependsOn": ["^build"],
       "outputs": [
         "abort-controller/**",
-        "blob/**",
         "cache/**",
         "console/**",
         "crypto/**",

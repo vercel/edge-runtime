@@ -155,35 +155,7 @@ export function load(scopedContext = {}) {
     URLSearchParams,
     URLPattern: urlImpl.URLPattern,
   })
-
-  /** @type {import('../../type-definitions/blob')} */
-  const blobImpl = (() => {
-    if (typeof scopedContext.Blob === 'function') {
-      return { Blob: scopedContext.Blob }
-    }
-
-    if (typeof Blob === 'function') {
-      return { Blob }
-    }
-
-    /** @type {any} */
-    const global = { ...streamsImpl, ...scopedContext }
-
-    const globalGlobal = { ...global, Blob: undefined }
-    Object.setPrototypeOf(globalGlobal, globalThis)
-
-    global.global = globalGlobal
-    return requireWithFakeGlobalScope({
-      context,
-      id: 'blob.js',
-      sourceCode: injectSourceCode('./blob.js'),
-      scopedContext: global,
-    })
-  })()
-  assign(context, {
-    Blob: blobImpl.Blob,
-  })
-  assign(context, { structuredClone })
+  assign(context, { Blob, structuredClone })
   /** @type {import('../../type-definitions/fetch')} */
   const fetchImpl = requireWithFakeGlobalScope({
     context,
