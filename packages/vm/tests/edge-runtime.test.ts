@@ -543,7 +543,7 @@ describe('Event handlers', () => {
     expect(res.status).toEqual(500)
   })
 
-  it.skip('allows to add a `fetch` event handler and respond with a fetch response', async () => {
+  it('allows to add a `fetch` event handler and respond with a fetch response', async () => {
     const runtime = new EdgeVM()
     runtime.evaluate(`
       addEventListener('fetch', event => {

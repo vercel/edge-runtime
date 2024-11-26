@@ -250,14 +250,18 @@ function getDispatchFetchCode() {
         })
       }
 
-      response.waitUntil = () => Promise.all(event.awaiting);
-
       if (response.status < 300 || response.status >= 400 ) {
-        response.headers.delete('content-encoding');
-        response.headers.delete('transform-encoding');
-        response.headers.delete('content-length');
+        const headers = new Headers(response.headers);
+        headers.delete('content-encoding');
+        headers.delete('transform-encoding');
+        headers.delete('content-length');
+        response = new Response(response.body, {
+          status: response.status,
+          statusText: response.statusText,
+          headers
+        });
       }
-
+      response.waitUntil = () => Promise.all(event.awaiting);
       return response;
     }
 
