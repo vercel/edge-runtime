@@ -61,20 +61,31 @@ async function bundlePackage() {
       alias({
         'util/types': resolve('src/patches/util-types.js'),
       }),
-      // {
-      //   name: 'alias-undici-core-request',
-      //   setup: (build) => {
-      //     build.onResolve({ filter: /^\.\/core\/request$/ }, async (args) => {
-      //       // validate it's resolved by the expected path
-      //       if (args.importer.endsWith('node_modules/undici/lib/client.js')) {
-      //         return {
-      //           path: resolve('src/patches/undici-core-request.js'),
-      //         }
-      //       }
-      //     })
-      //   },
-      // },
-
+      // ../../node_modules/.pnpm/undici@6.21.0/node_modules/undici/lib/dispatcher/client.js
+      {
+        name: 'alias-undici-core-request',
+        setup: (build) => {
+          build.onResolve({ filter: /\.\.\/core\/request\.js/ }, () => {
+            return {
+              path: resolve('src/patches/undici-core-request.js'),
+            }
+          })
+        },
+      },
+      {
+        name: 'request-host-header',
+        setup: (build) => {
+          build.onLoad({ filter: /web\/fetch\/index\.js/ }, async (args) => {
+            const content = await fs.promises.readFile(args.path, 'utf8')
+            return {
+              contents: content.replace(
+                "httpRequest.headersList.delete('host', true)",
+                '',
+              ),
+            }
+          })
+        },
+      },
       /**
        * Make sure that depdendencies between primitives are consumed
        * externally instead of being bundled. Also polyfills stream/web

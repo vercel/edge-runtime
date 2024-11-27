@@ -66,7 +66,7 @@ it('maps the request headers`', async () => {
   headers.append('vercel-is-awesome', 'you damn right')
   const request = await mapRequest(server.url, { headers })
   expect(request?.headers.get('connection')).toEqual('keep-alive')
-  expect(request?.headers.get('user-agent')).toEqual('node')
+  expect(request?.headers.get('user-agent')).toEqual('undici')
   expect(request?.headers.get('x-hi')).toEqual(headers.get('x-hi'))
   expect(request?.headers.get('vercel-is-awesome')).toEqual(
     headers.get('vercel-is-awesome'),

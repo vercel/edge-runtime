@@ -156,16 +156,7 @@ export function load(scopedContext = {}) {
     URLPattern: urlImpl.URLPattern,
   })
   assign(context, { structuredClone })
-  assign(context, {
-    fetch,
-    Blob,
-    FormData,
-    Headers,
-    Request,
-    Response,
-    WebSocket: require('undici').WebSocket,
-    File: require('node:buffer').File,
-  })
+  assign(context, require('./fetch.js'))
   const cryptoImpl = getCrypto(context, scopedContext)
   assign(context, {
     crypto: cryptoImpl.crypto,
