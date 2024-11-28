@@ -1,12 +1,12 @@
 'use strict'
 
-const { File } = require('node:buffer')
-const undici = require('undici')
+import { File } from 'node:buffer'
+import undici from 'undici'
 
-const {
+import {
   fromInnerResponse,
   makeNetworkError,
-} = require('undici/lib/web/fetch/response')
+} from 'undici/lib/web/fetch/response'
 
 /**
  * Add `duplex: 'half'` by default to all requests
@@ -47,13 +47,14 @@ async function fetch(resource, options) {
   return response
 }
 
-module.exports = {
-  fetch,
-  Blob,
-  Response,
-  File,
-  Request,
-  FormData: undici.FormData,
-  Headers: undici.Headers,
-  WebSocket: undici.WebSocket,
-}
+const { Headers, FormData, WebSocket } = undici
+const { Blob } = globalThis
+
+export { fetch }
+export { Blob }
+export { Response }
+export { File }
+export { Request }
+export { FormData }
+export { Headers }
+export { WebSocket }

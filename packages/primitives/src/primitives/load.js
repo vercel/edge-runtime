@@ -4,17 +4,6 @@
 import Module from 'module'
 import nodeCrypto from 'crypto'
 
-import {
-  ReadableStream,
-  ReadableStreamBYOBReader,
-  ReadableStreamDefaultReader,
-  TextDecoderStream,
-  TextEncoderStream,
-  TransformStream,
-  WritableStream,
-  WritableStreamDefaultWriter,
-} from 'node:stream/web'
-
 /**
  * @param {Object} params
  * @param {unknown} params.context
@@ -119,16 +108,7 @@ export function load(scopedContext = {}) {
     PromiseRejectionEvent: eventsImpl.PromiseRejectionEvent,
   })
 
-  const streamsImpl = {
-    ReadableStream,
-    ReadableStreamBYOBReader,
-    ReadableStreamDefaultReader,
-    TransformStream,
-    WritableStream,
-    WritableStreamDefaultWriter,
-  }
-
-  assign(context, streamsImpl)
+  assign(context, require('./stream'))
 
   /** @type {import('../../type-definitions/abort-controller')} */
   const abortControllerImpl = requireWithFakeGlobalScope({
