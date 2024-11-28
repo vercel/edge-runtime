@@ -1,6 +1,6 @@
-import { polyfilledOrNative, guard, isEdgeRuntime } from './test-if'
+import { guard, isEdgeRuntime } from './test-if'
 
-guard(describe, polyfilledOrNative)('response', () => {
+describe('Response', () => {
   test('create a response', async () => {
     const res1 = new Response('Hello world!')
     expect(await res1.text()).toEqual('Hello world!')
@@ -58,9 +58,16 @@ guard(describe, polyfilledOrNative)('response', () => {
   guard(test, isEdgeRuntime)(
     'allow to mutate response headers for error',
     async () => {
-      const response = Response.error()
-      response.headers.set('foo', 'bar')
-      expect(response.headers.get('foo')).toEqual('bar')
+      {
+        const response = new Response()
+        response.headers.set('foo', 'bar')
+        expect(response.headers.get('foo')).toEqual('bar')
+      }
+      {
+        const response = Response.error()
+        response.headers.set('foo', 'bar')
+        expect(response.headers.get('foo')).toEqual('bar')
+      }
     },
   )
 })

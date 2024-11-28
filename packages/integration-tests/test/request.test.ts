@@ -1,6 +1,25 @@
-import { polyfilledOrNative, guard } from './test-if'
+describe('Request', () => {
+  it.each([
+    ['host', 'vercel.com'],
+    ['content-length', '1234'],
+    ['content-type', 'application/json'],
+    ['transfer-encoding', 'chunked'],
+    ['connection', 'keep-alive'],
+    ['keep-alive', 'timeout=5'],
+    ['upgrade', 'websocket'],
+    ['expect', '100-continue'],
+  ])("sets '%s' header in the constructor", async (name, value) => {
+    const headers = new Headers({ [name]: value })
+    expect(
+      new Request('https://vercel.com', { headers }).headers.get(name),
+    ).toBe(value)
+    expect(
+      new Request('https://vercel.com', {
+        headers: { [name]: value },
+      }).headers.get(name),
+    ).toBe(value)
+  })
 
-guard(describe, polyfilledOrNative)('request', () => {
   test('evaluate promise', () => {
     const url = 'https://vercel.com/foo/bar?one=value'
     const req = new Request(url)

@@ -1,5 +1,4 @@
 import { createHash } from 'crypto'
-import { polyfilledOrNative, guard } from './test-if'
 
 if (!globalThis.crypto) {
   globalThis.crypto = require('crypto')
@@ -15,20 +14,17 @@ test('crypto.randomUUID', async () => {
   expect(crypto.randomUUID()).toEqual(expect.stringMatching(/^[a-f0-9-]+$/))
 })
 
-guard(test, polyfilledOrNative)(
-  'crypto.subtle.digest returns a SHA-256 hash',
-  async () => {
-    const digest = await crypto.subtle.digest(
-      'SHA-256',
-      new Uint8Array([104, 105, 33]),
-    )
-    expect(toHex(digest)).toEqual(
-      createHash('sha256').update('hi!').digest('hex'),
-    )
-  },
-)
+test('crypto.subtle.digest returns a SHA-256 hash', async () => {
+  const digest = await crypto.subtle.digest(
+    'SHA-256',
+    new Uint8Array([104, 105, 33]),
+  )
+  expect(toHex(digest)).toEqual(
+    createHash('sha256').update('hi!').digest('hex'),
+  )
+})
 
-guard(test, polyfilledOrNative)('Ed25519', async () => {
+test('Ed25519', async () => {
   const kp = await crypto.subtle.generateKey('Ed25519', false, [
     'sign',
     'verify',
@@ -37,7 +33,7 @@ guard(test, polyfilledOrNative)('Ed25519', async () => {
   expect(kp).toHaveProperty('publicKey')
 })
 
-guard(test, polyfilledOrNative)('X25519', async () => {
+test('X25519', async () => {
   const kp = await crypto.subtle.generateKey('X25519', false, [
     'deriveBits',
     'deriveKey',
