@@ -1,5 +1,4 @@
 import { basename, join, resolve } from 'path'
-import alias from 'esbuild-plugin-alias'
 import { Options, build } from 'tsup'
 import fs from 'fs'
 import esbuild from 'esbuild'
@@ -57,11 +56,6 @@ async function bundlePackage() {
       }),
     },
     esbuildPlugins: [
-      // @ts-ignore
-      alias({
-        'util/types': resolve('src/patches/util-types.js'),
-      }),
-      // ../../node_modules/.pnpm/undici@6.21.0/node_modules/undici/lib/dispatcher/client.js
       {
         name: 'alias-undici-core-request',
         setup: (build) => {
@@ -111,28 +105,6 @@ async function bundlePackage() {
               }
             }
           })
-        },
-      },
-      /**
-       * Make sure that undici has defined the FinalizationRegistry global
-       * available globally which is missing in older node.js versions.
-       */
-      {
-        name: 'add-finalization-registry',
-        setup: (build) => {
-          build.onLoad(
-            { filter: /undici\/lib\/fetch\/request/ },
-            async (args) => {
-              return {
-                contents: Buffer.concat([
-                  Buffer.from(
-                    `global.FinalizationRegistry = function () { return { register: function () {} } }`,
-                  ),
-                  await fs.promises.readFile(args.path),
-                ]),
-              }
-            },
-          )
         },
       },
     ],

@@ -25,7 +25,6 @@
   "devDependencies": {
     "@edge-runtime/format": "workspace:*",
     "esbuild": "0.24.0",
-    "esbuild-plugin-alias": "latest",
     "event-target-shim": "6.0.2",
     "tsup": "8",
     "undici": "6.21.0",
