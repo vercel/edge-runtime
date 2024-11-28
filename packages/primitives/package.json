@@ -40,7 +40,7 @@
   ],
   "scripts": {
     "build": "ts-node scripts/build.ts",
-    "clean:build": "rm -rf dist abort-controller console crypto events fetch streams url",
+    "clean:build": "rm -rf dist",
     "clean:node": "rm -rf node_modules",
     "prebuild": "pnpm run clean:build"
   },

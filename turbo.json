@@ -14,15 +14,7 @@
     "@edge-runtime/primitives#build": {
       "dependsOn": ["^build"],
       "outputs": [
-        "abort-controller/**",
-        "cache/**",
-        "console/**",
-        "crypto/**",
-        "dist/**",
-        "events/**",
-        "streams/**",
-        "types/**",
-        "url/**"
+        "dist/**"
       ]
     },
     "test": {
