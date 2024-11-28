@@ -18,6 +18,7 @@ jobs:
         version:
           - node: 18
           - node: 20
+          - node: 22
 
     name: Node.js ${{ matrix.version.node }}
     env:
