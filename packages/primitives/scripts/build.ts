@@ -82,20 +82,12 @@ async function bundlePackage() {
       },
       /**
        * Make sure that depdendencies between primitives are consumed
-       * externally instead of being bundled. Also polyfills stream/web
-       * with the web streams polyfill.
+       * externally instead of being bundled.
        */
       {
         name: 'import-path',
         setup: (build) => {
           build.onResolve({ filter: /.*$/ }, ({ kind, importer, path }) => {
-            if (path === 'stream/web') {
-              return {
-                path: './streams',
-                external: true,
-              }
-            }
-
             const fullpath = resolve(importer, '..', path)
             const isEntry = entryPoints.includes(`${fullpath}.js`)
             if (kind !== 'entry-point' && isEntry && path.startsWith('.')) {
@@ -156,7 +148,6 @@ async function generateTextFiles() {
       minify: true,
       bundle: true,
       platform: 'node',
-      external: ['./streams'],
     })
     const contents = minified.text
     await fs.promises.writeFile(
