@@ -137,14 +137,7 @@ export function load(scopedContext = {}) {
   })
   assign(context, { structuredClone })
   assign(context, require('./fetch.js'))
-  const cryptoImpl = getCrypto(context, scopedContext)
-  assign(context, {
-    crypto: cryptoImpl.crypto,
-    Crypto: cryptoImpl.Crypto,
-    CryptoKey: cryptoImpl.CryptoKey,
-    SubtleCrypto: cryptoImpl.SubtleCrypto,
-  })
-
+  assign(context, getCrypto(context, scopedContext))
   return context
 }
 
@@ -152,6 +145,7 @@ export function load(scopedContext = {}) {
  * @returns {import('../../type-definitions/crypto')}
  */
 function getCrypto(context, scopedContext) {
+  /* it needs node19 to work */
   if (typeof SubtleCrypto !== 'undefined' || scopedContext.SubtleCrypto) {
     return {
       crypto: scopedContext.crypto || globalThis.crypto,
@@ -159,12 +153,8 @@ function getCrypto(context, scopedContext) {
       CryptoKey: scopedContext.CryptoKey || globalThis.CryptoKey,
       SubtleCrypto: scopedContext.SubtleCrypto || globalThis.SubtleCrypto,
     }
-  } else if (
-    // @ts-ignore
-    nodeCrypto.webcrypto
-  ) {
+  } else {
     /** @type {any} */
-    // @ts-ignore
     const webcrypto = nodeCrypto.webcrypto
     return {
       crypto: webcrypto,
@@ -173,15 +163,6 @@ function getCrypto(context, scopedContext) {
       SubtleCrypto: webcrypto.subtle.constructor,
     }
   }
-
-  return requireWithFakeGlobalScope({
-    context,
-    id: 'crypto.js',
-    sourceCode: injectSourceCode('./crypto.js'),
-    scopedContext: {
-      ...scopedContext,
-    },
-  })
 }
 
 /**
