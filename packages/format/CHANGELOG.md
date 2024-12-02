@@ -1,5 +1,11 @@
 # @edge-runtime/format
 
+## 4.0.0
+
+### Major Changes
+
+- drop node16 ([#1045](https://github.com/vercel/edge-runtime/pull/1045))
+
 ## 3.0.1
 
 ### Patch Changes

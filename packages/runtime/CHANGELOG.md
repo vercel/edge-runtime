@@ -1,5 +1,18 @@
 # edge-runtime
 
+## 4.0.0
+
+### Major Changes
+
+- drop node16 ([#1045](https://github.com/vercel/edge-runtime/pull/1045))
+
+### Patch Changes
+
+- Updated dependencies [[`b1e3795`](https://github.com/vercel/edge-runtime/commit/b1e3795b4c293fae271f580f0f51c16f200c1c8d)]:
+  - @edge-runtime/ponyfill@4.0.0
+  - @edge-runtime/format@4.0.0
+  - @edge-runtime/vm@5.0.0
+
 ## 3.0.5
 
 ### Patch Changes
