@@ -1,5 +1,11 @@
 # @edge-runtime/cookies
 
+## 6.0.0
+
+### Major Changes
+
+- drop node16 ([#1045](https://github.com/vercel/edge-runtime/pull/1045))
+
 ## 5.0.2
 
 ### Patch Changes

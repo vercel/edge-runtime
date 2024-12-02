@@ -1,5 +1,16 @@
 # @edge-runtime/types
 
+## 4.0.0
+
+### Major Changes
+
+- drop node16 ([#1045](https://github.com/vercel/edge-runtime/pull/1045))
+
+### Patch Changes
+
+- Updated dependencies [[`b1e3795`](https://github.com/vercel/edge-runtime/commit/b1e3795b4c293fae271f580f0f51c16f200c1c8d)]:
+  - @edge-runtime/primitives@6.0.0
+
 ## 3.0.3
 
 ### Patch Changes
