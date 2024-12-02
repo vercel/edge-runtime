@@ -1,116 +1,60 @@
-import * as FetchSymbols from 'undici/lib/fetch/symbols'
-import * as HeadersModule from 'undici/lib/fetch/headers'
-import * as ResponseModule from 'undici/lib/fetch/response'
-import * as UtilModule from 'undici/lib/fetch/util'
-import * as WebIDLModule from 'undici/lib/fetch/webidl'
-import { Request as BaseRequest } from 'undici/lib/fetch/request'
+'use strict'
 
-import { fetch as fetchImpl } from 'undici/lib/fetch'
-import Agent from 'undici/lib/agent'
+import { File } from 'node:buffer'
+import undici from 'undici'
 
-// undici uses `process.nextTick`,
-// but process APIs doesn't exist in a runtime context.
-process.nextTick = setImmediate
-process.emitWarning = () => {}
-
-class Request extends BaseRequest {
-  constructor(input, init) {
-    super(input, addDuplexToInit(init))
-  }
-}
+import {
+  fromInnerResponse,
+  makeNetworkError,
+} from 'undici/lib/web/fetch/response'
 
 /**
- * Method for retrieving all independent `set-cookie` headers that
- * may have been appended. This will only work when getting `set-cookie`
- * headers.
- *
- * @deprecated Use [`.getSetCookie()`](https://developer.mozilla.org/en-US/docs/Web/API/Headers/getSetCookie) instead.
+ * Add `duplex: 'half'` by default to all requests
  */
-HeadersModule.Headers.prototype.getAll = function (name) {
-  const _name = normalizeAndValidateHeaderName(name, 'Headers.getAll')
-  if (_name !== 'set-cookie') {
-    throw new Error(`getAll can only be used with 'set-cookie'`)
-  }
-
-  return this.getSetCookie()
-}
-
-/**
- * We also must patch the error static method since it works just like
- * redirect and we need consistency.
- */
-const __error = ResponseModule.Response.error
-ResponseModule.Response.error = function (...args) {
-  const response = __error.call(this, ...args)
-  response[FetchSymbols.kHeaders][FetchSymbols.kGuard] = 'response'
-  return response
-}
-
-/**
- * normalize header name per WHATWG spec, and validate
- *
- * @param {string} potentialName
- * @param {'Header.append' | 'Headers.delete' | 'Headers.get' | 'Headers.has' | 'Header.set'} errorPrefix
- */
-function normalizeAndValidateHeaderName(potentialName, errorPrefix) {
-  const normalizedName = potentialName.toLowerCase()
-
-  if (UtilModule.isValidHeaderName(normalizedName)) {
-    return normalizedName
-  }
-
-  // Generate an WHATWG fetch spec compliant error
-  WebIDLModule.errors.invalidArgument({
-    prefix: errorPrefix,
-    value: normalizedName,
-    type: 'header name',
-  })
-}
-
-/**
- * A global agent to be used with every fetch request. We also define a
- * couple of globals that we can hide in the runtime for advanced use.
- */
-let globalDispatcher = new Agent()
-
-export function getGlobalDispatcher() {
-  return globalDispatcher
-}
-
-export function setGlobalDispatcher(agent) {
-  if (!agent || typeof agent.dispatch !== 'function') {
-    throw new InvalidArgumentError('Argument agent must implement Agent')
-  }
-  globalDispatcher = agent
+function addDuplexToInit(options) {
+  return typeof options === 'undefined' ||
+    (typeof options === 'object' && options.duplex === undefined)
+    ? { duplex: 'half', ...options }
+    : options
 }
 
 /**
  * Add `duplex: 'half'` by default to all requests
  */
-function addDuplexToInit(init) {
-  return typeof init === 'undefined' ||
-    (typeof init === 'object' && init.duplex === undefined)
-    ? { duplex: 'half', ...init }
-    : init
+class Request extends undici.Request {
+  constructor(input, options) {
+    super(input, addDuplexToInit(options))
+  }
 }
 
 /**
- * Export fetch with an implementation that uses a default global dispatcher.
- * It also re-cretates a new Response object in order to allow mutations on
- * the Response headers.
+ * Make the Response headers object mutable
+ * Check https://github.com/nodejs/undici/blob/1cfe0949053aac6267f11b919cee9315a27f1fd6/lib/web/fetch/response.js#L41
  */
-export async function fetch(info, init) {
-  init = addDuplexToInit(init)
-  const res = await fetchImpl.call(getGlobalDispatcher(), info, init)
+const Response = undici.Response
+Response.error = function () {
+  return fromInnerResponse(makeNetworkError(), '')
+}
+
+/**
+ * Add `duplex: 'half'` by default to all requests
+ * Recreate the Response object with the undici Response object to allow mutable headers
+ */
+async function fetch(resource, options) {
+  const res = await undici.fetch(resource, addDuplexToInit(options))
   const response = new Response(res.body, res)
   Object.defineProperty(response, 'url', { value: res.url })
   return response
 }
 
-export const Headers = HeadersModule.Headers
-export const Response = ResponseModule.Response
+const { Headers, FormData, WebSocket } = undici
+const { Blob } = globalThis
 
-export { FormData } from 'undici/lib/fetch/formdata'
-export { File } from 'undici/lib/fetch/file'
-export { WebSocket } from 'undici/lib/websocket/websocket'
+export { fetch }
+export { Blob }
+export { Response }
+export { File }
 export { Request }
+export { FormData }
+export { Headers }
+export { WebSocket }

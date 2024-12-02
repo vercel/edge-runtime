@@ -1,5 +1,4 @@
 import { basename, join, resolve } from 'path'
-import alias from 'esbuild-plugin-alias'
 import { Options, build } from 'tsup'
 import fs from 'fs'
 import esbuild from 'esbuild'
@@ -50,43 +49,45 @@ async function bundlePackage() {
       opts.legalComments = 'external'
     },
     define: {
-      process: JSON.stringify({ env: {}, versions: { node: '16.6.0' } }),
+      process: JSON.stringify({
+        version: 'v18.20.5',
+        env: {},
+        versions: { node: ' 18.20.5' },
+      }),
     },
     esbuildPlugins: [
-      // @ts-ignore
-      alias({
-        'util/types': resolve('src/patches/util-types.js'),
-      }),
       {
         name: 'alias-undici-core-request',
         setup: (build) => {
-          build.onResolve({ filter: /^\.\/core\/request$/ }, async (args) => {
-            // validate it's resolved by the expected path
-            if (args.importer.endsWith('node_modules/undici/lib/client.js')) {
-              return {
-                path: resolve('src/patches/undici-core-request.js'),
-              }
+          build.onResolve({ filter: /\.\.\/core\/request\.js/ }, () => {
+            return {
+              path: resolve('src/patches/undici-core-request.js'),
             }
           })
         },
       },
-
+      {
+        name: 'request-host-header',
+        setup: (build) => {
+          build.onLoad({ filter: /web\/fetch\/index\.js/ }, async (args) => {
+            const content = await fs.promises.readFile(args.path, 'utf8')
+            return {
+              contents: content.replace(
+                "httpRequest.headersList.delete('host', true)",
+                '',
+              ),
+            }
+          })
+        },
+      },
       /**
        * Make sure that depdendencies between primitives are consumed
-       * externally instead of being bundled. Also polyfills stream/web
-       * with the web streams polyfill.
+       * externally instead of being bundled.
        */
       {
         name: 'import-path',
         setup: (build) => {
           build.onResolve({ filter: /.*$/ }, ({ kind, importer, path }) => {
-            if (path === 'stream/web') {
-              return {
-                path: './streams',
-                external: true,
-              }
-            }
-
             const fullpath = resolve(importer, '..', path)
             const isEntry = entryPoints.includes(`${fullpath}.js`)
             if (kind !== 'entry-point' && isEntry && path.startsWith('.')) {
@@ -96,28 +97,6 @@ async function bundlePackage() {
               }
             }
           })
-        },
-      },
-      /**
-       * Make sure that undici has defined the FinalizationRegistry global
-       * available globally which is missing in older node.js versions.
-       */
-      {
-        name: 'add-finalization-registry',
-        setup: (build) => {
-          build.onLoad(
-            { filter: /undici\/lib\/fetch\/request/ },
-            async (args) => {
-              return {
-                contents: Buffer.concat([
-                  Buffer.from(
-                    `global.FinalizationRegistry = function () { return { register: function () {} } }`,
-                  ),
-                  await fs.promises.readFile(args.path),
-                ]),
-              }
-            },
-          )
         },
       },
     ],
@@ -169,7 +148,6 @@ async function generateTextFiles() {
       minify: true,
       bundle: true,
       platform: 'node',
-      external: ['./streams'],
     })
     const contents = minified.text
     await fs.promises.writeFile(

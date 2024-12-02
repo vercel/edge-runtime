@@ -1,6 +1,4 @@
-import { polyfilledOrNative, guard } from './test-if'
-
-guard(describe, polyfilledOrNative)('body', () => {
+describe('body', () => {
   test('throws when the body was directly consumed', async () => {
     expect.assertions(9)
 

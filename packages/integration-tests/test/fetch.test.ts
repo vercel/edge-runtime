@@ -7,7 +7,7 @@ import {
 import listen from 'test-listen'
 import multer from 'multer'
 import consume from 'stream/consumers'
-import { polyfilledOrNative, guard, isEdgeRuntime } from './test-if'
+import { guard, isEdgeRuntime } from './test-if'
 import { Duplex } from 'stream'
 
 /**
@@ -43,7 +43,56 @@ afterEach(
     }),
 )
 
-guard(describe, polyfilledOrNative())('fetch', () => {
+describe('fetch', () => {
+  it.each(
+    [
+      isEdgeRuntime() && ['host', 'vercel.com'],
+      ['content-type', 'application/json'],
+      ['connection', 'keep-alive'],
+      isEdgeRuntime() && ['keep-alive', 'timeout=5'],
+      isEdgeRuntime() && ['upgrade', 'websocket'],
+    ].filter(Boolean) as [string, string][],
+  )("sets '%s' header in the constructor", async (name, value) => {
+    server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
+      res.setHeader('Content-Type', 'application/json')
+      res.end(JSON.stringify(req.headers))
+    })
+
+    const serverUrl = await listen(server)
+    let response = await fetch(serverUrl, { headers: { [name]: value } })
+    expect(response.status).toBe(200)
+    let json = await response.json()
+    expect(json[name]).toBe(value)
+
+    response = await fetch(
+      new Request(serverUrl, { headers: { [name]: value } }),
+    )
+    expect(response.status).toBe(200)
+    json = await response.json()
+    expect(json[name]).toBe(value)
+
+    response = await fetch(
+      new Request(serverUrl, { headers: new Headers({ [name]: value }) }),
+    )
+    expect(response.status).toBe(200)
+    json = await response.json()
+    expect(json[name]).toBe(value)
+
+    response = await fetch(
+      new Request(serverUrl, { headers: new Headers({ [name]: value }) }),
+    )
+    expect(response.status).toBe(200)
+    json = await response.json()
+    expect(json[name]).toBe(value)
+
+    response = await fetch(
+      new Request(serverUrl, { headers: { [name]: value } }),
+    )
+    expect(response.status).toBe(200)
+    json = await response.json()
+    expect(json[name]).toBe(value)
+  })
+
   test('perform a GET', async () => {
     server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
       if (req.method !== 'GET') {
@@ -164,23 +213,7 @@ guard(describe, polyfilledOrNative())('fetch', () => {
     })
   })
 
-  test('sets header calling Headers constructor', async () => {
-    server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
-      res.end(req.headers['user-agent'])
-    })
-    const serverUrl = await listen(server)
-    const response = await fetch(serverUrl, {
-      headers: new Headers({ 'user-agent': 'vercel/edge-runtime' }),
-    })
-    expect(response.status).toBe(200)
-    const text = await response.text()
-    expect(text).toBe('vercel/edge-runtime')
-  })
-})
-
-guard(test, polyfilledOrNative() && isEdgeRuntime())(
-  'sets headers unsupported in undici',
-  async () => {
+  guard(it, isEdgeRuntime)('sets headers unsupported in undici', async () => {
     const url = new URL('/', 'https://example.vercel.sh')
     const response = await fetch(url, {
       headers: {
@@ -189,5 +222,31 @@ guard(test, polyfilledOrNative() && isEdgeRuntime())(
       },
     })
     expect(response.status).toBe(200)
-  },
-)
+  })
+
+  guard(it, isEdgeRuntime)(
+    'sets header calling Headers constructor',
+    async () => {
+      server = createServer(
+        async (req: IncomingMessage, res: ServerResponse) => {
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify(req.headers))
+        },
+      )
+      const serverUrl = await listen(server)
+      const response = await fetch(serverUrl, {
+        headers: new Headers({
+          'user-agent': 'vercel/edge-runtime',
+          host: 'example.com',
+          'x-host': 'example.com',
+        }),
+      })
+      expect(response.status).toBe(200)
+      const headers = await response.json()
+
+      expect(headers['user-agent']).toBe('vercel/edge-runtime')
+      expect(headers.host).toBe('example.com')
+      expect(headers['x-host']).toBe('example.com')
+    },
+  )
+})
