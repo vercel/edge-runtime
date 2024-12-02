@@ -141,7 +141,7 @@
     "typescript": "latest"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "scripts": {
     "build": "turbo run build",
