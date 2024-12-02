@@ -76,7 +76,6 @@ and expose it locally to be used via HTTP:
 ```js
 import { EdgeRuntime, runServer } from 'edge-runtime'
 import { onExit } from 'signal-exit'
-import fetch from 'node-fetch'
 
 const initialCode = `
 addEventListener('fetch', event => {

@@ -34,10 +34,6 @@
     "signal-exit": "4.0.2",
     "time-span": "4.0.0"
   },
-  "devDependencies": {
-    "@types/node-fetch": "2",
-    "node-fetch": "2"
-  },
   "engines": {
     "node": ">=18"
   },
