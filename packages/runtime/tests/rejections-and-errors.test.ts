@@ -21,7 +21,7 @@ it('handles correctly unhandled rejections', async () => {
 
 it('reports unhandled rejection for pull errors', async () => {
   const result = await execAsync(
-    `ts-node --transpile-only ${resolve(
+    `NODE_NO_WARNINGS=1 ts-node --transpile-only ${resolve(
       __dirname,
       './fixtures/pull-error.ts',
     )}`,
