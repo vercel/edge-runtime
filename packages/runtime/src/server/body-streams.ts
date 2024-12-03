@@ -104,7 +104,9 @@ function isUint8ArrayChunk(value: any): value is Uint8Array {
  * emitted chunk is a `Uint8Array`. If there is some invalid chunk it will
  * throw.
  */
-export async function* consumeUint8ArrayReadableStream(body?: ReadableStream) {
+export async function* consumeUint8ArrayReadableStream(
+  body?: ReadableStream,
+): AsyncGenerator<Uint8Array, void, unknown> {
   const reader = body?.getReader()
   if (reader) {
     let error
