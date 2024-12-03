@@ -1,5 +1,11 @@
 # edge-runtime
 
+## 4.0.1
+
+### Patch Changes
+
+- fix: consumeUint8ArrayReadableStream type ([#1051](https://github.com/vercel/edge-runtime/pull/1051))
+
 ## 4.0.0
 
 ### Major Changes
