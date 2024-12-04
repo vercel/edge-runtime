@@ -151,10 +151,14 @@ function patchInstanceOf(
           return Reflect.get(target, prop, receiver);
         },
         construct(target, args, newTarget) {
-          return Object.assign(
-            Reflect.construct(target, args, newTarget),
-            { constructor: proxy }
-          );
+          const value = Reflect.construct(target, args, newTarget)
+          Object.defineProperty(value, 'constructor', {
+            value: proxy,
+            writable: true,
+            configurable: true,
+            enumerable: false,
+          })
+          return value;
         }
       })
 
