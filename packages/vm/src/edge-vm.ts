@@ -130,9 +130,15 @@ function patchInstanceOf(
   // @ts-ignore
   ctx[Symbol.for(`node:${item}`)] = eval(item)
 
-  const shouldPatchPrototype = patchedPrototypes.has(item)
+  const patchPrototype = !patchedPrototypes.has(item)
+    ? ''
+    : `Object.assign(globalThis.${item}.prototype, {
+        get constructor() {
+          return proxy;
+        }
+      })`
 
-  return runInContext(
+  runInContext(
     `
     (() => {
       const proxy = new Proxy(${item}, {
@@ -163,16 +169,7 @@ function patchInstanceOf(
       })
 
       globalThis.${item} = proxy;
-
-      ${
-        !shouldPatchPrototype
-          ? ''
-          : `Object.assign(globalThis.${item}.prototype, {
-              get constructor() {
-                return proxy;
-              }
-            })`
-      }
+      ${patchPrototype}
     })()
     `,
     ctx,
