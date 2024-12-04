@@ -117,13 +117,31 @@ const transferableConstructors = [
   'TypeError',
 ] as const
 
-function patchInstanceOf(item: string, ctx: any) {
+const patchedPrototypes = new Set<(typeof transferableConstructors)[number]>([
+  'Array',
+  'Object',
+  'RegExp',
+])
+
+function patchInstanceOf(
+  item: (typeof transferableConstructors)[number],
+  ctx: any,
+) {
   // @ts-ignore
   ctx[Symbol.for(`node:${item}`)] = eval(item)
 
-  return runInContext(
+  const patchPrototype = !patchedPrototypes.has(item)
+    ? ''
+    : `Object.assign(globalThis.${item}.prototype, {
+        get constructor() {
+          return proxy;
+        }
+      })`
+
+  runInContext(
     `
-      globalThis.${item} = new Proxy(${item}, {
+    (() => {
+      const proxy = new Proxy(${item}, {
         get(target, prop, receiver) {
           if (prop === Symbol.hasInstance && receiver === globalThis.${item}) {
             const nodeTarget = globalThis[Symbol.for('node:${item}')];
@@ -137,8 +155,22 @@ function patchInstanceOf(item: string, ctx: any) {
           }
 
           return Reflect.get(target, prop, receiver);
+        },
+        construct(target, args, newTarget) {
+          const value = Reflect.construct(target, args, newTarget)
+          Object.defineProperty(value, 'constructor', {
+            value: proxy,
+            writable: true,
+            configurable: true,
+            enumerable: false,
+          })
+          return value;
         }
       })
+
+      globalThis.${item} = proxy;
+      ${patchPrototype}
+    })()
     `,
     ctx,
   )
