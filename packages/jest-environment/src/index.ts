@@ -19,7 +19,6 @@ class EdgeEnvironment implements JestEnvironment<number> {
     const vm = new EdgeVM({
       extend: (context) => {
         context.global = context
-        context.Buffer = Buffer
         return context
       },
       ...((config as any).projectConfig ?? config)?.testEnvironmentOptions,
