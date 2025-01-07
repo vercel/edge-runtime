@@ -20,7 +20,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "build": "next build ",
+    "build": "next build",
     "clean": "pnpm run clean:node && pnpm run clean:build",
     "clean:build": "rm -rf dist",
     "clean:node": "rm -rf node_modules",
