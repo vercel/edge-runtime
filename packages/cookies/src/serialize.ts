@@ -13,7 +13,9 @@ export function stringifyCookie(c: ResponseCookie | RequestCookie): string {
     'domain' in c && c.domain && `Domain=${c.domain}`,
     'secure' in c && c.secure && 'Secure',
     'httpOnly' in c && c.httpOnly && 'HttpOnly',
-    'sameSite' in c && c.sameSite && `SameSite=${c.sameSite}`,
+    'sameSite' in c &&
+      c.sameSite &&
+      `SameSite=${c.sameSite === true ? 'strict' : c.sameSite}`,
     'partitioned' in c && c.partitioned && 'Partitioned',
     'priority' in c && c.priority && `Priority=${c.priority}`,
   ].filter(Boolean)
