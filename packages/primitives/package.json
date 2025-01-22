@@ -27,7 +27,7 @@
     "esbuild": "0.24.0",
     "event-target-shim": "6.0.2",
     "tsup": "8",
-    "undici": "6.21.0",
+    "undici": "7.3.0",
     "urlpattern-polyfill": "10.0.0"
   },
   "engines": {
