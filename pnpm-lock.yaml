@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -231,6 +235,9 @@ importers:
 
   packages/runtime:
     dependencies:
+      '@edge-runtime/cookies':
+        specifier: workspace:*
+        version: link:../cookies
       '@edge-runtime/format':
         specifier: workspace:*
         version: link:../format
