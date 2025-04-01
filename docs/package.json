@@ -7,7 +7,7 @@
     "next-themes": "~0.4.6",
     "nextra": "2",
     "nextra-theme-docs": "2",
-    "react": "18",
+    "react": "19",
     "react-dom": "18",
     "swr": "~2.3.3"
   },
