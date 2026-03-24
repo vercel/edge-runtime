@@ -5,7 +5,7 @@
 
 ###### [Documentation](https://edge-runtime.vercel.app/) | [CLI](https://edge-runtime.vercel.app/cli)
 
-## License
+## License t
 
 **edge-runtime** © [Vercel](https://vercel.com), released under the [MIT](https://github.com/vercel/edge-runtime/blob/main/LICENSE.md) License.<br>
 Authored and maintained by [Vercel](https://vercel.com) with help from [contributors](https://github.com/vercel/edge-runtime/contributors).
