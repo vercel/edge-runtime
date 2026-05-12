@@ -1,7 +1,7 @@
 # https://gist.github.com/Purpzie/8ed86ae38c73f440881bbee0523a324b
 # https://github.com/dependabot/dependabot-core/issues/1736
 name: Dependabot
-on: pull_request_target
+on: pull_request
 permissions: read-all
 env:
   NODE_VERSION: '18'
