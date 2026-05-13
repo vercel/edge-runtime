@@ -10,4 +10,4 @@
 **edge-runtime** © [Vercel](https://vercel.com), released under the [MIT](https://github.com/vercel/edge-runtime/blob/main/LICENSE.md) License.<br>
 Authored and maintained by [Vercel](https://vercel.com) with help from [contributors](https://github.com/vercel/edge-runtime/contributors).
 
-> [vercel.com](https://vercel.com) · GitHub [Vercel](https://github.com/vercel) · X [@vercel](https://x.com/vercel)
+> [vercel.com](https://vercel.com) · GitHub [Vercel](https://github.com/vercel) · X [@vercel](https://x.com/vercel).
