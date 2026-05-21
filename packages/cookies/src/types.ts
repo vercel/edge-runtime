@@ -13,8 +13,8 @@ export interface CookieListItem
   name: string
   /** A string containing the value of the cookie. */
   value: string
-  /** A number of milliseconds or Date interface containing the expires of the cookie. */
-  expires?: number | CookieSerializeOptions['expires']
+  /** A Date interface containing the expires of the cookie. */
+  expires?: CookieSerializeOptions['expires']
 }
 
 /**
