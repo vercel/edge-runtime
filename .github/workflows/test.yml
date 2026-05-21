@@ -25,7 +25,7 @@ jobs:
       NODE_VERSION: ${{ matrix.version.node }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Cache
         uses: actions/cache@v4
