@@ -2,6 +2,7 @@ import type { EdgeRuntime } from '../edge-runtime'
 import type { IncomingMessage, ServerResponse } from 'http'
 import type { Logger, NodeHeaders } from '../types'
 import type { EdgeContext } from '@edge-runtime/vm'
+import { splitCookiesString } from '@edge-runtime/cookies'
 import { getClonableBodyStream, pipeBodyStreamToResponse } from './body-streams'
 import prettyMs from 'pretty-ms'
 import timeSpan from 'time-span'
@@ -112,13 +113,15 @@ function toRequestInitHeaders(req: IncomingMessage): RequestInit['headers'] {
 
 /**
  * Transforms WHATWG Headers into a Node Headers shape. Copies all items but
- * does a special case for Set-Cookie using the [`getSetCookie`](https://developer.mozilla.org/en-US/docs/Web/API/Headers/getSetCookie) method.
+ * does a special case for Set-Cookie header field-values are sometimes comma joined in one string. This splits them without choking on commas
+ * that are within a single set-cookie field-value, such as in the Expires portion.
  */
 function toNodeHeaders(headers?: Headers): NodeHeaders {
   const result: NodeHeaders = {}
   if (headers) {
     for (const [key, value] of headers.entries()) {
-      result[key] = key === 'set-cookie' ? headers.getSetCookie() : value
+      result[key] =
+        key?.toLowerCase() === 'set-cookie' ? splitCookiesString(value) : value
     }
   }
   return result
