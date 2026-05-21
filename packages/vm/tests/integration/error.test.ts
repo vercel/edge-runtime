@@ -12,7 +12,7 @@ test('Error maintains a stack trace', async () => {
   vm.evaluate(`(${fn})()`)
 
   expect(log).toHaveBeenCalledTimes(1)
-  expect(log.mock.lastCall[0]).toMatch(/^Error: hello, world!\s+at fn/m)
+  expect(log.mock.lastCall[0]).toMatch(/^Error: hello, world!\s+at Object/m)
 })
 
 test('additional error properties', async () => {

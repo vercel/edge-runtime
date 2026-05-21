@@ -91,6 +91,35 @@ it('handles prototype chain correctly', () => {
   })
 })
 
+describe('.constructor ===', () => {
+  describe('created inside the vm', () => {
+    test('new Object().constructor === Object', () => {
+      const vm = new EdgeVM()
+      expect(vm.evaluate(`new Object().constructor === Object`)).toBe(true)
+    })
+    test('({}).constructor === Object', () => {
+      const vm = new EdgeVM()
+      expect(vm.evaluate(`({}).constructor === Object`)).toBe(true)
+    })
+    test('new Array().constructor === Array', () => {
+      const vm = new EdgeVM()
+      expect(vm.evaluate(`new Array().constructor === Array`)).toBe(true)
+    })
+    test('[].constructor === Array', () => {
+      const vm = new EdgeVM()
+      expect(vm.evaluate(`[].constructor === Array`)).toBe(true)
+    })
+    test('new RegExp("").constructor === Array', () => {
+      const vm = new EdgeVM()
+      expect(vm.evaluate(`new RegExp("").constructor === RegExp`)).toBe(true)
+    })
+    test('[].constructor === Array', () => {
+      const vm = new EdgeVM()
+      expect(vm.evaluate(`/./.constructor === RegExp`)).toBe(true)
+    })
+  })
+})
+
 describe('instanceof overriding', () => {
   test('binary array created outside of the VM is `instanceof` Object inside the VM', () => {
     const vm = new EdgeVM()
