@@ -19,3 +19,7 @@ test('allows to run crypto', async () => {
 test('has EdgeRuntime global', () => {
   expect(EdgeRuntime).toEqual('edge-runtime')
 })
+
+test('does not have access to node global variables', () => {
+  expect(typeof Buffer).toEqual('undefined')
+})
