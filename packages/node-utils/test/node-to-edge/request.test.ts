@@ -1,3 +1,4 @@
+import type { IncomingMessage } from 'node:http'
 import type { TestServer } from '../test-utils/run-test-server'
 import { buildToRequest } from '../../src/node-to-edge/request'
 import { runTestServer } from '../test-utils/run-test-server'
@@ -97,6 +98,33 @@ it(`uses request host header as request url origin`, async () => {
   ).resolves.toHaveProperty('url', `https://${host}/`)
 })
 
+it(`uses :authority as request url origin when host is missing`, () => {
+  const request = requestFromNodeHeaders({
+    ':authority': 'example.test:5173',
+  })
+  expect(request.url).toBe('https://example.test:5173/')
+})
+
+it(`prefers host over :authority as request url origin`, () => {
+  const request = requestFromNodeHeaders({
+    host: 'host.test',
+    ':authority': 'authority.test',
+  })
+  expect(request.url).toBe('https://host.test/')
+})
+
+it(`uses https when :authority port is 443`, () => {
+  const request = requestFromNodeHeaders({
+    ':authority': 'example.test:443',
+  })
+  expect(request.url).toBe('https://example.test/')
+})
+
+it(`falls back to default origin when host and :authority are missing`, () => {
+  const request = requestFromNodeHeaders({})
+  expect(request.url).toBe('https://fallback.test/')
+})
+
 it('allows to read the body as text', async () => {
   const request = await mapRequest(server.url, {
     body: 'Hello World',
@@ -138,6 +166,13 @@ it('does not allow to read the body twice', async () => {
   expect(await request.text()).toEqual('Hello World')
   await expect(request.text()).rejects.toThrowError('Body is unusable')
 })
+
+function requestFromNodeHeaders(headers: IncomingMessage['headers']) {
+  return nodeRequestToRequest(
+    { url: '/', method: 'GET', headers } as IncomingMessage,
+    { defaultOrigin: 'https://fallback.test' },
+  )
+}
 
 async function mapRequest(input: string, init: RequestInit = {}) {
   const requestId = EdgeRuntime.crypto.randomUUID()

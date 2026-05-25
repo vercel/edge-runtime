@@ -30,11 +30,37 @@ export function buildToRequest(dependencies: BuildDependencies) {
   }
 }
 
+function getSingleHeader(
+  headers: IncomingMessage['headers'],
+  name: string,
+): string | undefined {
+  const value = headers[name]
+  if (value === undefined) {
+    return undefined
+  }
+  return Array.isArray(value) ? value[0] : value
+}
+
 function computeOrigin({ headers }: IncomingMessage, defaultOrigin: string) {
-  const authority = headers.host
+  const authority =
+    getSingleHeader(headers, 'host') ?? getSingleHeader(headers, ':authority')
   if (!authority) {
     return defaultOrigin
   }
+
+  let protocol = 'http'
+  if (defaultOrigin) {
+    try {
+      protocol = new URL(defaultOrigin).protocol.replace(':', '') || 'http'
+    } catch {
+      // keep default
+    }
+  }
+
   const [, port] = authority.split(':')
-  return `${port === '443' ? 'https' : 'http'}://${authority}`
+  if (port === '443') {
+    protocol = 'https'
+  }
+
+  return `${protocol}://${authority}`
 }
