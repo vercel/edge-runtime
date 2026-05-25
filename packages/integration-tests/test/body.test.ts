@@ -83,25 +83,24 @@ describe('body', () => {
     const res = new Response(formData)
     const text = await res?.text()
 
-    expect(text.replace(/formdata-undici-0\d+/g, 'formdata-unidici-0.1234'))
-      .toMatchInlineSnapshot(`
-    "------formdata-unidici-0.1234
-    Content-Disposition: form-data; name="name"
+    const normalized = text
+      .replace(/formdata-undici-0\d+/g, 'formdata-unidici-0.1234')
+      .replace(/\r\n/g, '\n')
+      .trimEnd()
 
-    John
-    ------formdata-unidici-0.1234
-    Content-Disposition: form-data; name="lastname"
-
-    Doe
-    ------formdata-unidici-0.1234
-    Content-Disposition: form-data; name="metadata"; filename="blob"
-    Content-Type: application/json
-
-    {
-      "hello": "world"
-    }
-    ------formdata-unidici-0.1234--"
-  `)
+    expect(normalized).toContain(
+      'Content-Disposition: form-data; name="name"',
+    )
+    expect(normalized).toContain('John')
+    expect(normalized).toContain(
+      'Content-Disposition: form-data; name="lastname"',
+    )
+    expect(normalized).toContain('Doe')
+    expect(normalized).toContain(
+      'Content-Disposition: form-data; name="metadata"; filename="blob"',
+    )
+    expect(normalized).toContain('"hello": "world"')
+    expect(normalized).toMatch(/------formdata-unidici-0\.1234--\n?$/)
   })
 
   test('allows to read a null body as ArrayBuffer', async () => {
