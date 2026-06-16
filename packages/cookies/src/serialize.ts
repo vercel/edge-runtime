@@ -58,7 +58,13 @@ export function parseSetCookie(setCookie: string): undefined | ResponseCookie {
     return undefined
   }
 
-  const [[name, value], ...attributes] = parseCookie(setCookie)
+  const [cookiePair, ...attributePairs] = setCookie.split(/; */)
+  const splitAt = cookiePair.indexOf('=')
+  const [name, value] =
+    splitAt === -1
+      ? [cookiePair, 'true']
+      : [cookiePair.slice(0, splitAt), cookiePair.slice(splitAt + 1)]
+  const attributes = parseCookie(attributePairs.join('; '))
   const {
     domain,
     expires,
@@ -70,14 +76,14 @@ export function parseSetCookie(setCookie: string): undefined | ResponseCookie {
     partitioned,
     priority,
   } = Object.fromEntries(
-    attributes.map(([key, value]) => [
+    Array.from(attributes).map(([key, value]) => [
       key.toLowerCase().replace(/-/g, ''),
       value,
     ]),
   )
   const cookie: ResponseCookie = {
     name,
-    value: decodeURIComponent(value),
+    value: decodeCookieValue(value),
     domain,
     ...(expires && { expires: new Date(expires) }),
     ...(httponly && { httpOnly: true }),
@@ -90,6 +96,14 @@ export function parseSetCookie(setCookie: string): undefined | ResponseCookie {
   }
 
   return compact(cookie)
+}
+
+function decodeCookieValue(value: string) {
+  try {
+    return decodeURIComponent(value)
+  } catch {
+    return value
+  }
 }
 
 function compact<T>(t: T): T {

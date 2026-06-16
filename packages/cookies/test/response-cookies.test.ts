@@ -1,5 +1,6 @@
 import { createFormat } from '@edge-runtime/format'
 import { ResponseCookies } from '../src/response-cookies'
+import { parseSetCookie } from '../src/serialize'
 
 test('reflect .set into `set-cookie`', async () => {
   const headers = new Headers()
@@ -286,4 +287,63 @@ test('parse max-age from set-cookie', () => {
   const cookies = new ResponseCookies(headers)
   expect(cookies.get('foo')?.value).toBe('bar')
   expect(cookies.get('foo')?.maxAge).toBe(1000)
+})
+
+test('parse percent encoded set-cookie values once', () => {
+  expect(parseSetCookie('foo=%25; Path=/')).toEqual({
+    name: 'foo',
+    value: '%',
+    path: '/',
+  })
+})
+
+test('preserve malformed percent set-cookie values', () => {
+  expect(parseSetCookie('foo=%; Path=/')).toEqual({
+    name: 'foo',
+    value: '%',
+    path: '/',
+  })
+})
+
+test('preserve set-cookie values without percent decoding regressions', () => {
+  expect(parseSetCookie('foo; Path=/')).toEqual({
+    name: 'foo',
+    value: 'true',
+    path: '/',
+  })
+  expect(parseSetCookie('foo=a=b; Path=/')).toEqual({
+    name: 'foo',
+    value: 'a=b',
+    path: '/',
+  })
+})
+
+test('parse percent values from response set-cookie headers', () => {
+  const headers = new Headers()
+  headers.set('set-cookie', 'foo=%25; Path=/')
+  headers.append('set-cookie', 'bar=baz; Path=/test')
+
+  const cookies = new ResponseCookies(headers)
+  expect(cookies.get('foo')).toEqual({
+    name: 'foo',
+    value: '%',
+    path: '/',
+  })
+  expect(cookies.get('bar')).toEqual({
+    name: 'bar',
+    value: 'baz',
+    path: '/test',
+  })
+})
+
+test('parse malformed percent values from response set-cookie headers', () => {
+  const headers = new Headers()
+  headers.set('set-cookie', 'foo=%; Path=/')
+
+  const cookies = new ResponseCookies(headers)
+  expect(cookies.get('foo')).toEqual({
+    name: 'foo',
+    value: '%',
+    path: '/',
+  })
 })
