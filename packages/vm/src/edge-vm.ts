@@ -121,24 +121,38 @@ function patchInstanceOf(item: string, ctx: any) {
   // @ts-ignore
   ctx[Symbol.for(`node:${item}`)] = eval(item)
 
+  /**
+   * Defines `Symbol.hasInstance` on the VM constructor itself rather than
+   * wrapping it in a Proxy: a Proxy runs a trap on every property read
+   * (`Array.isArray`, `Object.keys`...) and can't be optimized by V8.
+   *
+   * The Node.js check only applies to the constructor itself, so subclasses
+   * keep the ordinary behavior. A constructor that is already shared with the
+   * Node.js realm (e.g. passed in through `extend`) is left untouched.
+   */
   return runInContext(
     `
-      globalThis.${item} = new Proxy(${item}, {
-        get(target, prop, receiver) {
-          if (prop === Symbol.hasInstance && receiver === globalThis.${item}) {
-            const nodeTarget = globalThis[Symbol.for('node:${item}')];
-            if (nodeTarget) {
-              return function(instance) {
-                return instance instanceof target || instance instanceof nodeTarget;
-              };
-            } else {
-              throw new Error('node target must exist')
-            }
-          }
-
-          return Reflect.get(target, prop, receiver);
+      (() => {
+        const target = globalThis.${item};
+        const nodeTarget = globalThis[Symbol.for('node:${item}')];
+        if (!nodeTarget) {
+          throw new Error('node target must exist');
         }
-      })
+        if (target === nodeTarget) {
+          return;
+        }
+
+        const ordinaryHasInstance = Function.prototype[Symbol.hasInstance];
+        Object.defineProperty(target, Symbol.hasInstance, {
+          configurable: true,
+          value: function(instance) {
+            return (
+              ordinaryHasInstance.call(this, instance) ||
+              (this === target && instance instanceof nodeTarget)
+            );
+          },
+        });
+      })()
     `,
     ctx,
   )
