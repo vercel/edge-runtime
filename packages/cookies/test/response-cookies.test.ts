@@ -287,3 +287,21 @@ test('parse max-age from set-cookie', () => {
   expect(cookies.get('foo')?.value).toBe('bar')
   expect(cookies.get('foo')?.maxAge).toBe(1000)
 })
+
+test.each([';', 'a=%', 'a=%ZZ', 'a=%; Path=/', 'a=%; HttpOnly'])(
+  'ignore malformed set-cookie %j',
+  (malformed) => {
+    const headers = new Headers()
+    headers.append('set-cookie', 'foo=bar; Path=/')
+    headers.append('set-cookie', malformed)
+
+    const cookies = new ResponseCookies(headers)
+    expect(cookies.getAll()).toEqual([{ name: 'foo', value: 'bar', path: '/' }])
+  },
+)
+
+test('decode set-cookie values once', () => {
+  const headers = new Headers({ 'set-cookie': 'foo=%25' })
+  const cookies = new ResponseCookies(headers)
+  expect(cookies.get('foo')?.value).toBe('%')
+})

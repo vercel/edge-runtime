@@ -58,7 +58,19 @@ export function parseSetCookie(setCookie: string): undefined | ResponseCookie {
     return undefined
   }
 
-  const [[name, value], ...attributes] = parseCookie(setCookie)
+  // The first pair is the cookie name and value. Parse it apart from the
+  // attributes, so an invalid pair never lets an attribute become the cookie.
+  const splitAt = setCookie.indexOf(';')
+  const [nameValue] = parseCookie(
+    splitAt === -1 ? setCookie : setCookie.slice(0, splitAt),
+  )
+  if (!nameValue) {
+    return undefined
+  }
+
+  const [name, value] = nameValue
+  const attributes =
+    splitAt === -1 ? [] : Array.from(parseCookie(setCookie.slice(splitAt)))
   const {
     domain,
     expires,
@@ -77,7 +89,8 @@ export function parseSetCookie(setCookie: string): undefined | ResponseCookie {
   )
   const cookie: ResponseCookie = {
     name,
-    value: decodeURIComponent(value),
+    // `parseCookie` already decoded the value.
+    value,
     domain,
     ...(expires && { expires: new Date(expires) }),
     ...(httponly && { httpOnly: true }),
