@@ -60,17 +60,14 @@ export function parseSetCookie(setCookie: string): undefined | ResponseCookie {
 
   // The first pair is the cookie name and value. Parse it apart from the
   // attributes, so an invalid pair never lets an attribute become the cookie.
-  const splitAt = setCookie.indexOf(';')
-  const [nameValue] = parseCookie(
-    splitAt === -1 ? setCookie : setCookie.slice(0, splitAt),
-  )
+  const [pair] = setCookie.split(';', 1)
+  const [nameValue] = parseCookie(pair)
   if (!nameValue) {
     return undefined
   }
 
   const [name, value] = nameValue
-  const attributes =
-    splitAt === -1 ? [] : Array.from(parseCookie(setCookie.slice(splitAt)))
+  const attributes = [...parseCookie(setCookie.slice(pair.length))]
   const {
     domain,
     expires,

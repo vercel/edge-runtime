@@ -288,9 +288,15 @@ test('parse max-age from set-cookie', () => {
   expect(cookies.get('foo')?.maxAge).toBe(1000)
 })
 
-test.each([';', 'a=%', 'a=%ZZ', 'a=%; Path=/', 'a=%; HttpOnly'])(
-  'ignore malformed set-cookie %j',
-  (malformed) => {
+test.each([
+  ['an empty pair', ';'],
+  ['an incomplete percent escape', 'a=%'],
+  ['an invalid percent escape', 'a=%ZZ'],
+  ['an invalid pair before a Path attribute', 'a=%; Path=/'],
+  ['an invalid pair before an HttpOnly flag', 'a=%; HttpOnly'],
+])(
+  'skips a set-cookie value with %s and keeps valid cookies',
+  (_, malformed) => {
     const headers = new Headers()
     headers.append('set-cookie', 'foo=bar; Path=/')
     headers.append('set-cookie', malformed)
@@ -300,8 +306,10 @@ test.each([';', 'a=%', 'a=%ZZ', 'a=%; Path=/', 'a=%; HttpOnly'])(
   },
 )
 
-test('decode set-cookie values once', () => {
-  const headers = new Headers({ 'set-cookie': 'foo=%25' })
-  const cookies = new ResponseCookies(headers)
-  expect(cookies.get('foo')?.value).toBe('%')
+test('reads back a cookie value that contains a percent sign', () => {
+  const headers = new Headers()
+  new ResponseCookies(headers).set('foo', '100%')
+
+  expect(headers.get('set-cookie')).toBe('foo=100%25; Path=/')
+  expect(new ResponseCookies(headers).get('foo')?.value).toBe('100%')
 })
